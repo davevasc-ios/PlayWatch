@@ -6,61 +6,48 @@
 //
 
 import SwiftUI
-import SwiftData
+//import SwiftData
+import GoogleGenerativeAI
 
 struct ContentView: View {
-    @Environment(\.modelContext) private var modelContext
-    @Query private var items: [Item]
-
+    
+    @State var result = "result"
+    let model = GenerativeModel(name: "gemini-pro", apiKey: GeminiAPIKey.default)
+    
+    func generateOutput() async {
+        let prompt = "Write a story about a magic backpack"
+        do {
+            let response = try await model.generateContent(prompt)
+            if let text = response.text {
+                result = text
+            }
+        } catch {
+            print("Catch error: \(error.localizedDescription)")
+            print("key: \(GeminiAPIKey.default)")
+        }
+    }
+    
     var body: some View {
-        NavigationSplitView {
-            List {
-                ForEach(items) { item in
-                    NavigationLink {
-                        Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
-                    } label: {
-                        Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
-                    }
+        VStack {
+            Text("Start Gemini")
+            Button(action: {
+                Task {
+                    await generateOutput()
                 }
-                .onDelete(perform: deleteItems)
-            }
-#if os(macOS)
-            .navigationSplitViewColumnWidth(min: 180, ideal: 200)
-#endif
-            .toolbar {
-#if os(iOS)
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
+            }) {
+                  Text("texto")
+                    .foregroundColor(.white)
+                    .padding()
+                    .background(Color.blue)
+                    .cornerRadius(10)
                 }
-#endif
-                ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
-                    }
-                }
-            }
-        } detail: {
-            Text("Select an item")
+            Text(result)
         }
     }
-
-    private func addItem() {
-        withAnimation {
-            let newItem = Item(timestamp: Date())
-            modelContext.insert(newItem)
-        }
-    }
-
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                modelContext.delete(items[index])
-            }
-        }
-    }
+    
 }
 
 #Preview {
     ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
+//        .modelContainer(for: Item.self, inMemory: true)
 }

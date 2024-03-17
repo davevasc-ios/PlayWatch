@@ -27,6 +27,6 @@ struct PlayWatchApp: App {
         WindowGroup {
             ContentView()
         }
-        .modelContainer(sharedModelContainer)
+//        .modelContainer(sharedModelContainer)
     }
 }
