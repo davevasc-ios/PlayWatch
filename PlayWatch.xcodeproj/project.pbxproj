@@ -15,6 +15,8 @@
 		55212BC52BA7A0C600080A71 /* PlayWatchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55212BC42BA7A0C600080A71 /* PlayWatchTests.swift */; };
 		55212BCF2BA7A0C600080A71 /* PlayWatchUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55212BCE2BA7A0C600080A71 /* PlayWatchUITests.swift */; };
 		55212BD12BA7A0C600080A71 /* PlayWatchUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55212BD02BA7A0C600080A71 /* PlayWatchUITestsLaunchTests.swift */; };
+		55212BDF2BA7A4DC00080A71 /* GeminiAPIKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55212BDE2BA7A4DC00080A71 /* GeminiAPIKey.swift */; };
+		55212BE12BA7A57000080A71 /* GenerativeAI-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 55212BE02BA7A57000080A71 /* GenerativeAI-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +49,8 @@
 		55212BCA2BA7A0C600080A71 /* PlayWatchUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PlayWatchUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		55212BCE2BA7A0C600080A71 /* PlayWatchUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayWatchUITests.swift; sourceTree = "<group>"; };
 		55212BD02BA7A0C600080A71 /* PlayWatchUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayWatchUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		55212BDE2BA7A4DC00080A71 /* GeminiAPIKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeminiAPIKey.swift; sourceTree = "<group>"; };
+		55212BE02BA7A57000080A71 /* GenerativeAI-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GenerativeAI-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +101,7 @@
 		55212BAF2BA7A0C400080A71 /* PlayWatch */ = {
 			isa = PBXGroup;
 			children = (
+				55212BDD2BA7A4A200080A71 /* GeminiAPIKey */,
 				55212BB02BA7A0C400080A71 /* PlayWatchApp.swift */,
 				55212BB22BA7A0C400080A71 /* ContentView.swift */,
 				55212BB42BA7A0C400080A71 /* Item.swift */,
@@ -130,6 +135,15 @@
 				55212BD02BA7A0C600080A71 /* PlayWatchUITestsLaunchTests.swift */,
 			);
 			path = PlayWatchUITests;
+			sourceTree = "<group>";
+		};
+		55212BDD2BA7A4A200080A71 /* GeminiAPIKey */ = {
+			isa = PBXGroup;
+			children = (
+				55212BDE2BA7A4DC00080A71 /* GeminiAPIKey.swift */,
+				55212BE02BA7A57000080A71 /* GenerativeAI-Info.plist */,
+			);
+			path = GeminiAPIKey;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -236,6 +250,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55212BE12BA7A57000080A71 /* GenerativeAI-Info.plist in Resources */,
 				55212BBB2BA7A0C500080A71 /* Preview Assets.xcassets in Resources */,
 				55212BB72BA7A0C500080A71 /* Assets.xcassets in Resources */,
 			);
@@ -264,6 +279,7 @@
 			files = (
 				55212BB32BA7A0C400080A71 /* ContentView.swift in Sources */,
 				55212BB52BA7A0C400080A71 /* Item.swift in Sources */,
+				55212BDF2BA7A4DC00080A71 /* GeminiAPIKey.swift in Sources */,
 				55212BB12BA7A0C400080A71 /* PlayWatchApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
