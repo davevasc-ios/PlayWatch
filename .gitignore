@@ -117,7 +117,7 @@ xcuserdata
 # After new code Injection tools there's a generated folder /iOSInjectionProject
 # https://github.com/johnno1962/injectionforxcode
 
-# Ignore GenerativeAI-Info.plist file, for protect API_KEY
-GenerativeAI-Info.plist
+# Ignore Info file, for protect API_KEYs
+APIKey-Info.plist
 
 # End of https://www.toptal.com/developers/gitignore/api/swift,swiftpackagemanager,xcode,xcodeinjection,cocoapods

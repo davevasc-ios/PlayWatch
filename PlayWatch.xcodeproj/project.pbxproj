@@ -15,9 +15,9 @@
 		55212BC52BA7A0C600080A71 /* PlayWatchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55212BC42BA7A0C600080A71 /* PlayWatchTests.swift */; };
 		55212BCF2BA7A0C600080A71 /* PlayWatchUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55212BCE2BA7A0C600080A71 /* PlayWatchUITests.swift */; };
 		55212BD12BA7A0C600080A71 /* PlayWatchUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55212BD02BA7A0C600080A71 /* PlayWatchUITestsLaunchTests.swift */; };
-		55212BDF2BA7A4DC00080A71 /* GeminiAPIKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55212BDE2BA7A4DC00080A71 /* GeminiAPIKey.swift */; };
-		55212BE12BA7A57000080A71 /* GenerativeAI-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 55212BE02BA7A57000080A71 /* GenerativeAI-Info.plist */; };
-		55212BE42BA7A7DB00080A71 /* GoogleGenerativeAI in Frameworks */ = {isa = PBXBuildFile; productRef = 55212BE32BA7A7DB00080A71 /* GoogleGenerativeAI */; };
+		5576C3AE2BB9B13F00E511DE /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576C3AD2BB9B13F00E511DE /* Constants.swift */; };
+		5576C3B02BB9C10D00E511DE /* APIKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576C3AF2BB9C10D00E511DE /* APIKey.swift */; };
+		5576C3B22BB9C7C300E511DE /* APIKey-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5576C3B12BB9C7C300E511DE /* APIKey-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,8 +50,9 @@
 		55212BCA2BA7A0C600080A71 /* PlayWatchUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PlayWatchUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		55212BCE2BA7A0C600080A71 /* PlayWatchUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayWatchUITests.swift; sourceTree = "<group>"; };
 		55212BD02BA7A0C600080A71 /* PlayWatchUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayWatchUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		55212BDE2BA7A4DC00080A71 /* GeminiAPIKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeminiAPIKey.swift; sourceTree = "<group>"; };
-		55212BE02BA7A57000080A71 /* GenerativeAI-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GenerativeAI-Info.plist"; sourceTree = "<group>"; };
+		5576C3AD2BB9B13F00E511DE /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		5576C3AF2BB9C10D00E511DE /* APIKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIKey.swift; sourceTree = "<group>"; };
+		5576C3B12BB9C7C300E511DE /* APIKey-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "APIKey-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,7 +60,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				55212BE42BA7A7DB00080A71 /* GoogleGenerativeAI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -103,7 +103,7 @@
 		55212BAF2BA7A0C400080A71 /* PlayWatch */ = {
 			isa = PBXGroup;
 			children = (
-				55212BDD2BA7A4A200080A71 /* GeminiAPIKey */,
+				5576C3AC2BB9B11E00E511DE /* Base */,
 				55212BB02BA7A0C400080A71 /* PlayWatchApp.swift */,
 				55212BB22BA7A0C400080A71 /* ContentView.swift */,
 				55212BB42BA7A0C400080A71 /* Item.swift */,
@@ -139,13 +139,14 @@
 			path = PlayWatchUITests;
 			sourceTree = "<group>";
 		};
-		55212BDD2BA7A4A200080A71 /* GeminiAPIKey */ = {
+		5576C3AC2BB9B11E00E511DE /* Base */ = {
 			isa = PBXGroup;
 			children = (
-				55212BDE2BA7A4DC00080A71 /* GeminiAPIKey.swift */,
-				55212BE02BA7A57000080A71 /* GenerativeAI-Info.plist */,
+				5576C3AD2BB9B13F00E511DE /* Constants.swift */,
+				5576C3AF2BB9C10D00E511DE /* APIKey.swift */,
+				5576C3B12BB9C7C300E511DE /* APIKey-Info.plist */,
 			);
-			path = GeminiAPIKey;
+			path = Base;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -165,7 +166,6 @@
 			);
 			name = PlayWatch;
 			packageProductDependencies = (
-				55212BE32BA7A7DB00080A71 /* GoogleGenerativeAI */,
 			);
 			productName = PlayWatch;
 			productReference = 55212BAD2BA7A0C400080A71 /* PlayWatch.app */;
@@ -240,7 +240,6 @@
 			);
 			mainGroup = 55212BA42BA7A0C400080A71;
 			packageReferences = (
-				55212BE22BA7A7DB00080A71 /* XCRemoteSwiftPackageReference "generative-ai-swift" */,
 			);
 			productRefGroup = 55212BAE2BA7A0C400080A71 /* Products */;
 			projectDirPath = "";
@@ -258,7 +257,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				55212BE12BA7A57000080A71 /* GenerativeAI-Info.plist in Resources */,
+				5576C3B22BB9C7C300E511DE /* APIKey-Info.plist in Resources */,
 				55212BBB2BA7A0C500080A71 /* Preview Assets.xcassets in Resources */,
 				55212BB72BA7A0C500080A71 /* Assets.xcassets in Resources */,
 			);
@@ -286,8 +285,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				55212BB32BA7A0C400080A71 /* ContentView.swift in Sources */,
+				5576C3B02BB9C10D00E511DE /* APIKey.swift in Sources */,
 				55212BB52BA7A0C400080A71 /* Item.swift in Sources */,
-				55212BDF2BA7A4DC00080A71 /* GeminiAPIKey.swift in Sources */,
+				5576C3AE2BB9B13F00E511DE /* Constants.swift in Sources */,
 				55212BB12BA7A0C400080A71 /* PlayWatchApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -645,25 +645,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		55212BE22BA7A7DB00080A71 /* XCRemoteSwiftPackageReference "generative-ai-swift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/google/generative-ai-swift";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.4.8;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		55212BE32BA7A7DB00080A71 /* GoogleGenerativeAI */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 55212BE22BA7A7DB00080A71 /* XCRemoteSwiftPackageReference "generative-ai-swift" */;
-			productName = GoogleGenerativeAI;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 55212BA52BA7A0C400080A71 /* Project object */;
 }
