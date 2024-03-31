@@ -80,6 +80,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		550C5F372BBA0FB2005B853B /* APIKey */ = {
+			isa = PBXGroup;
+			children = (
+				5576C3AF2BB9C10D00E511DE /* APIKey.swift */,
+				5576C3B12BB9C7C300E511DE /* APIKey-Info.plist */,
+			);
+			path = APIKey;
+			sourceTree = "<group>";
+		};
 		55212BA42BA7A0C400080A71 = {
 			isa = PBXGroup;
 			children = (
@@ -103,6 +112,7 @@
 		55212BAF2BA7A0C400080A71 /* PlayWatch */ = {
 			isa = PBXGroup;
 			children = (
+				550C5F372BBA0FB2005B853B /* APIKey */,
 				5576C3AC2BB9B11E00E511DE /* Base */,
 				55212BB02BA7A0C400080A71 /* PlayWatchApp.swift */,
 				55212BB22BA7A0C400080A71 /* ContentView.swift */,
@@ -143,8 +153,6 @@
 			isa = PBXGroup;
 			children = (
 				5576C3AD2BB9B13F00E511DE /* Constants.swift */,
-				5576C3AF2BB9C10D00E511DE /* APIKey.swift */,
-				5576C3B12BB9C7C300E511DE /* APIKey-Info.plist */,
 			);
 			path = Base;
 			sourceTree = "<group>";
