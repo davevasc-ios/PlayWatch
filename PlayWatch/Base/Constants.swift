@@ -9,66 +9,177 @@ import Foundation
 
 // MARK: - API_KEY Constants
 
-enum KeyInfo {
-    static let infoFile = (name: "APIKey-Info", type: "plist")
-    static let movieDB = (key: "MOVIEDB_API_KEY", web: "https://developer.themoviedb.org/reference/intro/getting-started")
-    static let openAI = (key: "OPENAI_API_KEY", web: "https://platform.openai.com/api-keys")
-    static let gemini = (key: "GEMINI_API_KEY", web: "https://ai.google.dev/tutorials/setup")
-}
-
-enum KeyErrors: LocalizedError {
-    case invalidFileName
-    case invalidKeyName(apiKeyName: String)
-    case invalidApiKey(apiKeyWeb: String)
+struct Key {
+    struct Info {
+        static let infoFile = (name: "APIKey-Info", type: "plist")
+        static let movieDB = (key: "MOVIEDB_API_KEY", web: "https://developer.themoviedb.org/reference/intro/getting-started")
+        static let openAI = (key: "OPENAI_API_KEY", web: "https://platform.openai.com/api-keys")
+        static let gemini = (key: "GEMINI_API_KEY", web: "https://ai.google.dev/tutorials/setup")
+    }
     
-    var errorDescription: String? {
-        switch self {
-        case .invalidFileName:
-            return "Couldn't find file '\(KeyInfo.infoFile.name).\(KeyInfo.infoFile.type)'"
-        case let .invalidKeyName(apiKeyName):
-            return "Couldn't find key '\(apiKeyName)' in '\(KeyInfo.infoFile.name).\(KeyInfo.infoFile.type)'"
-        case let .invalidApiKey(apiKeyWeb):
-            return "Follow the instructions at \(apiKeyWeb) to get an API key"
+    enum Error: LocalizedError {
+        case invalidFileName
+        case invalidKeyName(apiKeyName: String)
+        case invalidApiKey(apiKeyWeb: String)
+        
+        var errorDescription: String? {
+            switch self {
+            case .invalidFileName:
+                return "Couldn't find file '\(Info.infoFile.name).\(Info.infoFile.type)'"
+            case let .invalidKeyName(apiKeyName):
+                return "Couldn't find key '\(apiKeyName)' in '\(Info.infoFile.name).\(Info.infoFile.type)'"
+            case let .invalidApiKey(apiKeyWeb):
+                return "Follow the instructions at \(apiKeyWeb) to get an API key"
+            }
         }
     }
 }
 
-// MARK: - API Constants
-enum APIConstants {
-    static let baseURL = "https://randomuser.me/api"
-    static let includingFields = "/?inc="
-    static let fields = "id,picture,name,gender,dob,location,phone,email,login,registered"
-    static let noInfo = "&noinfo"
-    static let searchUsersURL = "&results="
-    static let maxResults = 60
-    static let queryURL = APIConstants.baseURL + APIConstants.includingFields + APIConstants.fields + APIConstants.noInfo + APIConstants.searchUsersURL + String(APIConstants.maxResults)
-    static let correctStatusCode = 200
+// MARK: - MovieDB API Constants
+
+enum AppLanguage {
+    static let spanish = (englishName: "Spanish", nativeName: "Español", language: "es", region: "ES")
+    static let basque = (englishName: "Basque", nativeName: "Euskera", language: "eu", region: "ES")
+    static let catalan = (englishName: "Catalan", nativeName: "Català", language: "ca", region: "ES")
+    static let englishGB = (englishName: "English (GB)", nativeName: "English (GB)", language: "en", region: "GB")
+    static let englishUS = (englishName: "English (US)", nativeName: "English (US)", language: "en", region: "US")
+    static let french = (englishName: "French", nativeName: "Français", language: "fr", region: "FR")
+    static let italian = (englishName: "Italian", nativeName: "Italiano", language: "it", region: "IT")
+    static let portuguese = (englishName: "Portuguese", nativeName: "Português", language: "pt", region: "PT")
+    static let german = (englishName: "German", nativeName: "Deutsch", language: "de", region: "DE")
 }
 
-// MARK: - API Errors
-enum APIErrors: LocalizedError {
-    case invalidURL
-    case invalidResponse
-    case invalidData
-    
-    var errorDescription: String? {
-        switch self {
-        case .invalidURL:
-            return "Invalid URL found"
-        case .invalidResponse:
-            return "Invalid response found"
-        case .invalidData:
-            return "Invalid data found"
+
+
+
+
+struct Current {
+    static var language = AppLanguage.spanish
+    static var theme = ""
+}
+
+
+struct HTTP {
+    struct Method {
+        static let get = "GET"
+        static let post = "POST"
+    }
+    struct StatusCode {
+        static let success = 200
+    }
+    struct Header {
+        struct Field {
+            static let authorization = "Authorization"
+            static let accept = "accept"
+        }
+        struct Value {
+            static let applicationJson = "application/json"
+            static func bearer(key: APIKey) -> String {
+                return "Bearer \(key)"
+            }
         }
     }
 }
 
-// MARK: - List Loading Status
-enum ListStatus: String {
-  case loading = "Loading..."
-  case empty = "Empty list"
-  case error = "Error loading list"
-  case success = "List loaded successfully"
+
+
+
+struct MdbAPI {
+    
+    enum Media {
+        case movie, tv
+    }
+
+    enum Period {
+        case day, week
+    }
+    
+    enum Provider: Int {
+        case netflix = 8
+        case hbo = 9
+    }
+    
+    static let endpoint = "https://api.themoviedb.org/3/"
+    static let language = "language=\(Current.language.language)-\(Current.language.region)"
+
+    static func request(mode: Fetch) throws -> URLRequest {
+        guard let url = URL(string: url(mode: mode)) else {
+            throw API.Error.invalidURL
+        }
+        var request = URLRequest(url: url)
+        request.httpMethod = HTTP.Method.get
+        request.setValue(HTTP.Header.Value.bearer(key: APIKey.movieDB), forHTTPHeaderField: HTTP.Header.Field.authorization)
+        request.setValue(HTTP.Header.Value.applicationJson, forHTTPHeaderField: HTTP.Header.Field.accept)
+        return request
+    }
+    
+    enum Fetch {
+        case trend, cinema, coming, stream, search
+    }
+    
+    static func url(mode: Fetch, media: Media = .movie, period: Period = .week, query: String = "", provider: Provider = .netflix) -> String {
+        switch mode {
+        case .trend:
+            return "\(endpoint)trending/\(media)/\(period)?\(MdbAPI.language)"
+        case .cinema:
+            return "\(endpoint)movie/now_playing?\(language)&region=\(Current.language.region)"
+        case .coming:
+            return "\(endpoint)movie/upcoming?\(MdbAPI.language)&region=\(Current.language.region)"
+        case .stream:
+            return "\(endpoint)discover/\(media)?\(MdbAPI.language)&sort_by=popularity.desc&watch_region=\(Current.language.region)&with_watch_providers=\(provider)"
+        case .search:
+            return "\(endpoint)search/multi?query=\(query)&\(MdbAPI.language)"
+        }
+    }
+    
+
+    static func trendURL(type: Media, period: Period) -> String {
+        return "\(endpoint)trending/\(type)/\(period)?\(MdbAPI.language)"
+    }
+
+//    static func cinemaURL() -> String {
+//        return "\(endpoint)movie/now_playing?\(language)&region=\(Current.language.region)"
+//    }
+//    
+//    static func comingURL() -> String {
+//        return "\(endpoint)movie/upcoming?\(MdbAPI.language)&region=\(Current.language.region)"
+//    }
+//    
+//    static func streamURL(type: Media, provider: MdbAPI.Provider) -> String {
+//        return "\(endpoint)discover/\(type)?\(MdbAPI.language)&sort_by=popularity.desc&watch_region=\(Current.language.region)&with_watch_providers=\(provider)"
+//    }
+//    
+//    static func searchURL(query: String) -> String {
+//        return "\(endpoint)search/multi?query=\(query)&\(MdbAPI.language)"
+//    }
+    
+}
+struct API {
+    // MARK: - API Errors
+    enum Error: LocalizedError {
+        case invalidURL
+        case invalidResponse
+        case invalidData
+        
+        var errorDescription: String? {
+            switch self {
+            case .invalidURL:
+                return "Invalid URL found"
+            case .invalidResponse:
+                return "Invalid response found"
+            case .invalidData:
+                return "Invalid data found"
+            }
+        }
+    }
+    
+    // MARK: - API Status
+    enum Status: String {
+        case loading = "Loading..."
+        case empty = "Empty list"
+        case error = "Error loading list"
+        case success = "List loaded successfully"
+    }
 }
 
 // MARK: - Accessibility Identifiers

@@ -9,6 +9,8 @@ import SwiftUI
 
 struct ContentView: View {
     
+    var viewModel = HomeMovieViewModel()
+    
     @State var result = "result"
     
     func apiGeminiCall() {
@@ -47,6 +49,7 @@ struct ContentView: View {
     }
     
     func apiOpenAICall() {
+        let a = MdbAPI.trendURL(type: .movie, period: .day)
         guard let url = URL(string: "https://api.openai.com/v1/chat/completions") else {
             return
         }
@@ -131,8 +134,8 @@ struct ContentView: View {
             Button(action: {
                 Task {
 //                    apiGeminiCall()
-//                    apiTMDBCall()
-                    apiOpenAICall()
+                    apiTMDBCall()
+//                    apiOpenAICall()
                 }
             }) {
                   Text("texto")
@@ -141,7 +144,10 @@ struct ContentView: View {
                     .background(Color.blue)
                     .cornerRadius(10)
                 }
-            Text(result)
+            Text(viewModel.errorMessage)
+        }
+        .task {
+                try? await viewModel.fetchCinema()
         }
     }
     
