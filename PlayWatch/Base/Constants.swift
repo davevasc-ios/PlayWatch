@@ -86,6 +86,17 @@ struct HTTP {
 
 struct MdbAPI {
     
+    static let endpoint = "https://api.themoviedb.org/3/"
+    static let language = "language=\(Current.language.language)-\(Current.language.region)"
+
+    struct QueryData {
+        var mode: Fetch = .cinema
+        var media: Media = .movie
+        var period: Period = .week
+        var provider: Provider = .netflix
+        var query: String = ""
+    }
+    
     enum Media {
         case movie, tv
     }
@@ -98,12 +109,9 @@ struct MdbAPI {
         case netflix = 8
         case hbo = 9
     }
-    
-    static let endpoint = "https://api.themoviedb.org/3/"
-    static let language = "language=\(Current.language.language)-\(Current.language.region)"
 
-    static func request(mode: Fetch) throws -> URLRequest {
-        guard let url = URL(string: url(mode: mode)) else {
+    static func request(query: QueryData) throws -> URLRequest {
+        guard let url = URL(string: url(query: query)) else {
             throw API.Error.invalidURL
         }
         var request = URLRequest(url: url)
@@ -117,41 +125,21 @@ struct MdbAPI {
         case trend, cinema, coming, stream, search
     }
     
-    static func url(mode: Fetch, media: Media = .movie, period: Period = .week, query: String = "", provider: Provider = .netflix) -> String {
-        switch mode {
+    static func url(query: QueryData) -> String {
+        switch query.mode {
         case .trend:
-            return "\(endpoint)trending/\(media)/\(period)?\(MdbAPI.language)"
+            return "\(endpoint)trending/\(query.media)/\(query.period)?\(language)"
         case .cinema:
             return "\(endpoint)movie/now_playing?\(language)&region=\(Current.language.region)"
         case .coming:
-            return "\(endpoint)movie/upcoming?\(MdbAPI.language)&region=\(Current.language.region)"
+            return "\(endpoint)movie/upcoming?\(language)&region=\(Current.language.region)"
         case .stream:
-            return "\(endpoint)discover/\(media)?\(MdbAPI.language)&sort_by=popularity.desc&watch_region=\(Current.language.region)&with_watch_providers=\(provider)"
+            return "\(endpoint)discover/\(query.media)?\(language)&sort_by=popularity.desc&watch_region=\(Current.language.region)&with_watch_providers=\(query.provider)"
         case .search:
-            return "\(endpoint)search/multi?query=\(query)&\(MdbAPI.language)"
+            return "\(endpoint)search/multi?query=\(query.query)&\(language)"
         }
     }
-    
 
-    static func trendURL(type: Media, period: Period) -> String {
-        return "\(endpoint)trending/\(type)/\(period)?\(MdbAPI.language)"
-    }
-
-//    static func cinemaURL() -> String {
-//        return "\(endpoint)movie/now_playing?\(language)&region=\(Current.language.region)"
-//    }
-//    
-//    static func comingURL() -> String {
-//        return "\(endpoint)movie/upcoming?\(MdbAPI.language)&region=\(Current.language.region)"
-//    }
-//    
-//    static func streamURL(type: Media, provider: MdbAPI.Provider) -> String {
-//        return "\(endpoint)discover/\(type)?\(MdbAPI.language)&sort_by=popularity.desc&watch_region=\(Current.language.region)&with_watch_providers=\(provider)"
-//    }
-//    
-//    static func searchURL(query: String) -> String {
-//        return "\(endpoint)search/multi?query=\(query)&\(MdbAPI.language)"
-//    }
     
 }
 struct API {

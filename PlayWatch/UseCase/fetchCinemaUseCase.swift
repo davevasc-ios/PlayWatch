@@ -18,9 +18,10 @@ struct FetchCinemaUseCase: FetchCinemaProtocol {
     }
     
     func fetchCinema() async throws -> String {
-        let x = try await service.fetchCinema()
+        let query = MdbAPI.QueryData(mode: .cinema, media: .movie, period: .week, provider: .netflix, query: "")
+        let x = try await service.fetchCinema(query: query)
         for i in x {
-            print("TITULO: \(i.title)")
+            print("TITULO: \(i.title ?? "")")
         }
         return "ok"
     }

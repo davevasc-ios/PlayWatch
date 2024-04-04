@@ -1,25 +1,25 @@
 //
-//  Movie.swift
+//  TV.swift
 //  PlayWatch
 //
-//  Created by David on 3/4/24.
+//  Created by David on 5/4/24.
 //
 
 import Foundation
 
-struct MovieResults: Codable {
-    let results: [Movie]?
+struct TVResults: Codable {
+    let results: [TV]?
 }
 
-struct Movie: Codable {
+struct TV: Codable {
     let id: Int
     let genreIds: [Int]?
     let originalLanguage: String?
     let originalTitle: String?
     let overview: String?
     let posterPath: String?
-    let releaseDate: String?
-    let title: String?
+    let firstAirDate: String?
+    let name: String?
     let voteAverage: Double?
     let voteCount: Int?
 }

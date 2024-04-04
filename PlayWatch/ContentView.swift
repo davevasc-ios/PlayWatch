@@ -49,7 +49,7 @@ struct ContentView: View {
     }
     
     func apiOpenAICall() {
-        let a = MdbAPI.trendURL(type: .movie, period: .day)
+//        let a = MdbAPI.trendURL(type: .movie, period: .day)
         guard let url = URL(string: "https://api.openai.com/v1/chat/completions") else {
             return
         }
@@ -97,9 +97,9 @@ struct ContentView: View {
         // devuelve todos los países, hay que cargar solo el país actual
         
         // solo se puede filtar por ID y lengua
-        guard let url2 = URL(string: "https://api.themoviedb.org/3/movie/157336/videos?language=fr-FR") else {
-            return
-        }
+//        guard let url2 = URL(string: "https://api.themoviedb.org/3/movie/157336/videos?language=fr-FR") else {
+//            return
+//        }
         // Obtener youtube key. name = 'XXX', key = 'key', site = 'Youtube', trailer, Type = `Trailer`, official = true
         ///https://api.themoviedb.org/3/movie/\(id)/videos?language=\(es-ES)
     ///https://www.youtube.com/watch?v=\(key)
@@ -147,7 +147,8 @@ struct ContentView: View {
             Text(viewModel.errorMessage)
         }
         .task {
-                try? await viewModel.fetchCinema()
+//                try? await viewModel.fetchCinema()
+            try? await viewModel.fetchTrend()
         }
     }
     
