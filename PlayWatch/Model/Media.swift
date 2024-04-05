@@ -13,20 +13,22 @@ struct MediaResults: Codable {
 
 struct Media: Codable {
     let id: Int
-    let backdropPath: String?
-    let title: String? // Optional for "movie" media type
-    let name: String? // Optional for "person" and "tv" media type
-    let originalLanguage: String?
-    let originalTitle: String?
-    let overview: String?
-    let posterPath: String?
     let mediaType: MediaType?
+    let posterPath: String?
+    let profilePath: String? // person
+    let originalLanguage: String?
+    let overview: String?
     let genreIds: [Int]?
-    let firstAirDate: String? // Optional for "movie" media type
-    let releaseDate: String? // Optional for "tv" media type
+    let title: String? // movie
+    let name: String? // tv, person
+    let originalTitle: String? // movie
+    let originalName: String? // tv, person
+    let releaseDate: String? // movie
+    let firstAirDate: String? // tv
     let voteAverage: Double?
     let voteCount: Int?
-    let knownFor: [Media]? // For "person" media
+    let KnownForDepartment: String? // person
+    let knownFor: [Media]? // person
 }
 
 enum MediaType: String, Codable {

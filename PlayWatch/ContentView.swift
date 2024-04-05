@@ -134,8 +134,8 @@ struct ContentView: View {
             Button(action: {
                 Task {
 //                    apiGeminiCall()
-                    apiTMDBCall()
-//                    apiOpenAICall()
+//                    apiTMDBCall()
+                    apiOpenAICall()
                 }
             }) {
                   Text("texto")
@@ -148,7 +148,9 @@ struct ContentView: View {
         }
         .task {
 //                try? await viewModel.fetchCinema()
-            try? await viewModel.fetchTrend()
+//            try? await viewModel.fetchTrend()
+//            try? await viewModel.fetchMdbMedia()
+            try? await viewModel.getOpenAIResponse()
         }
     }
     

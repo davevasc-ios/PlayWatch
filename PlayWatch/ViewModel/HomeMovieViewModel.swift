@@ -16,32 +16,32 @@ import SwiftUI
     var errorMessage = "no working"
     
     // MARK: - Internal vars
-    private let fetchTrendUseCase: FetchTrendProtocol
-    private let fetchCinemaUseCase: FetchCinemaProtocol
-
-
+    private let fetchMediaUseCase: FetchMediaProtocol
+    private let getResponseUseCase: GetResponseProtocol
+    
     // MARK: - Initialization
     init(
         //        users: [User] = [],
         //         status: ListStatus = .empty,
         //         errorMessage: String = "",
-        fetchTrendUseCase: FetchTrendProtocol = FetchTrendUseCase(),
-        fetchCinemaUseCase: FetchCinemaProtocol = FetchCinemaUseCase()) {
-            self.fetchTrendUseCase = fetchTrendUseCase
+        fetchMediaUseCase: FetchMediaProtocol = FetchMediaUseCase(),
+        getResponseUseCase: GetResponseProtocol = GetResponseUseCase()) {
             
             
             //        self.users = users
             //        self.status = status
             //        self.errorMessage = errorMessage
-            self.fetchCinemaUseCase = fetchCinemaUseCase
+            self.fetchMediaUseCase = fetchMediaUseCase
+            self.getResponseUseCase = getResponseUseCase
             
         }
     
-    func fetchTrend() async throws {
+    
+    func fetchMdbMedia() async throws {
 //        self.users = []
 //        self.status = .loading
         do {
-            self.errorMessage = try await fetchTrendUseCase.fetchTrend()
+            self.errorMessage = try await fetchMediaUseCase.fetchMedia()
 //            self.users = userListModel.results
 //            self.status = self.users.isEmpty ? .empty : .success
         }
@@ -52,11 +52,11 @@ import SwiftUI
         }
     }
     
-    func fetchCinema() async throws {
+    func getOpenAIResponse() async throws {
 //        self.users = []
 //        self.status = .loading
         do {
-            self.errorMessage = try await fetchCinemaUseCase.fetchCinema()
+            self.errorMessage = try await getResponseUseCase.getResponse()
 //            self.users = userListModel.results
 //            self.status = self.users.isEmpty ? .empty : .success
         }
@@ -66,4 +66,7 @@ import SwiftUI
 //            throw error
         }
     }
+    
+
+
 }

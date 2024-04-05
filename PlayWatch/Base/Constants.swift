@@ -71,6 +71,7 @@ struct HTTP {
         struct Field {
             static let authorization = "Authorization"
             static let accept = "accept"
+            static let contentType = "Content-Type"
         }
         struct Value {
             static let applicationJson = "application/json"
@@ -86,7 +87,14 @@ struct HTTP {
 
 struct MdbAPI {
     
+    enum ImageSize: String {
+        case large = "w500"
+        case medium = "w400" // para filas de 3, ancho 400px
+        case small = "w200"
+    }
+    
     static let endpoint = "https://api.themoviedb.org/3/"
+    static let imageEndpoint = "https://image.tmdb.org/t/p/"
     static let language = "language=\(Current.language.language)-\(Current.language.region)"
 
     struct QueryData {
@@ -98,7 +106,7 @@ struct MdbAPI {
     }
     
     enum Media {
-        case movie, tv
+        case movie, tv, person
     }
 
     enum Period {
@@ -134,14 +142,59 @@ struct MdbAPI {
         case .coming:
             return "\(endpoint)movie/upcoming?\(language)&region=\(Current.language.region)"
         case .stream:
-            return "\(endpoint)discover/\(query.media)?\(language)&sort_by=popularity.desc&watch_region=\(Current.language.region)&with_watch_providers=\(query.provider)"
+            return "\(endpoint)discover/\(query.media)?\(language)&sort_by=popularity.desc&watch_region=\(Current.language.region)&with_watch_providers=\(query.provider.rawValue)"
         case .search:
             return "\(endpoint)search/multi?query=\(query.query)&\(language)"
         }
     }
+    
+    static func imageUrl(file: String, size: ImageSize) -> String {
+        "\(imageEndpoint)\(size)\(file)"
+    }
 
     
 }
+
+struct OaiAPI: Codable {
+    
+    static let endpoint = "https://api.openai.com/v1/chat/completions"
+    static let systemContent = "Eres un asistente experto en contar cuentos para niños"
+    static let systemModel = "gpt-3.5-turbo"
+    
+    enum OaiRole: String, Codable {
+        case system, user
+    }
+    
+    struct Message: Codable {
+        let role: OaiRole
+        let content: String
+    }
+
+    struct Body: Codable {
+        var model: String = systemModel
+        let messages: [Message]
+    }
+    
+    static func request(text: String) async throws -> URLRequest {
+        guard let url = URL(string: endpoint) else {
+            throw API.Error.invalidURL
+        }
+        var request = URLRequest(url: url)
+        request.httpMethod = HTTP.Method.post
+        request.setValue(HTTP.Header.Value.bearer(key: APIKey.openAI), forHTTPHeaderField: HTTP.Header.Field.authorization)
+        request.setValue(HTTP.Header.Value.applicationJson, forHTTPHeaderField: HTTP.Header.Field.contentType)
+        
+        let systemMessage = Message(role: .system, content: systemContent)
+        let userMessage = Message(role: .user, content: text)
+        let body = Body(messages: [systemMessage, userMessage])
+        
+        request.httpBody = try? JSONEncoder().encode(body)
+        return request
+    }
+    
+}
+
+
 struct API {
     // MARK: - API Errors
     enum Error: LocalizedError {

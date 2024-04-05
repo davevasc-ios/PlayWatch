@@ -6,3 +6,30 @@
 //
 
 import Foundation
+
+// MARK: - Protocol declaration
+protocol OpenAIServiceProtocol {
+    
+    func getResponse(text: String) async throws -> String
+}
+
+final class OpenAIService: OpenAIServiceProtocol {
+    
+    // MARK: - External functions (for ViewModel)
+    
+    func getResponse(text: String) async throws -> String {
+        let (data, response) = try await URLSession.shared.data(for: OaiAPI.request(text: text))
+        guard let response = response as? HTTPURLResponse,
+              response.statusCode == HTTP.StatusCode.success else {
+            throw API.Error.invalidResponse
+        }
+        do {
+            return try JSONDecoder().decode(OpenAIModel.self, from: data).choices?.first?.message?.content ?? ""
+        } catch {
+            print("Error decoding JSON: \(error)")
+            throw API.Error.invalidData
+        }
+    }
+    
+    
+}
