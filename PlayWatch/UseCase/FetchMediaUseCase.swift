@@ -18,7 +18,7 @@ struct FetchMediaUseCase: FetchMediaProtocol {
     }
     
     func fetchMedia() async throws -> String {
-        let query = MdbAPI.QueryData(mode: .search, media: .tv, period: .week, provider: .netflix, query: "brad")
+        let query = MovieDB.QueryData(mode: .search, media: .tv, period: .week, provider: .netflix, query: "brad")
         let x = try await service.fetchMedia(query: query)
         for i in x {
             print("---Title: \(i.title ?? "")")

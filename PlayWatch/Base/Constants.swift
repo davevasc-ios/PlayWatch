@@ -7,34 +7,6 @@
 
 import Foundation
 
-// MARK: - API_KEY Constants
-
-struct Key {
-    struct Info {
-        static let infoFile = (name: "APIKey-Info", type: "plist")
-        static let movieDB = (key: "MOVIEDB_API_KEY", web: "https://developer.themoviedb.org/reference/intro/getting-started")
-        static let openAI = (key: "OPENAI_API_KEY", web: "https://platform.openai.com/api-keys")
-        static let gemini = (key: "GEMINI_API_KEY", web: "https://ai.google.dev/tutorials/setup")
-    }
-    
-    enum Error: LocalizedError {
-        case invalidFileName
-        case invalidKeyName(apiKeyName: String)
-        case invalidApiKey(apiKeyWeb: String)
-        
-        var errorDescription: String? {
-            switch self {
-            case .invalidFileName:
-                return "Couldn't find file '\(Info.infoFile.name).\(Info.infoFile.type)'"
-            case let .invalidKeyName(apiKeyName):
-                return "Couldn't find key '\(apiKeyName)' in '\(Info.infoFile.name).\(Info.infoFile.type)'"
-            case let .invalidApiKey(apiKeyWeb):
-                return "Follow the instructions at \(apiKeyWeb) to get an API key"
-            }
-        }
-    }
-}
-
 // MARK: - MovieDB API Constants
 
 enum AppLanguage {
@@ -49,43 +21,12 @@ enum AppLanguage {
     static let german = (englishName: "German", nativeName: "Deutsch", language: "de", region: "DE")
 }
 
-
-
-
-
 struct Current {
     static var language = AppLanguage.spanish
     static var theme = ""
 }
 
-
-struct HTTP {
-    struct Method {
-        static let get = "GET"
-        static let post = "POST"
-    }
-    struct StatusCode {
-        static let success = 200
-    }
-    struct Header {
-        struct Field {
-            static let authorization = "Authorization"
-            static let accept = "accept"
-            static let contentType = "Content-Type"
-        }
-        struct Value {
-            static let applicationJson = "application/json"
-            static func bearer(key: APIKey) -> String {
-                return "Bearer \(key)"
-            }
-        }
-    }
-}
-
-
-
-
-struct MdbAPI {
+struct MovieDB {
     
     enum ImageSize: String {
         case large = "w500"
@@ -124,7 +65,7 @@ struct MdbAPI {
         }
         var request = URLRequest(url: url)
         request.httpMethod = HTTP.Method.get
-        request.setValue(HTTP.Header.Value.bearer(key: APIKey.movieDB), forHTTPHeaderField: HTTP.Header.Field.authorization)
+        request.setValue(HTTP.Header.Value.bearer(key: API.Key.movieDB), forHTTPHeaderField: HTTP.Header.Field.authorization)
         request.setValue(HTTP.Header.Value.applicationJson, forHTTPHeaderField: HTTP.Header.Field.accept)
         return request
     }
@@ -155,18 +96,18 @@ struct MdbAPI {
     
 }
 
-struct OaiAPI: Codable {
+struct OpenAI: Codable {
     
     static let endpoint = "https://api.openai.com/v1/chat/completions"
     static let systemContent = "Eres un asistente experto en contar cuentos para niños"
     static let systemModel = "gpt-3.5-turbo"
     
-    enum OaiRole: String, Codable {
+    enum Role: String, Codable {
         case system, user
     }
     
     struct Message: Codable {
-        let role: OaiRole
+        let role: Role
         let content: String
     }
 
@@ -181,7 +122,7 @@ struct OaiAPI: Codable {
         }
         var request = URLRequest(url: url)
         request.httpMethod = HTTP.Method.post
-        request.setValue(HTTP.Header.Value.bearer(key: APIKey.openAI), forHTTPHeaderField: HTTP.Header.Field.authorization)
+        request.setValue(HTTP.Header.Value.bearer(key: API.Key.openAI), forHTTPHeaderField: HTTP.Header.Field.authorization)
         request.setValue(HTTP.Header.Value.applicationJson, forHTTPHeaderField: HTTP.Header.Field.contentType)
         
         let systemMessage = Message(role: .system, content: systemContent)
@@ -195,33 +136,6 @@ struct OaiAPI: Codable {
 }
 
 
-struct API {
-    // MARK: - API Errors
-    enum Error: LocalizedError {
-        case invalidURL
-        case invalidResponse
-        case invalidData
-        
-        var errorDescription: String? {
-            switch self {
-            case .invalidURL:
-                return "Invalid URL found"
-            case .invalidResponse:
-                return "Invalid response found"
-            case .invalidData:
-                return "Invalid data found"
-            }
-        }
-    }
-    
-    // MARK: - API Status
-    enum Status: String {
-        case loading = "Loading..."
-        case empty = "Empty list"
-        case error = "Error loading list"
-        case success = "List loaded successfully"
-    }
-}
 
 // MARK: - Accessibility Identifiers
 enum Identifiers {

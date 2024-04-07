@@ -14,7 +14,7 @@ struct ContentView: View {
     @State var result = "result"
     
     func apiGeminiCall() {
-        guard let url = URL(string: "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=\(APIKey.gemini)") else {
+        guard let url = URL(string: "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=\(API.Key.gemini)") else {
             return
         }
         var request = URLRequest(url: url)
@@ -56,7 +56,7 @@ struct ContentView: View {
         var request = URLRequest(url: url)
         
         request.httpMethod = "POST"
-        request.setValue("Bearer \(APIKey.openAI)", forHTTPHeaderField: "Authorization")
+        request.setValue("Bearer \(API.Key.openAI)", forHTTPHeaderField: "Authorization")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         let body: [String: Any] = [
@@ -109,7 +109,7 @@ struct ContentView: View {
         var request = URLRequest(url: url)
     
         request.httpMethod = "GET"
-        request.setValue("Bearer \(APIKey.movieDB)", forHTTPHeaderField: "Authorization")
+        request.setValue("Bearer \(API.Key.movieDB)", forHTTPHeaderField: "Authorization")
         request.setValue("application/json", forHTTPHeaderField: "accept")
                 
         let task = URLSession.shared.dataTask(with: request) { data, _, error in

@@ -23,8 +23,9 @@
 		5549D57E2BC0756C00B934CD /* GetResponseUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5549D57D2BC0756C00B934CD /* GetResponseUseCase.swift */; };
 		5575C70F2BBF694300CD3918 /* Media.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5575C70E2BBF694300CD3918 /* Media.swift */; };
 		5576C3AE2BB9B13F00E511DE /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576C3AD2BB9B13F00E511DE /* Constants.swift */; };
-		5576C3B02BB9C10D00E511DE /* APIKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576C3AF2BB9C10D00E511DE /* APIKey.swift */; };
+		5576C3B02BB9C10D00E511DE /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576C3AF2BB9C10D00E511DE /* API.swift */; };
 		5576C3B22BB9C7C300E511DE /* APIKey-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5576C3B12BB9C7C300E511DE /* APIKey-Info.plist */; };
+		55B2540F2BC29ACC006ACD43 /* HTTP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B2540E2BC29ACC006ACD43 /* HTTP.swift */; };
 		55CC9E692BBB504500298EE2 /* HomeMovieViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55CC9E682BBB504500298EE2 /* HomeMovieViewModel.swift */; };
 /* End PBXBuildFile section */
 
@@ -66,8 +67,9 @@
 		5549D57D2BC0756C00B934CD /* GetResponseUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetResponseUseCase.swift; sourceTree = "<group>"; };
 		5575C70E2BBF694300CD3918 /* Media.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Media.swift; sourceTree = "<group>"; };
 		5576C3AD2BB9B13F00E511DE /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		5576C3AF2BB9C10D00E511DE /* APIKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIKey.swift; sourceTree = "<group>"; };
+		5576C3AF2BB9C10D00E511DE /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		5576C3B12BB9C7C300E511DE /* APIKey-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "APIKey-Info.plist"; sourceTree = "<group>"; };
+		55B2540E2BC29ACC006ACD43 /* HTTP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTP.swift; sourceTree = "<group>"; };
 		55CC9E682BBB504500298EE2 /* HomeMovieViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeMovieViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -96,15 +98,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		550C5F372BBA0FB2005B853B /* APIKey */ = {
-			isa = PBXGroup;
-			children = (
-				5576C3AF2BB9C10D00E511DE /* APIKey.swift */,
-				5576C3B12BB9C7C300E511DE /* APIKey-Info.plist */,
-			);
-			path = APIKey;
-			sourceTree = "<group>";
-		};
 		550C5F382BBA135E005B853B /* UseCase */ = {
 			isa = PBXGroup;
 			children = (
@@ -177,7 +170,6 @@
 				550C5F3B2BBA1378005B853B /* ViewModel */,
 				550C5F382BBA135E005B853B /* UseCase */,
 				550C5F3C2BBA1394005B853B /* Service */,
-				550C5F372BBA0FB2005B853B /* APIKey */,
 				55212BB02BA7A0C400080A71 /* PlayWatchApp.swift */,
 				55212BB22BA7A0C400080A71 /* ContentView.swift */,
 				55212BB42BA7A0C400080A71 /* Item.swift */,
@@ -217,6 +209,9 @@
 			isa = PBXGroup;
 			children = (
 				5576C3AD2BB9B13F00E511DE /* Constants.swift */,
+				55B2540E2BC29ACC006ACD43 /* HTTP.swift */,
+				5576C3AF2BB9C10D00E511DE /* API.swift */,
+				5576C3B12BB9C7C300E511DE /* APIKey-Info.plist */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -363,8 +358,9 @@
 				550C5F422BBA1448005B853B /* GeminiService.swift in Sources */,
 				550C5F402BBA142E005B853B /* OpenAIService.swift in Sources */,
 				55212BB32BA7A0C400080A71 /* ContentView.swift in Sources */,
-				5576C3B02BB9C10D00E511DE /* APIKey.swift in Sources */,
+				5576C3B02BB9C10D00E511DE /* API.swift in Sources */,
 				5549D57A2BC0633500B934CD /* FetchMediaUseCase.swift in Sources */,
+				55B2540F2BC29ACC006ACD43 /* HTTP.swift in Sources */,
 				55212BB52BA7A0C400080A71 /* Item.swift in Sources */,
 				5576C3AE2BB9B13F00E511DE /* Constants.swift in Sources */,
 				550C5F3E2BBA141A005B853B /* MovieDBService.swift in Sources */,

@@ -18,9 +18,9 @@ final class OpenAIService: OpenAIServiceProtocol {
     // MARK: - External functions (for ViewModel)
     
     func getResponse(text: String) async throws -> String {
-        let (data, response) = try await URLSession.shared.data(for: OaiAPI.request(text: text))
+        let (data, response) = try await URLSession.shared.data(for: OpenAI.request(text: text))
         guard let response = response as? HTTPURLResponse,
-              response.statusCode == HTTP.StatusCode.success else {
+              response.statusCode == HTTP.Code.success else {
             throw API.Error.invalidResponse
         }
         do {
