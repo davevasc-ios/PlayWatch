@@ -17,23 +17,25 @@ import SwiftUI
     
     // MARK: - Internal vars
     private let fetchMediaUseCase: FetchMediaProtocol
-    private let getResponseUseCase: GetResponseProtocol
-    
+    private let getOpenAIUseCase: GetOpenAIResponseProtocol
+    private let getGeminiUseCase: GetGeminiResponseProtocol
+
     // MARK: - Initialization
     init(
         //        users: [User] = [],
         //         status: ListStatus = .empty,
         //         errorMessage: String = "",
         fetchMediaUseCase: FetchMediaProtocol = FetchMediaUseCase(),
-        getResponseUseCase: GetResponseProtocol = GetResponseUseCase()) {
+        getOpenAIUseCase: GetOpenAIResponseProtocol = GetOpenAIResponseUseCase(),
+        getGeminiUseCase: GetGeminiResponseProtocol = GetGeminiResponseUseCase()) {
             
             
             //        self.users = users
             //        self.status = status
             //        self.errorMessage = errorMessage
             self.fetchMediaUseCase = fetchMediaUseCase
-            self.getResponseUseCase = getResponseUseCase
-            
+            self.getOpenAIUseCase = getOpenAIUseCase
+            self.getGeminiUseCase = getGeminiUseCase
         }
     
     
@@ -56,7 +58,7 @@ import SwiftUI
 //        self.users = []
 //        self.status = .loading
         do {
-            self.errorMessage = try await getResponseUseCase.getResponse()
+            self.errorMessage = try await getOpenAIUseCase.getResponse()
 //            self.users = userListModel.results
 //            self.status = self.users.isEmpty ? .empty : .success
         }
@@ -67,6 +69,12 @@ import SwiftUI
         }
     }
     
-
-
+    func getGeminiResponse() async throws {
+        do {
+            self.errorMessage = try await getGeminiUseCase.getResponse()
+        }
+        catch {
+        }
+    }
+    
 }

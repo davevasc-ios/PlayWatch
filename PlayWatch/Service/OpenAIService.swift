@@ -7,15 +7,11 @@
 
 import Foundation
 
-// MARK: - Protocol declaration
 protocol OpenAIServiceProtocol {
-    
     func getResponse(text: String) async throws -> String
 }
 
 final class OpenAIService: OpenAIServiceProtocol {
-    
-    // MARK: - External functions (for ViewModel)
     
     func getResponse(text: String) async throws -> String {
         let (data, response) = try await URLSession.shared.data(for: OpenAI.request(text: text))
@@ -30,6 +26,4 @@ final class OpenAIService: OpenAIServiceProtocol {
             throw API.Error.invalidData
         }
     }
-    
-    
 }

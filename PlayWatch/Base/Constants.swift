@@ -136,6 +136,40 @@ struct OpenAI: Codable {
 }
 
 
+struct Gemini: Codable {
+    
+    static let systemModel = "gemini-pro"
+    static let endpoint = "https://generativelanguage.googleapis.com/v1beta/models/\(systemModel):generateContent?key=\(API.Key.gemini)"
+    
+    struct Body: Codable {
+        let contents: Content
+    }
+    
+    struct Content: Codable {
+        let parts: Part
+    }
+    
+    struct Part: Codable {
+        let text: String
+    }
+    
+    static func request(text: String) async throws -> URLRequest {
+        guard let url = URL(string: endpoint) else {
+            throw API.Error.invalidURL
+        }
+        var request = URLRequest(url: url)
+        request.httpMethod = HTTP.Method.post
+        request.setValue(HTTP.Header.Value.applicationJson, forHTTPHeaderField: HTTP.Header.Field.contentType)
+
+        let body = Body(contents: Content(parts: Part(text: text)))
+        
+        request.httpBody = try? JSONEncoder().encode(body)
+        return request
+    }
+    
+}
+
+
 
 // MARK: - Accessibility Identifiers
 enum Identifiers {

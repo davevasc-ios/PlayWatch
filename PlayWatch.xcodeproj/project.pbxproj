@@ -20,12 +20,14 @@
 		55212BD12BA7A0C600080A71 /* PlayWatchUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55212BD02BA7A0C600080A71 /* PlayWatchUITestsLaunchTests.swift */; };
 		5549D57A2BC0633500B934CD /* FetchMediaUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5549D5792BC0633500B934CD /* FetchMediaUseCase.swift */; };
 		5549D57C2BC0738700B934CD /* OpenAIModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5549D57B2BC0738700B934CD /* OpenAIModel.swift */; };
-		5549D57E2BC0756C00B934CD /* GetResponseUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5549D57D2BC0756C00B934CD /* GetResponseUseCase.swift */; };
+		5549D57E2BC0756C00B934CD /* GetOpenAIResponseUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5549D57D2BC0756C00B934CD /* GetOpenAIResponseUseCase.swift */; };
 		5575C70F2BBF694300CD3918 /* Media.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5575C70E2BBF694300CD3918 /* Media.swift */; };
 		5576C3AE2BB9B13F00E511DE /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576C3AD2BB9B13F00E511DE /* Constants.swift */; };
 		5576C3B02BB9C10D00E511DE /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576C3AF2BB9C10D00E511DE /* API.swift */; };
 		5576C3B22BB9C7C300E511DE /* APIKey-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5576C3B12BB9C7C300E511DE /* APIKey-Info.plist */; };
 		55B2540F2BC29ACC006ACD43 /* HTTP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B2540E2BC29ACC006ACD43 /* HTTP.swift */; };
+		55B254112BC2AD47006ACD43 /* GeminiModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B254102BC2AD47006ACD43 /* GeminiModel.swift */; };
+		55B254132BC2AF6D006ACD43 /* GetGeminiResponseUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B254122BC2AF6D006ACD43 /* GetGeminiResponseUseCase.swift */; };
 		55CC9E692BBB504500298EE2 /* HomeMovieViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55CC9E682BBB504500298EE2 /* HomeMovieViewModel.swift */; };
 /* End PBXBuildFile section */
 
@@ -64,12 +66,14 @@
 		55212BD02BA7A0C600080A71 /* PlayWatchUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayWatchUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		5549D5792BC0633500B934CD /* FetchMediaUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchMediaUseCase.swift; sourceTree = "<group>"; };
 		5549D57B2BC0738700B934CD /* OpenAIModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAIModel.swift; sourceTree = "<group>"; };
-		5549D57D2BC0756C00B934CD /* GetResponseUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetResponseUseCase.swift; sourceTree = "<group>"; };
+		5549D57D2BC0756C00B934CD /* GetOpenAIResponseUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetOpenAIResponseUseCase.swift; sourceTree = "<group>"; };
 		5575C70E2BBF694300CD3918 /* Media.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Media.swift; sourceTree = "<group>"; };
 		5576C3AD2BB9B13F00E511DE /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		5576C3AF2BB9C10D00E511DE /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		5576C3B12BB9C7C300E511DE /* APIKey-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "APIKey-Info.plist"; sourceTree = "<group>"; };
 		55B2540E2BC29ACC006ACD43 /* HTTP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTP.swift; sourceTree = "<group>"; };
+		55B254102BC2AD47006ACD43 /* GeminiModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeminiModel.swift; sourceTree = "<group>"; };
+		55B254122BC2AF6D006ACD43 /* GetGeminiResponseUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetGeminiResponseUseCase.swift; sourceTree = "<group>"; };
 		55CC9E682BBB504500298EE2 /* HomeMovieViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeMovieViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -102,7 +106,8 @@
 			isa = PBXGroup;
 			children = (
 				5549D5792BC0633500B934CD /* FetchMediaUseCase.swift */,
-				5549D57D2BC0756C00B934CD /* GetResponseUseCase.swift */,
+				5549D57D2BC0756C00B934CD /* GetOpenAIResponseUseCase.swift */,
+				55B254122BC2AF6D006ACD43 /* GetGeminiResponseUseCase.swift */,
 			);
 			path = UseCase;
 			sourceTree = "<group>";
@@ -112,6 +117,7 @@
 			children = (
 				5575C70E2BBF694300CD3918 /* Media.swift */,
 				5549D57B2BC0738700B934CD /* OpenAIModel.swift */,
+				55B254102BC2AD47006ACD43 /* GeminiModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -353,7 +359,7 @@
 			files = (
 				55CC9E692BBB504500298EE2 /* HomeMovieViewModel.swift in Sources */,
 				5549D57C2BC0738700B934CD /* OpenAIModel.swift in Sources */,
-				5549D57E2BC0756C00B934CD /* GetResponseUseCase.swift in Sources */,
+				5549D57E2BC0756C00B934CD /* GetOpenAIResponseUseCase.swift in Sources */,
 				5575C70F2BBF694300CD3918 /* Media.swift in Sources */,
 				550C5F422BBA1448005B853B /* GeminiService.swift in Sources */,
 				550C5F402BBA142E005B853B /* OpenAIService.swift in Sources */,
@@ -361,9 +367,11 @@
 				5576C3B02BB9C10D00E511DE /* API.swift in Sources */,
 				5549D57A2BC0633500B934CD /* FetchMediaUseCase.swift in Sources */,
 				55B2540F2BC29ACC006ACD43 /* HTTP.swift in Sources */,
+				55B254132BC2AF6D006ACD43 /* GetGeminiResponseUseCase.swift in Sources */,
 				55212BB52BA7A0C400080A71 /* Item.swift in Sources */,
 				5576C3AE2BB9B13F00E511DE /* Constants.swift in Sources */,
 				550C5F3E2BBA141A005B853B /* MovieDBService.swift in Sources */,
+				55B254112BC2AD47006ACD43 /* GeminiModel.swift in Sources */,
 				55212BB12BA7A0C400080A71 /* PlayWatchApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

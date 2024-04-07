@@ -1,5 +1,5 @@
 //
-//  GetResponseUseCase.swift
+//  GetOpenAIResponseUseCase.swift
 //  PlayWatch
 //
 //  Created by David on 5/4/24.
@@ -7,10 +7,10 @@
 
 import Foundation
 
-protocol GetResponseProtocol {
+protocol GetOpenAIResponseProtocol {
     func getResponse() async throws -> String
 }
-struct GetResponseUseCase: GetResponseProtocol {
+struct GetOpenAIResponseUseCase: GetOpenAIResponseProtocol {
     var service: OpenAIServiceProtocol
     
     init(service: OpenAIServiceProtocol = OpenAIService()) {
