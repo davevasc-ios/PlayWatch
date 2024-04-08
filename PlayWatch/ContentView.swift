@@ -9,153 +9,114 @@ import SwiftUI
 
 struct ContentView: View {
     
-    var viewModel = HomeMovieViewModel()
+    @Environment(\.verticalSizeClass) var verticalSizeClass
+    
+    var viewModel = HomeViewModel()
     
     @State var result = "result"
     
-    func apiGeminiCall() {
-        guard let url = URL(string: "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=\(API.Key.gemini)") else {
-            return
-        }
-        var request = URLRequest(url: url)
-        
-        request.httpMethod = "POST"
-        request.setValue ("application/json", forHTTPHeaderField: "Content-Type")
-        let body: [String: AnyHashable] = [
-            "contents": [
-                [
-                    "parts": [
-                        [
-                            "text": "que idioma es mejor? español o esukera?"
-                        ]
-                    ]
-                ]
-            ]
-        ]
-        request.httpBody = try? JSONSerialization.data(withJSONObject: body, options: [])
-        
-        let task = URLSession.shared.dataTask(with: request) { data, _, error in
-            guard let data = data, error == nil else {
-                return
-            }
-            do {
-                let response = try JSONSerialization.jsonObject(with: data, options: [])
-                print("SUCCESS: \(response)")
-            } catch {
-                print("ERROR: \(error)")
-            }
-        }
-        task.resume()
-    }
-    
-    func apiOpenAICall() {
-//        let a = MdbAPI.trendURL(type: .movie, period: .day)
-        guard let url = URL(string: "https://api.openai.com/v1/chat/completions") else {
-            return
-        }
-        var request = URLRequest(url: url)
-        
-        request.httpMethod = "POST"
-        request.setValue("Bearer \(API.Key.openAI)", forHTTPHeaderField: "Authorization")
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
-        let body: [String: Any] = [
-            "model": "gpt-3.5-turbo",
-            "messages": [
-                [
-                    "role": "system",
-                    "content": "Eres un asistente experto en contar cuentos para niños"
-                ],
-                [
-                    "role": "user",
-                    "content": "Cuéntame una hitoria en idioma Euskera"
-                ]
-            ]
-        ]
-        request.httpBody = try? JSONSerialization.data(withJSONObject: body)
-        
-        let task = URLSession.shared.dataTask(with: request) { data, _, error in
-            guard let data = data, error == nil else {
-                return
-            }
-            do {
-                let response = try JSONSerialization.jsonObject(with: data, options: [])
-                print("SUCCESS: \(response)")
-            } catch {
-                print("ERROR: \(error)")
-            }
-        }
-        task.resume()
-    }
-    
-    func apiTMDBCall() {
-
-        // solo se puede filtrar por ID
-        guard let url = URL(string: "https://api.themoviedb.org/3/movie/157336/watch/providers") else {
-            return
-        }
-        // devuelve todos los países, hay que cargar solo el país actual
-        
-        // solo se puede filtar por ID y lengua
-//        guard let url2 = URL(string: "https://api.themoviedb.org/3/movie/157336/videos?language=fr-FR") else {
-//            return
-//        }
-        // Obtener youtube key. name = 'XXX', key = 'key', site = 'Youtube', trailer, Type = `Trailer`, official = true
-        ///https://api.themoviedb.org/3/movie/\(id)/videos?language=\(es-ES)
-    ///https://www.youtube.com/watch?v=\(key)
-        /// Poster, parámetro 'poster_path`
-        /// https://image.tmdb.org/t/p/w500/ykZ7hlShkdRQaL2aiieXdEMmrLb.jpg
-        
-        var request = URLRequest(url: url)
-    
-        request.httpMethod = "GET"
-        request.setValue("Bearer \(API.Key.movieDB)", forHTTPHeaderField: "Authorization")
-        request.setValue("application/json", forHTTPHeaderField: "accept")
-                
-        let task = URLSession.shared.dataTask(with: request) { data, _, error in
-            guard let data = data, error == nil else {
-                print(error as Any)
-                return
-            }
-            do {
-                let result = try JSONSerialization.jsonObject(with: data, options: [])
-                print("RESULT: \(result)")
-            } catch {
-                print("ERROR: \(error)")
-            }
-        }
-        task.resume()
-    }
-    
-    
     var body: some View {
-        VStack {
-            Text("Start Gemini")
-            Button(action: {
-                Task {
-                    apiGeminiCall()
-//                    apiTMDBCall()
-//                    apiOpenAICall()
+        NavigationStack {
+            VStack {
+                ScrollView (.horizontal, showsIndicators: false) {
+                    LazyHStack (spacing: 4) {
+                        ForEach (viewModel.cinemaPlayingList) { item in
+                            AsyncImage(url: MovieDB.imageUrl(file: item.posterPath, size: .medium)) { phase in
+                                switch phase {
+                                case .empty:
+                                    ProgressView()
+                                case .success (let image):
+                                    image
+                                        .resizable()
+                                case .failure:
+                                    Image(systemName: "person.circle.fill")
+                                        .resizable()
+                                        .foregroundColor(.gray)
+                                @unknown default:
+                                    EmptyView()
+                                }
+                            }
+                            .aspectRatio(contentMode: .fit)
+                            .cornerRadius(10)
+                            .containerRelativeFrame(.horizontal,
+                                                    count: verticalSizeClass == .regular ? 3 : 8,
+                                                    spacing: 4)
+                            .shadow(radius: 10, y: 10)
+                            .scrollTransition(topLeading: .interactive,
+                                              bottomTrailing: .interactive,
+                                              axis: .horizontal) { effect, phase in
+                                effect
+                                    .opacity(phase.isIdentity ? 1.0 : 0.2)
+                                    .scaleEffect(x: phase.isIdentity ? 1.0 : 0.6,
+                                                 y: phase.isIdentity ? 1.0 : 0.6)
+                                    .offset(y: phase.isIdentity ? 0 : 50)
+                                    .rotation3DEffect(.degrees(abs(phase.value) * 90),
+                                                      axis: (x: 1, y: 1, z: 0), anchor: .leading)
+                            }
+                        }
+                    }
+                    .scrollTargetLayout()
                 }
-            }) {
-                  Text("texto")
-                    .foregroundColor(.white)
-                    .padding()
-                    .background(Color.blue)
-                    .cornerRadius(10)
-                }
-            Text(viewModel.errorMessage)
+                .contentMargins(4, for: .scrollContent)
+                .scrollTargetBehavior(.viewAligned)
+
+                
+                            
+                
+            }
+            .navigationTitle("Home")
         }
         .task {
-//                try? await viewModel.fetchCinema()
-//            try? await viewModel.fetchTrend()
-//            try? await viewModel.fetchMdbMedia()
-//            try? await viewModel.getOpenAIResponse()
-            try? await viewModel.getGeminiResponse()
-
+            try? await viewModel.start()
         }
     }
-    
+}
+
+
+struct CoverFlowView<Content: View, Item: RandomAccessCollection>: View where
+Item.Element: Identifiable {
+    var itemWidth: CGFloat
+    var items: Item
+    var rotation: Double
+    var content: (Item.Element) -> Content
+    var body: some View {
+        ScrollView (.horizontal, showsIndicators: false) {
+            LazyHStack(spacing: 0) {
+                ForEach (items) { item in
+                    content(item)
+                        .frame(width: itemWidth)
+                        .scrollTransition { effect, phase in
+                            effect
+                                .opacity(phase.isIdentity ? 1.0 : 0.5)
+                                .scaleEffect(x: phase.isIdentity ? 1.0 : 0.3,
+                                             y: phase.isIdentity ? 1.0 : 0.3)
+                                .offset(y: phase.isIdentity ? 0 : 50)
+                        }
+//                        .visualEffect { content, geometryProxy in
+//                            content
+//                                .rotation3DEffect(.init(degrees: rotation(geometryProxy)),
+//                                                  axis: (x: 0, y: 5, z: 0), anchor: .leading)
+//                        }
+                    
+                }
+                
+            }
+        }
+        .contentMargins(2, for: .scrollContent)
+        
+    }
+    func rotation(_ proxy: GeometryProxy) -> Double {
+        let scrollViewWidth = proxy.bounds(of: .scrollView(axis: .horizontal))?.width ?? 0
+        let midX = proxy.frame(in: .scrollView(axis: .horizontal)).midX
+        let progress = midX / scrollViewWidth
+        let cappedProgress = max(min(progress, 1), 0)
+        return cappedProgress * rotation
+    }
+}
+
+struct CoverFlowItem: Identifiable {
+    let id: UUID = .init()
+    var media: Media
 }
 
 #Preview {

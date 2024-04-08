@@ -10,15 +10,15 @@ import Foundation
 // MARK: - Protocol declaration
 protocol MovieDBServiceProtocol {
     
-    func fetchMedia(query: MovieDB.QueryData) async throws -> [Media]
+    func fetchMedia(section: MovieDB.QueryType) async throws -> [Media]
 }
 
 final class MovieDBService: MovieDBServiceProtocol {
     
     // MARK: - External functions (for ViewModel)
     
-    func fetchMedia(query: MovieDB.QueryData) async throws -> [Media] {
-        let (data, response) = try await URLSession.shared.data(for: MovieDB.request(query: query))
+    func fetchMedia(section: MovieDB.QueryType) async throws -> [Media] {
+        let (data, response) = try await URLSession.shared.data(for: MovieDB.request(section: section))
         guard let response = response as? HTTPURLResponse,
               response.statusCode == HTTP.Code.success else {
             throw API.Error.invalidResponse

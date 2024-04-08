@@ -28,16 +28,20 @@ struct Current {
 
 struct MovieDB {
     
+    static let endpoint = "https://api.themoviedb.org/3/"
+    static let imageEndpoint = "https://image.tmdb.org/t/p/"
+    static let language = "language=\(Current.language.language)-\(Current.language.region)"
+
     enum ImageSize: String {
         case large = "w500"
         case medium = "w400" // para filas de 3, ancho 400px
         case small = "w200"
     }
     
-    static let endpoint = "https://api.themoviedb.org/3/"
-    static let imageEndpoint = "https://image.tmdb.org/t/p/"
-    static let language = "language=\(Current.language.language)-\(Current.language.region)"
-
+    enum QueryType {
+        case cinemaPlaying, cinemaUpcomimg ,movieTrending ,movieNew ,tvTrending ,tvNew ,personTrending ,personPopular
+    }
+    
     struct QueryData {
         var mode: Fetch = .cinema
         var media: Media = .movie
@@ -59,8 +63,8 @@ struct MovieDB {
         case hbo = 9
     }
 
-    static func request(query: QueryData) throws -> URLRequest {
-        guard let url = URL(string: url(query: query)) else {
+    static func request(section: QueryType) throws -> URLRequest {
+        guard let url = URL(string: url(section: section)) else {
             throw API.Error.invalidURL
         }
         var request = URLRequest(url: url)
@@ -74,23 +78,42 @@ struct MovieDB {
         case trend, cinema, coming, stream, search
     }
     
-    static func url(query: QueryData) -> String {
-        switch query.mode {
-        case .trend:
-            return "\(endpoint)trending/\(query.media)/\(query.period)?\(language)"
-        case .cinema:
+    static func url(section: QueryType) -> String {
+        switch section {
+        case .cinemaPlaying:
             return "\(endpoint)movie/now_playing?\(language)&region=\(Current.language.region)"
-        case .coming:
+        case .cinemaUpcomimg:
             return "\(endpoint)movie/upcoming?\(language)&region=\(Current.language.region)"
-        case .stream:
-            return "\(endpoint)discover/\(query.media)?\(language)&sort_by=popularity.desc&watch_region=\(Current.language.region)&with_watch_providers=\(query.provider.rawValue)"
-        case .search:
-            return "\(endpoint)search/multi?query=\(query.query)&\(language)"
+        case .movieTrending:
+            return "\(endpoint)trending/movie/day?\(language)"
+        case .movieNew:
+            return "https://api.themoviedb.org/3/discover/movie?language=es-ES&primary_release_date.gte=2024-04-01&primary_release_date.lte=2024-04-15&sort_by=primary_release_date.asc&watch_region=ES&with_watch_monetization_types=flatrate"
+        case .tvTrending:
+            return "\(endpoint)trending/tv/day?\(language)"
+        case .tvNew:
+            return "https://api.themoviedb.org/3/discover/tv?first_air_date.gte=2024-04-01&first_air_date.lte=2024-04-15&language=es-ES&sort_by=first_air_date.asc&watch_region=ES&with_watch_monetization_types=flatrate"
+        case .personTrending:
+            return "\(endpoint)trending/person/day?\(language)"
+        case .personPopular:
+            return "\(endpoint)person/popular?\(language)"
+//        case .trend:
+//            return "\(endpoint)trending/\(query.media)/\(query.period)?\(language)"
+//        case .cinema:
+//            return "\(endpoint)movie/now_playing?\(language)&region=\(Current.language.region)"
+//        case .coming:
+//            return "\(endpoint)movie/upcoming?\(language)&region=\(Current.language.region)"
+//        case .stream:
+//            return "\(endpoint)discover/\(query.media)?\(language)&sort_by=popularity.desc&watch_region=\(Current.language.region)&with_watch_providers=\(query.provider.rawValue)"
+//        case .search:
+//            return "\(endpoint)search/multi?query=\(query.query)&\(language)"
         }
     }
     
-    static func imageUrl(file: String, size: ImageSize) -> String {
-        "\(imageEndpoint)\(size)\(file)"
+    static func imageUrl(file: String?, size: ImageSize) -> URL? {
+        guard let url = URL(string: "\(imageEndpoint)\(size.rawValue)\(file ?? "")") else {
+            return nil
+        }
+        return url
     }
 
     

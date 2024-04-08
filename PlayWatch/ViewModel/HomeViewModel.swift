@@ -9,8 +9,17 @@ import Foundation
 import Observation
 import SwiftUI
 
-@Observable final class HomeMovieViewModel {
+@Observable final class HomeViewModel {
     
+    var cinemaPlayingList: [Media] = []
+    var cinemaUpcomingList: [Media] = []
+    var movieTrendingList: [Media] = []
+    var movieNewList: [Media] = []
+    var tvTrendingList: [Media] = []
+    var tvNewList: [Media] = []
+    var personTrendingList: [Media] = []
+    var personPopularList: [Media] = []
+
 //    var users: [User] = []
 //    var status: ListStatus = .empty
     var errorMessage = "no working"
@@ -39,20 +48,28 @@ import SwiftUI
         }
     
     
-    func fetchMdbMedia() async throws {
-//        self.users = []
-//        self.status = .loading
+    func start() async throws {
         do {
-            self.errorMessage = try await fetchMediaUseCase.fetchMedia()
-//            self.users = userListModel.results
-//            self.status = self.users.isEmpty ? .empty : .success
-        }
-        catch {
-//            self.status = .error
-//            self.errorMessage = error.localizedDescription
-//            throw error
+            cinemaPlayingList = try await fetchMediaUseCase.fetchMedia(section: .cinemaPlaying)
+        } catch {
+            print(error)
         }
     }
+    
+//    func fetchMdbMedia() async throws {
+//       self.users = []
+//      self.status = .loading
+//        do {
+//            self.errorMessage = try await fetchMediaUseCase.fetchMedia(section: .cinemaPlaying)
+//           self.users = userListModel.results
+//            self.status = self.users.isEmpty ? .empty : .success
+//        }
+//        catch {
+//            self.status = .error
+//          self.errorMessage = error.localizedDescription
+//           throw error
+//        }
+//    }
     
     func getOpenAIResponse() async throws {
 //        self.users = []

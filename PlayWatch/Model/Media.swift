@@ -11,7 +11,7 @@ struct MediaResults: Codable {
   let results: [Media]?
 }
 
-struct Media: Codable {
+struct Media: Codable, Identifiable {
     let id: Int
     let mediaType: MediaType?
     let posterPath: String?
