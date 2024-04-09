@@ -9,62 +9,24 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @Environment(\.verticalSizeClass) var verticalSizeClass
-    
     var viewModel = HomeViewModel()
-    
-    @State var result = "result"
     
     var body: some View {
         NavigationStack {
-            VStack {
-                ScrollView (.horizontal, showsIndicators: false) {
-                    LazyHStack (spacing: 4) {
-                        ForEach (viewModel.cinemaPlayingList) { item in
-                            AsyncImage(url: MovieDB.imageUrl(file: item.posterPath, size: .medium)) { phase in
-                                switch phase {
-                                case .empty:
-                                    ProgressView()
-                                case .success (let image):
-                                    image
-                                        .resizable()
-                                case .failure:
-                                    Image(systemName: "person.circle.fill")
-                                        .resizable()
-                                        .foregroundColor(.gray)
-                                @unknown default:
-                                    EmptyView()
-                                }
-                            }
-                            .aspectRatio(contentMode: .fit)
-                            .cornerRadius(10)
-                            .containerRelativeFrame(.horizontal,
-                                                    count: verticalSizeClass == .regular ? 3 : 8,
-                                                    spacing: 4)
-                            .shadow(radius: 10, y: 10)
-                            .scrollTransition(topLeading: .interactive,
-                                              bottomTrailing: .interactive,
-                                              axis: .horizontal) { effect, phase in
-                                effect
-                                    .opacity(phase.isIdentity ? 1.0 : 0.2)
-                                    .scaleEffect(x: phase.isIdentity ? 1.0 : 0.6,
-                                                 y: phase.isIdentity ? 1.0 : 0.6)
-                                    .offset(y: phase.isIdentity ? 0 : 50)
-                                    .rotation3DEffect(.degrees(abs(phase.value) * 90),
-                                                      axis: (x: 1, y: 1, z: 0), anchor: .leading)
-                            }
-                        }
-                    }
-                    .scrollTargetLayout()
+            ScrollView {
+                VStack (spacing: 0) {
+                    Text("En cine ahora")
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .font(.custom("Futura", size: 24))
+                        .fontWeight(.heavy)
+                        .padding(EdgeInsets(top: 0, leading: 4, bottom: 0, trailing: 0))
+//                        .background(.cyan)
+                    MediaFlowView(items: viewModel.cinemaPlayingList)
+//                        .background(.yellow)
+                    MediaFlowView(items: viewModel.cinemaUpcomingList)
                 }
-                .contentMargins(4, for: .scrollContent)
-                .scrollTargetBehavior(.viewAligned)
-
-                
-                            
-                
+                .navigationTitle("Home")
             }
-            .navigationTitle("Home")
         }
         .task {
             try? await viewModel.start()
@@ -73,51 +35,70 @@ struct ContentView: View {
 }
 
 
-struct CoverFlowView<Content: View, Item: RandomAccessCollection>: View where
-Item.Element: Identifiable {
-    var itemWidth: CGFloat
-    var items: Item
-    var rotation: Double
-    var content: (Item.Element) -> Content
+struct MediaFlowView: View {
+    
+    @Environment(\.verticalSizeClass) var verticalSizeClass
+    
+    let items: [Media]
     var body: some View {
         ScrollView (.horizontal, showsIndicators: false) {
-            LazyHStack(spacing: 0) {
+            LazyHStack (spacing: 4) {
                 ForEach (items) { item in
-                    content(item)
-                        .frame(width: itemWidth)
-                        .scrollTransition { effect, phase in
-                            effect
-                                .opacity(phase.isIdentity ? 1.0 : 0.5)
-                                .scaleEffect(x: phase.isIdentity ? 1.0 : 0.3,
-                                             y: phase.isIdentity ? 1.0 : 0.3)
-                                .offset(y: phase.isIdentity ? 0 : 50)
-                        }
-//                        .visualEffect { content, geometryProxy in
-//                            content
-//                                .rotation3DEffect(.init(degrees: rotation(geometryProxy)),
-//                                                  axis: (x: 0, y: 5, z: 0), anchor: .leading)
-//                        }
+                    MediaPosterView(item: item)
+                    .containerRelativeFrame(.horizontal,
+                                            count: verticalSizeClass == .regular ? 3 : 8,
+                                            spacing: 4)
                     
+                    .scrollTransition(topLeading: .interactive,
+                                      bottomTrailing: .interactive,
+                                      axis: .horizontal) { effect, phase in
+                        effect
+                            .opacity(phase.isIdentity ? 1.0 : 0.2)
+                            .scaleEffect(x: phase.isIdentity ? 1.0 : 0.6,
+                                         y: phase.isIdentity ? 1.0 : 0.6)
+                            .offset(y: phase.isIdentity ? 0 : 50)
+                            .rotation3DEffect(.degrees(abs(phase.value - 0.1) * 40),
+                                              axis: (x: 0.2, y: 1, z: 0), anchor: .leading)
+                    }
                 }
-                
             }
+            .scrollTargetLayout()
         }
-        .contentMargins(2, for: .scrollContent)
-        
-    }
-    func rotation(_ proxy: GeometryProxy) -> Double {
-        let scrollViewWidth = proxy.bounds(of: .scrollView(axis: .horizontal))?.width ?? 0
-        let midX = proxy.frame(in: .scrollView(axis: .horizontal)).midX
-        let progress = midX / scrollViewWidth
-        let cappedProgress = max(min(progress, 1), 0)
-        return cappedProgress * rotation
+        .contentMargins(4, for: .scrollContent)
+        .scrollTargetBehavior(.viewAligned)
     }
 }
 
-struct CoverFlowItem: Identifiable {
-    let id: UUID = .init()
-    var media: Media
+
+struct MediaPosterView: View {
+    let item: Media
+    var body: some View {
+        AsyncImage(url: MovieDB.imageUrl(file: item.posterPath, size: .medium)) { phase in
+            switch phase {
+            case .empty:
+                ProgressView()
+            case .success (let image):
+                image
+                    .resizable()
+            case .failure:
+                Image(systemName: "film")
+                    .resizable()
+                    .foregroundColor(.gray)
+            @unknown default:
+                EmptyView()
+            }
+        }
+        .aspectRatio(2/3, contentMode: .fit)
+        .cornerRadius(10)
+        .shadow(radius: 4, y: 4)
+        .padding(EdgeInsets(top: 0, leading: 0, bottom: 6, trailing: 0))
+    }
 }
+
+
+
+
+
 
 #Preview {
     ContentView()

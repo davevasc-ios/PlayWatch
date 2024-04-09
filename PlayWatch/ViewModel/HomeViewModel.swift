@@ -51,6 +51,8 @@ import SwiftUI
     func start() async throws {
         do {
             cinemaPlayingList = try await fetchMediaUseCase.fetchMedia(section: .cinemaPlaying)
+            cinemaUpcomingList = try await fetchMediaUseCase.fetchMedia(section: .cinemaUpcomimg)
+//            cinemaPlayingList[1].posterPath = "miercoles"
         } catch {
             print(error)
         }
