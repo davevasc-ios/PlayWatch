@@ -38,8 +38,21 @@ struct MovieDB {
         case small = "w200"
     }
     
-    enum QueryType {
+    enum QueryType: CaseIterable {
         case cinemaPlaying, cinemaUpcomimg ,movieTrending ,movieNew ,tvTrending ,tvNew ,personTrending ,personPopular
+        
+        var title: String {
+            switch self {
+            case .cinemaPlaying: "Ahora en cines"
+            case .cinemaUpcomimg: "Próximamente en cines"
+            case .movieTrending: "Películas Destacadas"
+            case .movieNew: "Películas Nuevas"
+            case .tvTrending: "Series Destacadas"
+            case .tvNew: "Series Nuevas"
+            case .personTrending: "Personas Destacadas"
+            case .personPopular: "Personas Populares"
+            }
+        }
     }
     
     struct QueryData {
@@ -96,16 +109,7 @@ struct MovieDB {
             return "\(endpoint)trending/person/day?\(language)"
         case .personPopular:
             return "\(endpoint)person/popular?\(language)"
-//        case .trend:
-//            return "\(endpoint)trending/\(query.media)/\(query.period)?\(language)"
-//        case .cinema:
-//            return "\(endpoint)movie/now_playing?\(language)&region=\(Current.language.region)"
-//        case .coming:
-//            return "\(endpoint)movie/upcoming?\(language)&region=\(Current.language.region)"
-//        case .stream:
-//            return "\(endpoint)discover/\(query.media)?\(language)&sort_by=popularity.desc&watch_region=\(Current.language.region)&with_watch_providers=\(query.provider.rawValue)"
-//        case .search:
-//            return "\(endpoint)search/multi?query=\(query.query)&\(language)"
+
         }
     }
     

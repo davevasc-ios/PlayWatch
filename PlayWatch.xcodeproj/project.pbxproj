@@ -29,6 +29,7 @@
 		55B254112BC2AD47006ACD43 /* GeminiModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B254102BC2AD47006ACD43 /* GeminiModel.swift */; };
 		55B254132BC2AF6D006ACD43 /* GetGeminiResponseUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B254122BC2AF6D006ACD43 /* GetGeminiResponseUseCase.swift */; };
 		55CC9E692BBB504500298EE2 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55CC9E682BBB504500298EE2 /* HomeViewModel.swift */; };
+		55E4CC802BCA9A050048EF56 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E4CC7F2BCA9A050048EF56 /* StringExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,6 +76,7 @@
 		55B254102BC2AD47006ACD43 /* GeminiModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeminiModel.swift; sourceTree = "<group>"; };
 		55B254122BC2AF6D006ACD43 /* GetGeminiResponseUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetGeminiResponseUseCase.swift; sourceTree = "<group>"; };
 		55CC9E682BBB504500298EE2 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		55E4CC7F2BCA9A050048EF56 /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -218,6 +220,7 @@
 				55B2540E2BC29ACC006ACD43 /* HTTP.swift */,
 				5576C3AF2BB9C10D00E511DE /* API.swift */,
 				5576C3B12BB9C7C300E511DE /* APIKey-Info.plist */,
+				55E4CC7F2BCA9A050048EF56 /* StringExtension.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -365,6 +368,7 @@
 				550C5F402BBA142E005B853B /* OpenAIService.swift in Sources */,
 				55212BB32BA7A0C400080A71 /* ContentView.swift in Sources */,
 				5576C3B02BB9C10D00E511DE /* API.swift in Sources */,
+				55E4CC802BCA9A050048EF56 /* StringExtension.swift in Sources */,
 				5549D57A2BC0633500B934CD /* FetchMediaUseCase.swift in Sources */,
 				55B2540F2BC29ACC006ACD43 /* HTTP.swift in Sources */,
 				55B254132BC2AF6D006ACD43 /* GetGeminiResponseUseCase.swift in Sources */,

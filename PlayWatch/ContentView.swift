@@ -14,16 +14,10 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack (spacing: 0) {
-                    Text("En cine ahora")
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .font(.custom("Futura", size: 24))
-                        .fontWeight(.heavy)
-                        .padding(EdgeInsets(top: 0, leading: 4, bottom: 0, trailing: 0))
-//                        .background(.cyan)
-                    MediaFlowView(items: viewModel.cinemaPlayingList)
-//                        .background(.yellow)
-                    MediaFlowView(items: viewModel.cinemaUpcomingList)
+                LazyVStack  {
+                    ForEach (viewModel.mediaSectionsList) { section in
+                        MediaSectionView(title: section.title, items: section.items)
+                    }
                 }
                 .navigationTitle("Home")
             }
@@ -34,6 +28,27 @@ struct ContentView: View {
     }
 }
 
+struct MediaSectionView: View {
+    let title: String
+    let items: [Media]
+    var body: some View {
+        VStack (spacing: 0) {
+            MediaTitleView(title: title)
+            MediaFlowView(items: items)
+        }
+    }
+}
+
+struct MediaTitleView: View {
+    let title: String
+    var body: some View {
+        Text(title)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .font(.custom("Futura", size: 24))
+            .fontWeight(.heavy)
+            .padding(EdgeInsets(top: 0, leading: 4, bottom: 0, trailing: 0))
+    }
+}
 
 struct MediaFlowView: View {
     
@@ -73,7 +88,7 @@ struct MediaFlowView: View {
 struct MediaPosterView: View {
     let item: Media
     var body: some View {
-        AsyncImage(url: MovieDB.imageUrl(file: item.posterPath, size: .medium)) { phase in
+        AsyncImage(url: MovieDB.imageUrl(file: item.mediaImage, size: .medium)) { phase in
             switch phase {
             case .empty:
                 ProgressView()

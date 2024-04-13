@@ -12,6 +12,8 @@ struct MediaResults: Codable {
 }
 
 struct Media: Codable, Identifiable {
+    
+    // MARK: - API variables
     let id: Int
     let mediaType: MediaType?
     let posterPath: String?
@@ -29,6 +31,26 @@ struct Media: Codable, Identifiable {
     let voteCount: Int?
     let KnownForDepartment: String? // person
     let knownFor: [Media]? // person
+    
+    // MARK: - Custom variables
+    var mediaImage: String {
+        return self.posterPath.isValue ? self.posterPath.getValue : (self.profilePath.isValue ? self.profilePath.getValue : "")
+    }
+    var mediaName: String {
+        return self.title.isValue ? self.title.getValue : (self.name.isValue ? self.name.getValue : "")
+    }
+    var mediaOriginalName: String {
+        return self.originalTitle.isValue ? self.originalTitle.getValue : (self.originalName.isValue ? self.originalName.getValue : "")
+    }
+    var mediaReleaseDate: Date? {
+        if let date = self.releaseDate, date != "" {
+            return ISO8601DateFormatter().date(from: date)
+        } else if let date = self.firstAirDate, date != "" {
+            return ISO8601DateFormatter().date(from: date)
+        } else {
+            return nil
+        }
+    }
 }
 
 enum MediaType: String, Codable {
@@ -37,4 +59,8 @@ enum MediaType: String, Codable {
     case person = "person"
 }
 
-
+struct MediaSection: Identifiable {
+    var id = UUID()
+    let title: String
+    let items: [Media]
+}
