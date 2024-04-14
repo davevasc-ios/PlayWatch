@@ -30,6 +30,7 @@
 		55B254132BC2AF6D006ACD43 /* GetGeminiResponseUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B254122BC2AF6D006ACD43 /* GetGeminiResponseUseCase.swift */; };
 		55CC9E692BBB504500298EE2 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55CC9E682BBB504500298EE2 /* HomeViewModel.swift */; };
 		55E4CC802BCA9A050048EF56 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E4CC7F2BCA9A050048EF56 /* StringExtension.swift */; };
+		55E4CC822BCADB2C0048EF56 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E4CC812BCADB2C0048EF56 /* ColorExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,6 +78,7 @@
 		55B254122BC2AF6D006ACD43 /* GetGeminiResponseUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetGeminiResponseUseCase.swift; sourceTree = "<group>"; };
 		55CC9E682BBB504500298EE2 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		55E4CC7F2BCA9A050048EF56 /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
+		55E4CC812BCADB2C0048EF56 /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -221,6 +223,7 @@
 				5576C3AF2BB9C10D00E511DE /* API.swift */,
 				5576C3B12BB9C7C300E511DE /* APIKey-Info.plist */,
 				55E4CC7F2BCA9A050048EF56 /* StringExtension.swift */,
+				55E4CC812BCADB2C0048EF56 /* ColorExtension.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -363,6 +366,7 @@
 				55CC9E692BBB504500298EE2 /* HomeViewModel.swift in Sources */,
 				5549D57C2BC0738700B934CD /* OpenAIModel.swift in Sources */,
 				5549D57E2BC0756C00B934CD /* GetOpenAIResponseUseCase.swift in Sources */,
+				55E4CC822BCADB2C0048EF56 /* ColorExtension.swift in Sources */,
 				5575C70F2BBF694300CD3918 /* Media.swift in Sources */,
 				550C5F422BBA1448005B853B /* GeminiService.swift in Sources */,
 				550C5F402BBA142E005B853B /* OpenAIService.swift in Sources */,

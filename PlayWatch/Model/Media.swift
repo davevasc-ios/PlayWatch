@@ -13,9 +13,9 @@ struct MediaResults: Codable {
 
 struct Media: Codable, Identifiable {
     
-    // MARK: - API variables
+    // MARK: - API Variables
     let id: Int
-    let mediaType: MediaType?
+    let mediaType: String?
     let posterPath: String?
     let profilePath: String? // person
     let originalLanguage: String?
@@ -29,27 +29,33 @@ struct Media: Codable, Identifiable {
     let firstAirDate: String? // tv
     let voteAverage: Double?
     let voteCount: Int?
-    let KnownForDepartment: String? // person
+    let knownForDepartment: String? // person
     let knownFor: [Media]? // person
     
-    // MARK: - Custom variables
+    // MARK: - Custom Variables
+    var media: MediaType {
+        return MediaType(rawValue: self.mediaType ?? "") ??
+        (self.firstAirDate.isValue ? .tv : (self.knownForDepartment.isValue ? .person : .movie))
+    }
     var mediaImage: String {
-        return self.posterPath.isValue ? self.posterPath.getValue : (self.profilePath.isValue ? self.profilePath.getValue : "")
+        return self.posterPath.isValue ?
+        self.posterPath.getValue :
+        (self.profilePath.isValue ? self.profilePath.getValue : "")
     }
     var mediaName: String {
-        return self.title.isValue ? self.title.getValue : (self.name.isValue ? self.name.getValue : "")
+        return self.title.isValue ?
+        self.title.getValue :
+        (self.name.isValue ? self.name.getValue : "")
     }
     var mediaOriginalName: String {
-        return self.originalTitle.isValue ? self.originalTitle.getValue : (self.originalName.isValue ? self.originalName.getValue : "")
+        return self.originalTitle.isValue ?
+        self.originalTitle.getValue :
+        (self.originalName.isValue ? self.originalName.getValue : "")
     }
     var mediaReleaseDate: Date? {
-        if let date = self.releaseDate, date != "" {
-            return ISO8601DateFormatter().date(from: date)
-        } else if let date = self.firstAirDate, date != "" {
-            return ISO8601DateFormatter().date(from: date)
-        } else {
-            return nil
-        }
+        return self.releaseDate.isValue ?
+        MovieDB.getDate(date: self.releaseDate.getValue) :
+        (self.firstAirDate.isValue ? MovieDB.getDate(date: self.firstAirDate.getValue) : nil)
     }
 }
 

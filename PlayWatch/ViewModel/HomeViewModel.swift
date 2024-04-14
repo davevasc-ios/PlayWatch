@@ -11,7 +11,8 @@ import SwiftUI
 
 @Observable final class HomeViewModel {
 
-    var mediaSectionsList: [MediaSection] = []
+    private(set) var mediaSectionsList: [MediaSection] = []
+    private(set) var isLoading = false
     
 //    var users: [User] = []
 //    var status: ListStatus = .empty
@@ -40,10 +41,13 @@ import SwiftUI
             self.getGeminiUseCase = getGeminiUseCase
         }
     
-    
+    @MainActor
     func start() async throws {
+        self.isLoading = true
+        defer { self.isLoading = false
+        }
         do {
-            for section in MovieDB.QueryType.allCases {
+            for section in MovieDB.Section.allCases {
                 let mediaSection = MediaSection(title: section.title,
                                                 items: try await fetchMediaUseCase.fetchMedia(section: section))
                 mediaSectionsList.append(mediaSection)

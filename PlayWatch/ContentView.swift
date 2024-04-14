@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     
-    var viewModel = HomeViewModel()
+    @State private var viewModel = HomeViewModel()
     
     var body: some View {
         NavigationStack {
@@ -20,6 +20,7 @@ struct ContentView: View {
                     }
                 }
                 .navigationTitle("Home")
+                .navigationBarTitleDisplayMode(.inline)
             }
         }
         .task {
@@ -84,7 +85,6 @@ struct MediaFlowView: View {
     }
 }
 
-
 struct MediaPosterView: View {
     let item: Media
     var body: some View {
@@ -93,12 +93,15 @@ struct MediaPosterView: View {
             case .empty:
                 ProgressView()
             case .success (let image):
-                image
-                    .resizable()
+                ZStack (alignment: .bottom) {
+                    image
+                        .resizable()
+                    if item.media == .person {
+                        PersonNameView(text: item.mediaName)
+                    }
+                }
             case .failure:
-                Image(systemName: "film")
-                    .resizable()
-                    .foregroundColor(.gray)
+                EmptyPosterView(text: item.mediaName)
             @unknown default:
                 EmptyView()
             }
@@ -110,10 +113,47 @@ struct MediaPosterView: View {
     }
 }
 
+struct PersonNameView: View {
+    let text: String
+    var body: some View {
+        Text(text)
+            .font(.title3)
+            .foregroundColor(.white)
+            .padding(EdgeInsets(top: 4, leading: 4, bottom: 4, trailing: 4))
+            .background(Color.random
+                .gradient
+                .opacity(0.5))
+            .cornerRadius(10)
+            .padding(EdgeInsets(top: 4, leading: 4, bottom: 8, trailing: 4))
+    }
+}
+        
+struct EmptyPosterView: View {
+    let text: String
+    var body: some View {
+        ZStack (alignment: .bottom) {
+            Rectangle()
+                .foregroundStyle(Color.systemRandom.gradient)
+                .opacity(0.5)
+            TitleNameView(text: text)
+        }
+    }
+}
 
-
-
-
+struct TitleNameView: View {
+    let text: String
+    var body: some View {
+        Text(text)
+            .font(.title2)
+            .foregroundColor(.white)
+            .padding(EdgeInsets(top: 4, leading: 4, bottom: 4, trailing: 4))
+            .background(Color.random
+                .gradient
+                .opacity(0.5))
+            .cornerRadius(10)
+            .padding(EdgeInsets(top: 4, leading: 4, bottom: 8, trailing: 4))
+    }
+}
 
 #Preview {
     ContentView()

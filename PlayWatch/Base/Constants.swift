@@ -31,14 +31,8 @@ struct MovieDB {
     static let endpoint = "https://api.themoviedb.org/3/"
     static let imageEndpoint = "https://image.tmdb.org/t/p/"
     static let language = "language=\(Current.language.language)-\(Current.language.region)"
-
-    enum ImageSize: String {
-        case large = "w500"
-        case medium = "w400" // para filas de 3, ancho 400px
-        case small = "w200"
-    }
     
-    enum QueryType: CaseIterable {
+    enum Section: CaseIterable {
         case cinemaPlaying, cinemaUpcomimg ,movieTrending ,movieNew ,tvTrending ,tvNew ,personTrending ,personPopular
         
         var title: String {
@@ -55,29 +49,29 @@ struct MovieDB {
         }
     }
     
-    struct QueryData {
-        var mode: Fetch = .cinema
-        var media: Media = .movie
-        var period: Period = .week
-        var provider: Provider = .netflix
-        var query: String = ""
-    }
-    
-    enum Media {
-        case movie, tv, person
-    }
+//    struct QueryData {
+//        var mode: Fetch = .cinema
+//        var media: Media = .movie
+//        var period: Period = .week
+//        var provider: Provider = .netflix
+//        var query: String = ""
+//    }
+//    
+//    enum Media {
+//        case movie, tv, person
+//    }
 
-    enum Period {
-        case day, week
-    }
+//    enum Period {
+//        case day, week
+//    }
     
-    enum Provider: Int {
-        case netflix = 8
-        case hbo = 9
-    }
+//    enum Provider: Int {
+//        case netflix = 8
+//        case hbo = 9
+//    }
 
-    static func request(section: QueryType) throws -> URLRequest {
-        guard let url = URL(string: url(section: section)) else {
+    static func request(section: Section) throws -> URLRequest {
+        guard let url = URL(string: mediaUrl(section: section)) else {
             throw API.Error.invalidURL
         }
         var request = URLRequest(url: url)
@@ -87,11 +81,11 @@ struct MovieDB {
         return request
     }
     
-    enum Fetch {
-        case trend, cinema, coming, stream, search
-    }
+//    enum Fetch {
+//        case trend, cinema, coming, stream, search
+//    }
     
-    static func url(section: QueryType) -> String {
+    static func mediaUrl(section: Section) -> String {
         switch section {
         case .cinemaPlaying:
             return "\(endpoint)movie/now_playing?\(language)&region=\(Current.language.region)"
@@ -113,14 +107,22 @@ struct MovieDB {
         }
     }
     
+    enum ImageSize: String {
+        case large = "w500"
+        case medium = "w400" // para filas de 3, ancho 400px
+        case small = "w200"
+    }
+    
     static func imageUrl(file: String?, size: ImageSize) -> URL? {
         guard let url = URL(string: "\(imageEndpoint)\(size.rawValue)\(file ?? "")") else {
             return nil
         }
         return url
     }
-
     
+    static func getDate(date: String) -> Date? {
+        ISO8601DateFormatter().date(from: date)
+    }
 }
 
 struct OpenAI: Codable {
@@ -129,18 +131,18 @@ struct OpenAI: Codable {
     static let systemContent = "Eres un asistente experto en contar cuentos para niños"
     static let systemModel = "gpt-3.5-turbo"
     
-    enum Role: String, Codable {
-        case system, user
+    struct Body: Codable {
+        var model: String = systemModel
+        let messages: [Message]
     }
     
     struct Message: Codable {
         let role: Role
         let content: String
     }
-
-    struct Body: Codable {
-        var model: String = systemModel
-        let messages: [Message]
+    
+    enum Role: String, Codable {
+        case system, user
     }
     
     static func request(text: String) async throws -> URLRequest {
