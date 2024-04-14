@@ -33,7 +33,7 @@ struct MediaSectionView: View {
     let title: String
     let items: [Media]
     var body: some View {
-        VStack (spacing: 0) {
+        LazyVStack (spacing: 0) {
             MediaTitleView(title: title)
             MediaFlowView(items: items)
         }
@@ -44,10 +44,10 @@ struct MediaTitleView: View {
     let title: String
     var body: some View {
         Text(title)
+            .font(.title3)
+            .fontWeight(.bold)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .font(.custom("Futura", size: 24))
-            .fontWeight(.heavy)
-            .padding(EdgeInsets(top: 0, leading: 4, bottom: 0, trailing: 0))
+            .padding(EdgeInsets(top: 0, leading: 4, bottom: 0, trailing: 4))
     }
 }
 
