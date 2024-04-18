@@ -22,6 +22,7 @@ struct TabBarView: View {
             TabView(selection: $currentTab) {
                 HomeView()
                     .tag(Tab.home)
+//                    .padding(.bottom, 25)
                 Text("Game")
                     .tag(Tab.game)
                 Text("Favorites")
@@ -42,14 +43,15 @@ struct TabBarView: View {
             }
         }
         .padding(.horizontal, 15)
-        .padding(.vertical, 10)
+        .padding(.vertical, 0)
         .background(content: {
+            
             TabShape(midpoint: tabShapePosition.x)
                 .fill(.white)
                 .ignoresSafeArea()
-                .shadow(color: tint.opacity(0.2), radius: 5, x: 0, y: -5)
+                .shadow(color: tint.opacity(0.6), radius: 5, x: 0, y: -5)
                 .blur(radius: 2)
-                .padding(.top, 25)
+//                .padding(.top, 25)
         })
         .animation(.interactiveSpring(response: 0.6, dampingFraction: 0.7, blendDuration: 0.7), value: currentTab)
     }
@@ -92,7 +94,10 @@ struct TabBarItem: View {
             
         })
         .onTapGesture {
-            currentTab = tab
+            withAnimation(.easeInOut) {
+                currentTab = tab
+            }
+            
             withAnimation(.interactiveSpring(response: 0.6, dampingFraction: 0.7, blendDuration: 0.7)) {
                 position.x = tabPosition.x
             }

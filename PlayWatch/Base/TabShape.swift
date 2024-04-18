@@ -19,19 +19,28 @@ struct TabShape: Shape {
     
     func path(in rect: CGRect) -> Path {
         return Path { path in
-            path.addPath(Rectangle().path(in: rect))
-            path.move(to: .init(x: midpoint - 60, y: 0))
+            let height: Double = 12.0
+            let horizontal: Double = 55
+            let rad: Double = height / 2
             
-            let to = CGPoint(x: midpoint, y: -25)
-            let control1 = CGPoint(x: midpoint - 25, y: 0)
-            let control2 = CGPoint(x: midpoint - 25, y: -25)
+            path.addPath(Rectangle().path(in: rect))
+            
+            path.move(to: .init(x: midpoint - horizontal, y: 0))
+            
+            let to = CGPoint(x: midpoint, y: -height)
+            let control1 = CGPoint(x: midpoint - height - rad, y: 0)
+            let control2 = CGPoint(x: midpoint - height - rad, y: -height)
             path.addCurve(to: to, control1: control1, control2: control2)
             
-            let to1 = CGPoint(x: midpoint + 60, y: 0)
-            let control3 = CGPoint(x: midpoint + 25, y: -25)
-            let control4 = CGPoint(x: midpoint + 25, y: 0)
+            let to1 = CGPoint(x: midpoint + horizontal, y: 0)
+            let control3 = CGPoint(x: midpoint + height + rad, y: -height)
+            let control4 = CGPoint(x: midpoint + height + rad, y: 0)
             path.addCurve(to: to1, control1: control3, control2: control4)
             
         }
     }
+}
+
+#Preview {
+    TabBarView()
 }
