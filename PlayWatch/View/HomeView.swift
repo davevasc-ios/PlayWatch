@@ -14,7 +14,7 @@ struct HomeView: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                LazyVStack  {
+                LazyVStack {
                     ForEach (viewModel.mediaSectionsList) { section in
                         MediaSectionView(title: section.title, items: section.items)
                     }
@@ -22,6 +22,9 @@ struct HomeView: View {
                 .navigationTitle("Home")
                 .navigationBarTitleDisplayMode(.inline)
             }
+        }
+        .refreshable {
+            try? await viewModel.start()
         }
         .task {
             try? await viewModel.start()
@@ -60,28 +63,55 @@ struct MediaFlowView: View {
         ScrollView (.horizontal, showsIndicators: false) {
             LazyHStack (spacing: 4) {
                 ForEach (items) { item in
-                    MediaPosterView(item: item)
-                    .containerRelativeFrame(.horizontal,
-                                            count: verticalSizeClass == .regular ? 3 : 8,
-                                            spacing: 4)
-                    
-                    .scrollTransition(topLeading: .interactive,
-                                      bottomTrailing: .interactive,
-                                      axis: .horizontal) { effect, phase in
-                        effect
-                            .opacity(phase.isIdentity ? 1.0 : 0.2)
-                            .scaleEffect(x: phase.isIdentity ? 1.0 : 0.6,
-                                         y: phase.isIdentity ? 1.0 : 0.6)
-                            .offset(y: phase.isIdentity ? 0 : 50)
-                            .rotation3DEffect(.degrees(abs(phase.value - 0.1) * 40),
-                                              axis: (x: 0.2, y: 1, z: 0), anchor: .leading)
+                    NavigationLink(destination: MediaDetailView(item: item)) {
+                        MediaPosterView(item: item)
+                            .containerRelativeFrame(.horizontal,
+                                                    count: verticalSizeClass == .regular ? 3 : 8,
+                                                    spacing: 4)
+                        
+                            .scrollTransition(topLeading: .interactive,
+                                              bottomTrailing: .interactive,
+                                              axis: .horizontal) { effect, phase in
+                                effect
+                                    .opacity(phase.isIdentity ? 1.0 : 0.2)
+                                    .scaleEffect(x: phase.isIdentity ? 1.0 : 0.6,
+                                                 y: phase.isIdentity ? 1.0 : 0.6)
+                                    .offset(y: phase.isIdentity ? 0 : 50)
+                                    .rotation3DEffect(.degrees(abs(phase.value - 0.1) * 40),
+                                                      axis: (x: 0.2, y: 1, z: 0), anchor: .leading)
+                            }
                     }
+                    
                 }
             }
             .scrollTargetLayout()
         }
         .contentMargins(4, for: .scrollContent)
         .scrollTargetBehavior(.viewAligned)
+    }
+}
+
+struct MediaDetailView: View {
+    var item: Media
+    var body: some View {
+        VStack (spacing: 30) {
+            HStack {
+                Text("Name: ")
+                Text(item.mediaName)
+            }
+            HStack {
+                Text("Original Name: ")
+                Text(item.mediaOriginalName)
+            }
+            HStack {
+                Text("Media Type: ")
+                Text(item.media.rawValue)
+            }
+            HStack {
+                Text("Overview: ")
+                Text(item.overview.getValue)
+            }
+        }
     }
 }
 
@@ -100,8 +130,18 @@ struct MediaPosterView: View {
                         PersonNameView(text: item.mediaName)
                     }
                 }
-            case .failure:
-                EmptyPosterView(text: item.mediaName)
+            case .failure (let error):
+                
+                if error.localizedDescription == "cancelled" {
+                    let _ = print("!!! Image Reloaded: \(error.localizedDescription), URL: \(String(describing: item.mediaImage)), NAME: \(item.mediaName)")
+                    MediaPosterView(item: item)
+                } else {
+                    let _ = print("*** AsyncImage failure: \(error.localizedDescription), URL: \(String(describing: item.mediaImage)), NAME: \(item.mediaName)")
+                    EmptyPosterView(text: item.mediaName)
+                    
+                }
+                
+                
             @unknown default:
                 EmptyView()
             }
@@ -157,5 +197,4 @@ struct TitleNameView: View {
 
 #Preview {
     HomeView()
-//        .modelContainer(for: Item.self, inMemory: true)
 }

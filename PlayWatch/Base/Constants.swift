@@ -108,6 +108,7 @@ struct MovieDB {
     }
     
     enum ImageSize: String {
+        case original = "original"
         case large = "w500"
         case medium = "w400" // para filas de 3, ancho 400px
         case small = "w200"

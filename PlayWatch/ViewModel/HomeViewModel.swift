@@ -43,6 +43,7 @@ import SwiftUI
     
     @MainActor
     func start() async throws {
+        self.mediaSectionsList = []
         self.isLoading = true
         defer { self.isLoading = false
         }

@@ -8,20 +8,20 @@
 import SwiftUI
 
 struct TabShape: Shape {
+//    var offset: CGFloat
     var midpoint: CGFloat
+    var diameter: CGFloat
     
     var animatableData: CGFloat {
         get { midpoint }
-        set {
-            midpoint = newValue
-        }
+        set { midpoint = newValue }
     }
     
     func path(in rect: CGRect) -> Path {
         return Path { path in
-            let height: Double = 12.0
-            let horizontal: Double = 55
-            let rad: Double = height / 2
+            let height: CGFloat = 12.0
+            let horizontal: CGFloat = diameter
+            let rad: CGFloat = height / 2 + 4
             
             path.addPath(Rectangle().path(in: rect))
             

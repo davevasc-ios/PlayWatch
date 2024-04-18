@@ -22,12 +22,12 @@ struct TabBarView: View {
             TabView(selection: $currentTab) {
                 HomeView()
                     .tag(Tab.home)
-//                    .padding(.bottom, 25)
-                Text("Game")
+                EmptyView()
+                Color.pink.ignoresSafeArea()
                     .tag(Tab.game)
-                Text("Favorites")
+                Color.purple.ignoresSafeArea()
                     .tag(Tab.favorites)
-                Text("Settings")
+                Color.green.ignoresSafeArea()
                     .tag(Tab.settings)
             }
             CustomTabBar()
@@ -36,22 +36,21 @@ struct TabBarView: View {
     }
     
     @ViewBuilder
-    func CustomTabBar(_ tint: Color = .blue, _ inactiveTint: Color = .blue) -> some View {
+    func CustomTabBar(_ itemBackgroundDiameter: CGFloat = 55, _ tint: Color = .blue, _ inactiveTint: Color = .blue) -> some View {
         HStack(alignment: .bottom, spacing: 0) {
             ForEach(Tab.allCases, id: \.rawValue) {
-                TabBarItem(tint: tint, inactiveTint: inactiveTint, tab: $0, animation: animation, currentTab: $currentTab, position: $tabShapePosition)
+                TabBarItem(diameter: itemBackgroundDiameter, tint: tint, inactiveTint: inactiveTint, tab: $0, animation: animation, currentTab: $currentTab, position: $tabShapePosition)
             }
         }
         .padding(.horizontal, 15)
         .padding(.vertical, 0)
         .background(content: {
             
-            TabShape(midpoint: tabShapePosition.x)
+            TabShape(midpoint: tabShapePosition.x, diameter: itemBackgroundDiameter)
                 .fill(.white)
                 .ignoresSafeArea()
                 .shadow(color: tint.opacity(0.6), radius: 5, x: 0, y: -5)
                 .blur(radius: 2)
-//                .padding(.top, 25)
         })
         .animation(.interactiveSpring(response: 0.6, dampingFraction: 0.7, blendDuration: 0.7), value: currentTab)
     }
@@ -59,6 +58,7 @@ struct TabBarView: View {
 }
 
 struct TabBarItem: View {
+    var diameter: CGFloat
     var tint: Color
     var inactiveTint: Color
     var tab: Tab
@@ -72,7 +72,7 @@ struct TabBarItem: View {
             Image(systemName: tab.systemImage)
                 .font(.title2)
                 .foregroundColor(currentTab == tab ? .white : inactiveTint)
-                .frame(width: currentTab == tab ? 55 : 35, height: currentTab == tab ? 55 : 35)
+                .frame(width: currentTab == tab ? diameter : diameter - 20, height: currentTab == tab ? diameter : diameter - 20)
                 .background {
                     if currentTab == tab {
                         Circle()
@@ -94,6 +94,7 @@ struct TabBarItem: View {
             
         })
         .onTapGesture {
+            // TODO: no funciona esta animación.
             withAnimation(.easeInOut) {
                 currentTab = tab
             }
