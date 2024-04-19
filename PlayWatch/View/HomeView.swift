@@ -118,10 +118,15 @@ struct MediaDetailView: View {
 struct MediaPosterView: View {
     let item: Media
     var body: some View {
-        AsyncImage(url: MovieDB.imageUrl(file: item.mediaImage, size: .medium)) { phase in
+        CacheAsyncImage(url: MovieDB.imageUrl(file: item.mediaImage, size: .medium)) { phase in
             switch phase {
             case .empty:
-                ProgressView()
+                ZStack {
+                    Color.clear
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle(tint: .purple))
+                        .frame(width: 50, height: 50)
+                }
             case .success (let image):
                 ZStack (alignment: .bottom) {
                     image
@@ -131,17 +136,11 @@ struct MediaPosterView: View {
                     }
                 }
             case .failure (let error):
-                
                 if error.localizedDescription == "cancelled" {
-                    let _ = print("!!! Image Reloaded: \(error.localizedDescription), URL: \(String(describing: item.mediaImage)), NAME: \(item.mediaName)")
                     MediaPosterView(item: item)
                 } else {
-                    let _ = print("*** AsyncImage failure: \(error.localizedDescription), URL: \(String(describing: item.mediaImage)), NAME: \(item.mediaName)")
                     EmptyPosterView(text: item.mediaName)
-                    
                 }
-                
-                
             @unknown default:
                 EmptyView()
             }

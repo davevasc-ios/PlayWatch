@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		55077AD92BD2CD6600E9B681 /* CacheAsyncImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55077AD82BD2CD6600E9B681 /* CacheAsyncImage.swift */; };
 		550C5F3E2BBA141A005B853B /* MovieDBService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 550C5F3D2BBA141A005B853B /* MovieDBService.swift */; };
 		550C5F402BBA142E005B853B /* OpenAIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 550C5F3F2BBA142E005B853B /* OpenAIService.swift */; };
 		550C5F422BBA1448005B853B /* GeminiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 550C5F412BBA1448005B853B /* GeminiService.swift */; };
@@ -56,6 +57,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		55077AD82BD2CD6600E9B681 /* CacheAsyncImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheAsyncImage.swift; sourceTree = "<group>"; };
 		550C5F3D2BBA141A005B853B /* MovieDBService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDBService.swift; sourceTree = "<group>"; };
 		550C5F3F2BBA142E005B853B /* OpenAIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAIService.swift; sourceTree = "<group>"; };
 		550C5F412BBA1448005B853B /* GeminiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeminiService.swift; sourceTree = "<group>"; };
@@ -239,6 +241,7 @@
 				55D425CA2BCC4669001FA57C /* Tab.swift */,
 				55D73FE22BCDB2A600F337FC /* TabShape.swift */,
 				55D73FE42BCDB5E700F337FC /* TabPosition.swift */,
+				55077AD82BD2CD6600E9B681 /* CacheAsyncImage.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -383,6 +386,7 @@
 				55D73FE32BCDB2A600F337FC /* TabShape.swift in Sources */,
 				5549D57C2BC0738700B934CD /* OpenAIModel.swift in Sources */,
 				5549D57E2BC0756C00B934CD /* GetOpenAIResponseUseCase.swift in Sources */,
+				55077AD92BD2CD6600E9B681 /* CacheAsyncImage.swift in Sources */,
 				55E4CC822BCADB2C0048EF56 /* ColorExtension.swift in Sources */,
 				5575C70F2BBF694300CD3918 /* Media.swift in Sources */,
 				550C5F422BBA1448005B853B /* GeminiService.swift in Sources */,
