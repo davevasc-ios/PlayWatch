@@ -13,6 +13,7 @@ struct TabBarView: View {
     @Namespace private var animation
     @State private var tabShapePosition: CGPoint = .zero
     
+    
     init() {
         UITabBar.appearance().isHidden = true
     }
@@ -22,19 +23,7 @@ struct TabBarView: View {
             TabView(selection: $currentTab) {
                 HomeView()
                     .tag(Tab.home)
-                ZStack {
-                    Color.systemRandom.ignoresSafeArea() // Background color
-                        VStack { // Center vertically and horizontally
-                            Spacer() // Push text to the bottom
-                            Text("🎲 coming soon 🃏")
-                                .font(.title) // Adjust font size as needed
-                                .fontWeight(.bold) // Adjust font weight as needed
-                                .foregroundColor(.white) // Adjust text color as needed
-                            Spacer() // Push text to the top
-                        }
-                        .frame(maxWidth: .infinity, maxHeight: .infinity) // Fill the entire ZStack
-                        .ignoresSafeArea() // Extend content to safe area edges  
-                }
+                GameView()
                     .tag(Tab.game)
                 Color.systemRandom.ignoresSafeArea()
                     .tag(Tab.favorites)

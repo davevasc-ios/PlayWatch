@@ -122,7 +122,9 @@ struct MovieDB {
     }
     
     static func getDate(date: String) -> Date? {
-        ISO8601DateFormatter().date(from: date)
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withFullDate]
+        return formatter.date(from: date)
     }
 }
 

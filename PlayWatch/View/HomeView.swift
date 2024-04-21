@@ -96,6 +96,16 @@ struct MediaDetailView: View {
     var body: some View {
         VStack (spacing: 30) {
             HStack {
+                Text("Release : ")
+                if let date = item.mediaReleaseDate {
+                    Text(date.toString())
+                }
+            }
+            HStack {
+                Text("Url: ")
+                Text(item.mediaImage)
+            }
+            HStack {
                 Text("Name: ")
                 Text(item.mediaName)
             }

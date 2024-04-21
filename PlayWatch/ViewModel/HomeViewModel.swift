@@ -5,11 +5,11 @@
 //  Created by David on 1/4/24.
 //
 
-import Foundation
+//import Foundation
 import Observation
-import SwiftUI
 
-@Observable final class HomeViewModel {
+@Observable
+final class HomeViewModel {
 
     private(set) var mediaSectionsList: [MediaSection] = []
     private(set) var isLoading = false
@@ -41,7 +41,6 @@ import SwiftUI
             self.getGeminiUseCase = getGeminiUseCase
         }
     
-    @MainActor
     func start() async throws {
         self.mediaSectionsList.removeAll()
         self.isLoading = true
@@ -50,7 +49,7 @@ import SwiftUI
         do {
             for section in MovieDB.Section.allCases {
                 let mediaSection = MediaSection(title: section.title,
-                                                items: try await fetchMediaUseCase.fetchMedia(section: section))
+                                                items: try await fetchMediaUseCase.fetchMedia(section: section).filterWithImage())
                 mediaSectionsList.append(mediaSection)
             }
         } catch {

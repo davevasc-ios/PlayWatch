@@ -51,11 +51,9 @@ fileprivate class ImageCache {
     CacheAsyncImage(url: URL(string: "https://image.tmdb.org/t/p/w500/6tJWxRfBKWGIPFkfLTod2CgCexU.jpg")!) { phase in
         switch phase {
         case .empty: ProgressView()
-        case .success (let image):
-            image
+        case .success (let image): image
         case .failure: EmptyView()
-        @unknown default:
-            EmptyView()
+        @unknown default: EmptyView()
         }
     }
 }
