@@ -12,7 +12,15 @@ import Observation
 final class HomeViewModel {
 
     private(set) var mediaSectionsList: [MediaSection] = []
+    private(set) var mediaTrendingList: [Media] = []
+    private(set) var mediaSearchList: [Media] = []
+    var searchText = ""
+    var isSearching = false
     private(set) var isLoading = false
+    
+    var suggestionsInternet = ["Muffin", "Noodles", "Beef", "Wraps", "Hamburger", "Chicken",
+                                      "Falafel", "Pita", "Avocado", "Tomato",
+                                      "Chocolate", "Strawberry", "Coffee"]
     
 //    var users: [User] = []
 //    var status: ListStatus = .empty
@@ -47,11 +55,37 @@ final class HomeViewModel {
         defer { self.isLoading = false
         }
         do {
-            for section in MovieDB.Section.allCases {
+            for section in MovieDB.homeSections {
                 let mediaSection = MediaSection(title: section.title,
-                                                items: try await fetchMediaUseCase.fetchMedia(section: section).filterWithImage())
+                                                items: try await fetchMediaUseCase.fetchMedia(type: section).filterWithImage())
                 mediaSectionsList.append(mediaSection)
             }
+        } catch {
+            print(error)
+        }
+    }
+    
+    func trending() async throws {
+//        self.mediaTrendingList.removeAll()
+        self.isLoading = true
+        defer { self.isLoading = false
+        }
+        do {
+            self.mediaSearchList = try await fetchMediaUseCase.fetchMedia(type: .trendingAll).filterWithImage()
+            
+        } catch {
+            print(error)
+        }
+    }
+    
+    func search() async throws {
+        MovieDB.searchQuery = self.searchText
+        self.mediaSearchList.removeAll()
+        self.isLoading = true
+        defer { self.isLoading = false
+        }
+        do {
+            self.mediaSearchList = try await fetchMediaUseCase.fetchMedia(type: .searchAll).filterWithImage()
         } catch {
             print(error)
         }

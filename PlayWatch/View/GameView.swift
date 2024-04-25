@@ -9,7 +9,7 @@ import SwiftUI
 
 struct GameView: View {
     
-    private var testers: [String] = ["Jordi", "Noah", "Tim", "Katy"]
+    private var testers: [String] = ["Jordi", "Noah", "Tim", "Katie"]
 
     var body: some View {
         ZStack {

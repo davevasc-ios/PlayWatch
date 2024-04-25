@@ -8,7 +8,7 @@
 //import Foundation
 
 protocol FetchMediaProtocol {
-    func fetchMedia(section: MovieDB.Section) async throws -> [Media]
+    func fetchMedia(type: MovieDB.FetchType) async throws -> [Media]
 }
 struct FetchMediaUseCase: FetchMediaProtocol {
     var service: MovieDBServiceProtocol
@@ -17,9 +17,8 @@ struct FetchMediaUseCase: FetchMediaProtocol {
         self.service = service
     }
     
-    func fetchMedia(section: MovieDB.Section) async throws -> [Media] {
-//        let query = MovieDB.QueryData(mode: .search, media: .tv, period: .week, provider: .netflix, query: "brad")
-        let x = try await service.fetchMedia(section: section)
+    func fetchMedia(type: MovieDB.FetchType) async throws -> [Media] {
+        let x = try await service.fetchMedia(type: type)
         for i in x {
             print("---Title: \(i.title ?? "")")
             print("MediaType: \(i.media)")
@@ -33,6 +32,5 @@ struct FetchMediaUseCase: FetchMediaProtocol {
             print("mediaReleaseDate: \(String(describing: i.mediaReleaseDate))")
         }
         return x
-//        return "ok"
     }
 }

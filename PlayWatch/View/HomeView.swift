@@ -8,19 +8,53 @@
 import SwiftUI
 
 struct HomeView: View {
-    
     @State private var viewModel = HomeViewModel()
+    @State private var showSuggestions = true
     
     var body: some View {
         NavigationStack {
             ScrollView {
-                LazyVStack {
-                    ForEach (viewModel.mediaSectionsList) { section in
-                        MediaSectionView(title: section.title, items: section.items)
+                LazyVStack (alignment: .leading) {
+                    if viewModel.isSearching {
+                        SearchView(items: viewModel.mediaSearchList)
+                    } else {
+                        MediaSectionView(sections: viewModel.mediaSectionsList)
                     }
                 }
                 .navigationTitle("Home")
                 .navigationBarTitleDisplayMode(.inline)
+            }
+        }
+        .searchable(text: $viewModel.searchText, isPresented: $viewModel.isSearching, placement: .automatic, prompt: "busca todo lo que quieras")
+        .searchSuggestions {
+            if showSuggestions {
+                ForEach(viewModel.mediaSearchList) { item in
+                    Button {
+                        viewModel.searchText = item.mediaName
+                        showSuggestions = false
+                    } label: {
+                        Label(item.mediaName, systemImage: "bookmark")
+                            .lineLimit(1)
+                    }
+                }
+                
+            }
+        }
+        .onChange(of: viewModel.searchText) {
+            Task {
+                if viewModel.searchText.count > 0 {
+                    try? await viewModel.search()
+                } else {
+                    try? await viewModel.trending()
+                    showSuggestions = true
+                }
+            }
+        }
+        .onChange(of: viewModel.isSearching) {
+            Task {
+                if viewModel.isSearching {
+                    try? await viewModel.trending()
+                }
             }
         }
         .refreshable {
@@ -33,18 +67,21 @@ struct HomeView: View {
 }
 
 struct MediaSectionView: View {
-    let title: String
-    let items: [Media]
+    let sections: [MediaSection]
+    
     var body: some View {
-        LazyVStack (spacing: 0) {
-            MediaTitleView(title: title)
-            MediaFlowView(items: items)
+        ForEach (sections) { section in
+            LazyVStack (spacing: 0) {
+                MediaTitleView(title: section.title)
+                MediaFlowView(items: section.items)
+            }
         }
     }
 }
 
 struct MediaTitleView: View {
     let title: String
+    
     var body: some View {
         Text(title)
             .font(.title3)
@@ -55,10 +92,9 @@ struct MediaTitleView: View {
 }
 
 struct MediaFlowView: View {
-    
     @Environment(\.verticalSizeClass) var verticalSizeClass
-    
     let items: [Media]
+    
     var body: some View {
         ScrollView (.horizontal, showsIndicators: false) {
             LazyHStack (spacing: 4) {
@@ -93,6 +129,7 @@ struct MediaFlowView: View {
 
 struct MediaDetailView: View {
     var item: Media
+    
     var body: some View {
         VStack (spacing: 30) {
             HStack {
@@ -127,8 +164,9 @@ struct MediaDetailView: View {
 
 struct MediaPosterView: View {
     let item: Media
+    
     var body: some View {
-        CacheAsyncImage(url: MovieDB.imageUrl(file: item.mediaImage, size: .medium)) { phase in
+        CacheAsyncImage(url: MovieDB.getImageUrl(file: item.mediaImage, size: .medium)) { phase in
             switch phase {
             case .empty:
                 ZStack {
@@ -164,6 +202,7 @@ struct MediaPosterView: View {
 
 struct PersonNameView: View {
     let text: String
+    
     var body: some View {
         Text(text)
             .font(.title3)
@@ -179,6 +218,7 @@ struct PersonNameView: View {
         
 struct EmptyPosterView: View {
     let text: String
+    
     var body: some View {
         ZStack (alignment: .bottom) {
             Rectangle()
@@ -191,6 +231,7 @@ struct EmptyPosterView: View {
 
 struct TitleNameView: View {
     let text: String
+    
     var body: some View {
         Text(text)
             .font(.title2)

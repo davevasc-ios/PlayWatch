@@ -28,12 +28,93 @@ struct Current {
 
 struct MovieDB {
     
-    static let endpoint = "https://api.themoviedb.org/3/"
-    static let imageEndpoint = "https://image.tmdb.org/t/p/"
-    static let language = "language=\(Current.language.language)-\(Current.language.region)"
+    static var searchQuery = ""
     
-    enum Section: CaseIterable {
-        case cinemaPlaying, cinemaUpcomimg ,movieTrending ,movieNew ,tvTrending ,tvNew ,personTrending ,personPopular
+    static let homeSections: [FetchType] = [.cinemaPlaying,
+                                            .cinemaUpcomimg,
+                                            .movieTrending,
+                                            .movieNew,
+                                            .tvTrending,
+                                            .tvNew,
+                                            .personTrending,
+                                            .personPopular]
+    
+    struct Endpoint {
+        static let version = "3"
+        static let dataUrl = "https://api.themoviedb.org/\(version)/"
+        static let imageUrl = "https://image.tmdb.org/t/p/"
+        static let nowPlaying = "\(MediaType.movie.rawValue)/now_playing?"
+        static let upcoming = "\(MediaType.movie.rawValue)/upcoming?"
+        static let trending = "trending/"
+        static let discover = "discover/"
+        static let popular = "\(MediaType.person.rawValue)/popular?"
+        static var search: String {
+            "search/multi?query=\(searchQuery)"
+        }
+        
+        static let language = "language=\(Current.language.language)-\(Current.language.region)"
+        
+        static func request(type: FetchType) throws -> URLRequest {
+            guard let url = URL(string: mediaDataUrl(type: type)) else {
+                throw API.Error.invalidURL
+            }
+            return mediaRequest(url: url)
+        }
+        
+        static private func mediaDataUrl(type: FetchType) -> String {
+            switch type {
+            case .cinemaPlaying:
+                return "\(dataUrl)\(nowPlaying)\(language)&region=\(Current.language.region)"
+            case .cinemaUpcomimg:
+                return "\(dataUrl)\(upcoming)\(language)&region=\(Current.language.region)"
+            case .movieTrending:
+                return "\(dataUrl)\(trending)\(MediaType.movie.rawValue)/day?\(language)"
+            case .movieNew:
+                return "\(dataUrl)\(discover)\(MediaType.movie.rawValue)?language=es-ES&primary_release_date.gte=2024-04-01&primary_release_date.lte=2024-04-15&sort_by=primary_release_date.asc&watch_region=ES&with_watch_monetization_types=flatrate"
+            case .tvTrending:
+                return "\(dataUrl)\(trending)\(MediaType.tv.rawValue)/day?\(language)"
+            case .tvNew:
+                return "\(dataUrl)\(discover)\(MediaType.tv.rawValue)?first_air_date.gte=2024-04-01&first_air_date.lte=2024-04-15&language=es-ES&sort_by=first_air_date.asc&watch_region=ES&with_watch_monetization_types=flatrate"
+            case .personTrending:
+                return "\(dataUrl)\(trending)\(MediaType.person.rawValue)/day?\(language)"
+            case .personPopular:
+                return "\(dataUrl)\(popular)\(language)"
+            case .trendingAll:
+                return "\(dataUrl)\(trending)all/day?\(language)"
+            case .searchAll:
+                return "\(dataUrl)\(search)&\(language)"
+            }
+        }
+        
+        static private func mediaRequest(url: URL) -> URLRequest {
+            var request = URLRequest(url: url)
+            request.httpMethod = HTTP.Method.get
+            request.setValue(HTTP.Header.Value.bearer(key: API.Key.movieDB), forHTTPHeaderField: HTTP.Header.Field.authorization)
+            request.setValue(HTTP.Header.Value.applicationJson, forHTTPHeaderField: HTTP.Header.Field.accept)
+            return request
+        }
+        
+        // MARK: - Image
+        
+        static func mediaImageUrl(file: String?, size: ImageSize) -> URL? {
+            guard let url = URL(string: "\(imageUrl)\(size.rawValue)\(file ?? "")") else {
+                return nil
+            }
+            return url
+        }
+    }
+    
+    enum FetchType: CaseIterable {
+        case cinemaPlaying,
+             cinemaUpcomimg,
+             movieTrending,
+             movieNew,
+             tvTrending,
+             tvNew,
+             personTrending,
+             personPopular,
+             trendingAll,
+             searchAll
         
         var title: String {
             switch self {
@@ -45,65 +126,9 @@ struct MovieDB {
             case .tvNew: "Series Nuevas"
             case .personTrending: "Personas Destacadas"
             case .personPopular: "Personas Populares"
+            case .trendingAll: ""
+            case .searchAll: ""
             }
-        }
-    }
-    
-//    struct QueryData {
-//        var mode: Fetch = .cinema
-//        var media: Media = .movie
-//        var period: Period = .week
-//        var provider: Provider = .netflix
-//        var query: String = ""
-//    }
-//    
-//    enum Media {
-//        case movie, tv, person
-//    }
-
-//    enum Period {
-//        case day, week
-//    }
-    
-//    enum Provider: Int {
-//        case netflix = 8
-//        case hbo = 9
-//    }
-
-    static func request(section: Section) throws -> URLRequest {
-        guard let url = URL(string: mediaUrl(section: section)) else {
-            throw API.Error.invalidURL
-        }
-        var request = URLRequest(url: url)
-        request.httpMethod = HTTP.Method.get
-        request.setValue(HTTP.Header.Value.bearer(key: API.Key.movieDB), forHTTPHeaderField: HTTP.Header.Field.authorization)
-        request.setValue(HTTP.Header.Value.applicationJson, forHTTPHeaderField: HTTP.Header.Field.accept)
-        return request
-    }
-    
-//    enum Fetch {
-//        case trend, cinema, coming, stream, search
-//    }
-    
-    static func mediaUrl(section: Section) -> String {
-        switch section {
-        case .cinemaPlaying:
-            return "\(endpoint)movie/now_playing?\(language)&region=\(Current.language.region)"
-        case .cinemaUpcomimg:
-            return "\(endpoint)movie/upcoming?\(language)&region=\(Current.language.region)"
-        case .movieTrending:
-            return "\(endpoint)trending/movie/day?\(language)"
-        case .movieNew:
-            return "https://api.themoviedb.org/3/discover/movie?language=es-ES&primary_release_date.gte=2024-04-01&primary_release_date.lte=2024-04-15&sort_by=primary_release_date.asc&watch_region=ES&with_watch_monetization_types=flatrate"
-        case .tvTrending:
-            return "\(endpoint)trending/tv/day?\(language)"
-        case .tvNew:
-            return "https://api.themoviedb.org/3/discover/tv?first_air_date.gte=2024-04-01&first_air_date.lte=2024-04-15&language=es-ES&sort_by=first_air_date.asc&watch_region=ES&with_watch_monetization_types=flatrate"
-        case .personTrending:
-            return "\(endpoint)trending/person/day?\(language)"
-        case .personPopular:
-            return "\(endpoint)person/popular?\(language)"
-
         }
     }
     
@@ -114,11 +139,14 @@ struct MovieDB {
         case small = "w200"
     }
     
-    static func imageUrl(file: String?, size: ImageSize) -> URL? {
-        guard let url = URL(string: "\(imageEndpoint)\(size.rawValue)\(file ?? "")") else {
-            return nil
-        }
-        return url
+    // MARK: - Public Functions
+    
+    static func getRequest(type: FetchType) throws -> URLRequest {
+       try Endpoint.request(type: type)
+    }
+    
+    static func getImageUrl(file: String?, size: ImageSize) -> URL? {
+        Endpoint.mediaImageUrl(file: file, size: size)
     }
     
     static func getDate(date: String) -> Date? {
