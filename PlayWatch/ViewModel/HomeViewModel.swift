@@ -66,7 +66,6 @@ final class HomeViewModel {
     }
     
     func trending() async throws {
-//        self.mediaTrendingList.removeAll()
         self.isLoading = true
         defer { self.isLoading = false
         }
