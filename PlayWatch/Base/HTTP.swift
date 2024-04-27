@@ -8,24 +8,42 @@
 import Foundation
 
 struct HTTP {
-    struct Method {
-        static let get = "GET"
-        static let post = "POST"
+    static let timeoutInterval: Double = 10
+    static let successCode = 200
+    
+    enum Method: String {
+        case get = "GET"
+        case post = "POST"
     }
-    struct Code {
-        static let success = 200
-    }
+    
     struct Header {
-        struct Field {
-            static let authorization = "Authorization"
-            static let accept = "accept"
-            static let contentType = "Content-Type"
+        enum Field: String {
+            case authorization = "Authorization",
+                 accept = "Accept",
+                 contentType = "Content-Type"
         }
-        struct Value {
-            static let applicationJson = "application/json"
-            static func bearer(key: API.Key) -> String {
-                return "Bearer \(key)"
+        
+        enum Value: CustomStringConvertible {
+            case applicationJson,
+                 bearer(API.Key)
+            
+            var description: String {
+                switch self {
+                case .applicationJson:
+                    return "application/json"
+                case .bearer(let key):
+                    return "Bearer \(key)"
+                }
             }
         }
+    }
+    
+    static func request(url: URL, method: Method, fields: [String : String], body: Data? = nil) -> URLRequest {
+        var request = URLRequest(url: url)
+        request.httpMethod = method.rawValue
+        request.timeoutInterval = self.timeoutInterval
+        request.allHTTPHeaderFields = fields
+        request.httpBody = body
+        return request
     }
 }

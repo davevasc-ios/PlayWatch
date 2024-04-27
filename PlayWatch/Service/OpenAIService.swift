@@ -16,7 +16,7 @@ final class OpenAIService: OpenAIServiceProtocol {
     func getResponse(text: String) async throws -> String {
         let (data, response) = try await URLSession.shared.data(for: OpenAI.request(text: text))
         guard let response = response as? HTTPURLResponse,
-              response.statusCode == HTTP.Code.success else {
+              response.statusCode == HTTP.successCode else {
             throw API.Error.invalidResponse
         }
         do {

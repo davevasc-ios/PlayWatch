@@ -20,7 +20,7 @@ final class MovieDBService: MovieDBServiceProtocol {
     func fetchMedia(type: MovieDB.FetchType) async throws -> [Media] {
         let (data, response) = try await URLSession.shared.data(for: MovieDB.getRequest(type: type))
         guard let response = response as? HTTPURLResponse,
-              response.statusCode == HTTP.Code.success else {
+              response.statusCode == HTTP.successCode else {
             throw API.Error.invalidResponse
         }
         do {

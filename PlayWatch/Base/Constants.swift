@@ -27,75 +27,95 @@ struct Current {
 }
 
 struct MovieDB {
+    static let dateFormat = "yyyy-MM-dd"
+    static let maxPages = 500
+    static let voteAverageGte = 5
+    static let voteCountGte = 100
     
+    // TODO: - Considerar guardar el valor en otro sitio
     static var searchQuery = ""
     
     static let homeSections: [FetchType] = [.cinemaPlaying,
-                                            .cinemaUpcomimg,
-                                            .movieTrending,
-                                            .movieNew,
-                                            .tvTrending,
-                                            .tvNew,
-                                            .personTrending,
-                                            .personPopular]
+                                           .cinemaUpcomimg,
+                                           .movieTrending,
+                                           .movieNew,
+                                           .tvTrending,
+                                           .tvNew,
+                                           .personTrending,
+                                           .personPopular]
     
     struct Endpoint {
-        static let version = "3"
-        static let dataUrl = "https://api.themoviedb.org/\(version)/"
+        static let version = 3
+        static let dataUrl = "https://api.themoviedb.org/\(String(version))/"
         static let imageUrl = "https://image.tmdb.org/t/p/"
-        static let nowPlaying = "\(MediaType.movie.rawValue)/now_playing?"
-        static let upcoming = "\(MediaType.movie.rawValue)/upcoming?"
+        static let nowPlaying = "\(MediaType.movie)/now_playing"
+        static let upcoming = "\(MediaType.movie)/upcoming"
         static let trending = "trending/"
         static let discover = "discover/"
-        static let popular = "\(MediaType.person.rawValue)/popular?"
+        static let popular = "\(MediaType.person)/popular"
         static var search: String {
             "search/multi?query=\(searchQuery)"
         }
-        
-        static let language = "language=\(Current.language.language)-\(Current.language.region)"
-        
+                
         static func request(type: FetchType) throws -> URLRequest {
-            guard let url = URL(string: mediaDataUrl(type: type)) else {
-                throw API.Error.invalidURL
-            }
-            return mediaRequest(url: url)
+            return HTTP.request(url: try mediaURL(type: type), method: .get, fields: self.headerFields)
         }
         
-        static private func mediaDataUrl(type: FetchType) -> String {
+        static private func mediaURL(type: FetchType) throws -> URL {
+            var urlString: String = ""
+            var queryItems: [URLQueryItem] = []
+            queryItems.append(URLQueryItem(name: QueryParams.language.rawValue, value: "es-ES"))
             switch type {
             case .cinemaPlaying:
-                return "\(dataUrl)\(nowPlaying)\(language)&region=\(Current.language.region)"
+                urlString = "\(dataUrl)\(nowPlaying)"
+                queryItems.append(URLQueryItem(name: QueryParams.region.rawValue, value:"ES"))
             case .cinemaUpcomimg:
-                return "\(dataUrl)\(upcoming)\(language)&region=\(Current.language.region)"
+                urlString = "\(dataUrl)\(upcoming)"
+                queryItems.append(URLQueryItem(name: QueryParams.region.rawValue, value:"ES"))
             case .movieTrending:
-                return "\(dataUrl)\(trending)\(MediaType.movie.rawValue)/day?\(language)"
+                urlString = "\(dataUrl)\(trending)\(MediaType.movie)/day"
             case .movieNew:
-                return "\(dataUrl)\(discover)\(MediaType.movie.rawValue)?language=es-ES&primary_release_date.gte=2024-04-01&primary_release_date.lte=2024-04-15&sort_by=primary_release_date.asc&watch_region=ES&with_watch_monetization_types=flatrate"
+                urlString = "\(dataUrl)\(discover)\(MediaType.movie)?language=es-ES&primary_release_date.gte=2024-04-01&primary_release_date.lte=2024-04-15&sort_by=primary_release_date.asc&watch_region=ES&with_watch_monetization_types=flatrate"
             case .tvTrending:
-                return "\(dataUrl)\(trending)\(MediaType.tv.rawValue)/day?\(language)"
+                urlString = "\(dataUrl)\(trending)\(MediaType.tv)/day"
             case .tvNew:
-                return "\(dataUrl)\(discover)\(MediaType.tv.rawValue)?first_air_date.gte=2024-04-01&first_air_date.lte=2024-04-15&language=es-ES&sort_by=first_air_date.asc&watch_region=ES&with_watch_monetization_types=flatrate"
+                urlString = "\(dataUrl)\(discover)\(MediaType.tv)?first_air_date.gte=2024-04-01&first_air_date.lte=2024-04-15&language=es-ES&sort_by=first_air_date.asc&watch_region=ES&with_watch_monetization_types=flatrate"
             case .personTrending:
-                return "\(dataUrl)\(trending)\(MediaType.person.rawValue)/day?\(language)"
+                urlString = "\(dataUrl)\(trending)\(MediaType.person)/day"
             case .personPopular:
-                return "\(dataUrl)\(popular)\(language)"
+                urlString = "\(dataUrl)\(popular)"
             case .trendingAll:
-                return "\(dataUrl)\(trending)all/day?\(language)"
+                urlString = "\(dataUrl)\(trending)\(MediaType.all)/day"
             case .searchAll:
-                return "\(dataUrl)\(search)&\(language)"
+                urlString = "\(dataUrl)\(search)"
+            case .randomMovies:
+                urlString = "\(dataUrl)\(discover)\(MediaType.movie)"
+                queryItems.append(URLQueryItem(name: QueryParams.page.rawValue, value: getRandomPage()))
+                queryItems.append(URLQueryItem(name: "\(QueryParams.releaseDate.rawValue)\(QueryDirection.lte.rawValue)", value: getCurrentDateString()))
+                queryItems.append(URLQueryItem(name: QueryParams.sortBy.rawValue, value: "\(SortBy.revenue)\(SortDirection.asc.rawValue)"))
+                queryItems.append(URLQueryItem(name: "\(QueryParams.voteAverage.rawValue)\(QueryDirection.gte.rawValue)", value: String(voteAverageGte)))
+                queryItems.append(URLQueryItem(name: "\(QueryParams.voteCount.rawValue)\(QueryDirection.gte.rawValue)", value: String(voteCountGte)))
             }
+            
+            guard let url = URL(string: urlString),
+                  var components = URLComponents(url: url, resolvingAgainstBaseURL: true) else {
+                throw API.Error.invalidURL
+            }
+            
+            components.queryItems = components.queryItems.map { $0 + queryItems } ?? queryItems
+
+            guard let finalURL = components.url else {
+                    throw API.Error.invalidURL
+                }
+            return finalURL
         }
         
-        static private func mediaRequest(url: URL) -> URLRequest {
-            var request = URLRequest(url: url)
-            request.httpMethod = HTTP.Method.get
-            request.setValue(HTTP.Header.Value.bearer(key: API.Key.movieDB), forHTTPHeaderField: HTTP.Header.Field.authorization)
-            request.setValue(HTTP.Header.Value.applicationJson, forHTTPHeaderField: HTTP.Header.Field.accept)
-            return request
-        }
+        static let headerFields: [String : String] = [
+            HTTP.Header.Field.accept.rawValue: HTTP.Header.Value.applicationJson.description,
+            HTTP.Header.Field.authorization.rawValue: HTTP.Header.Value.bearer(.movieDB).description
+        ]
         
         // MARK: - Image
-        
         static func mediaImageUrl(file: String?, size: ImageSize) -> URL? {
             guard let url = URL(string: "\(imageUrl)\(size.rawValue)\(file ?? "")") else {
                 return nil
@@ -114,7 +134,8 @@ struct MovieDB {
              personTrending,
              personPopular,
              trendingAll,
-             searchAll
+             searchAll,
+             randomMovies
         
         var title: String {
             switch self {
@@ -128,15 +149,62 @@ struct MovieDB {
             case .personPopular: "Personas Populares"
             case .trendingAll: ""
             case .searchAll: ""
+            case .randomMovies: ""
             }
         }
     }
     
     enum ImageSize: String {
-        case original = "original"
-        case large = "w500"
-        case medium = "w400" // para filas de 3, ancho 400px
-        case small = "w200"
+        case original = "original",
+             large = "w500",
+             medium = "w400", // para filas de 3, ancho 400px
+             small = "w200"
+    }
+    
+    enum SortBy: String, CaseIterable {
+        case orignalTitle = "original_title",
+             popularity,
+             revenue,
+             releaseDate = "primary_release_date",
+             title, // originalTitle
+             voteAverage = "vote_average",
+             voteCount = "vote_count"
+    }
+    
+    static let validShortBy: Set<SortBy> = [
+      .popularity,
+      .revenue,
+      .voteAverage,
+      .voteCount
+    ]
+    
+    enum SortDirection: String, CaseIterable {
+        case asc = ".asc",
+             desc = ".desc"
+    }
+    
+    enum QueryParams: String {
+        case language,
+             region,
+             page,
+             releaseDate = "primary_release_date",
+             sortBy = "sort_by",
+             voteAverage = "vote_average",
+             voteCount = "vote_count"
+    }
+    
+    static let discoverQueryParams: Set<QueryParams> = [
+        .language,
+        .page,
+        .releaseDate,
+        .sortBy,
+        .voteAverage,
+        .voteCount
+    ]
+    
+    enum QueryDirection: String {
+        case gte = ".gte",
+             lte = ".lte"
     }
     
     // MARK: - Public Functions
@@ -154,6 +222,22 @@ struct MovieDB {
         formatter.formatOptions = [.withFullDate]
         return formatter.date(from: date)
     }
+    
+    static func getRandomPage() -> String {
+        return String(Int.random(in: 1...maxPages))
+    }
+    
+    static func getRandomShortBy() -> String {
+        let randomShortBy = validShortBy.randomElement() ?? .popularity
+        let randomShortDirection = SortDirection.allCases.randomElement() ?? .asc
+        return "\(randomShortBy)\(randomShortDirection)"
+    }
+    
+    static func getCurrentDateString() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = dateFormat
+        return dateFormatter.string(from: Date())
+    }
 }
 
 struct OpenAI: Codable {
@@ -162,16 +246,19 @@ struct OpenAI: Codable {
     static let systemContent = "Eres un asistente experto en contar cuentos para niños"
     static let systemModel = "gpt-3.5-turbo"
     
+    static let headerFields: [String : String] = [
+        HTTP.Header.Field.contentType.rawValue: HTTP.Header.Value.applicationJson.description,
+        HTTP.Header.Field.authorization.rawValue: HTTP.Header.Value.bearer(.openAI).description
+    ]
+    
     struct Body: Codable {
         var model: String = systemModel
         let messages: [Message]
     }
-    
     struct Message: Codable {
         let role: Role
         let content: String
     }
-    
     enum Role: String, Codable {
         case system, user
     }
@@ -180,17 +267,12 @@ struct OpenAI: Codable {
         guard let url = URL(string: endpoint) else {
             throw API.Error.invalidURL
         }
-        var request = URLRequest(url: url)
-        request.httpMethod = HTTP.Method.post
-        request.setValue(HTTP.Header.Value.bearer(key: API.Key.openAI), forHTTPHeaderField: HTTP.Header.Field.authorization)
-        request.setValue(HTTP.Header.Value.applicationJson, forHTTPHeaderField: HTTP.Header.Field.contentType)
-        
+                
         let systemMessage = Message(role: .system, content: systemContent)
         let userMessage = Message(role: .user, content: text)
-        let body = Body(messages: [systemMessage, userMessage])
+        let body = try? JSONEncoder().encode(Body(messages: [systemMessage, userMessage]))
         
-        request.httpBody = try? JSONEncoder().encode(body)
-        return request
+        return HTTP.request(url: url, method: .post, fields: headerFields, body: body)
     }
     
 }
@@ -201,14 +283,16 @@ struct Gemini: Codable {
     static let systemModel = "gemini-pro"
     static let endpoint = "https://generativelanguage.googleapis.com/v1beta/models/\(systemModel):generateContent?key=\(API.Key.gemini)"
     
+    static let headerFields: [String : String] = [
+        HTTP.Header.Field.contentType.rawValue: HTTP.Header.Value.applicationJson.description
+    ]
+    
     struct Body: Codable {
         let contents: Content
     }
-    
     struct Content: Codable {
         let parts: Part
     }
-    
     struct Part: Codable {
         let text: String
     }
@@ -217,14 +301,10 @@ struct Gemini: Codable {
         guard let url = URL(string: endpoint) else {
             throw API.Error.invalidURL
         }
-        var request = URLRequest(url: url)
-        request.httpMethod = HTTP.Method.post
-        request.setValue(HTTP.Header.Value.applicationJson, forHTTPHeaderField: HTTP.Header.Field.contentType)
 
-        let body = Body(contents: Content(parts: Part(text: text)))
+        let body = try? JSONEncoder().encode(Body(contents: Content(parts: Part(text: text))))
         
-        request.httpBody = try? JSONEncoder().encode(body)
-        return request
+        return HTTP.request(url: url, method: .post, fields: headerFields, body: body)
     }
     
 }
