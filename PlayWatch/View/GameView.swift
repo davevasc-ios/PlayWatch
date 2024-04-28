@@ -9,19 +9,30 @@ import SwiftUI
 
 struct GameView: View {
     
-    private var testers: [String] = ["Jordi", "Noah", "Tim", "Katie"]
-
+    @State private var viewModel = GameViewModel()
+    
     var body: some View {
-        ZStack {
-            Color.systemRandom.ignoresSafeArea() // Background color
-                VStack { // Center vertically and horizontally
-                    Text("🎲 coming soon for \(testers.randomElement() ?? "") 🃏")
-                        .font(.title) // Adjust font size as needed
-                        .fontWeight(.bold) // Adjust font weight as needed
-                        .foregroundColor(.white) // Adjust text color as needed
+        NavigationStack {
+            if viewModel.isLoading {
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle()) // Estilo de vista circular
+                    .scaleEffect(2.0)
+                    .tint(.purple)
+            } else {
+                ScrollView {
+                    VStack (spacing: 20) {
+                        ForEach (viewModel.quizList, id: \.self) { quiz in
+                            VStack {
+                                Text(quiz.question ?? "")
+                                Text("\(quiz.result ?? true)")
+                            }
+                        }
+                    }
                 }
-                .frame(maxWidth: .infinity, maxHeight: .infinity) // Fill the entire ZStack
-                .ignoresSafeArea() // Extend content to safe area edges
+            }
+        }
+        .task {
+            try? await viewModel.start()
         }
     }
 }

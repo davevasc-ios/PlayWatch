@@ -19,4 +19,7 @@ struct Response: Codable {
     let content: String?
 }
 
-
+struct MovieQuiz: Codable, Hashable {
+    let question: String?
+    let result: Bool?
+}

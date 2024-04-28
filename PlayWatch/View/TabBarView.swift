@@ -25,7 +25,7 @@ struct TabBarView: View {
                     .tag(Tab.home)
                 GameView()
                     .tag(Tab.game)
-                Color.systemRandom.ignoresSafeArea()
+                FavoritesView()
                     .tag(Tab.favorites)
                 Color.systemRandom.ignoresSafeArea()
                     .tag(Tab.settings)

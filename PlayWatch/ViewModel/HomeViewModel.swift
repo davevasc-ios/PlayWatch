@@ -18,9 +18,6 @@ final class HomeViewModel {
     var isSearching = false
     private(set) var isLoading = false
     
-    var suggestionsInternet = ["Muffin", "Noodles", "Beef", "Wraps", "Hamburger", "Chicken",
-                                      "Falafel", "Pita", "Avocado", "Tomato",
-                                      "Chocolate", "Strawberry", "Coffee"]
     
 //    var users: [User] = []
 //    var status: ListStatus = .empty

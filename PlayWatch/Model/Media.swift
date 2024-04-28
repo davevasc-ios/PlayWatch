@@ -60,10 +60,15 @@ struct Media: Codable, Identifiable {
 }
 
 enum MediaType: String, Codable {
-    case movie = "movie"
-    case tv = "tv"
-    case person = "person"
-    case all = "all"
+    case movie,
+         tv,
+         person,
+         all
+}
+
+enum MediaPeriod: String {
+    case day,
+         week
 }
 
 struct MediaSection: Identifiable {
