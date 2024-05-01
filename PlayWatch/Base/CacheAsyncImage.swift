@@ -48,7 +48,7 @@ fileprivate class ImageCache {
 }
 
 #Preview {
-    CacheAsyncImage(url: URL(string: "https://image.tmdb.org/t/p/w500/6tJWxRfBKWGIPFkfLTod2CgCexU.jpg")!) { phase in
+    CacheAsyncImage(url: URL(string: RemoteImage.dummyUrl)!) { phase in
         switch phase {
         case .empty: ProgressView()
         case .success (let image): image

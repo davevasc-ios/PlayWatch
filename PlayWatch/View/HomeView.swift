@@ -184,7 +184,7 @@ struct MediaPosterView: View {
                     }
                 }
             case .failure (let error):
-                if error.localizedDescription == "cancelled" {
+                if error.localizedDescription.isErrorCancelled {
                     MediaPosterView(item: item)
                 } else {
                     EmptyPosterView(text: item.mediaName)

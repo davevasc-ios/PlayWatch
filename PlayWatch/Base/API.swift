@@ -72,9 +72,9 @@ struct API {
     }
     
     enum Status: String {
-        case loading = "Loading data..."
-        case success = "Data loaded successfully"
-        case empty = "Empty data"
-        case error = "Error loading data"
+        case loading = "Loading data...",
+             success = "Data loaded successfully",
+             empty = "Empty data",
+             error = "Error loading data"
     }
 }

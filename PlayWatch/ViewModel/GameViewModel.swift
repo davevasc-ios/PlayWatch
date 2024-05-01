@@ -32,37 +32,24 @@ final class GameViewModel {
         self.isLoading = true
         defer { self.isLoading = false }
         do {
-            self.mediaList = try await fetchMediaUseCase.fetchMedia(type: .randomMovies).filterWithImage()
-            self.getMovieNames(mediaList: self.mediaList)
-            try await getOpenAIResponse()
+            self.mediaList = try await fetchMediaUseCase.fetchMedia(type: .randomMovies, searchText: nil).filterWithImage()
+            self.quizList = try await getOpenAIUseCase.getMoviesQuiz(movies: self.mediaList.map { $0.mediaName }.joined(separator: ", "))
         }
         catch {
             print(error)
         }
     }
 
-    
-    func getOpenAIResponse() async throws {
-        self.isLoading = true
-        defer { self.isLoading = false }
-        do {
-            self.quizList = try await getOpenAIUseCase.getQuiz()
-        }
-        catch {
-            print(error)
-        }
-    }
-    
-    private func getMovieNames(mediaList: [Media]) {
-        var movieNames = ""
-        for media in mediaList {
-            if movieNames.isEmpty {
-                movieNames = media.mediaName
-            } else {
-                movieNames += ", \(media.mediaName)"
-            }
-        }
-        OpenAI.mediaNameList = movieNames
-    }
+//    
+//    func getOpenAIResponse(movies: String) async throws {
+//        self.isLoading = true
+//        defer { self.isLoading = false }
+//        do {
+//            self.quizList = try await getOpenAIUseCase.getQuiz(movies: movies)
+//        }
+//        catch {
+//            print(error)
+//        }
+//    }
     
 }

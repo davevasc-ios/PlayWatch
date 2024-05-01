@@ -52,14 +52,17 @@ final class HomeViewModel {
         defer { self.isLoading = false
         }
         do {
+            // TODO: -  PROBAR GEMINI
+//            try await getGeminiResponse()
             for section in MovieDB.homeSections {
                 let mediaSection = MediaSection(title: section.title,
-                                                items: try await fetchMediaUseCase.fetchMedia(type: section).filterWithImage())
+                                                items: try await fetchMediaUseCase.fetchMedia(type: section, searchText: nil).filterWithImage())
                 mediaSectionsList.append(mediaSection)
             }
         } catch {
             print(error)
         }
+        
     }
     
     func trending() async throws {
@@ -67,7 +70,7 @@ final class HomeViewModel {
         defer { self.isLoading = false
         }
         do {
-            self.mediaSearchList = try await fetchMediaUseCase.fetchMedia(type: .trendingAll).filterWithImage()
+            self.mediaSearchList = try await fetchMediaUseCase.fetchMedia(type: .trendingAll, searchText: nil).filterWithImage()
             
         } catch {
             print(error)
@@ -75,13 +78,12 @@ final class HomeViewModel {
     }
     
     func search() async throws {
-        MovieDB.searchQuery = self.searchText
         self.mediaSearchList.removeAll()
         self.isLoading = true
         defer { self.isLoading = false
         }
         do {
-            self.mediaSearchList = try await fetchMediaUseCase.fetchMedia(type: .searchAll).filterWithImage()
+            self.mediaSearchList = try await fetchMediaUseCase.fetchMedia(type: .searchAll, searchText: self.searchText).filterWithImage()
         } catch {
             print(error)
         }
@@ -91,7 +93,7 @@ final class HomeViewModel {
 //        self.users = []
 //        self.status = .loading
         do {
-            self.errorMessage = try await getOpenAIUseCase.getResponse()
+            self.errorMessage = try await getOpenAIUseCase.getTextAnswer(prompt: "texto de prueba")
 //            self.users = userListModel.results
 //            self.status = self.users.isEmpty ? .empty : .success
         }

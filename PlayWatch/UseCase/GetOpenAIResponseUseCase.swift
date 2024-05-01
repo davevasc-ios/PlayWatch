@@ -8,8 +8,8 @@
 import Foundation
 
 protocol GetOpenAIResponseProtocol {
-    func getResponse() async throws -> String
-    func getQuiz() async throws -> [MovieQuiz]
+    func getTextAnswer(prompt: String) async throws -> String
+    func getMoviesQuiz(movies: String) async throws -> [MovieQuiz]
 }
 struct GetOpenAIResponseUseCase: GetOpenAIResponseProtocol {
     var service: OpenAIServiceProtocol
@@ -18,17 +18,12 @@ struct GetOpenAIResponseUseCase: GetOpenAIResponseProtocol {
         self.service = service
     }
     
-    func getResponse() async throws -> String {
-        let text = "cuentame una historia de un azafato en Washington DC"
-        let x = try await service.getResponse(text: text)
-        print("OpenAIResponse: \(x)")
-        return "ok"
+    func getTextAnswer(prompt: String) async throws -> String {
+       return try await service.textAnswer(prompt: prompt)
     }
-    func getQuiz() async throws -> [MovieQuiz] {
-//        let text = "cuentame una historia de un azafato en Washington DC"
-        return try await service.getQuiz()
-//        print("OpenAIResponse: \(x)")
-//        return "ok"
+    
+    func getMoviesQuiz(movies: String) async throws -> [MovieQuiz] {
+        return try await service.moviesQuiz(movies: movies)
     }
     
 }

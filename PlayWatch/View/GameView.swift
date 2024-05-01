@@ -14,10 +14,11 @@ struct GameView: View {
     var body: some View {
         NavigationStack {
             if viewModel.isLoading {
-                ProgressView()
+                ProgressView("Loading Game...")
                     .progressViewStyle(CircularProgressViewStyle()) // Estilo de vista circular
                     .scaleEffect(2.0)
                     .tint(.purple)
+                    .foregroundColor(.red)
             } else {
                 ScrollView {
                     VStack (spacing: 20) {

@@ -8,14 +8,14 @@
 import Foundation
 
 protocol OpenAIServiceProtocol {
-    func getResponse(text: String) async throws -> String
-    func getQuiz() async throws -> [MovieQuiz]
+    func textAnswer(prompt: String) async throws -> String
+    func moviesQuiz(movies: String) async throws -> [MovieQuiz]
 }
 
 final class OpenAIService: OpenAIServiceProtocol {
     
-    func getResponse(text: String) async throws -> String {
-        let (data, response) = try await URLSession.shared.data(for: OpenAI.request())
+    func textAnswer(prompt: String) async throws -> String {
+        let (data, response) = try await URLSession.shared.data(for: OpenAI.request(type: OpenAI.UserPrompt.text(prompt)))
         guard let response = response as? HTTPURLResponse,
               response.statusCode == HTTP.successCode else {
             throw API.Error.invalidResponse
@@ -27,8 +27,8 @@ final class OpenAIService: OpenAIServiceProtocol {
             throw API.Error.invalidData
         }
     }
-    func getQuiz() async throws -> [MovieQuiz] {
-        let (data, response) = try await URLSession.shared.data(for: OpenAI.request())
+    func moviesQuiz(movies: String) async throws -> [MovieQuiz] {
+        let (data, response) = try await URLSession.shared.data(for: OpenAI.request(type: OpenAI.UserPrompt.quiz(movies)))
         guard let response = response as? HTTPURLResponse,
               response.statusCode == HTTP.successCode else {
             throw API.Error.invalidResponse

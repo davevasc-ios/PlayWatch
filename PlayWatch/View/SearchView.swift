@@ -15,7 +15,6 @@ struct SearchView: View {
             NavigationLink(destination: MediaDetailView(item: item)) {
                 SearchCellView(item: item)
             }
-//            .transition(.slide)
         }
     }
 }
@@ -40,7 +39,7 @@ struct SearchCellView: View {
                             .resizable()
                     }
                 case .failure (let error):
-                    if error.localizedDescription == "cancelled" {
+                    if error.localizedDescription.isErrorCancelled {
                         MediaPosterView(item: item)
                     } else {
                         EmptyPosterView(text: item.mediaName)
@@ -59,7 +58,6 @@ struct SearchCellView: View {
                     Text(item.mediaReleaseDate?.toString() ?? "")
                 }
             }
-//            Spacer()
         }
         .padding()
     }

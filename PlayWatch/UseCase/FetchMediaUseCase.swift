@@ -8,7 +8,7 @@
 //import Foundation
 
 protocol FetchMediaProtocol {
-    func fetchMedia(type: MovieDB.FetchType) async throws -> [Media]
+    func fetchMedia(type: MovieDB.FetchType, searchText: String?) async throws -> [Media]
 }
 struct FetchMediaUseCase: FetchMediaProtocol {
     var service: MovieDBServiceProtocol
@@ -17,20 +17,20 @@ struct FetchMediaUseCase: FetchMediaProtocol {
         self.service = service
     }
     
-    func fetchMedia(type: MovieDB.FetchType) async throws -> [Media] {
-        let x = try await service.fetchMedia(type: type)
-        for i in x {
-            print("---Title: \(i.title ?? "")")
-            print("MediaType: \(i.media)")
-            print("PosterPath: \(i.posterPath ?? "")")
-            print("Name: \(i.name ?? "")")
-            print("originalTitle: \(i.originalTitle ?? "")")
-            print("originalName: \(i.originalName ?? "")")
-            print("releaseDate: \(i.releaseDate ?? "")")
-            print("firstAirDate: \(i.firstAirDate ?? "")")
-            print("KnownForDepartment: \(i.knownForDepartment ?? "")")
-            print("mediaReleaseDate: \(String(describing: i.mediaReleaseDate))")
-        }
+    func fetchMedia(type: MovieDB.FetchType, searchText: String?) async throws -> [Media] {
+        let x = try await service.fetchMedia(type: type, searchText: searchText)
+//        for i in x {
+//            print("---Title: \(i.title ?? "")")
+//            print("MediaType: \(i.media)")
+//            print("PosterPath: \(i.posterPath ?? "")")
+//            print("Name: \(i.name ?? "")")
+//            print("originalTitle: \(i.originalTitle ?? "")")
+//            print("originalName: \(i.originalName ?? "")")
+//            print("releaseDate: \(i.releaseDate ?? "")")
+//            print("firstAirDate: \(i.firstAirDate ?? "")")
+//            print("KnownForDepartment: \(i.knownForDepartment ?? "")")
+//            print("mediaReleaseDate: \(String(describing: i.mediaReleaseDate))")
+//        }
         return x
     }
 }
