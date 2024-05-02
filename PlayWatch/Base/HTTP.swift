@@ -8,7 +8,7 @@
 import Foundation
 
 struct HTTP {
-    static let timeoutInterval: Double = 20
+    static let timeoutInterval: Double = 25
     static let successCode = 200
     
     enum Method: String {

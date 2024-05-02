@@ -17,6 +17,7 @@ final class HomeViewModel {
     var searchText = ""
     var isSearching = false
     private(set) var isLoading = false
+    private(set) var state: API.Status = .empty
     
     
 //    var users: [User] = []
@@ -47,10 +48,7 @@ final class HomeViewModel {
         }
     
     func start() async throws {
-        self.mediaSectionsList.removeAll()
-        self.isLoading = true
-        defer { self.isLoading = false
-        }
+        self.state = .loading
         do {
             // TODO: -  PROBAR GEMINI
 //            try await getGeminiResponse(prompt: "cuentame una historia de un azafato en Washington DC")
@@ -59,10 +57,24 @@ final class HomeViewModel {
                                                 items: try await fetchMediaUseCase.fetchMedia(type: section, searchText: nil).filterWithImage())
                 mediaSectionsList.append(mediaSection)
             }
+            self.state = .success
+        } catch {
+            print(error.localizedDescription)
+            self.state = .error
+        }
+        
+    }
+    
+    func refresh() async throws {
+        self.mediaSectionsList.removeAll()
+        self.mediaTrendingList.removeAll()
+        self.mediaSearchList.removeAll()
+        self.state = .empty
+        do {
+            try await self.start()
         } catch {
             print(error.localizedDescription)
         }
-        
     }
     
     func trending() async throws {

@@ -13,6 +13,7 @@ struct TabBarView: View {
     @Namespace private var animation
     @State private var tabShapePosition: CGPoint = .zero
     
+    @State private var gameViewModel = GameViewModel()
     
     init() {
         UITabBar.appearance().isHidden = true
@@ -31,6 +32,14 @@ struct TabBarView: View {
                     .tag(Tab.settings)
             }
             CustomTabBar()
+        }
+        .environment(gameViewModel)
+        .task {
+            if gameViewModel.state == .empty {
+                Task {
+                    try? await gameViewModel.start()
+                }
+            }
         }
        
     }

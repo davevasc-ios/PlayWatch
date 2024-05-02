@@ -9,7 +9,7 @@ import SwiftUI
 
 struct GameView: View {
     
-    @State private var viewModel = GameViewModel()
+    @Environment(GameViewModel.self) private var viewModel
     
     var body: some View {
         NavigationStack {
@@ -19,7 +19,7 @@ struct GameView: View {
                     .scaleEffect(2.0)
                     .tint(.purple)
                     .foregroundColor(.red)
-            } else {
+            } else if viewModel.state == .success {
                 ScrollView {
                     VStack (spacing: 20) {
                         ForEach (viewModel.quizList, id: \.self) { quiz in
@@ -29,6 +29,10 @@ struct GameView: View {
                             }
                         }
                     }
+                }
+            } else {
+                ScrollView {
+                    Text("Error loading")
                 }
             }
         }

@@ -5,7 +5,7 @@
 //  Created by David on 28/4/24.
 //
 
-
+import Foundation
 import Observation
 
 @Observable
@@ -29,16 +29,20 @@ final class GameViewModel {
     }
     
     func start() async throws {
-        self.state = .loading
-        do {
-            self.mediaList = try await fetchMediaUseCase.fetchMedia(type: .randomMovies, searchText: nil).filterWithImage()
-            self.quizList = try await getOpenAIUseCase.getMoviesQuiz(movies: self.mediaList.map { $0.mediaName }.joined(separator: ", "))
-            self.state = .success
-        }
-        catch {
-            print(error.localizedDescription)
-            self.state = .error
-        }
+//        await withTaskGroup(of: Void.self) { group in
+//            group.addTask {
+                self.state = .loading
+                do {
+                    self.mediaList = try await self.fetchMediaUseCase.fetchMedia(type: .randomMovies, searchText: nil).filterWithImage()
+                    self.quizList = try await self.getOpenAIUseCase.getMoviesQuiz(movies: self.mediaList.map { $0.mediaName }.joined(separator: ", "))
+                    self.state = .success
+                }
+                catch {
+                    print(error.localizedDescription)
+                    self.state = .error
+                }
+//            }
+//        }
     }
     
     func refresh() async throws {
@@ -52,16 +56,6 @@ final class GameViewModel {
         }
     }
 
-//    
-//    func getOpenAIResponse(movies: String) async throws {
-//        self.isLoading = true
-//        defer { self.isLoading = false }
-//        do {
-//            self.quizList = try await getOpenAIUseCase.getQuiz(movies: movies)
-//        }
-//        catch {
-//            print(error)
-//        }
-//    }
+
     
 }

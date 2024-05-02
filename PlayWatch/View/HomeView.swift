@@ -57,11 +57,13 @@ struct HomeView: View {
                 }
             }
         }
-        .refreshable {
-            try? await viewModel.start()
-        }
         .task {
-            try? await viewModel.start()
+            if viewModel.state == .empty {
+                try? await viewModel.start()
+            }
+        }
+        .refreshable {
+            try? await viewModel.refresh()
         }
     }
 }
