@@ -21,15 +21,15 @@ final class MovieDBService: MovieDBServiceProtocol {
         let (data, response) = try await URLSession.shared.data(for: MovieDB.getRequest(type: type, searchText: searchText))
         guard let response = response as? HTTPURLResponse,
               response.statusCode == HTTP.successCode else {
-            throw API.Error.invalidResponse
+            throw API.Error.invalidResponse(detail: String(data: data, encoding: .utf8).orEmpty)
         }
         do {
             let decoder = JSONDecoder()
             decoder.keyDecodingStrategy = .convertFromSnakeCase
             return try decoder.decode(MediaResults.self, from: data).results ?? []
         } catch {
-            print("Error decoding JSON: \(error)")
-            throw API.Error.invalidData
+//            print("Error decoding JSON: \(error)")
+            throw API.Error.invalidData(detail: error.localizedDescription)
         }
     }
     

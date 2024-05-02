@@ -50,8 +50,8 @@ struct API {
         case invalidKeyName(apiKeyName: String)
         case invalidApiKey(apiKeyWeb: String)
         case invalidURL
-        case invalidResponse
-        case invalidData
+        case invalidResponse(detail: String)
+        case invalidData(detail: String)
         
         var errorDescription: String? {
             switch self {
@@ -63,10 +63,10 @@ struct API {
                 return "Follow the instructions at \(apiKeyWeb) to get an API key"
             case .invalidURL:
                 return "Invalid URL found"
-            case .invalidResponse:
-                return "Invalid response found"
-            case .invalidData:
-                return "Invalid data found"
+            case let .invalidResponse(detail):
+                return "Invalid response found:\n\(detail)"
+            case let .invalidData(detail):
+                return "Invalid data found:\n\(detail)"
             }
         }
     }

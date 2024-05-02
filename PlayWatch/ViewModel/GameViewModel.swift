@@ -14,6 +14,7 @@ final class GameViewModel {
     private(set) var mediaList: [Media] = []
     private(set) var quizList: [MovieQuiz]  = []
     private(set) var isLoading = false
+    private(set) var state: API.Status = .empty
     
     
     // MARK: - Internal vars
@@ -28,15 +29,26 @@ final class GameViewModel {
     }
     
     func start() async throws {
-        //        self.mediaList.removeAll()
-        self.isLoading = true
-        defer { self.isLoading = false }
+        self.state = .loading
         do {
             self.mediaList = try await fetchMediaUseCase.fetchMedia(type: .randomMovies, searchText: nil).filterWithImage()
             self.quizList = try await getOpenAIUseCase.getMoviesQuiz(movies: self.mediaList.map { $0.mediaName }.joined(separator: ", "))
+            self.state = .success
         }
         catch {
-            print(error)
+            print(error.localizedDescription)
+            self.state = .error
+        }
+    }
+    
+    func refresh() async throws {
+        self.mediaList.removeAll()
+        self.quizList.removeAll()
+        self.state = .empty
+        do {
+            try await self.start()
+        } catch {
+            print(error.localizedDescription)
         }
     }
 

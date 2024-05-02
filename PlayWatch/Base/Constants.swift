@@ -331,18 +331,18 @@ struct OpenAI: Codable {
 
 struct Gemini: Codable {
     
-    static let endpoint = "https://generativelanguage.googleapis.com/v1beta/models/\(systemModel):generateContent?key=\(API.Key.gemini)"
     static let systemModel = "gemini-pro"
+    static let endpoint = "https://generativelanguage.googleapis.com/v1beta/models/\(systemModel):generateContent?key=\(API.Key.gemini)"
     
     static let headerFields: [String : String] = [
         HTTP.Header.Field.contentType.rawValue: HTTP.Header.Value.applicationJson.description
     ]
     
     struct Body: Codable {
-        let contents: [Content]
+        let contents: Content
     }
     struct Content: Codable {
-        let parts: [Part]
+        let parts: Part
     }
     struct Part: Codable {
         let text: String
@@ -352,7 +352,7 @@ struct Gemini: Codable {
         guard let url = URL(string: endpoint) else {
             throw API.Error.invalidURL
         }
-        let body = try? JSONEncoder().encode(Body(contents: [Content(parts: [Part(text: text)])]))
+        let body = try? JSONEncoder().encode(Body(contents: Content(parts: Part(text: text))))
         return HTTP.request(url: url, method: .post, fields: headerFields, body: body)
     }
     

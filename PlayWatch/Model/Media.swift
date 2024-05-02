@@ -39,23 +39,23 @@ struct Media: Codable, Identifiable {
     }
     var mediaImage: String {
         return self.posterPath.isValue ?
-        self.posterPath.getValue :
-        (self.profilePath.isValue ? self.profilePath.getValue : "")
+        self.posterPath.orEmpty :
+        (self.profilePath.isValue ? self.profilePath.orEmpty : "")
     }
     var mediaName: String {
         return self.title.isValue ?
-        self.title.getValue :
-        (self.name.isValue ? self.name.getValue : "")
+        self.title.orEmpty :
+        (self.name.isValue ? self.name.orEmpty : "")
     }
     var mediaOriginalName: String {
         return self.originalTitle.isValue ?
-        self.originalTitle.getValue :
-        (self.originalName.isValue ? self.originalName.getValue : "")
+        self.originalTitle.orEmpty :
+        (self.originalName.isValue ? self.originalName.orEmpty : "")
     }
     var mediaReleaseDate: Date? {
         return self.releaseDate.isValue ?
-        MovieDB.getDate(date: self.releaseDate.getValue) :
-        (self.firstAirDate.isValue ? MovieDB.getDate(date: self.firstAirDate.getValue) : nil)
+        MovieDB.getDate(date: self.releaseDate.orEmpty) :
+        (self.firstAirDate.isValue ? MovieDB.getDate(date: self.firstAirDate.orEmpty) : nil)
     }
 }
 

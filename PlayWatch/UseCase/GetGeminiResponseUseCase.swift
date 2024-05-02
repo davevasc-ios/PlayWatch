@@ -8,7 +8,7 @@
 import Foundation
 
 protocol GetGeminiResponseProtocol {
-    func getResponse() async throws -> String
+    func getResponse(prompt: String) async throws -> String
 }
 struct GetGeminiResponseUseCase: GetGeminiResponseProtocol {
     var service: GeminiServiceProtocol
@@ -17,11 +17,9 @@ struct GetGeminiResponseUseCase: GetGeminiResponseProtocol {
         self.service = service
     }
     
-    func getResponse() async throws -> String {
-        let text = "cuentame una historia de un azafato en Washington DC"
-        let x = try await service.getResponse(text: text)
-        print("GeminiResponse: \(x)")
-        return "ok"
+    func getResponse(prompt: String) async throws -> String {
+        return try await service.getResponse(prompt: prompt)
+   
     }
     
 }

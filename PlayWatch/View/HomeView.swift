@@ -156,7 +156,7 @@ struct MediaDetailView: View {
             }
             HStack {
                 Text("Overview: ")
-                Text(item.overview.getValue)
+                Text(item.overview.orEmpty)
             }
         }
     }

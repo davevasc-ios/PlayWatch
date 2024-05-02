@@ -12,7 +12,7 @@ extension Optional where Wrapped == String {
     var isNotNil: Bool { self != nil }
     var isEmpty: Bool { self?.isEmpty ?? true }
     var isValue: Bool { !self.isEmpty }
-    var getValue: String { self ?? "" }
+    var orEmpty: String { self ?? "" }
 }
 
 extension String {

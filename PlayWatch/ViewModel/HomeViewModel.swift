@@ -53,14 +53,14 @@ final class HomeViewModel {
         }
         do {
             // TODO: -  PROBAR GEMINI
-//            try await getGeminiResponse()
+//            try await getGeminiResponse(prompt: "cuentame una historia de un azafato en Washington DC")
             for section in MovieDB.homeSections {
                 let mediaSection = MediaSection(title: section.title,
                                                 items: try await fetchMediaUseCase.fetchMedia(type: section, searchText: nil).filterWithImage())
                 mediaSectionsList.append(mediaSection)
             }
         } catch {
-            print(error)
+            print(error.localizedDescription)
         }
         
     }
@@ -73,7 +73,7 @@ final class HomeViewModel {
             self.mediaSearchList = try await fetchMediaUseCase.fetchMedia(type: .trendingAll, searchText: nil).filterWithImage()
             
         } catch {
-            print(error)
+            print(error.localizedDescription)
         }
     }
     
@@ -85,7 +85,7 @@ final class HomeViewModel {
         do {
             self.mediaSearchList = try await fetchMediaUseCase.fetchMedia(type: .searchAll, searchText: self.searchText).filterWithImage()
         } catch {
-            print(error)
+            print(error.localizedDescription)
         }
     }
     
@@ -104,11 +104,12 @@ final class HomeViewModel {
         }
     }
     
-    func getGeminiResponse() async throws {
+    func getGeminiResponse(prompt: String) async throws {
         do {
-            self.errorMessage = try await getGeminiUseCase.getResponse()
+            self.errorMessage = try await getGeminiUseCase.getResponse(prompt: prompt)
         }
         catch {
+            print(error.localizedDescription)
         }
     }
     

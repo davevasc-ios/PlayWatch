@@ -13,7 +13,7 @@ struct GameView: View {
     
     var body: some View {
         NavigationStack {
-            if viewModel.isLoading {
+            if viewModel.state == .loading {
                 ProgressView("Loading Game...")
                     .progressViewStyle(CircularProgressViewStyle()) // Estilo de vista circular
                     .scaleEffect(2.0)
@@ -33,7 +33,12 @@ struct GameView: View {
             }
         }
         .task {
-            try? await viewModel.start()
+            if viewModel.state == .empty {
+                try? await viewModel.start()
+            }
+        }
+        .refreshable {
+            try? await viewModel.refresh()
         }
     }
 }
