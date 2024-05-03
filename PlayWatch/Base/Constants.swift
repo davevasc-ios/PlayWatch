@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 struct RemoteImage {
     static let dummyUrl = "https://image.tmdb.org/t/p/w500/6tJWxRfBKWGIPFkfLTod2CgCexU.jpg"

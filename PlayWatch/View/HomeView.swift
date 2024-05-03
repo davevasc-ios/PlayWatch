@@ -21,9 +21,9 @@ struct HomeView: View {
                         MediaSectionView(sections: viewModel.mediaSectionsList)
                     }
                 }
-                .navigationTitle("Home")
-                .navigationBarTitleDisplayMode(.inline)
             }
+            .navigationTitle("Home")
+            .navigationBarTitleDisplayMode(.inline)
         }
         .searchable(text: $viewModel.searchText, isPresented: $viewModel.isSearching, placement: .automatic, prompt: "busca todo lo que quieras")
         .searchSuggestions {
@@ -98,9 +98,9 @@ struct MediaFlowView: View {
     let items: [Media]
     
     var body: some View {
-        ScrollView (.horizontal, showsIndicators: false) {
-            LazyHStack (spacing: 4) {
-                ForEach (items) { item in
+        ScrollView(.horizontal, showsIndicators: false) {
+            LazyHStack(spacing: 4) {
+                ForEach(items) { item in
                     NavigationLink(destination: MediaDetailView(item: item)) {
                         MediaPosterView(item: item)
                             .containerRelativeFrame(.horizontal,

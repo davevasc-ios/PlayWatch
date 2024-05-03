@@ -1,0 +1,18 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "home.section.title" : {
+      "comment" : "Home section name of TabBar",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Home"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

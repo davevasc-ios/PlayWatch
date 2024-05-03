@@ -8,10 +8,10 @@
 import Foundation
 
 enum Tab: String, CaseIterable {
-    case home = "Home"
-    case game = "Game"
-    case favorites = "Favorites"
-    case settings = "Settings"
+    case home,
+         game,
+         favorites,
+         settings
     
     var systemImage: String {
         switch self {
@@ -24,6 +24,15 @@ enum Tab: String, CaseIterable {
     
     var index: Int {
         return Tab.allCases.firstIndex(of: self) ?? 0
+    }
+    
+    var localized: String {
+        switch self {
+        case .home: return LocalizableString.home
+        case .game: return LocalizableString.game
+        case .favorites: return LocalizableString.favorites
+        case .settings: return LocalizableString.settings
+        }
     }
     
 }

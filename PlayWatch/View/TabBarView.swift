@@ -14,6 +14,8 @@ struct TabBarView: View {
     @State private var tabShapePosition: CGPoint = .zero
     
     @State private var gameViewModel = GameViewModel()
+    @State private var languageManager = LanguageManager()
+//    @Bindable var languageManager: LanguageManager
     
     init() {
         UITabBar.appearance().isHidden = true
@@ -28,7 +30,7 @@ struct TabBarView: View {
                     .tag(Tab.game)
                 FavoritesView()
                     .tag(Tab.favorites)
-                Color.systemRandom.ignoresSafeArea()
+                SettingsView(languageManager: languageManager)
                     .tag(Tab.settings)
             }
             CustomTabBar()
@@ -89,7 +91,7 @@ struct TabBarItem: View {
                             .matchedGeometryEffect(id: "ACTIVETAB", in: animation)
                     }
                 }
-            Text(tab.rawValue)
+            Text(tab.localized)
                 .font(.caption)
                 .foregroundColor(currentTab == tab ? tint : .gray)
         }

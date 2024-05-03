@@ -1,0 +1,143 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "%@ %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ %2$@"
+          }
+        }
+      }
+    },
+    "Apariencia" : {
+
+    },
+    "busca todo lo que quieras" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Busca todo lo que quieras"
+          }
+        }
+      }
+    },
+    "Coming soon for Testers like..." : {
+
+    },
+    "Error loading" : {
+
+    },
+    "Game" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Game"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Juego"
+          }
+        }
+      }
+    },
+    "Hello" : {
+
+    },
+    "Home" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inicio"
+          }
+        }
+      }
+    },
+    "Idioma" : {
+
+    },
+    "Loading Game..." : {
+
+    },
+    "Media Type: " : {
+
+    },
+    "Name: " : {
+
+    },
+    "Original Name: " : {
+
+    },
+    "Overview: " : {
+
+    },
+    "Punch" : {
+
+    },
+    "Release : " : {
+
+    },
+    "tabbar.favorites" : {
+      "comment" : "Favorites section of TabBar",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Favorites"
+          }
+        }
+      }
+    },
+    "tabbar.game" : {
+      "comment" : "Game section of TabBar",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Game"
+          }
+        }
+      }
+    },
+    "tabbar.home" : {
+      "comment" : "Home section name of TabBar",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Home"
+          }
+        }
+      }
+    },
+    "tabbar.settings" : {
+      "comment" : "Settings section of TabBar",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Settings"
+          }
+        }
+      }
+    },
+    "Tema" : {
+
+    },
+    "Url: " : {
+
+    }
+  },
+  "version" : "1.0"
+}

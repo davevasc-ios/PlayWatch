@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		55034E922BE5317D00BCBD0E /* LocalizableTabBar.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 55034E912BE5317D00BCBD0E /* LocalizableTabBar.xcstrings */; };
+		55034E942BE5356000BCBD0E /* LocalizableHome.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 55034E932BE5356000BCBD0E /* LocalizableHome.xcstrings */; };
+		55034E962BE5384A00BCBD0E /* LocalizableString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55034E952BE5384A00BCBD0E /* LocalizableString.swift */; };
+		55034E982BE53DF300BCBD0E /* LocalizableSettings.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 55034E972BE53DF300BCBD0E /* LocalizableSettings.xcstrings */; };
 		55077AD92BD2CD6600E9B681 /* CacheAsyncImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55077AD82BD2CD6600E9B681 /* CacheAsyncImage.swift */; };
 		550C5F3E2BBA141A005B853B /* MovieDBService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 550C5F3D2BBA141A005B853B /* MovieDBService.swift */; };
 		550C5F402BBA142E005B853B /* OpenAIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 550C5F3F2BBA142E005B853B /* OpenAIService.swift */; };
@@ -26,6 +30,11 @@
 		5576C3AE2BB9B13F00E511DE /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576C3AD2BB9B13F00E511DE /* Constants.swift */; };
 		5576C3B02BB9C10D00E511DE /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576C3AF2BB9C10D00E511DE /* API.swift */; };
 		5576C3B22BB9C7C300E511DE /* APIKey-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5576C3B12BB9C7C300E511DE /* APIKey-Info.plist */; };
+		557F55602BE416C200EEAA2F /* LanguageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 557F555F2BE416C200EEAA2F /* LanguageManager.swift */; };
+		557F55622BE418C400EEAA2F /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = 557F55612BE418C400EEAA2F /* Language.swift */; };
+		557F55642BE425DE00EEAA2F /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 557F55632BE425DE00EEAA2F /* Localizable.xcstrings */; };
+		557F55662BE4267B00EEAA2F /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 557F55652BE4267B00EEAA2F /* SettingsView.swift */; };
+		557F55682BE4272F00EEAA2F /* LanguageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 557F55672BE4272F00EEAA2F /* LanguageView.swift */; };
 		55AFE6082BD5160E0015E411 /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55AFE6072BD5160E0015E411 /* DateExtension.swift */; };
 		55AFE60A2BD51CA60015E411 /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55AFE6092BD51CA60015E411 /* ArrayExtension.swift */; };
 		55AFE60C2BD520E20015E411 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55AFE60B2BD520E20015E411 /* GameView.swift */; };
@@ -63,6 +72,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		55034E912BE5317D00BCBD0E /* LocalizableTabBar.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = LocalizableTabBar.xcstrings; sourceTree = "<group>"; };
+		55034E932BE5356000BCBD0E /* LocalizableHome.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = LocalizableHome.xcstrings; sourceTree = "<group>"; };
+		55034E952BE5384A00BCBD0E /* LocalizableString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableString.swift; sourceTree = "<group>"; };
+		55034E972BE53DF300BCBD0E /* LocalizableSettings.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = LocalizableSettings.xcstrings; sourceTree = "<group>"; };
 		55077AD82BD2CD6600E9B681 /* CacheAsyncImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheAsyncImage.swift; sourceTree = "<group>"; };
 		550C5F3D2BBA141A005B853B /* MovieDBService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDBService.swift; sourceTree = "<group>"; };
 		550C5F3F2BBA142E005B853B /* OpenAIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAIService.swift; sourceTree = "<group>"; };
@@ -86,6 +99,11 @@
 		5576C3AD2BB9B13F00E511DE /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		5576C3AF2BB9C10D00E511DE /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		5576C3B12BB9C7C300E511DE /* APIKey-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "APIKey-Info.plist"; sourceTree = "<group>"; };
+		557F555F2BE416C200EEAA2F /* LanguageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageManager.swift; sourceTree = "<group>"; };
+		557F55612BE418C400EEAA2F /* Language.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Language.swift; sourceTree = "<group>"; };
+		557F55632BE425DE00EEAA2F /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		557F55652BE4267B00EEAA2F /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		557F55672BE4272F00EEAA2F /* LanguageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageView.swift; sourceTree = "<group>"; };
 		55AFE6072BD5160E0015E411 /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
 		55AFE6092BD51CA60015E411 /* ArrayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
 		55AFE60B2BD520E20015E411 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
@@ -158,6 +176,8 @@
 				55AFE60B2BD520E20015E411 /* GameView.swift */,
 				55AFE60D2BD5C51E0015E411 /* SearchView.swift */,
 				55E51A3B2BDEB1FF00A8541B /* FavoritesView.swift */,
+				557F55652BE4267B00EEAA2F /* SettingsView.swift */,
+				557F55672BE4272F00EEAA2F /* LanguageView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -260,6 +280,13 @@
 				55077AD82BD2CD6600E9B681 /* CacheAsyncImage.swift */,
 				55AFE6072BD5160E0015E411 /* DateExtension.swift */,
 				55AFE6092BD51CA60015E411 /* ArrayExtension.swift */,
+				557F555F2BE416C200EEAA2F /* LanguageManager.swift */,
+				557F55612BE418C400EEAA2F /* Language.swift */,
+				557F55632BE425DE00EEAA2F /* Localizable.xcstrings */,
+				55034E912BE5317D00BCBD0E /* LocalizableTabBar.xcstrings */,
+				55034E932BE5356000BCBD0E /* LocalizableHome.xcstrings */,
+				55034E952BE5384A00BCBD0E /* LocalizableString.swift */,
+				55034E972BE53DF300BCBD0E /* LocalizableSettings.xcstrings */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -352,6 +379,13 @@
 			knownRegions = (
 				en,
 				Base,
+				es,
+				eu,
+				ca,
+				fr,
+				it,
+				"pt-PT",
+				de,
 			);
 			mainGroup = 55212BA42BA7A0C400080A71;
 			packageReferences = (
@@ -372,8 +406,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55034E982BE53DF300BCBD0E /* LocalizableSettings.xcstrings in Resources */,
 				5576C3B22BB9C7C300E511DE /* APIKey-Info.plist in Resources */,
+				55034E922BE5317D00BCBD0E /* LocalizableTabBar.xcstrings in Resources */,
 				55212BBB2BA7A0C500080A71 /* Preview Assets.xcassets in Resources */,
+				55034E942BE5356000BCBD0E /* LocalizableHome.xcstrings in Resources */,
+				557F55642BE425DE00EEAA2F /* Localizable.xcstrings in Resources */,
 				55212BB72BA7A0C500080A71 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -403,14 +441,18 @@
 				55CC9E692BBB504500298EE2 /* HomeViewModel.swift in Sources */,
 				55D73FE32BCDB2A600F337FC /* TabShape.swift in Sources */,
 				5549D57C2BC0738700B934CD /* OpenAIModel.swift in Sources */,
+				557F55682BE4272F00EEAA2F /* LanguageView.swift in Sources */,
 				5549D57E2BC0756C00B934CD /* GetOpenAIResponseUseCase.swift in Sources */,
 				55077AD92BD2CD6600E9B681 /* CacheAsyncImage.swift in Sources */,
+				557F55602BE416C200EEAA2F /* LanguageManager.swift in Sources */,
 				55E4CC822BCADB2C0048EF56 /* ColorExtension.swift in Sources */,
 				5575C70F2BBF694300CD3918 /* Media.swift in Sources */,
 				550C5F422BBA1448005B853B /* GeminiService.swift in Sources */,
 				550C5F402BBA142E005B853B /* OpenAIService.swift in Sources */,
 				55212BB32BA7A0C400080A71 /* ContentView.swift in Sources */,
+				55034E962BE5384A00BCBD0E /* LocalizableString.swift in Sources */,
 				55AFE6082BD5160E0015E411 /* DateExtension.swift in Sources */,
+				557F55622BE418C400EEAA2F /* Language.swift in Sources */,
 				5576C3B02BB9C10D00E511DE /* API.swift in Sources */,
 				55AFE60C2BD520E20015E411 /* GameView.swift in Sources */,
 				55E4CC802BCA9A050048EF56 /* StringExtension.swift in Sources */,
@@ -418,6 +460,7 @@
 				5549D57A2BC0633500B934CD /* FetchMediaUseCase.swift in Sources */,
 				55D425CB2BCC4669001FA57C /* Tab.swift in Sources */,
 				55E51A3E2BDEB26600A8541B /* GameViewModel.swift in Sources */,
+				557F55662BE4267B00EEAA2F /* SettingsView.swift in Sources */,
 				55B2540F2BC29ACC006ACD43 /* HTTP.swift in Sources */,
 				55B254132BC2AF6D006ACD43 /* GetGeminiResponseUseCase.swift in Sources */,
 				55212BB52BA7A0C400080A71 /* Item.swift in Sources */,
