@@ -12,33 +12,22 @@ import Observation
 final class LanguageManager {
     
     private let defaults = UserDefaults.standard
-    private let currentLocaleKey = "com.playwatch.currentLocale"
+    private let currentLanguageCodeKey = "com.playwatch.currentLanguageCode"
     
-    init() {
-        self.start()
-    }
-    
-    var currentLanguage: Language {
+    var currentLanguageCode: String {
         get {
-            access (keyPath: \.currentLanguage)
-            guard let locale = defaults.string(forKey: currentLocaleKey),
-                  let lang = Language(rawValue: locale) else {
-                return .system
+            access (keyPath: \.currentLanguageCode)
+            guard let locale = defaults.string(forKey: currentLanguageCodeKey),
+                  let lang = AppLanguage(rawValue: locale) else {
+                return Locale.current.language.languageCode?.identifier ?? AppLanguage.english.rawValue
             }
-            return lang
+            return lang.rawValue
         }
         set {
-            withMutation(keyPath: \.currentLanguage) {
-                defaults.set(newValue.rawValue, forKey: currentLocaleKey)
+            withMutation(keyPath: \.currentLanguageCode) {
+                defaults.set(newValue, forKey: currentLanguageCodeKey)
             }
         }
-    }
-    
-    private func start() {
-        
-    }
-    private func changeAppLanguage() {
-        
     }
     
 }

@@ -20,7 +20,7 @@ struct CacheAsyncImage<Content>: View where Content: View {
         if let url = url, let cached = ImageCache[url] {
             content(.success(cached))
         } else{
-            AsyncImage(url: url) { phase in
+            AsyncImage(url: url, transaction: .init(animation: .bouncy)) { phase in
                 cacheAndRender(phase: phase)
             }
         }

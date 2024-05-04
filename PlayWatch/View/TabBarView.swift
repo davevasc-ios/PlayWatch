@@ -14,10 +14,11 @@ struct TabBarView: View {
     @State private var tabShapePosition: CGPoint = .zero
     
     @State private var gameViewModel = GameViewModel()
-    @State private var languageManager = LanguageManager()
-//    @Bindable var languageManager: LanguageManager
     
-    init() {
+    @Bindable var languageManager: LanguageManager
+    
+    init(languageManager: LanguageManager) {
+        self.languageManager = languageManager
         UITabBar.appearance().isHidden = true
     }
     
@@ -43,7 +44,7 @@ struct TabBarView: View {
                 }
             }
         }
-       
+        
     }
     
     @ViewBuilder
@@ -118,5 +119,5 @@ struct TabBarItem: View {
 }
 
 #Preview {
-    TabBarView()
+    TabBarView(languageManager: LanguageManager())
 }

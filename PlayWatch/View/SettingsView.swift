@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SettingsView: View {
-        
+    
     @Bindable var languageManager: LanguageManager
     
     @State private var selectedTheme: Theme = .light
@@ -31,18 +31,15 @@ struct SettingsView: View {
                             Text(theme.rawValue).tag(theme)
                         }
                     }
-                    Picker("Idioma", selection: $languageManager.currentLanguage) {
-                        ForEach(Language.allCases) { language in
+                    Picker("Idioma", selection: $languageManager.currentLanguageCode) {
+                        ForEach(AppLanguage.allCases) { language in
                             Text("\(language.emoji) \(language.localized)")
+                                .tag(language.rawValue)
                         }
                     }
-                    .onChange(of: languageManager.currentLanguage) {
-                        
-                    }
                 }
-                
             }
-            .navigationTitle(Tab.settings.localized)
+            .navigationTitle(Text(Tab.settings.localized))
         }
     }
 }

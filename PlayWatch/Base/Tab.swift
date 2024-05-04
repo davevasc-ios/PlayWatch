@@ -26,7 +26,7 @@ enum Tab: String, CaseIterable {
         return Tab.allCases.firstIndex(of: self) ?? 0
     }
     
-    var localized: String {
+    var localized: LocalizedStringResource {
         switch self {
         case .home: return LocalizableString.home
         case .game: return LocalizableString.game

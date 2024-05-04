@@ -16,9 +16,9 @@ struct LanguageView: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                ForEach(Language.allCases) { lang in
+                ForEach(AppLanguage.allCases) { lang in
                     Button {
-                        languageManager.currentLanguage = lang
+                        languageManager.currentLanguageCode = lang.rawValue
                         dismiss()
                     } label: {
                         HStack {

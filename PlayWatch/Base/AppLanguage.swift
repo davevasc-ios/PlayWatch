@@ -7,20 +7,20 @@
 
 import Foundation
 
-enum Language: String, CaseIterable, Identifiable {
+enum AppLanguage: String, CaseIterable, Identifiable {
     case system,
-         english,
-         spanish,
-         basque,
-         catalan,
-         french,
-         italian,
-         portuguese,
-         german
+         english = "en",
+         spanish = "es",
+         basque = "eu",
+         catalan = "ca",
+         french = "fr",
+         italian = "it",
+         portuguese = "pt-PT",
+         german = "de"
     
     var id: Self { self }
     
-    var localized: String {
+    var localized: LocalizedStringResource {
         switch self {
         case .system: return LocalizableString.systemLanguageName
         case .english: return LocalizableString.englishLanguageName
@@ -33,9 +33,7 @@ enum Language: String, CaseIterable, Identifiable {
         case .german: return LocalizableString.germanLanguageName
         }
     }
-}
-
-extension Language {
+    
     var emoji: String {
         switch self {
         case .system: "🌍"

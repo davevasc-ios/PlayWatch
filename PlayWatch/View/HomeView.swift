@@ -22,7 +22,7 @@ struct HomeView: View {
                     }
                 }
             }
-            .navigationTitle("Home")
+            .navigationTitle(Text(Tab.home.localized))
             .navigationBarTitleDisplayMode(.inline)
         }
         .searchable(text: $viewModel.searchText, isPresented: $viewModel.isSearching, placement: .automatic, prompt: "busca todo lo que quieras")

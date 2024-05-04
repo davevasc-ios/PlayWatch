@@ -16,7 +16,7 @@ struct RemoteImage {
     }
 }
 
-enum AppLanguage {
+enum ApiLanguage {
     static let spanish = (englishName: "Spanish", nativeName: "Español", language: "es", region: "ES")
     static let basque = (englishName: "Basque", nativeName: "Euskera", language: "eu", region: "ES")
     static let catalan = (englishName: "Catalan", nativeName: "Català", language: "ca", region: "ES")
@@ -29,7 +29,7 @@ enum AppLanguage {
 }
 
 struct Current {
-    static var language = AppLanguage.spanish
+    static var language = ApiLanguage.spanish
     static var theme = ""
 }
 

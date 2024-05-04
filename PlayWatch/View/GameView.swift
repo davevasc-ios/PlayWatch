@@ -30,12 +30,16 @@ struct GameView: View {
                         }
                     }
                 }
+                .navigationTitle(Text(Tab.game.localized))
             } else {
                 ScrollView {
                     Text("Error loading")
                 }
             }
+            
         }
+        
+
         .task {
             if viewModel.state == .empty {
                 try? await viewModel.start()
