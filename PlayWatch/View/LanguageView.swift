@@ -10,7 +10,7 @@ import SwiftUI
 struct LanguageView: View {
     
     @Environment(\.dismiss) var dismiss
-    @Environment(LanguageManager.self) private var languageManager
+    @Environment(LocaleManager.self) private var languageManager
 
     
     var body: some View {
@@ -18,7 +18,7 @@ struct LanguageView: View {
             ScrollView {
                 ForEach(AppLanguage.allCases) { lang in
                     Button {
-                        languageManager.currentLanguageCode = lang.rawValue
+                        languageManager.appLanguage = lang
                         dismiss()
                     } label: {
                         HStack {

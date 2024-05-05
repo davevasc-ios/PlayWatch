@@ -30,7 +30,7 @@
 		5576C3AE2BB9B13F00E511DE /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576C3AD2BB9B13F00E511DE /* Constants.swift */; };
 		5576C3B02BB9C10D00E511DE /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576C3AF2BB9C10D00E511DE /* API.swift */; };
 		5576C3B22BB9C7C300E511DE /* APIKey-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5576C3B12BB9C7C300E511DE /* APIKey-Info.plist */; };
-		557F55602BE416C200EEAA2F /* LanguageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 557F555F2BE416C200EEAA2F /* LanguageManager.swift */; };
+		557F55602BE416C200EEAA2F /* LocaleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 557F555F2BE416C200EEAA2F /* LocaleManager.swift */; };
 		557F55622BE418C400EEAA2F /* AppLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 557F55612BE418C400EEAA2F /* AppLanguage.swift */; };
 		557F55642BE425DE00EEAA2F /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 557F55632BE425DE00EEAA2F /* Localizable.xcstrings */; };
 		557F55662BE4267B00EEAA2F /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 557F55652BE4267B00EEAA2F /* SettingsView.swift */; };
@@ -99,7 +99,7 @@
 		5576C3AD2BB9B13F00E511DE /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		5576C3AF2BB9C10D00E511DE /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		5576C3B12BB9C7C300E511DE /* APIKey-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "APIKey-Info.plist"; sourceTree = "<group>"; };
-		557F555F2BE416C200EEAA2F /* LanguageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageManager.swift; sourceTree = "<group>"; };
+		557F555F2BE416C200EEAA2F /* LocaleManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocaleManager.swift; sourceTree = "<group>"; };
 		557F55612BE418C400EEAA2F /* AppLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLanguage.swift; sourceTree = "<group>"; };
 		557F55632BE425DE00EEAA2F /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		557F55652BE4267B00EEAA2F /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -280,7 +280,7 @@
 				55077AD82BD2CD6600E9B681 /* CacheAsyncImage.swift */,
 				55AFE6072BD5160E0015E411 /* DateExtension.swift */,
 				55AFE6092BD51CA60015E411 /* ArrayExtension.swift */,
-				557F555F2BE416C200EEAA2F /* LanguageManager.swift */,
+				557F555F2BE416C200EEAA2F /* LocaleManager.swift */,
 				557F55612BE418C400EEAA2F /* AppLanguage.swift */,
 				557F55632BE425DE00EEAA2F /* Localizable.xcstrings */,
 				55034E912BE5317D00BCBD0E /* LocalizableTabBar.xcstrings */,
@@ -444,7 +444,7 @@
 				557F55682BE4272F00EEAA2F /* LanguageView.swift in Sources */,
 				5549D57E2BC0756C00B934CD /* GetOpenAIResponseUseCase.swift in Sources */,
 				55077AD92BD2CD6600E9B681 /* CacheAsyncImage.swift in Sources */,
-				557F55602BE416C200EEAA2F /* LanguageManager.swift in Sources */,
+				557F55602BE416C200EEAA2F /* LocaleManager.swift in Sources */,
 				55E4CC822BCADB2C0048EF56 /* ColorExtension.swift in Sources */,
 				5575C70F2BBF694300CD3918 /* Media.swift in Sources */,
 				550C5F422BBA1448005B853B /* GeminiService.swift in Sources */,

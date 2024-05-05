@@ -15,10 +15,10 @@ struct TabBarView: View {
     
     @State private var gameViewModel = GameViewModel()
     
-    @Bindable var languageManager: LanguageManager
+    @Bindable var localeManager: LocaleManager
     
-    init(languageManager: LanguageManager) {
-        self.languageManager = languageManager
+    init(languageManager: LocaleManager) {
+        self.localeManager = languageManager
         UITabBar.appearance().isHidden = true
     }
     
@@ -31,7 +31,7 @@ struct TabBarView: View {
                     .tag(Tab.game)
                 FavoritesView()
                     .tag(Tab.favorites)
-                SettingsView(languageManager: languageManager)
+                SettingsView(localeManager: localeManager)
                     .tag(Tab.settings)
             }
             CustomTabBar()
@@ -119,5 +119,5 @@ struct TabBarItem: View {
 }
 
 #Preview {
-    TabBarView(languageManager: LanguageManager())
+    TabBarView(languageManager: LocaleManager())
 }
