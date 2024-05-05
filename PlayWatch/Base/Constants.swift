@@ -68,7 +68,7 @@ struct MovieDB {
         static private func randomShortBy() -> String {
             let randomShortBy = validShortBy.randomElement() ?? .popularity
             let randomShortDirection = SortDirection.allCases.randomElement() ?? .asc
-            return "\(randomShortBy)\(randomShortDirection)"
+            return "\(randomShortBy.rawValue)\(randomShortDirection.rawValue)"
         }
         
         static private func currentDateString(daysOffset: Int = 0) -> String {
@@ -263,9 +263,10 @@ struct MovieDB {
     }
 }
 
+
+
 struct OpenAI: Codable {
     
-    static let quizLanguage = "Spanish"
     static let endpoint = "https://api.openai.com/v1/chat/completions"
     static let systemModel = "gpt-3.5-turbo"
     
@@ -280,17 +281,17 @@ struct OpenAI: Codable {
     }
     
     enum UserPrompt: CustomStringConvertible {
-        case quiz(String),
+        case quiz(String, String),
              text(String)
         
         var description: String {
             switch self {
-            case .quiz(let movies):
+            case .quiz(let movies, let language):
                 return
     """
     Give me a just a valid JSON Array of following structure, each one, about one of these movies (no 'movies' field, no 'data' field, just array): \(movies).
     
-    Field 1: 'question' (String), a very difficult and original question whose answer is true or false (Ensure that the number of true answers is roughly equal to the number of false answers), about the corresponding movie, in '\(quizLanguage)' language
+    Field 1: 'question' (String), a very difficult and original question whose answer is true or false (Ensure that the number of true answers is roughly equal to the number of false answers), about the corresponding movie, in '\(language)' language
     Field 2: 'result' (Boolean), the answer of the previous question, which can only be true or false
     """
             case .text(let text):

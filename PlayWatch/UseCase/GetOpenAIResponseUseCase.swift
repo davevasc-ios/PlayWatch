@@ -9,7 +9,7 @@ import Foundation
 
 protocol GetOpenAIResponseProtocol {
     func getTextAnswer(prompt: String) async throws -> String
-    func getMoviesQuiz(movies: String) async throws -> [MovieQuiz]
+    func getMoviesQuiz(movies: String, language: String) async throws -> [MovieQuiz]
 }
 struct GetOpenAIResponseUseCase: GetOpenAIResponseProtocol {
     var service: OpenAIServiceProtocol
@@ -22,8 +22,8 @@ struct GetOpenAIResponseUseCase: GetOpenAIResponseProtocol {
        return try await service.textAnswer(prompt: prompt)
     }
     
-    func getMoviesQuiz(movies: String) async throws -> [MovieQuiz] {
-        return try await service.moviesQuiz(movies: movies)
+    func getMoviesQuiz(movies: String, language: String) async throws -> [MovieQuiz] {
+        return try await service.moviesQuiz(movies: movies, language: language)
     }
     
 }

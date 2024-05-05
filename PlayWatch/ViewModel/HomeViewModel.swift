@@ -48,21 +48,24 @@ final class HomeViewModel {
         }
     
     func start() async throws {
-        self.state = .loading
-        do {
-            // TODO: -  PROBAR GEMINI
-//            try await getGeminiResponse(prompt: "cuentame una historia de un azafato en Washington DC")
-            for section in MovieDB.homeSections {
-                let mediaSection = MediaSection(title: section.title,
-                                                items: try await fetchMediaUseCase.fetchMedia(type: section, searchText: nil).filterWithImage())
-                mediaSectionsList.append(mediaSection)
+        await withTaskGroup(of: Void.self) { group in
+            group.addTask {
+                self.state = .loading
+                do {
+                    // TODO: -  PROBAR GEMINI
+                    //            try await getGeminiResponse(prompt: "cuentame una historia de un azafato en Washington DC")
+                    for section in MovieDB.homeSections {
+                        let mediaSection = MediaSection(title: section.title,
+                                                        items: try await self.fetchMediaUseCase.fetchMedia(type: section, searchText: nil).filterWithImage())
+                        self.mediaSectionsList.append(mediaSection)
+                    }
+                    self.state = .success
+                } catch {
+                    print(error.localizedDescription)
+                    self.state = .error
+                }
             }
-            self.state = .success
-        } catch {
-            print(error.localizedDescription)
-            self.state = .error
         }
-        
     }
     
     func refresh() async throws {

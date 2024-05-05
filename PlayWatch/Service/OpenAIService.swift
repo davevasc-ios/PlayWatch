@@ -9,7 +9,7 @@ import Foundation
 
 protocol OpenAIServiceProtocol {
     func textAnswer(prompt: String) async throws -> String
-    func moviesQuiz(movies: String) async throws -> [MovieQuiz]
+    func moviesQuiz(movies: String, language: String) async throws -> [MovieQuiz]
 }
 
 final class OpenAIService: OpenAIServiceProtocol {
@@ -26,8 +26,8 @@ final class OpenAIService: OpenAIServiceProtocol {
             throw API.Error.invalidData(detail: error.localizedDescription)
         }
     }
-    func moviesQuiz(movies: String) async throws -> [MovieQuiz] {
-        let (data, response) = try await URLSession.shared.data(for: OpenAI.request(type: OpenAI.UserPrompt.quiz(movies)))
+    func moviesQuiz(movies: String, language: String) async throws -> [MovieQuiz] {
+        let (data, response) = try await URLSession.shared.data(for: OpenAI.request(type: OpenAI.UserPrompt.quiz(movies, language)))
         guard let response = response as? HTTPURLResponse,
               response.statusCode == HTTP.successCode else {
             throw API.Error.invalidResponse(detail: String(data: data, encoding: .utf8).orEmpty)

@@ -33,4 +33,12 @@ final class LocaleManager {
     var appLocale: Locale {
         self.appLanguage == AppLanguage.system ? Locale.current : Locale(identifier: self.appLanguage.rawValue)
     }
+    
+    var languageName: String {
+        let lenguageCode = self.appLocale.language.languageCode?.identifier ?? AppLanguage.english.rawValue
+        guard let languageName = Locale(identifier: AppLanguage.english.rawValue).localizedString(forLanguageCode: lenguageCode) else {
+            return "English"
+        }
+        return languageName
+    }
 }

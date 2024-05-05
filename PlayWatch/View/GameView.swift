@@ -11,6 +11,8 @@ struct GameView: View {
     
     @Environment(GameViewModel.self) private var viewModel
     
+    @Bindable var localeManager: LocaleManager
+    
     var body: some View {
         NavigationStack {
             if viewModel.state == .loading {
@@ -30,27 +32,30 @@ struct GameView: View {
                         }
                     }
                 }
+                .refreshable {
+                    try? await viewModel.refresh(language: localeManager.languageName)
+                }
                 .navigationTitle(Text(Tab.game.localized))
             } else {
                 ScrollView {
                     Text("Error loading")
                 }
+                .refreshable {
+                    try? await viewModel.refresh(language: localeManager.languageName)
+                }
             }
-            
+        }
+        .onAppear {
+            Task {
+                if viewModel.state == .empty {
+                    try? await viewModel.start(language: localeManager.languageName)
+                }
+            }
         }
         
-
-        .task {
-            if viewModel.state == .empty {
-                try? await viewModel.start()
-            }
-        }
-        .refreshable {
-            try? await viewModel.refresh()
-        }
     }
 }
 
 #Preview {
-    GameView()
+    GameView(localeManager: LocaleManager())
 }

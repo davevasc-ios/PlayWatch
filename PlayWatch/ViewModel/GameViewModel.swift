@@ -13,7 +13,6 @@ final class GameViewModel {
     
     private(set) var mediaList: [Media] = []
     private(set) var quizList: [MovieQuiz]  = []
-    private(set) var isLoading = false
     private(set) var state: API.Status = .empty
     
     
@@ -28,32 +27,32 @@ final class GameViewModel {
         self.getOpenAIUseCase = getOpenAIUseCase
     }
     
-    func start() async throws {
-//        await withTaskGroup(of: Void.self) { group in
-//            group.addTask {
+    func start(language: String) async throws {
+        await withTaskGroup(of: Void.self) { group in
+            group.addTask {
                 self.state = .loading
                 do {
                     self.mediaList = try await self.fetchMediaUseCase.fetchMedia(type: .randomMovies, searchText: nil).filterWithImage()
-                    self.quizList = try await self.getOpenAIUseCase.getMoviesQuiz(movies: self.mediaList.map { $0.mediaName }.joined(separator: ", "))
+                    self.quizList = try await self.getOpenAIUseCase.getMoviesQuiz(movies: self.mediaList.map { $0.mediaName }.joined(separator: ", "), language: language)
                     self.state = .success
                 }
                 catch {
                     print(error.localizedDescription)
                     self.state = .error
                 }
-//            }
-//        }
+            }
+        }
     }
     
-    func refresh() async throws {
+    func clean() {
         self.mediaList.removeAll()
         self.quizList.removeAll()
         self.state = .empty
-        do {
-            try await self.start()
-        } catch {
-            print(error.localizedDescription)
-        }
+    }
+    
+    func refresh(language: String) async throws {
+        self.clean()
+        try? await self.start(language: language)
     }
 
 

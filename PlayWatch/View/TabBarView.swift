@@ -27,11 +27,11 @@ struct TabBarView: View {
             TabView(selection: $currentTab) {
                 HomeView()
                     .tag(Tab.home)
-                GameView()
+                GameView(localeManager: localeManager)
                     .tag(Tab.game)
                 FavoritesView()
                     .tag(Tab.favorites)
-                SettingsView(localeManager: localeManager)
+                SettingsView(localeManager: localeManager, currentTab: $currentTab)
                     .tag(Tab.settings)
             }
             CustomTabBar()
@@ -40,7 +40,7 @@ struct TabBarView: View {
         .task {
             if gameViewModel.state == .empty {
                 Task {
-                    try? await gameViewModel.start()
+                    try? await gameViewModel.start(language: localeManager.languageName)
                 }
             }
         }

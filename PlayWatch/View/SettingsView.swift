@@ -10,7 +10,9 @@ import SwiftUI
 struct SettingsView: View {
     
     @Bindable var localeManager: LocaleManager
-    
+    @Binding var currentTab: Tab
+    @Environment(GameViewModel.self) private var gameViewModel
+
     @State private var selectedTheme: Theme = .light
     
     enum Theme: String, CaseIterable, Identifiable {
@@ -37,6 +39,14 @@ struct SettingsView: View {
                                 .tag(language)
                         }
                     }
+                    .onChange(of: localeManager.appLanguage) {
+                        if gameViewModel.state != .loading {
+                            gameViewModel.clean()
+                        }
+                    }
+                    .onChange(of: currentTab) {
+//                        gameViewModel.clean()
+                    }
                 }
             }
             .navigationTitle(Text(Tab.settings.localized))
@@ -44,6 +54,6 @@ struct SettingsView: View {
     }
 }
 
-#Preview {
-    SettingsView(localeManager: LocaleManager())
-}
+//#Preview {
+//    SettingsView(localeManager: LocaleManager(), currentTab: Binding<Tab.settings>)
+//}
