@@ -17,8 +17,8 @@ final class LocaleManager {
     var appLanguage: AppLanguage {
         get {
             access(keyPath: \.appLanguage)
-            guard let locale = defaults.string(forKey: appLanguageKey),
-                  let lang = AppLanguage(rawValue: locale) else {
+            guard let key = defaults.string(forKey: appLanguageKey),
+                  let lang = AppLanguage(rawValue: key) else {
                 return .system
             }
             return lang
@@ -35,10 +35,6 @@ final class LocaleManager {
     }
     
     var languageName: String {
-        let lenguageCode = self.appLocale.language.languageCode?.identifier ?? AppLanguage.english.rawValue
-        guard let languageName = Locale(identifier: AppLanguage.english.rawValue).localizedString(forLanguageCode: lenguageCode) else {
-            return "English"
-        }
-        return languageName
+        String(localized: AppLanguage(rawValue: self.appLocale.identifier)?.localized.defaultValue ?? AppLanguage.english.localized.defaultValue)
     }
 }
