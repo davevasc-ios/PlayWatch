@@ -8,7 +8,7 @@
 //import Foundation
 
 protocol FetchMediaProtocol {
-    func fetchMedia(type: MovieDB.FetchType, searchText: String?) async throws -> [Media]
+    func fetchMedia(type: MovieDB.FetchType, locale: MovieDB.Locale, searchText: String?) async throws -> [Media]
 }
 struct FetchMediaUseCase: FetchMediaProtocol {
     var service: MovieDBServiceProtocol
@@ -17,8 +17,8 @@ struct FetchMediaUseCase: FetchMediaProtocol {
         self.service = service
     }
     
-    func fetchMedia(type: MovieDB.FetchType, searchText: String?) async throws -> [Media] {
-        let x = try await service.fetchMedia(type: type, searchText: searchText)
+    func fetchMedia(type: MovieDB.FetchType, locale: MovieDB.Locale, searchText: String?) async throws -> [Media] {
+        let x = try await service.fetchMedia(type: type, locale: locale, searchText: searchText)
 //        for i in x {
 //            print("---Title: \(i.title ?? "")")
 //            print("MediaType: \(i.media)")

@@ -64,5 +64,5 @@ struct SearchCellView: View {
 }
 
 #Preview {
-    HomeView()
+    HomeView(localeManager: LocaleManager())
 }

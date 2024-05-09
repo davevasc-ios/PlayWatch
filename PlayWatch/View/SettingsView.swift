@@ -47,6 +47,12 @@ struct SettingsView: View {
                     .onChange(of: currentTab) {
 //                        gameViewModel.clean()
                     }
+                    Picker("Region", selection: $localeManager.appRegion) {
+                        ForEach(AppRegion.allCases) { region in
+                            Text("\(region.rawValue)")
+                                .tag(region)
+                        }
+                    }
                 }
             }
             .navigationTitle(Text(Tab.settings.localized))

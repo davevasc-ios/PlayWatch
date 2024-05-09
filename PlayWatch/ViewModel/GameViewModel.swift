@@ -27,13 +27,13 @@ final class GameViewModel {
         self.getOpenAIUseCase = getOpenAIUseCase
     }
     
-    func start(language: String) async throws {
+    func start(locale: MovieDB.Locale) async throws {
         await withTaskGroup(of: Void.self) { group in
             group.addTask {
                 self.state = .loading
                 do {
-                    self.mediaList = try await self.fetchMediaUseCase.fetchMedia(type: .randomMovies, searchText: nil).filterWithImage()
-                    self.quizList = try await self.getOpenAIUseCase.getMoviesQuiz(movies: self.mediaList.map { $0.mediaName }.joined(separator: ", "), language: language)
+                    self.mediaList = try await self.fetchMediaUseCase.fetchMedia(type: .randomMovies, locale: locale, searchText: nil).filterWithImage()
+                    self.quizList = try await self.getOpenAIUseCase.getMoviesQuiz(movies: self.mediaList.map { $0.mediaName }.joined(separator: ", "), language: locale.name)
                     self.state = .success
                 }
                 catch {
@@ -50,9 +50,9 @@ final class GameViewModel {
         self.state = .empty
     }
     
-    func refresh(language: String) async throws {
+    func refresh(locale: MovieDB.Locale) async throws {
         self.clean()
-        try? await self.start(language: language)
+        try? await self.start(locale: locale)
     }
 
 

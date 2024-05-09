@@ -35,9 +35,21 @@ struct Current {
 
 // MARK: - MovieDB API Constants
 struct MovieDB {
+    
+    struct Locale {
+//        var localizedName = ""
+        var name = ""
+        var code = ""
+        var region = ""
+        var language: String {
+            "\(code)-\(region)"
+        }
+    }
+    
     static let dateFormat = "yyyy-MM-dd"
     
-    static let homeSections: [FetchType] = [.randomMovies,
+    static let homeSections: [FetchType] = [
+//        .randomMovies,
                                             .cinemaPlaying,
                                             .cinemaUpcomimg,
                                             .movieTrending,
@@ -85,17 +97,17 @@ struct MovieDB {
             HTTP.Header.Field.authorization.rawValue: HTTP.Header.Value.bearer(.movieDB).description
         ]
         
-        static fileprivate func mediaDataUrl(type: FetchType, searchText: String?) throws -> URL {
+        static fileprivate func mediaDataUrl(type: FetchType, locale: Locale, searchText: String?) throws -> URL {
             var urlString: String = ""
             var queryItems: [URLQueryItem] = []
-            queryItems.append(URLQueryItem(name: QueryParams.language.rawValue, value: "es-ES"))
+            queryItems.append(URLQueryItem(name: QueryParams.language.rawValue, value: locale.language))
             switch type {
             case .cinemaPlaying:
                 urlString = "\(dataUrl)\(nowPlaying)"
-                queryItems.append(URLQueryItem(name: QueryParams.region.rawValue, value:"ES"))
+                queryItems.append(URLQueryItem(name: QueryParams.region.rawValue, value: locale.region))
             case .cinemaUpcomimg:
                 urlString = "\(dataUrl)\(upcoming)"
-                queryItems.append(URLQueryItem(name: QueryParams.region.rawValue, value:"ES"))
+                queryItems.append(URLQueryItem(name: QueryParams.region.rawValue, value: locale.region))
             case .movieTrending:
                 urlString = "\(dataUrl)\(trending)\(MediaType.movie)/\(MediaPeriod.day)"
             case .movieNew:
@@ -103,7 +115,7 @@ struct MovieDB {
                 queryItems.append(URLQueryItem(name: "\(QueryParams.releaseDate.rawValue)\(QueryDirection.gte.rawValue)", value: currentDateString(daysOffset: -daysOffset)))
                 queryItems.append(URLQueryItem(name: "\(QueryParams.releaseDate.rawValue)\(QueryDirection.lte.rawValue)", value: currentDateString(daysOffset: daysOffset*2)))
                 queryItems.append(URLQueryItem(name: QueryParams.sortBy.rawValue, value: "\(SortBy.releaseDate.rawValue)\(SortDirection.asc.rawValue)"))
-                queryItems.append(URLQueryItem(name: QueryParams.watchRegion.rawValue, value: "ES"))
+                queryItems.append(URLQueryItem(name: QueryParams.watchRegion.rawValue, value: locale.region))
                 queryItems.append(URLQueryItem(name: QueryParams.withWatchMonetizationTypes.rawValue, value: MonetizationType.flatrate.rawValue))
                 queryItems.append(URLQueryItem(name: "\(QueryParams.voteCount.rawValue)\(QueryDirection.gte.rawValue)", value: String(voteCountNewGte)))
             case .tvTrending:
@@ -113,7 +125,7 @@ struct MovieDB {
                 queryItems.append(URLQueryItem(name: "\(QueryParams.firstAirDate.rawValue)\(QueryDirection.gte.rawValue)", value: currentDateString(daysOffset: -daysOffset)))
                 queryItems.append(URLQueryItem(name: "\(QueryParams.firstAirDate.rawValue)\(QueryDirection.lte.rawValue)", value: currentDateString(daysOffset: daysOffset*2)))
                 queryItems.append(URLQueryItem(name: QueryParams.sortBy.rawValue, value: "\(SortBy.firstAirDate.rawValue)\(SortDirection.asc.rawValue)"))
-                queryItems.append(URLQueryItem(name: QueryParams.watchRegion.rawValue, value: "ES"))
+                queryItems.append(URLQueryItem(name: QueryParams.watchRegion.rawValue, value: locale.region))
                 queryItems.append(URLQueryItem(name: QueryParams.withWatchMonetizationTypes.rawValue, value: MonetizationType.flatrate.rawValue))
                 queryItems.append(URLQueryItem(name: "\(QueryParams.voteCount.rawValue)\(QueryDirection.gte.rawValue)", value: String(voteCountNewGte)))
             case .personTrending:
@@ -248,8 +260,8 @@ struct MovieDB {
     
     // MARK: - Public Functions
     
-    static func getRequest(type: FetchType, searchText: String?) throws -> URLRequest {
-        return HTTP.request(url: try Endpoint.mediaDataUrl(type: type, searchText: searchText), method: .get, fields: Endpoint.headerFields)
+    static func getRequest(type: FetchType, locale: Locale, searchText: String?) throws -> URLRequest {
+        return HTTP.request(url: try Endpoint.mediaDataUrl(type: type, locale: locale, searchText: searchText), method: .get, fields: Endpoint.headerFields)
     }
     
     static func getImageUrl(file: String?, size: ImageSize) -> URL? {

@@ -33,7 +33,7 @@ struct GameView: View {
                     }
                 }
                 .refreshable {
-                    try? await viewModel.refresh(language: localeManager.languageName)
+                    try? await viewModel.refresh(locale: localeManager.locale)
                 }
                 .navigationTitle(Text(Tab.game.localized))
             } else {
@@ -41,14 +41,14 @@ struct GameView: View {
                     Text("Error loading")
                 }
                 .refreshable {
-                    try? await viewModel.refresh(language: localeManager.languageName)
+                    try? await viewModel.refresh(locale: localeManager.locale)
                 }
             }
         }
         .onAppear {
             Task {
                 if viewModel.state == .empty {
-                    try? await viewModel.start(language: localeManager.languageName)
+                    try? await viewModel.start(locale: localeManager.locale)
                 }
             }
         }

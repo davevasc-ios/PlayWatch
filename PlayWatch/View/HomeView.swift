@@ -9,6 +9,7 @@ import SwiftUI
 
 struct HomeView: View {
     @State private var viewModel = HomeViewModel()
+    @Bindable var localeManager: LocaleManager
     @State private var showSuggestions = true
     
     var body: some View {
@@ -43,9 +44,9 @@ struct HomeView: View {
         .onChange(of: viewModel.searchText) {
             Task {
                 if viewModel.searchText.count > 0 {
-                    try? await viewModel.search()
+                    try? await viewModel.search(locale: localeManager.locale)
                 } else {
-                    try? await viewModel.trending()
+                    try? await viewModel.trending(locale: localeManager.locale)
                     showSuggestions = true
                 }
             }
@@ -53,17 +54,17 @@ struct HomeView: View {
         .onChange(of: viewModel.isSearching) {
             Task {
                 if viewModel.isSearching {
-                    try? await viewModel.trending()
+                    try? await viewModel.trending(locale: localeManager.locale)
                 }
             }
         }
         .task {
             if viewModel.state == .empty {
-                try? await viewModel.start()
+                try? await viewModel.start(locale: localeManager.locale)
             }
         }
         .refreshable {
-            try? await viewModel.refresh()
+            try? await viewModel.refresh(locale: localeManager.locale)
         }
     }
 }
@@ -248,5 +249,5 @@ struct TitleNameView: View {
 }
 
 #Preview {
-    HomeView()
+    HomeView(localeManager: LocaleManager())
 }

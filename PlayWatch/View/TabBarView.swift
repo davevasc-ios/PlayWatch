@@ -25,7 +25,7 @@ struct TabBarView: View {
     var body: some View {
         VStack(spacing: 0) {
             TabView(selection: $currentTab) {
-                HomeView()
+                HomeView(localeManager: localeManager)
                     .tag(Tab.home)
                 GameView(localeManager: localeManager)
                     .tag(Tab.game)
@@ -40,7 +40,7 @@ struct TabBarView: View {
         .task {
             if gameViewModel.state == .empty {
                 Task {
-                    try? await gameViewModel.start(language: localeManager.languageName)
+                    try? await gameViewModel.start(locale: localeManager.locale)
                 }
             }
         }

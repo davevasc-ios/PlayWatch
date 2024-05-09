@@ -13,6 +13,7 @@ final class LocaleManager {
     
     private let defaults = UserDefaults.standard
     private let appLanguageKey = "com.playwatch.appLanguage"
+    private let appRegionKey = "com.playwatch.appRegion"
     
     var appLanguage: AppLanguage {
         get {
@@ -29,12 +30,30 @@ final class LocaleManager {
             }
         }
     }
-    
-    var appLocale: Locale {
-        self.appLanguage == AppLanguage.system ? Locale.current : Locale(identifier: self.appLanguage.rawValue)
+
+    var appRegion: AppRegion {
+        get {
+            access(keyPath: \.appRegion)
+            guard let key = defaults.string(forKey: appRegionKey),
+                  let region = AppRegion(rawValue: key) else {
+                return .system
+            }
+            return region
+        }
+        set {
+            withMutation(keyPath: \.appRegion) {
+                defaults.set(newValue.rawValue, forKey: appRegionKey)
+            }
+        }
     }
     
-    var languageName: String {
-        String(localized: AppLanguage(rawValue: self.appLocale.identifier)?.localized.defaultValue ?? AppLanguage.english.localized.defaultValue)
+    var appLocale: Locale {
+        Locale(identifier: "\(self.appLanguage.code)-\(self.appRegion.code)")
+    }
+    
+    var locale: MovieDB.Locale {
+        MovieDB.Locale(name: self.appLanguage.name,
+                       code: self.appLanguage.code,
+                       region: self.appRegion.code)
     }
 }

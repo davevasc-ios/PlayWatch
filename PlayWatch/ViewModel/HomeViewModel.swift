@@ -47,16 +47,16 @@ final class HomeViewModel {
             self.getGeminiUseCase = getGeminiUseCase
         }
     
-    func start() async throws {
-        await withTaskGroup(of: Void.self) { group in
-            group.addTask {
+    func start(locale: MovieDB.Locale) async throws {
+//        await withTaskGroup(of: Void.self) { group in
+//            group.addTask {
                 self.state = .loading
                 do {
                     // TODO: -  PROBAR GEMINI
-                    //            try await getGeminiResponse(prompt: "cuentame una historia de un azafato en Washington DC")
+//                                try await getGeminiResponse(prompt: "cuentame una historia de un azafato en Washington DC")
                     for section in MovieDB.homeSections {
                         let mediaSection = MediaSection(title: section.title,
-                                                        items: try await self.fetchMediaUseCase.fetchMedia(type: section, searchText: nil).filterWithImage())
+                                                        items: try await self.fetchMediaUseCase.fetchMedia(type: section, locale: locale, searchText: nil).filterWithImage())
                         self.mediaSectionsList.append(mediaSection)
                     }
                     self.state = .success
@@ -64,41 +64,41 @@ final class HomeViewModel {
                     print(error.localizedDescription)
                     self.state = .error
                 }
-            }
-        }
+//            }
+//        }
     }
     
-    func refresh() async throws {
+    func clean() {
         self.mediaSectionsList.removeAll()
         self.mediaTrendingList.removeAll()
         self.mediaSearchList.removeAll()
         self.state = .empty
-        do {
-            try await self.start()
-        } catch {
-            print(error.localizedDescription)
-        }
     }
     
-    func trending() async throws {
+    func refresh(locale: MovieDB.Locale) async throws {
+        self.clean()
+        try? await self.start(locale: locale)
+    }
+    
+    func trending(locale: MovieDB.Locale) async throws {
         self.isLoading = true
         defer { self.isLoading = false
         }
         do {
-            self.mediaSearchList = try await fetchMediaUseCase.fetchMedia(type: .trendingAll, searchText: nil).filterWithImage()
+            self.mediaSearchList = try await fetchMediaUseCase.fetchMedia(type: .trendingAll, locale: locale, searchText: nil).filterWithImage()
             
         } catch {
             print(error.localizedDescription)
         }
     }
     
-    func search() async throws {
+    func search(locale: MovieDB.Locale) async throws {
         self.mediaSearchList.removeAll()
         self.isLoading = true
         defer { self.isLoading = false
         }
         do {
-            self.mediaSearchList = try await fetchMediaUseCase.fetchMedia(type: .searchAll, searchText: self.searchText).filterWithImage()
+            self.mediaSearchList = try await fetchMediaUseCase.fetchMedia(type: .searchAll, locale: locale, searchText: self.searchText).filterWithImage()
         } catch {
             print(error.localizedDescription)
         }
