@@ -14,6 +14,8 @@ struct SettingsView: View {
     @Environment(GameViewModel.self) private var gameViewModel
 
     @State private var selectedTheme: Theme = .light
+    @State private var selectedLanguage: AppLanguage = .system
+    @State private var isOpenLanguagePicker = false
     
     enum Theme: String, CaseIterable, Identifiable {
         case light = "Ligero"
@@ -35,8 +37,13 @@ struct SettingsView: View {
                     }
                     Picker("Idioma", selection: $localeManager.appLanguage) {
                         ForEach(AppLanguage.allCases) { language in
-                            Text("\(language.emoji) \(language.localized)")
-                                .tag(language)
+                            if language == .system {
+                                Text(language.nativeName)
+                                    .tag(language)
+                            } else {
+                                Text("\(language.nativeName) (\(language.localized))")
+                                    .tag(language)
+                            }
                         }
                     }
                     .onChange(of: localeManager.appLanguage) {

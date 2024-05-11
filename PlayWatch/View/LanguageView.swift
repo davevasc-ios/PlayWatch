@@ -22,7 +22,7 @@ struct LanguageView: View {
                         dismiss()
                     } label: {
                         HStack {
-                            Text(lang.emoji)
+//                            Text(lang.emoji)
                             Text(lang.rawValue)
                         }
                         .font(.title2)

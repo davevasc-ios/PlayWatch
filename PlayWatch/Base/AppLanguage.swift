@@ -56,17 +56,41 @@ enum AppLanguage: String, CaseIterable, Identifiable {
         }
     }
     
-    var emoji: String {
+    var nativeName: String {
         switch self {
-        case .system: "🌍"
-        case .english: "📚"
-        case .spanish: "💃"
-        case .basque: "⛰️"
-        case .catalan: "🐉"
-        case .french: "🥖"
-        case .italian: "🍕"
-        case .portuguese: "🎭"
-        case .german: "🍺"
+        case .system: return String(localized: LocalizableString.systemLanguageName)
+        case .english:
+            var lang = LocalizableString.englishLanguageName
+            lang.locale = Locale(identifier: AppLanguage.english.code)
+            return String(localized: lang)
+        case .spanish:
+            var lang = LocalizableString.spanishLanguageName
+            lang.locale = Locale(identifier: AppLanguage.spanish.code)
+            return String(localized: lang)
+        case .basque:
+            var lang = LocalizableString.basqueLanguageName
+            lang.locale = Locale(identifier: AppLanguage.basque.code)
+            return String(localized: lang)
+        case .catalan:
+            var lang = LocalizableString.catalanLanguageName
+            lang.locale = Locale(identifier: AppLanguage.catalan.code)
+            return String(localized: lang)
+        case .french: 
+            var lang = LocalizableString.frenchLanguageName
+            lang.locale = Locale(identifier: AppLanguage.french.code)
+            return String(localized: lang)
+        case .italian:
+            var lang = LocalizableString.italianLanguageName
+            lang.locale = Locale(identifier: AppLanguage.italian.code)
+            return String(localized: lang)
+        case .portuguese:
+            var lang = LocalizableString.portugueseLanguageName
+            lang.locale = Locale(identifier: AppLanguage.portuguese.code)
+            return String(localized: lang)
+        case .german: 
+            var lang = LocalizableString.germanLanguageName
+            lang.locale = Locale(identifier: AppLanguage.german.code)
+            return String(localized: lang)
         }
     }
 }

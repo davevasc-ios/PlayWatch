@@ -5,6 +5,7 @@
 //  Created by David on 1/4/24.
 //
 
+import Foundation
 import Observation
 
 enum HomeViewAction {
@@ -51,6 +52,9 @@ final class HomeViewModel {
     }
     
     private func start(locale: MovieDB.Locale? = nil) {
+        var a = LocalizableString.germanLanguageName
+        a.locale = Locale(identifier: "eu")
+        print(String(localized: a))
         if let locale = locale {
             self.locale = locale
         }
