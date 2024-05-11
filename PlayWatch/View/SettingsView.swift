@@ -41,7 +41,7 @@ struct SettingsView: View {
                     }
                     .onChange(of: localeManager.appLanguage) {
                         if gameViewModel.state != .loading {
-                            gameViewModel.clean()
+                            gameViewModel.action(.onClean)
                         }
                     }
                     .onChange(of: currentTab) {

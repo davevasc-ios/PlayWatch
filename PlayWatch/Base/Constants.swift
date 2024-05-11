@@ -38,9 +38,9 @@ struct MovieDB {
     
     struct Locale {
 //        var localizedName = ""
-        var name = ""
-        var code = ""
-        var region = ""
+        var name: String = .empty
+        var code: String = .empty
+        var region: String = .empty
         var language: String {
             "\(code)-\(region)"
         }

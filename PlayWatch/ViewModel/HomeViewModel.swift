@@ -5,8 +5,14 @@
 //  Created by David on 1/4/24.
 //
 
-//import Foundation
 import Observation
+
+enum HomeViewAction {
+    case onAppear(MovieDB.Locale),
+         onRefresh,
+         onChangeSearch(String),
+         onChangeTrending
+}
 
 @Observable
 final class HomeViewModel {
@@ -14,9 +20,8 @@ final class HomeViewModel {
     private(set) var mediaSectionsList: [MediaSection] = []
     private(set) var mediaTrendingList: [Media] = []
     private(set) var mediaSearchList: [Media] = []
-    var searchText = ""
-//    var isSearching = false
-    private(set) var state: API.Status = .empty
+    private var state: API.Status = .empty
+    private var locale = MovieDB.Locale()
         
     // MARK: - Internal vars
     private let fetchMediaUseCase: FetchMediaProtocol
@@ -32,15 +37,30 @@ final class HomeViewModel {
         self.getGeminiUseCase = getGeminiUseCase
     }
     
+    func action(_ on: HomeViewAction) {
+        switch on {
+        case .onAppear(let locale):
+            self.start(locale: locale)
+        case .onRefresh:
+            self.refresh()
+        case .onChangeSearch(let text):
+            self.search(searchText: text)
+        case .onChangeTrending:
+            self.trending()
+        }
+    }
     
-    func start(locale: MovieDB.Locale) {
+    private func start(locale: MovieDB.Locale? = nil) {
+        if let locale = locale {
+            self.locale = locale
+        }
         if state == .empty || state == .error {
             self.state = .loading
             Task {
                 do {
                     for section in MovieDB.homeSections {
                         let mediaSection = MediaSection(title: section.title,
-                                                        items: try await self.fetchMediaUseCase.fetchMedia(type: section, locale: locale, searchText: nil).filterWithImage())
+                                                        items: try await self.fetchMediaUseCase.fetchMedia(type: section, locale: self.locale, searchText: nil).filterWithImage())
                         self.mediaSectionsList.append(mediaSection)
                     }
                     self.state = .success
@@ -52,46 +72,46 @@ final class HomeViewModel {
         }
     }
     
-    func clean() {
+    private func clean() {
         self.mediaSectionsList.removeAll()
         self.mediaTrendingList.removeAll()
         self.mediaSearchList.removeAll()
         self.state = .empty
     }
     
-    func refresh(locale: MovieDB.Locale) {
+    private func refresh() {
         if state != .loading {
             self.clean()
-            self.start(locale: locale)
+            self.start()
         }
     }
     
-    func trending(locale: MovieDB.Locale) {
+    private func trending() {
         Task {
             defer {
             }
             do {
-                self.mediaSearchList = try await fetchMediaUseCase.fetchMedia(type: .trendingAll, locale: locale, searchText: nil).filterWithImage()
+                self.mediaSearchList = try await fetchMediaUseCase.fetchMedia(type: .trendingAll, locale: self.locale, searchText: nil).filterWithImage()
             } catch {
                 print(error.localizedDescription)
             }
         }
     }
     
-    func search(locale: MovieDB.Locale) {
+    private func search(searchText: String) {
         self.mediaSearchList.removeAll()
         Task {
             defer {
             }
             do {
-                self.mediaSearchList = try await fetchMediaUseCase.fetchMedia(type: .searchAll, locale: locale, searchText: self.searchText).filterWithImage()
+                self.mediaSearchList = try await fetchMediaUseCase.fetchMedia(type: .searchAll, locale: self.locale, searchText: searchText).filterWithImage()
             } catch {
                 print(error.localizedDescription)
             }
         }
     }
     
-    func getOpenAIResponse() {
+    private func getOpenAIResponse() {
         Task {
             do {
                 let _ = try await getOpenAIUseCase.getTextAnswer(prompt: "texto de prueba")
@@ -102,7 +122,7 @@ final class HomeViewModel {
         }
     }
     
-    func getGeminiResponse(prompt: String) {
+    private func getGeminiResponse(prompt: String) {
         Task {
             do {
                 let _ = try await getGeminiUseCase.getResponse(prompt: prompt)

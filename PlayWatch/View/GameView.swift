@@ -8,22 +8,20 @@
 import SwiftUI
 
 struct GameView: View {
-    
-    @Environment(GameViewModel.self) private var viewModel
-    
     @Bindable var localeManager: LocaleManager
+    @Environment(GameViewModel.self) private var gameViewModel
     
     var body: some View {
         NavigationStack {
-            if viewModel.state == .loading {
+            if gameViewModel.state == .loading {
                 ProgressView("Loading Game...")
                     .scaleEffect(2.0)
                     .tint(.purple)
                     .foregroundColor(.blue)
-            } else if viewModel.state == .success {
+            } else if gameViewModel.state == .success {
                 ScrollView {
                     VStack (spacing: 20) {
-                        ForEach (viewModel.quizList, id: \.self) { quiz in
+                        ForEach (gameViewModel.quizList, id: \.self) { quiz in
                             VStack {
                                 Text(quiz.question ?? "")
                                 Text("\(quiz.result ?? true)")
@@ -32,7 +30,7 @@ struct GameView: View {
                     }
                 }
                 .refreshable {
-                    viewModel.refresh(locale: localeManager.locale)
+                    gameViewModel.action(.onRefresh)
                 }
                 .navigationTitle(Text(Tab.game.localized))
             } else {
@@ -40,12 +38,12 @@ struct GameView: View {
                     Text("Error loading")
                 }
                 .refreshable {
-                    viewModel.refresh(locale: localeManager.locale)
+                    gameViewModel.action(.onRefresh)
                 }
             }
         }
         .onAppear {
-            viewModel.start(locale: localeManager.locale)
+            gameViewModel.action(.onAppear(localeManager.locale))
         }
     }
 }

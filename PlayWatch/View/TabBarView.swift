@@ -38,7 +38,7 @@ struct TabBarView: View {
         }
         .environment(gameViewModel)
         .onAppear() {
-            gameViewModel.start(locale: localeManager.locale)
+            gameViewModel.action(.onAppear(localeManager.locale))
         }
     }
     

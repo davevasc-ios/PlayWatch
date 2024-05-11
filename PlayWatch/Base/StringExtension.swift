@@ -16,6 +16,9 @@ extension Optional where Wrapped == String {
 }
 
 extension String {
+    static var empty: String {
+        return ""
+    }
     var isEmpty: Bool {
         self.trim() == ""
     }

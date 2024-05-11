@@ -5,16 +5,20 @@
 //  Created by David on 28/4/24.
 //
 
-import Foundation
 import Observation
+
+enum GameViewAction {
+    case onAppear(MovieDB.Locale),
+         onRefresh,
+         onClean
+}
 
 @Observable
 final class GameViewModel {
-    
     private(set) var mediaList: [Media] = []
     private(set) var quizList: [MovieQuiz]  = []
     private(set) var state: API.Status = .empty
-    
+    private var locale = MovieDB.Locale()
     
     // MARK: - Internal vars
     private let fetchMediaUseCase: FetchMediaProtocol
@@ -27,13 +31,27 @@ final class GameViewModel {
         self.getOpenAIUseCase = getOpenAIUseCase
     }
     
-    func start(locale: MovieDB.Locale) {
+    func action(_ on: GameViewAction) {
+        switch on {
+        case .onAppear(let locale):
+            self.start(locale: locale)
+        case .onRefresh:
+            self.refresh()
+        case .onClean:
+            self.clean()
+        }
+    }
+    
+    private func start(locale: MovieDB.Locale? = nil) {
+        if let locale = locale {
+            self.locale = locale
+        }
         if state == .empty || state == .error {
             self.state = .loading
             Task {
                 do {
-                    self.mediaList = try await self.fetchMediaUseCase.fetchMedia(type: .randomMovies, locale: locale, searchText: nil).filterWithImage()
-                    self.quizList = try await self.getOpenAIUseCase.getMoviesQuiz(movies: self.mediaList.map { $0.mediaName }.joined(separator: ", "), language: locale.name)
+                    self.mediaList = try await self.fetchMediaUseCase.fetchMedia(type: .randomMovies, locale: self.locale, searchText: nil).filterWithImage()
+                    self.quizList = try await self.getOpenAIUseCase.getMoviesQuiz(movies: self.mediaList.map { $0.mediaName }.joined(separator: ", "), language: self.locale.name)
                     self.state = .success
                 }
                 catch {
@@ -44,17 +62,16 @@ final class GameViewModel {
         }
     }
     
-    func clean() {
+    private func clean() {
         self.mediaList.removeAll()
         self.quizList.removeAll()
         self.state = .empty
     }
     
-    func refresh(locale: MovieDB.Locale) {
+    private func refresh() {
         if state != .loading {
             self.clean()
-            self.start(locale: locale)
+            self.start()
         }
     }
-    
 }

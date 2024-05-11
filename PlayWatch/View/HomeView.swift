@@ -8,31 +8,39 @@
 import SwiftUI
 
 struct HomeView: View {
-    @State private var viewModel = HomeViewModel()
     @Bindable var localeManager: LocaleManager
+    @State private var homeViewModel = HomeViewModel()
     @State private var showSuggestions = true
     @State private var isSearching = false
+    @State private var searchText: String = .empty
     
     var body: some View {
         NavigationStack {
             ScrollView {
                 LazyVStack (alignment: .leading) {
                     if isSearching {
-                        SearchView(items: viewModel.mediaSearchList)
+                        SearchView(items: homeViewModel.mediaSearchList)
                     } else {
-                        MediaSectionView(sections: viewModel.mediaSectionsList)
+                        MediaSectionView(sections: homeViewModel.mediaSectionsList)
                     }
                 }
+            }
+            .refreshable {
+                homeViewModel.action(.onRefresh)
             }
             .navigationTitle(Text(Tab.home.localized))
             .navigationBarTitleDisplayMode(.inline)
         }
-        .searchable(text: $viewModel.searchText, isPresented: $isSearching, placement: .automatic, prompt: "busca todo lo que quieras")
+        .onAppear {
+            homeViewModel.action(.onAppear(localeManager.locale))
+            //            viewModel.getGeminiResponse(prompt: "cuentame una hitoria vasca")
+        }
+        .searchable(text: $searchText, isPresented: $isSearching, placement: .automatic, prompt: "busca todo lo que quieras")
         .searchSuggestions {
             if showSuggestions {
-                ForEach(viewModel.mediaSearchList) { item in
+                ForEach(homeViewModel.mediaSearchList) { item in
                     Button {
-                        viewModel.searchText = item.mediaName
+                        searchText = item.mediaName
                         showSuggestions = false
                     } label: {
                         Label(item.mediaName, systemImage: "bookmark")
@@ -41,25 +49,18 @@ struct HomeView: View {
                 }
             }
         }
-        .onChange(of: viewModel.searchText) {
-                if viewModel.searchText.count > 0 {
-                    viewModel.search(locale: localeManager.locale)
-                } else {
-                    viewModel.trending(locale: localeManager.locale)
-                    showSuggestions = true
-                }
+        .onChange(of: searchText) {
+            if searchText.count > 0 {
+                homeViewModel.action(.onChangeSearch(searchText))
+            } else {
+                homeViewModel.action(.onChangeTrending)
+                showSuggestions = true
+            }
         }
         .onChange(of: isSearching) {
             if isSearching {
-                viewModel.trending(locale: localeManager.locale)
+                homeViewModel.action(.onChangeTrending)
             }
-        }
-        .onAppear {
-            viewModel.start(locale: localeManager.locale)
-//            viewModel.getGeminiResponse(prompt: "cuentame una hitoria vasca")
-        }
-        .refreshable {
-            viewModel.refresh(locale: localeManager.locale)
         }
     }
 }
