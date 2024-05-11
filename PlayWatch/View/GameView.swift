@@ -17,10 +17,9 @@ struct GameView: View {
         NavigationStack {
             if viewModel.state == .loading {
                 ProgressView("Loading Game...")
-                    .progressViewStyle(CircularProgressViewStyle()) // Estilo de vista circular
                     .scaleEffect(2.0)
                     .tint(.purple)
-                    .foregroundColor(.red)
+                    .foregroundColor(.blue)
             } else if viewModel.state == .success {
                 ScrollView {
                     VStack (spacing: 20) {
@@ -33,7 +32,7 @@ struct GameView: View {
                     }
                 }
                 .refreshable {
-                    try? await viewModel.refresh(locale: localeManager.locale)
+                    viewModel.refresh(locale: localeManager.locale)
                 }
                 .navigationTitle(Text(Tab.game.localized))
             } else {
@@ -41,18 +40,13 @@ struct GameView: View {
                     Text("Error loading")
                 }
                 .refreshable {
-                    try? await viewModel.refresh(locale: localeManager.locale)
+                    viewModel.refresh(locale: localeManager.locale)
                 }
             }
         }
         .onAppear {
-            Task {
-                if viewModel.state == .empty {
-                    try? await viewModel.start(locale: localeManager.locale)
-                }
-            }
+            viewModel.start(locale: localeManager.locale)
         }
-        
     }
 }
 

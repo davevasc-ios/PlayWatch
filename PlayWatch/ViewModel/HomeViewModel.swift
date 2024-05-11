@@ -15,45 +15,29 @@ final class HomeViewModel {
     private(set) var mediaTrendingList: [Media] = []
     private(set) var mediaSearchList: [Media] = []
     var searchText = ""
-    var isSearching = false
-    private(set) var isLoading = false
+//    var isSearching = false
     private(set) var state: API.Status = .empty
-    
-    
-//    var users: [User] = []
-//    var status: ListStatus = .empty
-    var errorMessage = "no working"
-    
+        
     // MARK: - Internal vars
     private let fetchMediaUseCase: FetchMediaProtocol
     private let getOpenAIUseCase: GetOpenAIResponseProtocol
     private let getGeminiUseCase: GetGeminiResponseProtocol
 
     // MARK: - Initialization
-    init(
-        //        users: [User] = [],
-        //         status: ListStatus = .empty,
-        //         errorMessage: String = "",
-        fetchMediaUseCase: FetchMediaProtocol = FetchMediaUseCase(),
-        getOpenAIUseCase: GetOpenAIResponseProtocol = GetOpenAIResponseUseCase(),
-        getGeminiUseCase: GetGeminiResponseProtocol = GetGeminiResponseUseCase()) {
-            
-            
-            //        self.users = users
-            //        self.status = status
-            //        self.errorMessage = errorMessage
-            self.fetchMediaUseCase = fetchMediaUseCase
-            self.getOpenAIUseCase = getOpenAIUseCase
-            self.getGeminiUseCase = getGeminiUseCase
-        }
+    init(fetchMediaUseCase: FetchMediaProtocol = FetchMediaUseCase(),
+         getOpenAIUseCase: GetOpenAIResponseProtocol = GetOpenAIResponseUseCase(),
+         getGeminiUseCase: GetGeminiResponseProtocol = GetGeminiResponseUseCase()) {
+        self.fetchMediaUseCase = fetchMediaUseCase
+        self.getOpenAIUseCase = getOpenAIUseCase
+        self.getGeminiUseCase = getGeminiUseCase
+    }
     
-    func start(locale: MovieDB.Locale) async throws {
-//        await withTaskGroup(of: Void.self) { group in
-//            group.addTask {
-                self.state = .loading
+    
+    func start(locale: MovieDB.Locale) {
+        if state == .empty || state == .error {
+            self.state = .loading
+            Task {
                 do {
-                    // TODO: -  PROBAR GEMINI
-//                                try await getGeminiResponse(prompt: "cuentame una historia de un azafato en Washington DC")
                     for section in MovieDB.homeSections {
                         let mediaSection = MediaSection(title: section.title,
                                                         items: try await self.fetchMediaUseCase.fetchMedia(type: section, locale: locale, searchText: nil).filterWithImage())
@@ -64,8 +48,8 @@ final class HomeViewModel {
                     print(error.localizedDescription)
                     self.state = .error
                 }
-//            }
-//        }
+            }
+        }
     }
     
     func clean() {
@@ -75,56 +59,57 @@ final class HomeViewModel {
         self.state = .empty
     }
     
-    func refresh(locale: MovieDB.Locale) async throws {
-        self.clean()
-        try? await self.start(locale: locale)
-    }
-    
-    func trending(locale: MovieDB.Locale) async throws {
-        self.isLoading = true
-        defer { self.isLoading = false
-        }
-        do {
-            self.mediaSearchList = try await fetchMediaUseCase.fetchMedia(type: .trendingAll, locale: locale, searchText: nil).filterWithImage()
-            
-        } catch {
-            print(error.localizedDescription)
+    func refresh(locale: MovieDB.Locale) {
+        if state != .loading {
+            self.clean()
+            self.start(locale: locale)
         }
     }
     
-    func search(locale: MovieDB.Locale) async throws {
+    func trending(locale: MovieDB.Locale) {
+        Task {
+            defer {
+            }
+            do {
+                self.mediaSearchList = try await fetchMediaUseCase.fetchMedia(type: .trendingAll, locale: locale, searchText: nil).filterWithImage()
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    func search(locale: MovieDB.Locale) {
         self.mediaSearchList.removeAll()
-        self.isLoading = true
-        defer { self.isLoading = false
-        }
-        do {
-            self.mediaSearchList = try await fetchMediaUseCase.fetchMedia(type: .searchAll, locale: locale, searchText: self.searchText).filterWithImage()
-        } catch {
-            print(error.localizedDescription)
-        }
-    }
-    
-    func getOpenAIResponse() async throws {
-//        self.users = []
-//        self.status = .loading
-        do {
-            self.errorMessage = try await getOpenAIUseCase.getTextAnswer(prompt: "texto de prueba")
-//            self.users = userListModel.results
-//            self.status = self.users.isEmpty ? .empty : .success
-        }
-        catch {
-//            self.status = .error
-//            self.errorMessage = error.localizedDescription
-//            throw error
+        Task {
+            defer {
+            }
+            do {
+                self.mediaSearchList = try await fetchMediaUseCase.fetchMedia(type: .searchAll, locale: locale, searchText: self.searchText).filterWithImage()
+            } catch {
+                print(error.localizedDescription)
+            }
         }
     }
     
-    func getGeminiResponse(prompt: String) async throws {
-        do {
-            self.errorMessage = try await getGeminiUseCase.getResponse(prompt: prompt)
+    func getOpenAIResponse() {
+        Task {
+            do {
+                let _ = try await getOpenAIUseCase.getTextAnswer(prompt: "texto de prueba")
+            }
+            catch {
+                print(error.localizedDescription)
+            }
         }
-        catch {
-            print(error.localizedDescription)
+    }
+    
+    func getGeminiResponse(prompt: String) {
+        Task {
+            do {
+                let _ = try await getGeminiUseCase.getResponse(prompt: prompt)
+            }
+            catch {
+                print(error.localizedDescription)
+            }
         }
     }
     

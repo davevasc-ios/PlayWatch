@@ -49,7 +49,7 @@ struct MovieDB {
     static let dateFormat = "yyyy-MM-dd"
     
     static let homeSections: [FetchType] = [
-//        .randomMovies,
+        .randomMovies,
                                             .cinemaPlaying,
                                             .cinemaUpcomimg,
                                             .movieTrending,

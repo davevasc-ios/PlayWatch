@@ -37,14 +37,9 @@ struct TabBarView: View {
             CustomTabBar()
         }
         .environment(gameViewModel)
-        .task {
-            if gameViewModel.state == .empty {
-                Task {
-                    try? await gameViewModel.start(locale: localeManager.locale)
-                }
-            }
+        .onAppear() {
+            gameViewModel.start(locale: localeManager.locale)
         }
-        
     }
     
     @ViewBuilder

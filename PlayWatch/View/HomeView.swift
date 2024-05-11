@@ -11,12 +11,13 @@ struct HomeView: View {
     @State private var viewModel = HomeViewModel()
     @Bindable var localeManager: LocaleManager
     @State private var showSuggestions = true
+    @State private var isSearching = false
     
     var body: some View {
         NavigationStack {
             ScrollView {
                 LazyVStack (alignment: .leading) {
-                    if viewModel.isSearching {
+                    if isSearching {
                         SearchView(items: viewModel.mediaSearchList)
                     } else {
                         MediaSectionView(sections: viewModel.mediaSectionsList)
@@ -26,7 +27,7 @@ struct HomeView: View {
             .navigationTitle(Text(Tab.home.localized))
             .navigationBarTitleDisplayMode(.inline)
         }
-        .searchable(text: $viewModel.searchText, isPresented: $viewModel.isSearching, placement: .automatic, prompt: "busca todo lo que quieras")
+        .searchable(text: $viewModel.searchText, isPresented: $isSearching, placement: .automatic, prompt: "busca todo lo que quieras")
         .searchSuggestions {
             if showSuggestions {
                 ForEach(viewModel.mediaSearchList) { item in
@@ -38,33 +39,27 @@ struct HomeView: View {
                             .lineLimit(1)
                     }
                 }
-                
             }
         }
         .onChange(of: viewModel.searchText) {
-            Task {
                 if viewModel.searchText.count > 0 {
-                    try? await viewModel.search(locale: localeManager.locale)
+                    viewModel.search(locale: localeManager.locale)
                 } else {
-                    try? await viewModel.trending(locale: localeManager.locale)
+                    viewModel.trending(locale: localeManager.locale)
                     showSuggestions = true
                 }
+        }
+        .onChange(of: isSearching) {
+            if isSearching {
+                viewModel.trending(locale: localeManager.locale)
             }
         }
-        .onChange(of: viewModel.isSearching) {
-            Task {
-                if viewModel.isSearching {
-                    try? await viewModel.trending(locale: localeManager.locale)
-                }
-            }
-        }
-        .task {
-            if viewModel.state == .empty {
-                try? await viewModel.start(locale: localeManager.locale)
-            }
+        .onAppear {
+            viewModel.start(locale: localeManager.locale)
+//            viewModel.getGeminiResponse(prompt: "cuentame una hitoria vasca")
         }
         .refreshable {
-            try? await viewModel.refresh(locale: localeManager.locale)
+            viewModel.refresh(locale: localeManager.locale)
         }
     }
 }
