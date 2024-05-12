@@ -73,6 +73,6 @@ enum MediaPeriod: String {
 
 struct MediaSection: Identifiable {
     var id = UUID()
-    let title: String
+    let title: LocalizedStringResource
     let items: [Media]
 }

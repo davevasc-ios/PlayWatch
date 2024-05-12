@@ -11,6 +11,7 @@ import Observation
 enum HomeViewAction {
     case onAppear(MovieDB.Locale),
          onRefresh,
+         onReload(MovieDB.Locale),
          onChangeSearch(String),
          onChangeTrending
 }
@@ -21,7 +22,7 @@ final class HomeViewModel {
     private(set) var mediaSectionsList: [MediaSection] = []
     private(set) var mediaTrendingList: [Media] = []
     private(set) var mediaSearchList: [Media] = []
-    private var state: API.Status = .empty
+    private(set) var state: API.Status = .empty
     private var locale = MovieDB.Locale()
         
     // MARK: - Internal vars
@@ -44,6 +45,8 @@ final class HomeViewModel {
             self.start(locale: locale)
         case .onRefresh:
             self.refresh()
+        case .onReload(let locale):
+            self.reload(locale: locale)
         case .onChangeSearch(let text):
             self.search(searchText: text)
         case .onChangeTrending:
@@ -52,9 +55,6 @@ final class HomeViewModel {
     }
     
     private func start(locale: MovieDB.Locale? = nil) {
-        var a = LocalizableString.germanLanguageName
-        a.locale = Locale(identifier: "eu")
-        print(String(localized: a))
         if let locale = locale {
             self.locale = locale
         }
@@ -63,7 +63,7 @@ final class HomeViewModel {
             Task {
                 do {
                     for section in MovieDB.homeSections {
-                        let mediaSection = MediaSection(title: section.title,
+                        let mediaSection = MediaSection(title: section.localized,
                                                         items: try await self.fetchMediaUseCase.fetchMedia(type: section, locale: self.locale, searchText: nil).filterWithImage())
                         self.mediaSectionsList.append(mediaSection)
                     }
@@ -87,6 +87,13 @@ final class HomeViewModel {
         if state != .loading {
             self.clean()
             self.start()
+        }
+    }
+    
+    private func reload(locale: MovieDB.Locale) {
+        if state != .loading {
+            self.clean()
+            self.start(locale: locale)
         }
     }
     

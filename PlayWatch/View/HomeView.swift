@@ -9,7 +9,7 @@ import SwiftUI
 
 struct HomeView: View {
     @Bindable var localeManager: LocaleManager
-    @State private var homeViewModel = HomeViewModel()
+    @Environment(HomeViewModel.self) private var homeViewModel
     @State private var showSuggestions = true
     @State private var isSearching = false
     @State private var searchText: String = .empty
@@ -35,7 +35,7 @@ struct HomeView: View {
             homeViewModel.action(.onAppear(localeManager.locale))
             //            viewModel.getGeminiResponse(prompt: "cuentame una hitoria vasca")
         }
-        .searchable(text: $searchText, isPresented: $isSearching, placement: .automatic, prompt: "busca todo lo que quieras")
+        .searchable(text: $searchText, isPresented: $isSearching, placement: .automatic, prompt: Text(LocalizableString.homeSearchBar))
         .searchSuggestions {
             if showSuggestions {
                 ForEach(homeViewModel.mediaSearchList) { item in
@@ -79,7 +79,7 @@ struct MediaSectionView: View {
 }
 
 struct MediaTitleView: View {
-    let title: String
+    let title: LocalizedStringResource
     
     var body: some View {
         Text(title)

@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "" : {
+
+    },
     "%@" : {
 
     },
@@ -18,6 +21,7 @@
 
     },
     "busca todo lo que quieras" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -62,9 +66,6 @@
           }
         }
       }
-    },
-    "home.section.title" : {
-
     },
     "Idioma" : {
 

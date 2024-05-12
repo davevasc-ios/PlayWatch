@@ -183,19 +183,19 @@ struct MovieDB {
              searchAll,
              randomMovies
         
-        var title: String {
+        var localized: LocalizedStringResource {
             switch self {
-            case .cinemaPlaying: "Ahora en cines"
-            case .cinemaUpcomimg: "Próximamente en cines"
-            case .movieTrending: "Películas Destacadas"
-            case .movieNew: "Películas Nuevas"
-            case .tvTrending: "Series Destacadas"
-            case .tvNew: "Series Nuevas"
-            case .personTrending: "Personas Destacadas"
-            case .personPopular: "Personas Populares"
+            case .cinemaPlaying: LocalizableString.homeSectionCinemaPlaying
+            case .cinemaUpcomimg: LocalizableString.homeSectionCinemaUpcomimg
+            case .movieTrending: LocalizableString.homeSectionMovieTrending
+            case .movieNew: LocalizableString.homeSectionMovieNew
+            case .tvTrending: LocalizableString.homeSectionTvTrending
+            case .tvNew: LocalizableString.homeSectionTvNew
+            case .personTrending: LocalizableString.homeSectionPersonTrending
+            case .personPopular: LocalizableString.homeSectionPersonPopular
             case .trendingAll: ""
             case .searchAll: ""
-            case .randomMovies: "Random Movies"
+            case .randomMovies: LocalizableString.homeSectionRandomMovies
             }
         }
     }

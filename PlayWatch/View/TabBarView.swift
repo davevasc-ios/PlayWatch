@@ -14,6 +14,7 @@ struct TabBarView: View {
     @State private var tabShapePosition: CGPoint = .zero
     
     @State private var gameViewModel = GameViewModel()
+    @State private var homeViewModel = HomeViewModel()
     
     @Bindable var localeManager: LocaleManager
     
@@ -37,6 +38,7 @@ struct TabBarView: View {
             CustomTabBar()
         }
         .environment(gameViewModel)
+        .environment(homeViewModel)
         .onAppear() {
             gameViewModel.action(.onAppear(localeManager.locale))
         }

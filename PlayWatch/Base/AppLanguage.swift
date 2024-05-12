@@ -22,15 +22,15 @@ enum AppLanguage: String, CaseIterable, Identifiable {
     
     var name: String {
         if self == .system {
-            Locale(identifier: AppLanguage.english.code).localizedString(forLanguageCode: AppLanguage.system.code) ?? String(localized: AppLanguage.english.localized.defaultValue)
+            Locale(identifier: AppLanguage.english.languageCode).localizedString(forLanguageCode: self.languageCode) ?? String(localized: AppLanguage.english.localized.defaultValue)
         } else {
             String(localized: self.localized.defaultValue)
         }
     }
     
-    var code: String {
+    var languageCode: String {
         switch self {
-        case .system: return Locale(identifier: Locale.preferredLanguages.first ?? AppLanguage.english.code).language.languageCode?.identifier ?? AppLanguage.english.code
+        case .system: return Locale(identifier: Locale.preferredLanguages.first ?? AppLanguage.english.languageCode).language.languageCode?.identifier ?? AppLanguage.english.languageCode
         case .english: return "en"
         case .spanish: return "es"
         case .basque: return "eu"
@@ -57,39 +57,11 @@ enum AppLanguage: String, CaseIterable, Identifiable {
     }
     
     var nativeName: String {
-        switch self {
-        case .system: return String(localized: LocalizableString.systemLanguageName)
-        case .english:
-            var lang = LocalizableString.englishLanguageName
-            lang.locale = Locale(identifier: AppLanguage.english.code)
-            return String(localized: lang)
-        case .spanish:
-            var lang = LocalizableString.spanishLanguageName
-            lang.locale = Locale(identifier: AppLanguage.spanish.code)
-            return String(localized: lang)
-        case .basque:
-            var lang = LocalizableString.basqueLanguageName
-            lang.locale = Locale(identifier: AppLanguage.basque.code)
-            return String(localized: lang)
-        case .catalan:
-            var lang = LocalizableString.catalanLanguageName
-            lang.locale = Locale(identifier: AppLanguage.catalan.code)
-            return String(localized: lang)
-        case .french: 
-            var lang = LocalizableString.frenchLanguageName
-            lang.locale = Locale(identifier: AppLanguage.french.code)
-            return String(localized: lang)
-        case .italian:
-            var lang = LocalizableString.italianLanguageName
-            lang.locale = Locale(identifier: AppLanguage.italian.code)
-            return String(localized: lang)
-        case .portuguese:
-            var lang = LocalizableString.portugueseLanguageName
-            lang.locale = Locale(identifier: AppLanguage.portuguese.code)
-            return String(localized: lang)
-        case .german: 
-            var lang = LocalizableString.germanLanguageName
-            lang.locale = Locale(identifier: AppLanguage.german.code)
+        if self == .system {
+            return String(localized: self.localized)
+        } else {
+            var lang = self.localized
+            lang.locale = Locale(identifier: self.languageCode)
             return String(localized: lang)
         }
     }
@@ -111,17 +83,17 @@ enum AppRegion: String, CaseIterable, Identifiable {
     
     var id: Self { self }
     
-//    var name: String {
-//        if self == .system {
-//            Locale(identifier: AppLanguage.english.code).localizedString(forRegionCode: Locale.current.region?.identifier ?? AppRegion.unitedStates.code) ?? String(localized: AppRegion.unitedStates.localized.defaultValue)
-//        } else {
-//            String(localized: self.localized.defaultValue)
-//        }
-//    }
+    var name: String {
+        if self == .system {
+            Locale(identifier: AppLanguage.english.languageCode).localizedString(forRegionCode: self.regionCode) ?? String(localized: AppRegion.unitedStates.localized.defaultValue)
+        } else {
+            String(localized: self.localized.defaultValue)
+        }
+    }
     
-    var code: String {
+    var regionCode: String {
         switch self {
-        case .system: return Locale.current.region?.identifier ?? AppRegion.unitedStates.code
+        case .system: return Locale.current.region?.identifier ?? AppRegion.unitedStates.regionCode
         case .unitedStates: return "US"
         case .unitedKingdom: return "GB"
         case .spain, .basqueCountry, .catalonia: return "ES"
@@ -134,20 +106,44 @@ enum AppRegion: String, CaseIterable, Identifiable {
         }
     }
     
-//    var localized: LocalizedStringResource {
-//        switch self {
-//        case .system: return LocalizableString.systemRegionName
-//        case .unitedStates: return LocalizableString.unitedStatesRegionName
-//        case .unitedKingdom: return LocalizableString.unitedKingdomRegionName
-//        case .spain: return LocalizableString.spainRegionName
-//        case .basqueCountry: return LocalizableString.basqueCountryRegionName
-//        case .catalonia: return LocalizableString.cataloniaRegionName
-//        case .mexico: return LocalizableString.mexicoRegionName
-//        case .france: return LocalizableString.franceRegionName
-//        case .italy: return LocalizableString.italyRegionName
-//        case .portugal: return LocalizableString.portugalRegionName
-//        case .brazil: return LocalizableString.brazilRegionName
-//        case .germany: return LocalizableString.germanyRegionName
-//        }
-//    }
+    var languageCode: String {
+        switch self {
+        case .system: return Locale.current.region?.identifier ?? AppRegion.unitedStates.regionCode
+        case .unitedStates, .unitedKingdom: return AppLanguage.english.languageCode
+        case .spain, .mexico: return AppLanguage.spanish.languageCode
+        case .basqueCountry: return AppLanguage.basque.languageCode
+        case .catalonia: return AppLanguage.catalan.languageCode
+        case .france: return AppLanguage.french.languageCode
+        case .italy: return AppLanguage.italian.languageCode
+        case .portugal, .brazil: return AppLanguage.portuguese.languageCode
+        case .germany: return AppLanguage.german.languageCode
+        }
+    }
+    
+    var localized: LocalizedStringResource {
+        switch self {
+        case .system: return LocalizableString.systemRegionName
+        case .unitedStates: return LocalizableString.unitedStatesRegionName
+        case .unitedKingdom: return LocalizableString.unitedKingdomRegionName
+        case .spain: return LocalizableString.spainRegionName
+        case .basqueCountry: return LocalizableString.basqueCountryRegionName
+        case .catalonia: return LocalizableString.cataloniaRegionName
+        case .mexico: return LocalizableString.mexicoRegionName
+        case .france: return LocalizableString.franceRegionName
+        case .italy: return LocalizableString.italyRegionName
+        case .portugal: return LocalizableString.portugalRegionName
+        case .brazil: return LocalizableString.brazilRegionName
+        case .germany: return LocalizableString.germanyRegionName
+        }
+    }
+    
+    var nativeName: String {
+        if self == .system {
+            return String(localized: self.localized)
+        } else {
+            var region = self.localized
+            region.locale = Locale(identifier: self.languageCode)
+            return String(localized: region)
+        }
+    }
 }

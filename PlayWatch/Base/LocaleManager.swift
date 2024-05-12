@@ -48,12 +48,12 @@ final class LocaleManager {
     }
     
     var appLocale: Locale {
-        Locale(identifier: "\(self.appLanguage.code)-\(self.appRegion.code)")
+        Locale(identifier: "\(self.appLanguage.languageCode)-\(self.appRegion.regionCode)")
     }
     
     var locale: MovieDB.Locale {
         MovieDB.Locale(name: self.appLanguage.name,
-                       code: self.appLanguage.code,
-                       region: self.appRegion.code)
+                       code: self.appLanguage.languageCode,
+                       region: self.appRegion.regionCode)
     }
 }

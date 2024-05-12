@@ -12,6 +12,7 @@ struct SettingsView: View {
     @Bindable var localeManager: LocaleManager
     @Binding var currentTab: Tab
     @Environment(GameViewModel.self) private var gameViewModel
+    @Environment(HomeViewModel.self) private var homeViewModel
 
     @State private var selectedTheme: Theme = .light
     @State private var selectedLanguage: AppLanguage = .system
@@ -50,14 +51,22 @@ struct SettingsView: View {
                         if gameViewModel.state != .loading {
                             gameViewModel.action(.onClean)
                         }
+                        if homeViewModel.state != .loading {
+                            homeViewModel.action(.onReload(localeManager.locale))
+                        }
                     }
                     .onChange(of: currentTab) {
 //                        gameViewModel.clean()
                     }
                     Picker("Region", selection: $localeManager.appRegion) {
                         ForEach(AppRegion.allCases) { region in
-                            Text("\(region.rawValue)")
-                                .tag(region)
+                            if region == .system {
+                                Text(region.localized)
+                                    .tag(region)
+                            } else {
+                                Text("\(region.nativeName) (\(region.localized))")
+                                    .tag(region)
+                            }
                         }
                     }
                 }
