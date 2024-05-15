@@ -42,5 +42,5 @@ struct TabShape: Shape {
 }
 
 #Preview {
-    TabBarView(languageManager: LocaleManager())
+    TabBarView(localeManager: LocaleManager())
 }

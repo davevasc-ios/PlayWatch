@@ -18,8 +18,8 @@ struct TabBarView: View {
     
     @Bindable var localeManager: LocaleManager
     
-    init(languageManager: LocaleManager) {
-        self.localeManager = languageManager
+    init(localeManager: LocaleManager) {
+        self.localeManager = localeManager
         UITabBar.appearance().isHidden = true
     }
     
@@ -116,5 +116,5 @@ struct TabBarItem: View {
 }
 
 #Preview {
-    TabBarView(languageManager: LocaleManager())
+    TabBarView(localeManager: LocaleManager())
 }

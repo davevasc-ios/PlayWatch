@@ -8,6 +8,13 @@
 import Foundation
 import SwiftUI
 
+
+struct GameConstants {
+    static var screenCutoff: CGFloat {
+        (UIScreen.main.bounds.width / 2) * 0.8
+    }
+}
+
 struct RemoteImage {
     static let dummyUrl = "https://image.tmdb.org/t/p/w500/6tJWxRfBKWGIPFkfLTod2CgCexU.jpg"
     

@@ -27,7 +27,7 @@ struct PlayWatchApp: App {
     
     var body: some Scene {
         WindowGroup {
-            TabBarView(languageManager: localeManager)
+            TabBarView(localeManager: localeManager)
                 .environment(\.locale, localeManager.appLocale)
         }
     }

@@ -246,4 +246,5 @@ struct TitleNameView: View {
 
 #Preview {
     HomeView(localeManager: LocaleManager())
+        .environment(HomeViewModel())
 }
