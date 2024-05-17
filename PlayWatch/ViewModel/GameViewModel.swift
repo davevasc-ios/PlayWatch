@@ -16,7 +16,8 @@ enum GameViewAction {
 @Observable
 final class GameViewModel {
     private(set) var mediaList: [Media] = []
-    private(set) var quizList: [MovieQuiz]  = []
+    private(set) var quizList: [Quiz]  = []
+    private(set) var gameQuiz: [GameQuiz]  = []
     private(set) var state: API.Status = .empty
     private var locale = MovieDB.Locale()
     
@@ -52,11 +53,16 @@ final class GameViewModel {
                 do {
                     self.mediaList = try await self.fetchMediaUseCase.fetchMedia(type: .randomMovies, locale: self.locale, searchText: nil).filterWithImage()
                     self.quizList = try await self.getOpenAIUseCase.getMoviesQuiz(movies: self.mediaList.map { $0.mediaName }.joined(separator: ", "), language: self.locale.name)
+                    self.gameQuiz = try self.loadGame(media: self.mediaList, quiz: self.quizList)
                     self.state = .success
                 }
-                catch {
-                    print(error.localizedDescription)
+                catch Constants.Game.Error.outOfRange {
                     self.state = .error
+                    self.refresh()
+                }
+                catch {
+                    self.state = .error
+                    print(error.localizedDescription)
                 }
             }
         }
@@ -65,6 +71,7 @@ final class GameViewModel {
     private func clean() {
         self.mediaList.removeAll()
         self.quizList.removeAll()
+        self.gameQuiz.removeAll()
         self.state = .empty
     }
     
@@ -73,5 +80,17 @@ final class GameViewModel {
             self.clean()
             self.start()
         }
+    }
+    
+    private func loadGame(media: [Media], quiz: [Quiz]) throws -> [GameQuiz] {
+        guard media.count == quiz.count,
+              media.count == Constants.Game.quizCount else {
+            throw Constants.Game.Error.outOfRange
+        }
+        var gameQuiz: [GameQuiz] = []
+        for i in .zero..<Constants.Game.quizCount {
+            gameQuiz.append(GameQuiz(movie: media[i], quiz: quiz[i]))
+        }
+        return gameQuiz
     }
 }

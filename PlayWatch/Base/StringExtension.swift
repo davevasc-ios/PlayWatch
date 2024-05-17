@@ -32,8 +32,7 @@ extension String {
         self.filter { !from.contains($0) }
     }
     var isValidEmail: Bool {
-        let emailRegEx = "[A-Z0-9a-z.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}"
-        return NSPredicate(format: "SELF MATCHES %@", emailRegEx).evaluate(with: self)
+        guard let emailPattern = try? Regex("[A-Z0-9a-z._%+-]+@[A-Z0-9a-z.-]+\\.[A-Z]{2,6}") else { return false }
+        return self.wholeMatch(of: emailPattern) != nil
     }
-    var isErrorCancelled: Bool { self == RemoteImage.Error.cancelled.rawValue }
 }

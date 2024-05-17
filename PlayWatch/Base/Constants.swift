@@ -9,35 +9,27 @@ import Foundation
 import SwiftUI
 
 
-struct GameConstants {
-    static var screenCutoff: CGFloat {
-        (UIScreen.main.bounds.width / 2) * 0.8
-    }
-}
-
-struct RemoteImage {
-    static let dummyUrl = "https://image.tmdb.org/t/p/w500/6tJWxRfBKWGIPFkfLTod2CgCexU.jpg"
+struct Constants {
     
-    enum Error: String {
-        case cancelled
+    struct Game {
+        static var screenCutoff: CGFloat {
+            (UIScreen.main.bounds.width / 2) * 0.8
+        }
+        
+        static let quizCount = 20
+        
+        enum Error: LocalizedError {
+            case outOfRange
+            
+            var errorDescription: String? {
+                switch self {
+                case .outOfRange:
+                    return "Data is out of range"
+                }
+            }
+        }
+        
     }
-}
-
-enum ApiLanguage {
-    static let spanish = (englishName: "Spanish", nativeName: "Español", language: "es", region: "ES")
-    static let basque = (englishName: "Basque", nativeName: "Euskera", language: "eu", region: "ES")
-    static let catalan = (englishName: "Catalan", nativeName: "Català", language: "ca", region: "ES")
-    static let englishGB = (englishName: "English (GB)", nativeName: "English (GB)", language: "en", region: "GB")
-    static let englishUS = (englishName: "English (US)", nativeName: "English (US)", language: "en", region: "US")
-    static let french = (englishName: "French", nativeName: "Français", language: "fr", region: "FR")
-    static let italian = (englishName: "Italian", nativeName: "Italiano", language: "it", region: "IT")
-    static let portuguese = (englishName: "Portuguese", nativeName: "Português", language: "pt", region: "PT")
-    static let german = (englishName: "German", nativeName: "Deutsch", language: "de", region: "DE")
-}
-
-struct Current {
-    static var language = ApiLanguage.spanish
-    static var theme = ""
 }
 
 // MARK: - MovieDB API Constants

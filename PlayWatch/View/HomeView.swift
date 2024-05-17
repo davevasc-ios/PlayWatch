@@ -183,9 +183,10 @@ struct MediaPosterView: View {
                     }
                 }
             case .failure (let error):
-                if error.localizedDescription.isErrorCancelled {
+                switch error {
+                case let urlError as URLError where urlError.code == .cancelled:
                     MediaPosterView(item: item)
-                } else {
+                default:
                     EmptyPosterView(text: item.mediaName)
                 }
             @unknown default:

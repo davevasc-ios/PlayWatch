@@ -26,6 +26,8 @@
 		5549D57A2BC0633500B934CD /* FetchMediaUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5549D5792BC0633500B934CD /* FetchMediaUseCase.swift */; };
 		5549D57C2BC0738700B934CD /* OpenAIModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5549D57B2BC0738700B934CD /* OpenAIModel.swift */; };
 		5549D57E2BC0756C00B934CD /* GetOpenAIResponseUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5549D57D2BC0756C00B934CD /* GetOpenAIResponseUseCase.swift */; };
+		555F69D62BF6841F000DF9B9 /* MockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555F69D52BF6841F000DF9B9 /* MockData.swift */; };
+		555F69D82BF68931000DF9B9 /* GameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555F69D72BF68931000DF9B9 /* GameModel.swift */; };
 		5575C70F2BBF694300CD3918 /* Media.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5575C70E2BBF694300CD3918 /* Media.swift */; };
 		5576C3AE2BB9B13F00E511DE /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576C3AD2BB9B13F00E511DE /* Constants.swift */; };
 		5576C3B02BB9C10D00E511DE /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576C3AF2BB9C10D00E511DE /* API.swift */; };
@@ -95,6 +97,8 @@
 		5549D5792BC0633500B934CD /* FetchMediaUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchMediaUseCase.swift; sourceTree = "<group>"; };
 		5549D57B2BC0738700B934CD /* OpenAIModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAIModel.swift; sourceTree = "<group>"; };
 		5549D57D2BC0756C00B934CD /* GetOpenAIResponseUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetOpenAIResponseUseCase.swift; sourceTree = "<group>"; };
+		555F69D52BF6841F000DF9B9 /* MockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockData.swift; sourceTree = "<group>"; };
+		555F69D72BF68931000DF9B9 /* GameModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameModel.swift; sourceTree = "<group>"; };
 		5575C70E2BBF694300CD3918 /* Media.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Media.swift; sourceTree = "<group>"; };
 		5576C3AD2BB9B13F00E511DE /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		5576C3AF2BB9C10D00E511DE /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
@@ -164,6 +168,7 @@
 				5575C70E2BBF694300CD3918 /* Media.swift */,
 				5549D57B2BC0738700B934CD /* OpenAIModel.swift */,
 				55B254102BC2AD47006ACD43 /* GeminiModel.swift */,
+				555F69D72BF68931000DF9B9 /* GameModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -230,6 +235,7 @@
 				550C5F3B2BBA1378005B853B /* ViewModel */,
 				550C5F382BBA135E005B853B /* UseCase */,
 				550C5F3C2BBA1394005B853B /* Service */,
+				555F69D42BF68400000DF9B9 /* Mock */,
 				55212BB02BA7A0C400080A71 /* PlayWatchApp.swift */,
 				55212BB22BA7A0C400080A71 /* ContentView.swift */,
 				55212BB42BA7A0C400080A71 /* Item.swift */,
@@ -263,6 +269,14 @@
 				55212BD02BA7A0C600080A71 /* PlayWatchUITestsLaunchTests.swift */,
 			);
 			path = PlayWatchUITests;
+			sourceTree = "<group>";
+		};
+		555F69D42BF68400000DF9B9 /* Mock */ = {
+			isa = PBXGroup;
+			children = (
+				555F69D52BF6841F000DF9B9 /* MockData.swift */,
+			);
+			path = Mock;
 			sourceTree = "<group>";
 		};
 		5576C3AC2BB9B11E00E511DE /* Base */ = {
@@ -444,12 +458,14 @@
 				557F55682BE4272F00EEAA2F /* LanguageView.swift in Sources */,
 				5549D57E2BC0756C00B934CD /* GetOpenAIResponseUseCase.swift in Sources */,
 				55077AD92BD2CD6600E9B681 /* CacheAsyncImage.swift in Sources */,
+				555F69D82BF68931000DF9B9 /* GameModel.swift in Sources */,
 				557F55602BE416C200EEAA2F /* LocaleManager.swift in Sources */,
 				55E4CC822BCADB2C0048EF56 /* ColorExtension.swift in Sources */,
 				5575C70F2BBF694300CD3918 /* Media.swift in Sources */,
 				550C5F422BBA1448005B853B /* GeminiService.swift in Sources */,
 				550C5F402BBA142E005B853B /* OpenAIService.swift in Sources */,
 				55212BB32BA7A0C400080A71 /* ContentView.swift in Sources */,
+				555F69D62BF6841F000DF9B9 /* MockData.swift in Sources */,
 				55034E962BE5384A00BCBD0E /* LocalizableString.swift in Sources */,
 				55AFE6082BD5160E0015E411 /* DateExtension.swift in Sources */,
 				557F55622BE418C400EEAA2F /* AppLanguage.swift in Sources */,
