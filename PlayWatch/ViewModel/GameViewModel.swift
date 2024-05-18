@@ -7,6 +7,11 @@
 
 import Observation
 
+enum GameStatus {
+    case empty, loading, ready, playing, finish, error
+}
+
+
 enum GameViewAction {
     case onAppear(MovieDB.Locale),
          onRefresh,
@@ -15,10 +20,12 @@ enum GameViewAction {
 
 @Observable
 final class GameViewModel {
-    private(set) var mediaList: [Media] = []
-    private(set) var quizList: [Quiz]  = []
-    private(set) var gameQuiz: [GameQuiz]  = []
-    private(set) var state: API.Status = .empty
+    private(set) var currentQuizzes: [GameQuiz] = []
+    private(set) var state: GameStatus = .empty
+    private(set) var reaction: String = .empty
+    private(set) var points: Int = .zero
+    private(set) var next = false
+    private var allQuizzes: [GameQuiz] = []
     private var locale = MovieDB.Locale()
     
     // MARK: - Internal vars
@@ -35,7 +42,7 @@ final class GameViewModel {
     func action(_ on: GameViewAction) {
         switch on {
         case .onAppear(let locale):
-            self.start(locale: locale)
+            self.load(locale: locale)
         case .onRefresh:
             self.refresh()
         case .onClean:
@@ -43,7 +50,7 @@ final class GameViewModel {
         }
     }
     
-    private func start(locale: MovieDB.Locale? = nil) {
+    private func load(locale: MovieDB.Locale? = nil) {
         if let locale = locale {
             self.locale = locale
         }
@@ -51,10 +58,11 @@ final class GameViewModel {
             self.state = .loading
             Task {
                 do {
-                    self.mediaList = try await self.fetchMediaUseCase.fetchMedia(type: .randomMovies, locale: self.locale, searchText: nil).filterWithImage()
-                    self.quizList = try await self.getOpenAIUseCase.getMoviesQuiz(movies: self.mediaList.map { $0.mediaName }.joined(separator: ", "), language: self.locale.name)
-                    self.gameQuiz = try self.loadGame(media: self.mediaList, quiz: self.quizList)
-                    self.state = .success
+                    let mediaList = try await self.fetchMediaUseCase.fetchMedia(type: .randomMovies, locale: self.locale, searchText: nil).filterWithImage()
+                    let quizList = try await self.getOpenAIUseCase.getMoviesQuiz(movies: mediaList.map { $0.mediaName }.joined(separator: ", "), language: self.locale.name)
+                    self.allQuizzes = try self.loadAllQuizzes(media: mediaList, quiz: quizList)
+                    self.updateCurrentQuizzes()
+                    self.state = .ready
                 }
                 catch Constants.Game.Error.outOfRange {
                     self.state = .error
@@ -68,29 +76,60 @@ final class GameViewModel {
         }
     }
     
-    private func clean() {
-        self.mediaList.removeAll()
-        self.quizList.removeAll()
-        self.gameQuiz.removeAll()
-        self.state = .empty
+    func start() {
+        self.state = .playing
     }
     
     private func refresh() {
         if state != .loading {
             self.clean()
-            self.start()
+            self.load()
         }
     }
     
-    private func loadGame(media: [Media], quiz: [Quiz]) throws -> [GameQuiz] {
-        guard media.count == quiz.count,
-              media.count == Constants.Game.quizCount else {
+    private func clean() {
+        self.allQuizzes.removeAll()
+        self.currentQuizzes.removeAll()
+        self.points = .zero
+        self.reaction = .empty
+        self.state = .empty
+        self.next = false
+    }
+    
+    private func loadAllQuizzes(media: [Media], quiz: [Quiz]) throws -> [GameQuiz] {
+        guard media.count == Constants.Game.quizCount,
+              quiz.count == Constants.Game.quizCount else {
             throw Constants.Game.Error.outOfRange
         }
         var gameQuiz: [GameQuiz] = []
-        for i in .zero..<Constants.Game.quizCount {
-            gameQuiz.append(GameQuiz(movie: media[i], quiz: quiz[i]))
+        for index in .zero..<Constants.Game.quizCount {
+            gameQuiz.append(GameQuiz(movie: media[index], quiz: quiz[index]))
         }
         return gameQuiz
     }
+    
+    func updateCurrentQuizzes() {
+        while self.currentQuizzes.count < 3, self.allQuizzes.count > 0 {
+            if let quiz = self.allQuizzes.first {
+                self.currentQuizzes.append(quiz)
+                self.allQuizzes.removeFirst()
+            }
+        }
+    }
+    
+    func removeCurrentQuiz(result: Bool) {
+        self.reaction = result ? "✅" : "❌"
+        self.points += result ? 1 : .zero
+        self.next = !self.next
+        
+        self.currentQuizzes.removeFirst()
+        guard self.currentQuizzes.count > .zero else { return self.state = .finish }
+        self.updateCurrentQuizzes()
+    }
+    
+    func cleanReaction() {
+        self.reaction = .empty
+    }
+
+    
 }

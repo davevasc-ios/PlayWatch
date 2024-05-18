@@ -4,9 +4,6 @@
     "" : {
 
     },
-    "%@" : {
-
-    },
     "%@ (%@)" : {
       "localizations" : {
         "en" : {
@@ -123,7 +120,7 @@
         }
       }
     },
-    "Loading Game..." : {
+    "Loading New Game" : {
 
     },
     "Media Type: " : {
@@ -138,7 +135,13 @@
     "Overview: " : {
 
     },
+    "Play Again!" : {
+
+    },
     "Punch" : {
+
+    },
+    "Ready? Start Now!" : {
 
     },
     "Region" : {
@@ -197,6 +200,16 @@
     },
     "Tema" : {
 
+    },
+    "Total: %lld/%lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Total: %1$lld/%2$lld"
+          }
+        }
+      }
     },
     "Url: " : {
 

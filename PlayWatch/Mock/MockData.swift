@@ -9,7 +9,10 @@ import Foundation
 
 struct MockData {
     
-    
+    static var emptyGameQuiz: GameQuiz {
+        GameQuiz(movie: self.movie,
+                 quiz: self.question)
+    }
     
     static var gameQuiz: [GameQuiz] {
         var gameQuiz: [GameQuiz] = []
