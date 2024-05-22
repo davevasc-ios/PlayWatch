@@ -16,7 +16,7 @@ struct MockData {
     
     static var gameQuiz: [GameQuiz] {
         var gameQuiz: [GameQuiz] = []
-        for i in 0..<Constants.Game.quizCount {
+        for i in 0..<3 {
             gameQuiz.append(GameQuiz(movie: MockData.movies[i], quiz: MockData.questions[i]))
         }
         return gameQuiz

@@ -120,7 +120,7 @@
         }
       }
     },
-    "Loading New Game" : {
+    "Loading..." : {
 
     },
     "Media Type: " : {
@@ -141,13 +141,16 @@
     "Punch" : {
 
     },
-    "Ready? Start Now!" : {
+    "Ready?" : {
 
     },
     "Region" : {
 
     },
     "Release : " : {
+
+    },
+    "Start!" : {
 
     },
     "tabbar.favorites" : {

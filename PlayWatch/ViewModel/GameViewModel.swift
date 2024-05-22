@@ -15,16 +15,19 @@ enum GameStatus {
 enum GameViewAction {
     case onAppear(MovieDB.Locale),
          onRefresh,
-         onClean
+         onClean,
+         onSetSwipeAction(Bool?)
 }
 
 @Observable
 final class GameViewModel {
     private(set) var currentQuizzes: [GameQuiz] = []
     private(set) var state: GameStatus = .empty
-    private(set) var reaction: String = .empty
+    private(set) var success = true
     private(set) var points: Int = .zero
     private(set) var next = false
+    private(set) var disabledCurrentQuiz = false
+    private(set) var buttonSwipeAction: Bool?
     private var allQuizzes: [GameQuiz] = []
     private var locale = MovieDB.Locale()
     
@@ -47,6 +50,8 @@ final class GameViewModel {
             self.refresh()
         case .onClean:
             self.clean()
+        case .onSetSwipeAction(let value):
+            self.setSwipeAction(value: value)
         }
     }
     
@@ -91,7 +96,7 @@ final class GameViewModel {
         self.allQuizzes.removeAll()
         self.currentQuizzes.removeAll()
         self.points = .zero
-        self.reaction = .empty
+        self.success = true
         self.state = .empty
         self.next = false
     }
@@ -117,19 +122,26 @@ final class GameViewModel {
         }
     }
     
-    func removeCurrentQuiz(result: Bool) {
-        self.reaction = result ? "✅" : "❌"
-        self.points += result ? 1 : .zero
-        self.next = !self.next
-        
+    func removeCurrentQuiz() {
+        self.disabledCurrentQuiz = false
         self.currentQuizzes.removeFirst()
-        guard self.currentQuizzes.count > .zero else { return self.state = .finish }
+        guard self.currentQuizzes.count > .zero else {
+            self.state = .finish
+//            self.refresh()
+            return
+        }
         self.updateCurrentQuizzes()
     }
     
-    func cleanReaction() {
-        self.reaction = .empty
+    func checkAnswer(value: Bool) {
+        self.disabledCurrentQuiz = true
+        self.success = value
+        self.points += value ? 1 : .zero
+        self.next = !self.next
     }
-
+    
+    func setSwipeAction(value: Bool?) {
+        self.buttonSwipeAction = value
+    }
     
 }

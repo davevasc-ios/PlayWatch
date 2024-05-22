@@ -11,9 +11,6 @@ struct GameView: View {
     @Bindable var localeManager: LocaleManager
     @Environment(GameViewModel.self) private var gameViewModel
     
-    @State private var scale: CGFloat = 1
-    @State private var opacity: CGFloat = 0
-    
     var body: some View {
         ZStack {
             switch gameViewModel.state {
@@ -27,50 +24,42 @@ struct GameView: View {
             case .empty:
                 EmptyView()
             case .loading:
-                ProgressView("Loading New Game")
-                    .fontWeight(.heavy)
-                    .scaleEffect(2.0)
-                    .tint(.red)
-                    .foregroundColor(.green)
-                
-            case .ready:
-                Button {
-                    gameViewModel.start()
-                } label: {
-                    Text("Ready? Start Now!")
+                VStack {
+                    Text("Loading...")
                         .font(.title)
                         .fontWeight(.heavy)
-                        .foregroundColor(.white)
+                        .foregroundStyle(Color.blue.gradient)
+                    ProgressView()
+                        .fontWeight(.heavy)
+                        .scaleEffect(2.0)
+                        .tint(.blue)
                         .padding()
-                        .background(Color.blue)
-                        .cornerRadius(15)
+                }
+            case .ready:
+                VStack {
+                    Text("Ready?")
+                        .font(.title)
+                        .fontWeight(.heavy)
+                        .foregroundStyle(Color.blue.gradient)
+                    Button {
+                        gameViewModel.start()
+                    } label: {
+                        Text("Start!")
+                            .font(.title)
+                            .fontWeight(.heavy)
+                            .foregroundColor(.white)
+                            .padding()
+                            .background(Color.blue.gradient)
+                            .cornerRadius(15)
+                    }
                 }
             case .playing:
-                VStack {
-                    Text(gameViewModel.currentQuizzes.first?.quiz.question ?? "")
-                        .font(.title2)
-                        .padding()
-                    ZStack {
-                        GameStackView()
-                        Text(gameViewModel.reaction)
-                            .font(.title)
-                            .scaleEffect(scale)
-                            .opacity(opacity)
-                            .padding()
-                            .zIndex(Double(gameViewModel.currentQuizzes.count + 20))
-                    }
-                    .onChange(of: gameViewModel.next) {
-                        opacity = 1
-                        withAnimation(.easeInOut(duration: 2)) {
-                            scale = 8
-                            opacity = 0
-                        } completion: {
-                            scale = 1
-                            gameViewModel.cleanReaction()
-                        }
-                    }
+                VStack (spacing: 10) {
+                    GameQuestionView(text: gameViewModel.currentQuizzes.first?.quiz.question ?? "")
+                    GameStackView()
+                    SwipeActionButtonsView(gameViewModel: gameViewModel)
                 }
-                
+                .frame(maxHeight: .infinity, alignment: .top)
             case .finish:
                 VStack {
                     Text("Total: \(gameViewModel.points)/\(Constants.Game.quizCount)")
@@ -91,23 +80,42 @@ struct GameView: View {
                     }
                 }
             }
+            GameCheckView(success: gameViewModel.success,
+                          flag: .constant(gameViewModel.next))
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+            .ignoresSafeArea(.all)
         }
         .onAppear {
             gameViewModel.action(.onAppear(localeManager.locale))
         }
-        .navigationTitle(Text(Tab.game.localized))
     }
 }
 
+struct GamePlayingView: View {
+    var body: some View {
+        Text("")
+    }
+}
 
+struct GameQuestionView: View {
+    var text: String
+    
+    var body: some View {
+        Text(text)
+            .font(.title2)
+            .fontWeight(.heavy)
+            .foregroundStyle(Color.blue.gradient)
+            .padding()
+            .frame(height: Constants.Game.questionHeight)
+            .minimumScaleFactor(0.5)
+    }
+    
+}
 
 struct GameCardView: View {
-    
     @Environment(GameViewModel.self) private var gameViewModel
-    
     @State private var xOffset: CGFloat = 0
     @State private var degrees: Double = 0
-    
     let movie: Media
     let answer: Bool?
     
@@ -139,10 +147,14 @@ struct GameCardView: View {
                 SwipeActionIndicatorView(xOffset: $xOffset)
             }
         }
+        .onChange(of: gameViewModel.buttonSwipeAction) {
+            onReceiveSwipeAction()
+        }
         .aspectRatio(2/3, contentMode: .fit)
+        .frame(width: Constants.Game.quizWidht)
         .cornerRadius(10)
         .shadow(radius: 4, y: 4)
-        .padding(EdgeInsets(top: 80, leading: 40, bottom: 40, trailing: 40))
+        .padding()
         .offset(x: xOffset)
         .rotationEffect(.degrees(degrees))
         .gesture(DragGesture()
@@ -158,25 +170,44 @@ private extension GameCardView {
             degrees = 0
         }
     }
+    
     func swipeRight() {
-        withAnimation {
+        gameViewModel.checkAnswer(value: self.answer ?? true == true)
+        withAnimation(.bouncy(duration: 1)) {
             xOffset = 500
             degrees = 12
         } completion: {
             withAnimation {
-                gameViewModel.removeCurrentQuiz(result: self.answer ?? true == true)
+                gameViewModel.removeCurrentQuiz()
             }
         }
     }
+    
     func swipeLeft() {
-        withAnimation {
+        gameViewModel.checkAnswer(value: self.answer ?? false == false)
+        withAnimation(.bouncy(duration: 1)) {
             xOffset = -500
             degrees = -12
         } completion: {
             withAnimation {
-                gameViewModel.removeCurrentQuiz(result: self.answer ?? false == false)
+                gameViewModel.removeCurrentQuiz()
             }
         }
+    }
+    
+    func onReceiveSwipeAction() {
+        guard let action = gameViewModel.buttonSwipeAction,
+              let topCardMovie = gameViewModel.currentQuizzes.first?.movie,
+              self.movie.id == topCardMovie.id else { return }
+        switch action {
+        case true:
+            xOffset = 1
+            swipeRight()
+        case false:
+            xOffset = -1
+            swipeLeft()
+        }
+        gameViewModel.action(.onSetSwipeAction(nil))
     }
 }
 
@@ -196,29 +227,24 @@ private extension GameCardView {
             swipeLeft()
         }
     }
-    
 }
-
-
 
 struct SwipeActionIndicatorView: View {
     @Binding var xOffset: CGFloat
     
     var body: some View {
         HStack {
-            SwipeActionTagView(text: "TRUE",
-                               color: .green,
-                               degrees: -45,
-                               opacity: Double(xOffset / Constants.Game.screenCutoff),
-                               alignment: .leading)
-            SwipeActionTagView(text: "FALSE",
-                               color: .red,
-                               degrees: 45,
-                               opacity: -Double(xOffset / Constants.Game.screenCutoff),
-                               alignment: .trailing)
+            ForEach([true, false], id: \.self) { value in
+                SwipeActionTagView(
+                    text: value ? "hand.thumbsup.circle" : "hand.thumbsdown.circle",
+                    color: value ? .green : .red,
+                    degrees: value ? -10 : 10,
+                    opacity: value ? Double(xOffset / Constants.Game.screenCutoff) : -Double(xOffset / Constants.Game.screenCutoff),
+                    alignment: value ? .leading : .trailing
+                )
+            }
         }
-        .padding(.vertical, 35)
-        .padding(.horizontal, 25)
+        .padding(25)
     }
 }
 
@@ -230,62 +256,143 @@ struct SwipeActionTagView: View {
     var alignment: Alignment
     
     var body: some View {
-        Text(text)
-            .font(.title)
-            .fontWeight(.heavy)
+        Image(systemName: text)
             .foregroundStyle(color)
-            .padding(8)
-            .overlay {
-                RoundedRectangle(cornerRadius: 4)
-                    .stroke(color, lineWidth: 2)
-            }
+            .scaleEffect(4)
+            .padding()
             .rotationEffect(.degrees(degrees))
             .opacity(opacity)
             .frame(maxWidth: .infinity, alignment: alignment)
     }
 }
 
-
-
 struct GameStackView: View {
-    
     @Environment(GameViewModel.self) private var gameViewModel
     
     var body: some View {
-    
         ZStack {
             ForEach(Array(gameViewModel.currentQuizzes.enumerated()), id: \.element.id) { index, quiz in
                 GameCardView(movie: quiz.movie, answer: quiz.quiz.result)
                     .scaleEffect(1 - CGFloat(index) * 0.04)
                     .offset(x: 0, y: CGFloat(index) * -15)
                     .zIndex(Double(gameViewModel.currentQuizzes.count - index))
-                
+                    .disabled(index == 0 ? gameViewModel.disabledCurrentQuiz : true)
             }
         }
-        //        .onChange(of: gameViewModel.gameQuiz) { oldValue, newValue in
-        //
-        //        }
     }
 }
 
 
 struct SwipeActionButtonsView: View {
+    @State var gameViewModel: GameViewModel
+    
     var body: some View {
-        HStack {
-            Button {
-                
-            } label: {
-                Text("")
-            }
+        HStack (spacing: 52) {
+            ActionButtonView(action: false, name: "hand.thumbsdown.fill", color: .red, gameViewModel: gameViewModel)
+            ActionButtonView(action: true, name: "hand.thumbsup.fill", color: .green, gameViewModel: gameViewModel)
         }
+        .disabled(gameViewModel.disabledCurrentQuiz)
+    }
+}
+
+struct ActionButtonView: View {
+    var action: Bool
+    var name: String
+    var color: Color
+    @State var gameViewModel: GameViewModel
+    
+    var body: some View {
+        Button {
+            gameViewModel.action(.onSetSwipeAction(action))
+        } label: {
+            Image(systemName: name)
+                .foregroundStyle(color)
+                .scaleEffect(1.6)
+                .background {
+                    Circle()
+                        .fill(.white)
+                        .frame(width: 64, height: 64)
+                        .shadow(radius: 6)
+                }
+        }
+        .frame(width: 64, height: 64)
         
     }
 }
 
+struct GameCheckView: View {
+    var success: Bool
+    @Binding var flag: Bool
+    var body: some View {
+        Image(systemName: success ? "checkmark" : "xmark")
+            .foregroundStyle(success ? .green : .red)
+            .transition(.symbolEffect(.automatic))
+            .keyframeAnimator(
+                initialValue: AnimationValues(),
+                trigger: flag
+            ) { content, value in
+                content
+                    .rotationEffect(value.angle)
+                    .scaleEffect(value.scale)
+                    .scaleEffect(y: value.yStretch)
+                    .offset(y: value.yTranslation)
+            } keyframes: { _ in
+                KeyframeTrack(\.scale) {
+                    LinearKeyframe(0.0, duration: 0.1)
+                    SpringKeyframe(16, duration: 0.3, spring: .bouncy)
+                    SpringKeyframe(12, duration: 0.5, spring: .bouncy)
+                    LinearKeyframe(1, duration: 0.1)
+                }
+                KeyframeTrack(\.yTranslation) {
+                    LinearKeyframe(100.0, duration: 0.2)
+                    SpringKeyframe(-300, duration: 0.6, spring: .bouncy)
+                    SpringKeyframe(-1000, duration: 0.2, spring: .bouncy)
+                }
+                KeyframeTrack(\.yStretch) {
+                    LinearKeyframe(1, duration: 0.65)
+                    CubicKeyframe(0.6, duration: 0.1)
+                    CubicKeyframe(1.3, duration: 0.1)
+                    LinearKeyframe(1, duration: 0.15)
+                }
+                KeyframeTrack(\.angle) {
+                    //                    CubicKeyframe(Angle(degrees: 45), duration: 0.1)
+                    //                    CubicKeyframe(Angle(degrees: -40), duration: 0.1)
+                    //                    CubicKeyframe(Angle(degrees: 25), duration: 0.13)
+                    //                    CubicKeyframe(Angle(degrees: -20), duration: 0.13)
+                    //                    CubicKeyframe(Angle(degrees: 15), duration: 0.16)
+                    //                    CubicKeyframe(Angle(degrees: -10), duration: 0.16)
+                    //                    CubicKeyframe(Angle(degrees: 5), duration: 0.2)
+                    //                    CubicKeyframe(Angle(degrees: 0), duration: 0.2)
+                }
+            }
+    }
+}
+
+struct AnimationValues {
+    var scale = 1.0
+    var yStretch = 1.0
+    var yTranslation = 100.0
+    var angle = Angle.zero
+}
+
+#if DEBUG
+
+#Preview("SwipeActionButtonsView") {
+    SwipeActionButtonsView(gameViewModel: GameViewModel())
+}
+
+#Preview("ReactionView") {
+    GameCheckView(success: true, flag: .constant(true))
+}
+
 
 #Preview("GameStackViewTest") {
-    GameStackView()
-        .environment(GameViewModel())
+    VStack {
+        GameQuestionView(text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis ")
+            .environment(GameViewModel())
+        SwipeActionButtonsView(gameViewModel: GameViewModel())
+    }
+    .frame(maxHeight: .infinity, alignment: .top)
 }
 
 #Preview("GameCardViewTest") {
@@ -301,5 +408,5 @@ struct SwipeActionButtonsView: View {
     GameView(localeManager: LocaleManager())
         .environment(GameViewModel())
 }
-
+#endif
 

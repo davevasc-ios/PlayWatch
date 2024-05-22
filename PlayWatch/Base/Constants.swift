@@ -11,9 +11,19 @@ import SwiftUI
 
 struct Constants {
     
+    
+    
     struct Game {
+        
         static var screenCutoff: CGFloat {
             (UIScreen.main.bounds.width / 2) * 0.8
+        }
+        
+        static var questionHeight: CGFloat {
+            UIScreen.main.bounds.width * 0.35
+        }
+        static var quizWidht: CGFloat {
+            UIScreen.main.bounds.width * 0.65
         }
         
         static let quizCount = 20
