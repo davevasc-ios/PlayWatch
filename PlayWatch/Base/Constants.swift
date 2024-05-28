@@ -8,23 +8,16 @@
 import Foundation
 import SwiftUI
 
-
 struct Constants {
-    
-    
     
     struct Game {
         
-        static var screenCutoff: CGFloat {
-            (UIScreen.main.bounds.width / 2) * 0.8
-        }
+        static let screenCutoffScale: CGFloat = 0.8 / 2
+        static let questionHeightScale: CGFloat = 0.15
+        static let quizWidhtScale: CGFloat = 0.65
+        static let quizCardDegrees: CGFloat = 12
         
-        static var questionHeight: CGFloat {
-            UIScreen.main.bounds.width * 0.35
-        }
-        static var quizWidht: CGFloat {
-            UIScreen.main.bounds.width * 0.65
-        }
+
         
         static let quizCount = 20
         
@@ -46,7 +39,6 @@ struct Constants {
 struct MovieDB {
     
     struct Locale {
-//        var localizedName = ""
         var name: String = .empty
         var code: String = .empty
         var region: String = .empty
@@ -59,14 +51,14 @@ struct MovieDB {
     
     static let homeSections: [FetchType] = [
         .randomMovies,
-                                            .cinemaPlaying,
-                                            .cinemaUpcomimg,
-                                            .movieTrending,
-                                            .movieNew,
-                                            .tvTrending,
-                                            .tvNew,
-                                            .personTrending,
-                                            .personPopular]
+        .cinemaPlaying,
+        .cinemaUpcomimg,
+        .movieTrending,
+        .movieNew,
+        .tvTrending,
+        .tvNew,
+        .personTrending,
+        .personPopular]
     
     struct Endpoint {
         
@@ -96,7 +88,7 @@ struct MovieDB {
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = dateFormat
             guard let modifiedDate = Calendar.current.date(byAdding: .day, value: daysOffset, to: Date()) else {
-                return ""
+                return .empty
             }
             return dateFormatter.string(from: modifiedDate)
         }

@@ -28,6 +28,7 @@ final class GameViewModel {
     private(set) var next = false
     private(set) var disabledCurrentQuiz = false
     private(set) var buttonSwipeAction: Bool?
+    private(set) var nextQuestion: String = ""
     private var allQuizzes: [GameQuiz] = []
     private var locale = MovieDB.Locale()
     
@@ -67,6 +68,7 @@ final class GameViewModel {
                     let quizList = try await self.getOpenAIUseCase.getMoviesQuiz(movies: mediaList.map { $0.mediaName }.joined(separator: ", "), language: self.locale.name)
                     self.allQuizzes = try self.loadAllQuizzes(media: mediaList, quiz: quizList)
                     self.updateCurrentQuizzes()
+                    self.nextQuestion = self.allQuizzes.first?.quiz.question ?? ""
                     self.state = .ready
                 }
                 catch Constants.Game.Error.outOfRange {
@@ -96,9 +98,7 @@ final class GameViewModel {
         self.allQuizzes.removeAll()
         self.currentQuizzes.removeAll()
         self.points = .zero
-        self.success = true
         self.state = .empty
-        self.next = false
     }
     
     private func loadAllQuizzes(media: [Media], quiz: [Quiz]) throws -> [GameQuiz] {
@@ -123,8 +123,8 @@ final class GameViewModel {
     }
     
     func removeCurrentQuiz() {
-        self.disabledCurrentQuiz = false
         self.currentQuizzes.removeFirst()
+        self.disabledCurrentQuiz = false
         guard self.currentQuizzes.count > .zero else {
             self.state = .finish
 //            self.refresh()
@@ -135,6 +135,7 @@ final class GameViewModel {
     
     func checkAnswer(value: Bool) {
         self.disabledCurrentQuiz = true
+        self.getNextQuestioin()
         self.success = value
         self.points += value ? 1 : .zero
         self.next = !self.next
@@ -142,6 +143,12 @@ final class GameViewModel {
     
     func setSwipeAction(value: Bool?) {
         self.buttonSwipeAction = value
+    }
+    
+    func getNextQuestioin() {
+        guard currentQuizzes.count > 1,
+              let question = self.currentQuizzes[1].quiz.question else  { return }
+        self.nextQuestion = question
     }
     
 }

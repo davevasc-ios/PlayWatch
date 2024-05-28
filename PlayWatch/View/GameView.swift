@@ -55,7 +55,7 @@ struct GameView: View {
                 }
             case .playing:
                 VStack (spacing: 10) {
-                    GameQuestionView(text: gameViewModel.currentQuizzes.first?.quiz.question ?? "")
+                    GameQuestionView(text: gameViewModel.nextQuestion)
                     GameStackView()
                     SwipeActionButtonsView(gameViewModel: gameViewModel)
                 }
@@ -98,6 +98,7 @@ struct GamePlayingView: View {
 }
 
 struct GameQuestionView: View {
+    @Environment(\.screenSize) var screenSize
     var text: String
     
     var body: some View {
@@ -106,13 +107,14 @@ struct GameQuestionView: View {
             .fontWeight(.heavy)
             .foregroundStyle(Color.blue.gradient)
             .padding()
-            .frame(height: Constants.Game.questionHeight)
+            .frame(height: screenSize.height * Constants.Game.questionHeightScale)
             .minimumScaleFactor(0.5)
     }
     
 }
 
 struct GameCardView: View {
+    @Environment(\.screenSize) var screenSize
     @Environment(GameViewModel.self) private var gameViewModel
     @State private var xOffset: CGFloat = 0
     @State private var degrees: Double = 0
@@ -151,7 +153,9 @@ struct GameCardView: View {
             onReceiveSwipeAction()
         }
         .aspectRatio(2/3, contentMode: .fit)
-        .frame(width: Constants.Game.quizWidht)
+        .containerRelativeFrame(.horizontal) { length, _ in
+            length * Constants.Game.quizWidhtScale
+        }
         .cornerRadius(10)
         .shadow(radius: 4, y: 4)
         .padding()
@@ -165,34 +169,18 @@ struct GameCardView: View {
 
 private extension GameCardView {
     func returnToCenter() {
-        withAnimation {
-            xOffset = 0
-            degrees = 0
-        }
+        xOffset = .zero
+        degrees = .zero
     }
     
     func swipeRight() {
-        gameViewModel.checkAnswer(value: self.answer ?? true == true)
-        withAnimation(.bouncy(duration: 1)) {
-            xOffset = 500
-            degrees = 12
-        } completion: {
-            withAnimation {
-                gameViewModel.removeCurrentQuiz()
-            }
-        }
+        xOffset = screenSize.width
+        degrees = Constants.Game.quizCardDegrees
     }
     
     func swipeLeft() {
-        gameViewModel.checkAnswer(value: self.answer ?? false == false)
-        withAnimation(.bouncy(duration: 1)) {
-            xOffset = -500
-            degrees = -12
-        } completion: {
-            withAnimation {
-                gameViewModel.removeCurrentQuiz()
-            }
-        }
+        xOffset = -screenSize.width
+        degrees = -Constants.Game.quizCardDegrees
     }
     
     func onReceiveSwipeAction() {
@@ -202,10 +190,14 @@ private extension GameCardView {
         switch action {
         case true:
             xOffset = 1
-            swipeRight()
+            withAnimation (.bouncy(duration: 1)) {
+                swipeRight()
+            }
         case false:
             xOffset = -1
-            swipeLeft()
+            withAnimation (.bouncy(duration: 1)) {
+                swipeLeft()
+            }
         }
         gameViewModel.action(.onSetSwipeAction(nil))
     }
@@ -219,17 +211,38 @@ private extension GameCardView {
     
     func onDragEnded(_ value: _ChangedGesture<DragGesture>.Value) {
         switch value.translation.width {
-        case let width where abs(width) <= abs(Constants.Game.screenCutoff):
-            returnToCenter()
-        case let width where width >= Constants.Game.screenCutoff:
-            swipeRight()
+        case let width where abs(width) <= abs(screenSize.width * Constants.Game.screenCutoffScale):
+            withAnimation(.bouncy(duration: 1, extraBounce: 0.3)) {
+                returnToCenter()
+            }
+        case let width where width >= screenSize.width * Constants.Game.screenCutoffScale:
+            gameViewModel.checkAnswer(value: self.answer ?? true == true)
+            withAnimation(.bouncy(duration: 0.7)) {
+                swipeRight()
+            }
+            Task {
+                try await Task.sleep(nanoseconds: 200000000)
+                withAnimation (.bouncy(duration: 1)) {
+                    gameViewModel.removeCurrentQuiz()
+                }
+            }
         default:
-            swipeLeft()
+            gameViewModel.checkAnswer(value: self.answer ?? false == false)
+            withAnimation(.bouncy(duration: 0.7)) {
+                swipeLeft()
+            }
+            Task {
+                try await Task.sleep(nanoseconds: 200000000)
+                withAnimation (.bouncy(duration: 1)) {
+                    gameViewModel.removeCurrentQuiz()
+                }
+            }
         }
     }
 }
 
 struct SwipeActionIndicatorView: View {
+    @Environment(\.screenSize) var screenSize
     @Binding var xOffset: CGFloat
     
     var body: some View {
@@ -239,7 +252,7 @@ struct SwipeActionIndicatorView: View {
                     text: value ? "hand.thumbsup.circle" : "hand.thumbsdown.circle",
                     color: value ? .green : .red,
                     degrees: value ? -10 : 10,
-                    opacity: value ? Double(xOffset / Constants.Game.screenCutoff) : -Double(xOffset / Constants.Game.screenCutoff),
+                    opacity: value ? Double(xOffset / (screenSize.width * Constants.Game.screenCutoffScale)) : -Double(xOffset / (screenSize.width * Constants.Game.screenCutoffScale)),
                     alignment: value ? .leading : .trailing
                 )
             }
@@ -267,21 +280,23 @@ struct SwipeActionTagView: View {
 }
 
 struct GameStackView: View {
+    @Environment(\.verticalSizeClass) var verticalSizeClass
     @Environment(GameViewModel.self) private var gameViewModel
     
     var body: some View {
-        ZStack {
-            ForEach(Array(gameViewModel.currentQuizzes.enumerated()), id: \.element.id) { index, quiz in
-                GameCardView(movie: quiz.movie, answer: quiz.quiz.result)
-                    .scaleEffect(1 - CGFloat(index) * 0.04)
-                    .offset(x: 0, y: CGFloat(index) * -15)
-                    .zIndex(Double(gameViewModel.currentQuizzes.count - index))
-                    .disabled(index == 0 ? gameViewModel.disabledCurrentQuiz : true)
+        if verticalSizeClass == .regular {
+            ZStack {
+                ForEach(Array(gameViewModel.currentQuizzes.enumerated()), id: \.element.id) { index, quiz in
+                    GameCardView(movie: quiz.movie, answer: quiz.quiz.result)
+                        .scaleEffect(1 - CGFloat(index) * 0.04)
+                        .offset(x: 0, y: CGFloat(index) * -15)
+                        .zIndex(Double(gameViewModel.currentQuizzes.count - index))
+                        .disabled(index == 0 ? gameViewModel.disabledCurrentQuiz : true)
+                }
             }
         }
     }
 }
-
 
 struct SwipeActionButtonsView: View {
     @State var gameViewModel: GameViewModel
@@ -291,7 +306,6 @@ struct SwipeActionButtonsView: View {
             ActionButtonView(action: false, name: "hand.thumbsdown.fill", color: .red, gameViewModel: gameViewModel)
             ActionButtonView(action: true, name: "hand.thumbsup.fill", color: .green, gameViewModel: gameViewModel)
         }
-        .disabled(gameViewModel.disabledCurrentQuiz)
     }
 }
 
@@ -302,8 +316,16 @@ struct ActionButtonView: View {
     @State var gameViewModel: GameViewModel
     
     var body: some View {
+        
         Button {
+            gameViewModel.checkAnswer(value: gameViewModel.currentQuizzes.first?.quiz.result ?? true == action)
             gameViewModel.action(.onSetSwipeAction(action))
+            Task {
+                try await Task.sleep(nanoseconds: 300000000)
+                withAnimation (.bouncy(duration: 1)) {
+                    gameViewModel.removeCurrentQuiz()
+                }
+            }
         } label: {
             Image(systemName: name)
                 .foregroundStyle(color)
@@ -316,7 +338,7 @@ struct ActionButtonView: View {
                 }
         }
         .frame(width: 64, height: 64)
-        
+        .disabled(gameViewModel.disabledCurrentQuiz)
     }
 }
 

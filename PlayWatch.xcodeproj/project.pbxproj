@@ -37,6 +37,7 @@
 		557F55642BE425DE00EEAA2F /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 557F55632BE425DE00EEAA2F /* Localizable.xcstrings */; };
 		557F55662BE4267B00EEAA2F /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 557F55652BE4267B00EEAA2F /* SettingsView.swift */; };
 		557F55682BE4272F00EEAA2F /* LanguageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 557F55672BE4272F00EEAA2F /* LanguageView.swift */; };
+		5581067D2C00F75300D7A96D /* EnvironmentExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5581067C2C00F75300D7A96D /* EnvironmentExtension.swift */; };
 		55AFE6082BD5160E0015E411 /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55AFE6072BD5160E0015E411 /* DateExtension.swift */; };
 		55AFE60A2BD51CA60015E411 /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55AFE6092BD51CA60015E411 /* ArrayExtension.swift */; };
 		55AFE60C2BD520E20015E411 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55AFE60B2BD520E20015E411 /* GameView.swift */; };
@@ -108,6 +109,7 @@
 		557F55632BE425DE00EEAA2F /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		557F55652BE4267B00EEAA2F /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		557F55672BE4272F00EEAA2F /* LanguageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageView.swift; sourceTree = "<group>"; };
+		5581067C2C00F75300D7A96D /* EnvironmentExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentExtension.swift; sourceTree = "<group>"; };
 		55AFE6072BD5160E0015E411 /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
 		55AFE6092BD51CA60015E411 /* ArrayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
 		55AFE60B2BD520E20015E411 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
@@ -301,6 +303,7 @@
 				55034E932BE5356000BCBD0E /* LocalizableHome.xcstrings */,
 				55034E952BE5384A00BCBD0E /* LocalizableString.swift */,
 				55034E972BE53DF300BCBD0E /* LocalizableSettings.xcstrings */,
+				5581067C2C00F75300D7A96D /* EnvironmentExtension.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -371,7 +374,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1530;
-				LastUpgradeCheck = 1530;
+				LastUpgradeCheck = 1540;
 				TargetAttributes = {
 					55212BAC2BA7A0C400080A71 = {
 						CreatedOnToolsVersion = 15.3;
@@ -466,6 +469,7 @@
 				550C5F402BBA142E005B853B /* OpenAIService.swift in Sources */,
 				55212BB32BA7A0C400080A71 /* ContentView.swift in Sources */,
 				555F69D62BF6841F000DF9B9 /* MockData.swift in Sources */,
+				5581067D2C00F75300D7A96D /* EnvironmentExtension.swift in Sources */,
 				55034E962BE5384A00BCBD0E /* LocalizableString.swift in Sources */,
 				55AFE6082BD5160E0015E411 /* DateExtension.swift in Sources */,
 				557F55622BE418C400EEAA2F /* AppLanguage.swift in Sources */,
@@ -529,6 +533,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -558,6 +563,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -590,6 +596,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -619,6 +626,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -646,6 +654,7 @@
 				CODE_SIGN_ENTITLEMENTS = PlayWatch/PlayWatch.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"PlayWatch/Preview Content\"";
 				DEVELOPMENT_TEAM = 32C3Z2T4RE;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -684,6 +693,7 @@
 				CODE_SIGN_ENTITLEMENTS = PlayWatch/PlayWatch.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"PlayWatch/Preview Content\"";
 				DEVELOPMENT_TEAM = 32C3Z2T4RE;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -721,6 +731,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 32C3Z2T4RE;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
@@ -744,6 +755,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 32C3Z2T4RE;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
@@ -766,6 +778,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 32C3Z2T4RE;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
@@ -788,6 +801,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 32C3Z2T4RE;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
