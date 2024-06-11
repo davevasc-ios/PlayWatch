@@ -55,9 +55,9 @@ struct GameView: View {
                 }
             case .playing:
                 VStack (spacing: 10) {
-                    GameQuestionView(text: gameViewModel.nextQuestion)
+                    GameQuestionView()
                     GameStackView()
-                    SwipeActionButtonsView(gameViewModel: gameViewModel)
+                    SwipeActionButtonsView()
                 }
                 .frame(maxHeight: .infinity, alignment: .top)
             case .finish:
@@ -99,16 +99,39 @@ struct GamePlayingView: View {
 
 struct GameQuestionView: View {
     @Environment(\.screenSize) var screenSize
-    var text: String
+    @Environment(GameViewModel.self) private var gameViewModel
+    @State var showingText: String = .empty
+    @State var index: Int = .zero
     
     var body: some View {
-        Text(text)
+        Text(showingText)
             .font(.title2)
             .fontWeight(.heavy)
             .foregroundStyle(Color.blue.gradient)
             .padding()
             .frame(height: screenSize.height * Constants.Game.questionHeightScale)
             .minimumScaleFactor(0.5)
+            .onChange(of: gameViewModel.next) {
+                index = .zero
+                showingText = .empty
+                startTextAnimation()
+            }
+            .onAppear {
+                startTextAnimation()
+            }
+    }
+    
+    private func startTextAnimation() {
+        Task {
+            while index < gameViewModel.nextQuestion.count {
+                showingText += String(gameViewModel.nextQuestion[gameViewModel.nextQuestion.index(gameViewModel.nextQuestion.startIndex, offsetBy: index)])
+                try? await Task.sleep(nanoseconds: Constants.Game.typingTextIntervales.randomElement() ?? 50000000)
+                index += 1
+            }
+            await MainActor.run {
+                gameViewModel.action(.onQuizReady)
+            }
+        }
     }
     
 }
@@ -222,8 +245,10 @@ private extension GameCardView {
             }
             Task {
                 try await Task.sleep(nanoseconds: 200000000)
-                withAnimation (.bouncy(duration: 1)) {
-                    gameViewModel.removeCurrentQuiz()
+                await MainActor.run {
+                    withAnimation (.bouncy(duration: 1)) {
+                        gameViewModel.removeCurrentQuiz()
+                    }
                 }
             }
         default:
@@ -233,8 +258,10 @@ private extension GameCardView {
             }
             Task {
                 try await Task.sleep(nanoseconds: 200000000)
-                withAnimation (.bouncy(duration: 1)) {
-                    gameViewModel.removeCurrentQuiz()
+                await MainActor.run {
+                    withAnimation (.bouncy(duration: 1)) {
+                        gameViewModel.removeCurrentQuiz()
+                    }
                 }
             }
         }
@@ -299,21 +326,20 @@ struct GameStackView: View {
 }
 
 struct SwipeActionButtonsView: View {
-    @State var gameViewModel: GameViewModel
     
     var body: some View {
         HStack (spacing: 52) {
-            ActionButtonView(action: false, name: "hand.thumbsdown.fill", color: .red, gameViewModel: gameViewModel)
-            ActionButtonView(action: true, name: "hand.thumbsup.fill", color: .green, gameViewModel: gameViewModel)
+            ActionButtonView(action: false, name: "hand.thumbsdown.fill", color: .red)
+            ActionButtonView(action: true, name: "hand.thumbsup.fill", color: .green)
         }
     }
 }
 
 struct ActionButtonView: View {
+    @Environment(GameViewModel.self) private var gameViewModel
     var action: Bool
     var name: String
     var color: Color
-    @State var gameViewModel: GameViewModel
     
     var body: some View {
         
@@ -321,9 +347,11 @@ struct ActionButtonView: View {
             gameViewModel.checkAnswer(value: gameViewModel.currentQuizzes.first?.quiz.result ?? true == action)
             gameViewModel.action(.onSetSwipeAction(action))
             Task {
-                try await Task.sleep(nanoseconds: 300000000)
-                withAnimation (.bouncy(duration: 1)) {
-                    gameViewModel.removeCurrentQuiz()
+                try? await Task.sleep(nanoseconds: 300000000)
+                await MainActor.run {
+                    withAnimation (.bouncy(duration: 1)) {
+                        gameViewModel.removeCurrentQuiz()
+                    }
                 }
             }
         } label: {
@@ -397,10 +425,17 @@ struct AnimationValues {
     var angle = Angle.zero
 }
 
+
 #if DEBUG
 
+#Preview("GameQuestionView") {
+    GameQuestionView()//(text: "Lorem ipsium, Lorem ipsium, Lorem ipsium, Lorem ipsium, Lorem ipsium, Lorem ipsium, Lorem ipsium, Lorem ipsium")
+        .environment(GameViewModel())
+}
+
 #Preview("SwipeActionButtonsView") {
-    SwipeActionButtonsView(gameViewModel: GameViewModel())
+    SwipeActionButtonsView()
+        .environment(GameViewModel())
 }
 
 #Preview("ReactionView") {
@@ -410,9 +445,10 @@ struct AnimationValues {
 
 #Preview("GameStackViewTest") {
     VStack {
-        GameQuestionView(text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis ")
+        GameQuestionView() //(text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis ")
             .environment(GameViewModel())
-        SwipeActionButtonsView(gameViewModel: GameViewModel())
+        SwipeActionButtonsView()
+            .environment(GameViewModel())
     }
     .frame(maxHeight: .infinity, alignment: .top)
 }

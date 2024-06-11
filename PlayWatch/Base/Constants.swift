@@ -16,6 +16,8 @@ struct Constants {
         static let questionHeightScale: CGFloat = 0.15
         static let quizWidhtScale: CGFloat = 0.65
         static let quizCardDegrees: CGFloat = 12
+        static let typingTextIntervales: [UInt64] = [10000000, 20000000, 30000000, 40000000, 50000000]
+
         
 
         

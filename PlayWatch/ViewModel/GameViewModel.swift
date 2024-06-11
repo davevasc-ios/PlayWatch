@@ -16,7 +16,8 @@ enum GameViewAction {
     case onAppear(MovieDB.Locale),
          onRefresh,
          onClean,
-         onSetSwipeAction(Bool?)
+         onSetSwipeAction(Bool?),
+         onQuizReady
 }
 
 @Observable
@@ -26,7 +27,7 @@ final class GameViewModel {
     private(set) var success = true
     private(set) var points: Int = .zero
     private(set) var next = false
-    private(set) var disabledCurrentQuiz = false
+    private(set) var disabledCurrentQuiz = true
     private(set) var buttonSwipeAction: Bool?
     private(set) var nextQuestion: String = ""
     private var allQuizzes: [GameQuiz] = []
@@ -53,6 +54,8 @@ final class GameViewModel {
             self.clean()
         case .onSetSwipeAction(let value):
             self.setSwipeAction(value: value)
+        case .onQuizReady:
+            self.quizReady()
         }
     }
     
@@ -68,7 +71,7 @@ final class GameViewModel {
                     let quizList = try await self.getOpenAIUseCase.getMoviesQuiz(movies: mediaList.map { $0.mediaName }.joined(separator: ", "), language: self.locale.name)
                     self.allQuizzes = try self.loadAllQuizzes(media: mediaList, quiz: quizList)
                     self.updateCurrentQuizzes()
-                    self.nextQuestion = self.allQuizzes.first?.quiz.question ?? ""
+                    self.nextQuestion = self.currentQuizzes.first?.quiz.question ?? ""
                     self.state = .ready
                 }
                 catch Constants.Game.Error.outOfRange {
@@ -97,6 +100,7 @@ final class GameViewModel {
     private func clean() {
         self.allQuizzes.removeAll()
         self.currentQuizzes.removeAll()
+        self.disabledCurrentQuiz = true
         self.points = .zero
         self.state = .empty
     }
@@ -124,7 +128,6 @@ final class GameViewModel {
     
     func removeCurrentQuiz() {
         self.currentQuizzes.removeFirst()
-        self.disabledCurrentQuiz = false
         guard self.currentQuizzes.count > .zero else {
             self.state = .finish
 //            self.refresh()
@@ -135,7 +138,7 @@ final class GameViewModel {
     
     func checkAnswer(value: Bool) {
         self.disabledCurrentQuiz = true
-        self.getNextQuestioin()
+        self.getNextQuestion()
         self.success = value
         self.points += value ? 1 : .zero
         self.next = !self.next
@@ -145,10 +148,17 @@ final class GameViewModel {
         self.buttonSwipeAction = value
     }
     
-    func getNextQuestioin() {
+    func getNextQuestion() {
         guard currentQuizzes.count > 1,
-              let question = self.currentQuizzes[1].quiz.question else  { return }
+              let question = self.currentQuizzes[1].quiz.question else {
+            self.nextQuestion = .empty
+            return
+        }
         self.nextQuestion = question
+    }
+    
+    func quizReady() {
+        self.disabledCurrentQuiz = false
     }
     
 }
