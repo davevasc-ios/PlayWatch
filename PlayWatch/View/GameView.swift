@@ -138,6 +138,7 @@ struct GameCardView: View {
     @Environment(\.screenSize) var screenSize
     @Environment(GameViewModel.self) private var gameViewModel
     @State private var xOffset: CGFloat = 0
+    @State private var yOffset: CGFloat = 0
     @State private var degrees: Double = 0
     let movie: Media
     let answer: Bool?
@@ -180,7 +181,7 @@ struct GameCardView: View {
         .cornerRadius(10)
         .shadow(radius: 4, y: 4)
         .padding()
-        .offset(x: xOffset)
+        .offset(x: xOffset, y: yOffset)
         .rotationEffect(.degrees(degrees))
         .gesture(DragGesture()
             .onChanged(onDragChanged)
@@ -191,6 +192,7 @@ struct GameCardView: View {
 private extension GameCardView {
     func returnToCenter() {
         xOffset = .zero
+        yOffset = .zero
         degrees = .zero
     }
     
@@ -204,20 +206,32 @@ private extension GameCardView {
         degrees = -Constants.Game.quizCardDegrees
     }
     
+    func swipeDown() {
+        yOffset = screenSize.height
+        if let randomDegree = Constants.Game.swipeDownDegrees.randomElement() {
+            degrees = randomDegree
+        }
+    }
+    
     func onReceiveSwipeAction() {
         guard let action = gameViewModel.buttonSwipeAction,
               let topCardMovie = gameViewModel.currentQuizzes.first?.movie,
               self.movie.id == topCardMovie.id else { return }
         switch action {
-        case true:
+        case .trueAnswer:
             xOffset = 1
             withAnimation (.bouncy(duration: 1)) {
                 swipeRight()
             }
-        case false:
+        case .falseAnswer:
             xOffset = -1
             withAnimation (.bouncy(duration: 1)) {
                 swipeLeft()
+            }
+        case .noAnswer:
+            yOffset = 1
+            withAnimation (.bouncy(duration: 1)) {
+                swipeDown()
             }
         }
         gameViewModel.action(.onSetSwipeAction(nil))
@@ -227,36 +241,40 @@ private extension GameCardView {
 private extension GameCardView {
     func onDragChanged(_ value: _ChangedGesture<DragGesture>.Value) {
         xOffset = value.translation.width
+        if value.translation.height > 0 {
+            yOffset = value.translation.height
+        }
         degrees = Double(value.translation.width / 25)
     }
     
     func onDragEnded(_ value: _ChangedGesture<DragGesture>.Value) {
-        switch value.translation.width {
-        case let width where abs(width) <= abs(screenSize.width * Constants.Game.screenCutoffScale):
+        switch value.translation {
+        case let translation where abs(translation.width) <= abs(screenSize.width * Constants.Game.screenCutoffScale) && abs(translation.height) <= abs(translation.height * Constants.Game.screenCutoffScale):
             withAnimation(.bouncy(duration: 1, extraBounce: 0.3)) {
                 returnToCenter()
             }
-        case let width where width >= screenSize.width * Constants.Game.screenCutoffScale:
+        case let translation where translation.width >= screenSize.width * Constants.Game.screenCutoffScale:
             gameViewModel.sendAnswer(gameAnswer: .trueAnswer)
             withAnimation(.bouncy(duration: 0.7)) {
                 swipeRight()
             }
-            Task {
-                try await Task.sleep(nanoseconds: 200000000)
-                await MainActor.run {
-                    gameViewModel.removeCurrentQuiz()
-                }
-            }
-        default:
+            gameViewModel.removeCurrentQuiz(delay: 200000000)
+            
+        case let translation where translation.width <= -screenSize.width * Constants.Game.screenCutoffScale:
             gameViewModel.sendAnswer(gameAnswer: .falseAnswer)
             withAnimation(.bouncy(duration: 0.7)) {
                 swipeLeft()
             }
-            Task {
-                try await Task.sleep(nanoseconds: 200000000)
-                await MainActor.run {
-                    gameViewModel.removeCurrentQuiz()
-                }
+            gameViewModel.removeCurrentQuiz(delay: 200000000)
+        case let translation where translation.height >= screenSize.width * Constants.Game.screenCutoffScale:
+            gameViewModel.sendAnswer(gameAnswer: .noAnswer)
+            withAnimation(.bouncy(duration: 0.7)) {
+                swipeDown()
+            }
+            gameViewModel.removeCurrentQuiz(delay: 200000000)
+        default:
+            withAnimation(.bouncy(duration: 1, extraBounce: 0.3)) {
+                returnToCenter()
             }
         }
     }
@@ -330,9 +348,9 @@ struct SwipeActionButtonsView: View {
                 .fontWeight(.heavy)
                 .foregroundStyle(Color.blue.gradient)
                 .padding()
-            ActionButtonView(gameAnswer: .falseAnswer, action: false, name: "hand.thumbsdown.fill", color: .red)
-            ActionButtonView(gameAnswer: .noAnswer, action: true, name: "person.fill.questionmark", color: .blue)
-            ActionButtonView(gameAnswer: .trueAnswer, action: true, name: "hand.thumbsup.fill", color: .green)
+            ActionButtonView(gameAnswer: .falseAnswer, name: "hand.thumbsdown.fill", color: .red)
+            ActionButtonView(gameAnswer: .noAnswer,name: "person.fill.questionmark", color: .blue)
+            ActionButtonView(gameAnswer: .trueAnswer, name: "hand.thumbsup.fill", color: .green)
             Text("\(gameViewModel.totalPoints)")
                 .font(.title2)
                 .fontWeight(.heavy)
@@ -345,21 +363,15 @@ struct SwipeActionButtonsView: View {
 struct ActionButtonView: View {
     @Environment(GameViewModel.self) private var gameViewModel
     var gameAnswer: GameAnswer
-    var action: Bool
     var name: String
     var color: Color
     
     var body: some View {
         
         Button {
-            gameViewModel.action(.onSetSwipeAction(action))
+            gameViewModel.action(.onSetSwipeAction(gameAnswer))
             gameViewModel.sendAnswer(gameAnswer: gameAnswer)
-            Task {
-                try? await Task.sleep(nanoseconds: 300000000)
-                await MainActor.run {
-                    gameViewModel.removeCurrentQuiz()
-                }
-            }
+            gameViewModel.removeCurrentQuiz(delay: 500000000)
         } label: {
             Image(systemName: name)
                 .foregroundStyle(color)

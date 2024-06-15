@@ -19,7 +19,7 @@ enum GameViewAction {
     case onAppear(MovieDB.Locale),
          onRefresh,
          onClean,
-         onSetSwipeAction(Bool?),
+         onSetSwipeAction(GameAnswer?),
          onQuizReady
 }
 
@@ -30,14 +30,14 @@ final class GameViewModel {
     private(set) var totalPoints: Int = .zero
     private(set) var newPoints: Int = .zero
     private(set) var isQuizReady = false
-    private(set) var buttonSwipeAction: Bool?
+    private(set) var buttonSwipeAction: GameAnswer?
     private(set) var nextQuestion: String = .empty
     private(set) var level: Int = 0
     private(set) var answerFeedback = false
     private(set) var timeRemaining: Int = Constants.Game.secondsPerQuiz
     private(set) var showCountdown: Bool = false
     private(set) var questionTyping: String = .empty
-    private var countdownTask: Task<Void, Never>? = nil
+    private var countdownTask: Task<Void, Never>?
     private var success = true
     private var allQuizzes: [GameQuiz] = []
     private var locale = MovieDB.Locale()
@@ -141,14 +141,17 @@ final class GameViewModel {
         }
     }
     
-    func removeCurrentQuiz() {
-        self.currentQuizzes.removeFirst()
-        guard self.currentQuizzes.count > .zero else {
-            self.state = .finish
-//            self.refresh()
-            return
+    func removeCurrentQuiz(delay: UInt64) {
+        Task {
+            try? await Task.sleep(nanoseconds: delay)
+            self.currentQuizzes.removeFirst()
+            guard self.currentQuizzes.count > .zero else {
+                self.state = .finish
+                //            self.refresh()
+                return
+            }
+            self.updateCurrentQuizzes()
         }
-        self.updateCurrentQuizzes()
     }
     
     func sendAnswer(gameAnswer: GameAnswer) {
@@ -173,7 +176,7 @@ final class GameViewModel {
         self.nextQuiz()
     }
 
-    func setSwipeAction(value: Bool?) {
+    func setSwipeAction(value: GameAnswer?) {
         self.buttonSwipeAction = value
     }
     
@@ -226,8 +229,9 @@ final class GameViewModel {
             }
             if self.timeRemaining < 0 {
                 await MainActor.run {
+                    self.setSwipeAction(value: .noAnswer)
                     self.sendAnswer(gameAnswer: .noAnswer)
-                    self.removeCurrentQuiz()
+                    self.removeCurrentQuiz(delay: 700_000_000)
                 }
             }
         }
