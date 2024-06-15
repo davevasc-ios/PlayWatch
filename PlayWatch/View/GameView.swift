@@ -60,9 +60,14 @@ struct GameView: View {
                     SwipeActionButtonsView()
                 }
                 .frame(maxHeight: .infinity, alignment: .top)
+                .onAppear {
+                    if gameViewModel.level == 0 {
+                        gameViewModel.nextQuiz()
+                    }
+                }
             case .finish:
                 VStack {
-                    Text("Total: \(gameViewModel.points)/\(Constants.Game.quizCount)")
+                    Text("Total: \(gameViewModel.totalPoints)/\(Constants.Game.numberOfQuizzes * Constants.Game.secondsPerQuiz)")
                         .font(.title)
                         .fontWeight(.heavy)
                         .foregroundColor(.blue)
@@ -80,13 +85,30 @@ struct GameView: View {
                     }
                 }
             }
-            GameCheckView(success: gameViewModel.success,
-                          flag: .constant(gameViewModel.next))
+            GameCheckView(points: gameViewModel.newPoints,
+                          flag: .constant(gameViewModel.answerFeedback))
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
             .ignoresSafeArea(.all)
+            GameCountDownView()
         }
         .onAppear {
             gameViewModel.action(.onAppear(localeManager.locale))
+        }
+    }
+}
+
+struct GameCountDownView: View {
+    @Environment(GameViewModel.self) private var gameViewModel
+    
+    var body: some View {
+        if gameViewModel.showCountdown {
+            Text(String(gameViewModel.timeRemaining))
+                .font(.system(size: 200))
+                .fontWeight(.medium)
+                .foregroundStyle(Color.pink.gradient)
+                .opacity(0.6)
+                .padding()
+                .allowsHitTesting(false)
         }
     }
 }
@@ -116,15 +138,14 @@ struct GameQuestionView: View {
                 showingText = .empty
                 startTextAnimation()
             }
-            .onAppear {
-                startTextAnimation()
-            }
     }
     
     private func startTextAnimation() {
         Task {
             while index < gameViewModel.nextQuestion.count {
-                showingText += String(gameViewModel.nextQuestion[gameViewModel.nextQuestion.index(gameViewModel.nextQuestion.startIndex, offsetBy: index)])
+                await MainActor.run {
+                    showingText += String(gameViewModel.nextQuestion[gameViewModel.nextQuestion.index(gameViewModel.nextQuestion.startIndex, offsetBy: index)])
+                }
                 try? await Task.sleep(nanoseconds: Constants.Game.typingTextIntervales.randomElement() ?? 50000000)
                 index += 1
             }
@@ -239,29 +260,25 @@ private extension GameCardView {
                 returnToCenter()
             }
         case let width where width >= screenSize.width * Constants.Game.screenCutoffScale:
-            gameViewModel.checkAnswer(value: self.answer ?? true == true)
+            gameViewModel.sendAnswer(gameAnswer: .trueAnswer)
             withAnimation(.bouncy(duration: 0.7)) {
                 swipeRight()
             }
             Task {
                 try await Task.sleep(nanoseconds: 200000000)
                 await MainActor.run {
-                    withAnimation (.bouncy(duration: 1)) {
-                        gameViewModel.removeCurrentQuiz()
-                    }
+                    gameViewModel.removeCurrentQuiz()
                 }
             }
         default:
-            gameViewModel.checkAnswer(value: self.answer ?? false == false)
+            gameViewModel.sendAnswer(gameAnswer: .falseAnswer)
             withAnimation(.bouncy(duration: 0.7)) {
                 swipeLeft()
             }
             Task {
                 try await Task.sleep(nanoseconds: 200000000)
                 await MainActor.run {
-                    withAnimation (.bouncy(duration: 1)) {
-                        gameViewModel.removeCurrentQuiz()
-                    }
+                    gameViewModel.removeCurrentQuiz()
                 }
             }
         }
@@ -318,25 +335,39 @@ struct GameStackView: View {
                         .scaleEffect(1 - CGFloat(index) * 0.04)
                         .offset(x: 0, y: CGFloat(index) * -15)
                         .zIndex(Double(gameViewModel.currentQuizzes.count - index))
-                        .disabled(index == 0 ? gameViewModel.disabledCurrentQuiz : true)
+                        .disabled(index == 0 ? !gameViewModel.isQuizReady : true)
                 }
+                .animation(.easeInOut(duration: 1.0), value: gameViewModel.currentQuizzes)
             }
         }
     }
 }
 
 struct SwipeActionButtonsView: View {
+    @Environment(GameViewModel.self) private var gameViewModel
     
     var body: some View {
-        HStack (spacing: 52) {
-            ActionButtonView(action: false, name: "hand.thumbsdown.fill", color: .red)
-            ActionButtonView(action: true, name: "hand.thumbsup.fill", color: .green)
+        HStack (spacing: 15) {
+            Text("\(gameViewModel.level)/20")
+                .font(.title2)
+                .fontWeight(.heavy)
+                .foregroundStyle(Color.blue.gradient)
+                .padding()
+            ActionButtonView(gameAnswer: .falseAnswer, action: false, name: "hand.thumbsdown.fill", color: .red)
+            ActionButtonView(gameAnswer: .noAnswer, action: true, name: "person.fill.questionmark", color: .blue)
+            ActionButtonView(gameAnswer: .trueAnswer, action: true, name: "hand.thumbsup.fill", color: .green)
+            Text("\(gameViewModel.totalPoints)")
+                .font(.title2)
+                .fontWeight(.heavy)
+                .foregroundStyle(Color.blue.gradient)
+                .padding()
         }
     }
 }
 
 struct ActionButtonView: View {
     @Environment(GameViewModel.self) private var gameViewModel
+    var gameAnswer: GameAnswer
     var action: Bool
     var name: String
     var color: Color
@@ -344,14 +375,12 @@ struct ActionButtonView: View {
     var body: some View {
         
         Button {
-            gameViewModel.checkAnswer(value: gameViewModel.currentQuizzes.first?.quiz.result ?? true == action)
             gameViewModel.action(.onSetSwipeAction(action))
+            gameViewModel.sendAnswer(gameAnswer: gameAnswer)
             Task {
                 try? await Task.sleep(nanoseconds: 300000000)
                 await MainActor.run {
-                    withAnimation (.bouncy(duration: 1)) {
-                        gameViewModel.removeCurrentQuiz()
-                    }
+                    gameViewModel.removeCurrentQuiz()
                 }
             }
         } label: {
@@ -366,16 +395,17 @@ struct ActionButtonView: View {
                 }
         }
         .frame(width: 64, height: 64)
-        .disabled(gameViewModel.disabledCurrentQuiz)
+        .disabled(!gameViewModel.isQuizReady)
     }
 }
 
 struct GameCheckView: View {
-    var success: Bool
+    var points: Int
     @Binding var flag: Bool
     var body: some View {
-        Image(systemName: success ? "checkmark" : "xmark")
-            .foregroundStyle(success ? .green : .red)
+        Text(points < 0 ? "\(points)" : "+\(points)")
+        //            .font(.system(size: 150))
+            .foregroundStyle(points < 0 ? .red : .green)
             .transition(.symbolEffect(.automatic))
             .keyframeAnimator(
                 initialValue: AnimationValues(),
@@ -383,16 +413,23 @@ struct GameCheckView: View {
             ) { content, value in
                 content
                     .rotationEffect(value.angle)
-                    .scaleEffect(value.scale)
+                    .font(.system(size: value.size))
+                //                    .scaleEffect(value.scale)
                     .scaleEffect(y: value.yStretch)
                     .offset(y: value.yTranslation)
             } keyframes: { _ in
-                KeyframeTrack(\.scale) {
+                KeyframeTrack(\.size) {
                     LinearKeyframe(0.0, duration: 0.1)
-                    SpringKeyframe(16, duration: 0.3, spring: .bouncy)
-                    SpringKeyframe(12, duration: 0.5, spring: .bouncy)
+                    SpringKeyframe(200, duration: 0.3, spring: .bouncy)
+                    SpringKeyframe(150, duration: 0.5, spring: .bouncy)
                     LinearKeyframe(1, duration: 0.1)
                 }
+                //                KeyframeTrack(\.scale) {
+                //                    LinearKeyframe(0.0, duration: 0.1)
+                //                    SpringKeyframe(16, duration: 0.3, spring: .bouncy)
+                //                    SpringKeyframe(12, duration: 0.5, spring: .bouncy)
+                //                    LinearKeyframe(1, duration: 0.1)
+                //                }
                 KeyframeTrack(\.yTranslation) {
                     LinearKeyframe(100.0, duration: 0.2)
                     SpringKeyframe(-300, duration: 0.6, spring: .bouncy)
@@ -419,11 +456,14 @@ struct GameCheckView: View {
 }
 
 struct AnimationValues {
+    var size = 1.0
     var scale = 1.0
     var yStretch = 1.0
-    var yTranslation = 100.0
+    var yTranslation = 200.0
     var angle = Angle.zero
 }
+
+
 
 
 #if DEBUG
@@ -439,7 +479,7 @@ struct AnimationValues {
 }
 
 #Preview("ReactionView") {
-    GameCheckView(success: true, flag: .constant(true))
+    GameCheckView(points: 2, flag: .constant(true))
 }
 
 

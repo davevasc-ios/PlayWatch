@@ -21,7 +21,8 @@ struct Constants {
         
 
         
-        static let quizCount = 20
+        static let numberOfQuizzes = 20
+        static let secondsPerQuiz = 6
         
         enum Error: LocalizedError {
             case outOfRange
