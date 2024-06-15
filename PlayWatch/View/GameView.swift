@@ -105,7 +105,7 @@ struct GameCountDownView: View {
             Text(String(gameViewModel.timeRemaining))
                 .font(.system(size: 200))
                 .fontWeight(.medium)
-                .foregroundStyle(Color.pink.gradient)
+                .foregroundStyle(Color.blue.gradient)
                 .opacity(0.6)
                 .padding()
                 .allowsHitTesting(false)
@@ -122,39 +122,16 @@ struct GamePlayingView: View {
 struct GameQuestionView: View {
     @Environment(\.screenSize) var screenSize
     @Environment(GameViewModel.self) private var gameViewModel
-    @State var showingText: String = .empty
-    @State var index: Int = .zero
     
     var body: some View {
-        Text(showingText)
+        Text(gameViewModel.questionTyping)
             .font(.title2)
             .fontWeight(.heavy)
             .foregroundStyle(Color.blue.gradient)
             .padding()
             .frame(height: screenSize.height * Constants.Game.questionHeightScale)
             .minimumScaleFactor(0.5)
-            .onChange(of: gameViewModel.next) {
-                index = .zero
-                showingText = .empty
-                startTextAnimation()
-            }
     }
-    
-    private func startTextAnimation() {
-        Task {
-            while index < gameViewModel.nextQuestion.count {
-                await MainActor.run {
-                    showingText += String(gameViewModel.nextQuestion[gameViewModel.nextQuestion.index(gameViewModel.nextQuestion.startIndex, offsetBy: index)])
-                }
-                try? await Task.sleep(nanoseconds: Constants.Game.typingTextIntervales.randomElement() ?? 50000000)
-                index += 1
-            }
-            await MainActor.run {
-                gameViewModel.action(.onQuizReady)
-            }
-        }
-    }
-    
 }
 
 struct GameCardView: View {

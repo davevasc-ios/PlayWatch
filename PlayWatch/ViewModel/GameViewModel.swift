@@ -29,7 +29,6 @@ final class GameViewModel {
     private(set) var state: GameStatus = .empty
     private(set) var totalPoints: Int = .zero
     private(set) var newPoints: Int = .zero
-    private(set) var next = false
     private(set) var isQuizReady = false
     private(set) var buttonSwipeAction: Bool?
     private(set) var nextQuestion: String = .empty
@@ -37,6 +36,7 @@ final class GameViewModel {
     private(set) var answerFeedback = false
     private(set) var timeRemaining: Int = Constants.Game.secondsPerQuiz
     private(set) var showCountdown: Bool = false
+    private(set) var questionTyping: String = .empty
     private var countdownTask: Task<Void, Never>? = nil
     private var success = true
     private var allQuizzes: [GameQuiz] = []
@@ -168,9 +168,9 @@ final class GameViewModel {
         
         self.totalPoints = self.totalPoints + self.newPoints < 0 ? 0 : self.totalPoints + self.newPoints
         self.answerFeedback = !self.answerFeedback
-        if self.level < Constants.Game.numberOfQuizzes {
-            self.nextQuiz()
-        }
+        
+        guard self.level < Constants.Game.numberOfQuizzes else { return }
+        self.nextQuiz()
     }
 
     func setSwipeAction(value: Bool?) {
@@ -192,8 +192,23 @@ final class GameViewModel {
     }
     
     func nextQuiz() {
-        self.next = !self.next
+        self.startQuestionTyping()
         self.level += 1
+    }
+    
+    func startQuestionTyping() {
+        self.questionTyping = .empty
+        Task {
+            for character in self.nextQuestion {
+                await MainActor.run {
+                    self.questionTyping.append(character)
+                }
+                try? await Task.sleep(nanoseconds: Constants.Game.typingTextIntervales.randomElement() ?? 50000000)
+            }
+            await MainActor.run {
+                self.quizReady()
+            }
+        }
     }
 
     func startCountdown() {
