@@ -10,6 +10,7 @@ import SwiftUI
 struct SettingsView: View {
     
     @Bindable var localeManager: LocaleManager
+    @Bindable var serverManager: ServerManager
     @Binding var currentTab: Tab
     @Environment(GameViewModel.self) private var gameViewModel
     @Environment(HomeViewModel.self) private var homeViewModel
@@ -31,12 +32,12 @@ struct SettingsView: View {
         NavigationStack {
             Form {
                 Section(header: Text("Apariencia")) {
-                    Picker("Tema", selection: $selectedTheme) {
+                    Picker("Theme", selection: $selectedTheme) {
                         ForEach(Theme.allCases) { theme in
                             Text(theme.rawValue).tag(theme)
                         }
                     }
-                    Picker("Idioma", selection: $localeManager.appLanguage) {
+                    Picker("Language", selection: $localeManager.appLanguage) {
                         ForEach(AppLanguage.allCases) { language in
                             if language == .system {
                                 Text(language.nativeName)
@@ -48,10 +49,8 @@ struct SettingsView: View {
                         }
                     }
                     .onChange(of: localeManager.appLanguage) {
-                        if gameViewModel.state != .loading {
+                        if gameViewModel.state != .loading && gameViewModel.state != .playing {
                             gameViewModel.action(.onClean)
-                        }
-                        if homeViewModel.state != .loading {
                             homeViewModel.action(.onReload(localeManager.locale))
                         }
                     }
@@ -67,6 +66,18 @@ struct SettingsView: View {
                                 Text("\(region.nativeName) (\(region.localized))")
                                     .tag(region)
                             }
+                        }
+                    }
+                    Picker("Server", selection: $serverManager.appServer) {
+                        ForEach(AppServer.allCases) { server in
+                            Text(server.rawValue)
+                                .tag(server)
+                        }
+                    }
+                    .onChange(of: serverManager.appServer) {
+                        if gameViewModel.state != .loading && gameViewModel.state != .playing {
+                            gameViewModel.action(.onClean)
+                            homeViewModel.action(.onReload(localeManager.locale))
                         }
                     }
                 }

@@ -9,6 +9,7 @@ import SwiftUI
 
 struct GameView: View {
     @Bindable var localeManager: LocaleManager
+    @Bindable var serverManager: ServerManager
     @Environment(GameViewModel.self) private var gameViewModel
     
     var body: some View {
@@ -16,7 +17,7 @@ struct GameView: View {
             switch gameViewModel.state {
             case .error:
                 ScrollView {
-                    Text("Error loading")
+                    Text("Error on \(serverManager.appServer.rawValue) server, change on Settings")
                 }
                 .refreshable {
                     gameViewModel.action(.onRefresh)
@@ -92,7 +93,7 @@ struct GameView: View {
             GameCountDownView()
         }
         .onAppear {
-            gameViewModel.action(.onAppear(localeManager.locale))
+            gameViewModel.action(.onAppear(localeManager.locale, serverManager.appServer))
         }
     }
 }
@@ -283,7 +284,7 @@ private extension GameCardView {
 struct SwipeActionIndicatorView: View {
     @Environment(\.screenSize) var screenSize
     @Binding var xOffset: CGFloat
-    
+    // TODO: - lack noAnswer tag
     var body: some View {
         HStack {
             ForEach([true, false], id: \.self) { value in
@@ -492,7 +493,7 @@ struct AnimationValues {
 }
 
 #Preview("GameViewTest") {
-    GameView(localeManager: LocaleManager())
+    GameView(localeManager: LocaleManager(), serverManager: ServerManager())
         .environment(GameViewModel())
 }
 #endif

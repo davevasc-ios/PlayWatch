@@ -133,10 +133,11 @@ final class HomeViewModel {
         }
     }
     
-    private func getGeminiResponse(prompt: String) {
+    func getGeminiResponse(prompt: String) {
         Task {
             do {
-                let _ = try await getGeminiUseCase.getResponse(prompt: prompt)
+                let result = try await getGeminiUseCase.getResponse(prompt: prompt)
+                print(result)
             }
             catch {
                 print(error.localizedDescription)

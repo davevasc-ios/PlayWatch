@@ -33,7 +33,6 @@ struct HomeView: View {
         }
         .onAppear {
             homeViewModel.action(.onAppear(localeManager.locale))
-            //            viewModel.getGeminiResponse(prompt: "cuentame una hitoria vasca")
         }
         .searchable(text: $searchText, isPresented: $isSearching, placement: .automatic, prompt: Text(LocalizableString.homeSearchBar))
         .searchSuggestions {

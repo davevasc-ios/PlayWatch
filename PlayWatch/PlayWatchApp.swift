@@ -24,11 +24,12 @@ struct PlayWatchApp: App {
     }()
     
     @State private var localeManager = LocaleManager()
+    @State private var serverManager = ServerManager()
     
     var body: some Scene {
         WindowGroup {
             GeometryReader { geometry in
-                TabBarView(localeManager: localeManager)
+                TabBarView(localeManager: localeManager, serverManager: serverManager)
                     .environment(\.locale, localeManager.appLocale)
                     .environment(\.screenSize, geometry.size)
             }

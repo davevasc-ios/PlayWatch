@@ -16,7 +16,7 @@ enum GameStatus {
 }
 
 enum GameViewAction {
-    case onAppear(MovieDB.Locale),
+    case onAppear(MovieDB.Locale, AppServer),
          onRefresh,
          onClean,
          onSetSwipeAction(GameAnswer?),
@@ -41,16 +41,21 @@ final class GameViewModel {
     private var success = true
     private var allQuizzes: [GameQuiz] = []
     private var locale = MovieDB.Locale()
+    private var server: AppServer = .openAI
     
     // MARK: - Internal vars
     private let fetchMediaUseCase: FetchMediaProtocol
     private let getOpenAIUseCase: GetOpenAIResponseProtocol
+    private let getGeminiUseCase: GetGeminiResponseProtocol
     
     // MARK: - Initialization
     init(fetchMediaUseCase: FetchMediaProtocol = FetchMediaUseCase(),
-         getOpenAIUseCase: GetOpenAIResponseProtocol = GetOpenAIResponseUseCase()) {
+         getOpenAIUseCase: GetOpenAIResponseProtocol = GetOpenAIResponseUseCase(),
+         getGeminiUseCase: GetGeminiResponseProtocol = GetGeminiResponseUseCase()) {
+        
         self.fetchMediaUseCase = fetchMediaUseCase
         self.getOpenAIUseCase = getOpenAIUseCase
+        self.getGeminiUseCase = getGeminiUseCase
     }
     
     private func clean() {
@@ -69,8 +74,8 @@ final class GameViewModel {
     
     func action(_ on: GameViewAction) {
         switch on {
-        case .onAppear(let locale):
-            self.load(locale: locale)
+        case .onAppear(let locale, let server):
+            self.load(locale: locale, server: server)
         case .onRefresh:
             self.refresh()
         case .onClean:
@@ -82,16 +87,24 @@ final class GameViewModel {
         }
     }
     
-    private func load(locale: MovieDB.Locale? = nil) {
+    private func load(locale: MovieDB.Locale? = nil, server: AppServer? = nil) {
         if let locale = locale {
             self.locale = locale
+        }
+        if let server = server {
+            self.server = server
         }
         if state == .empty || state == .error {
             self.state = .loading
             Task {
                 do {
                     let mediaList = try await self.fetchMediaUseCase.fetchMedia(type: .randomMovies, locale: self.locale, searchText: nil).filterWithImage()
-                    let quizList = try await self.getOpenAIUseCase.getMoviesQuiz(movies: mediaList.map { $0.mediaName }.joined(separator: ", "), language: self.locale.name)
+                    var quizList: [Quiz] = []
+                    if self.server == .gemini {
+                        quizList = try await self.getGeminiUseCase.getMoviesQuiz(movies: mediaList.map { $0.mediaName }.joined(separator: ", "), language: self.locale.name)
+                    } else {
+                        quizList = try await self.getOpenAIUseCase.getMoviesQuiz(movies: mediaList.map { $0.mediaName }.joined(separator: ", "), language: self.locale.name)
+                    }
                     self.allQuizzes = try self.loadAllQuizzes(media: mediaList, quiz: quizList)
                     self.updateCurrentQuizzes()
                     self.nextQuestion = self.currentQuizzes.first?.quiz.question ?? ""
