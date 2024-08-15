@@ -15,16 +15,10 @@ enum GameStatus {
     case empty, loading, ready, playing, finish, error
 }
 
-enum GameViewAction {
-    case onAppear(MovieDB.Locale, AppServer),
-         onRefresh,
-         onClean,
-         onSetSwipeAction(GameAnswer?),
-         onQuizReady
-}
-
 @Observable
-final class GameViewModel {
+final class GameViewModel: EventHandler {
+    
+    // MARK: - Public Read-Only Properties
     private(set) var currentQuizzes: [GameQuiz] = []
     private(set) var state: GameStatus = .empty
     private(set) var totalPoints: Int = .zero
@@ -37,13 +31,13 @@ final class GameViewModel {
     private(set) var timeRemaining: Int = Constants.Game.secondsPerQuiz
     private(set) var showCountdown: Bool = false
     private(set) var questionTyping: String = .empty
+    
+    // MARK: - Private Properties
     private var countdownTask: Task<Void, Never>?
     private var success = true
     private var allQuizzes: [GameQuiz] = []
     private var locale = MovieDB.Locale()
     private var server: AppServer = .openAI
-    
-    // MARK: - Internal vars
     private let fetchMediaUseCase: FetchMediaProtocol
     private let getOpenAIUseCase: GetOpenAIResponseProtocol
     private let getGeminiUseCase: GetGeminiResponseProtocol
@@ -52,12 +46,41 @@ final class GameViewModel {
     init(fetchMediaUseCase: FetchMediaProtocol = FetchMediaUseCase(),
          getOpenAIUseCase: GetOpenAIResponseProtocol = GetOpenAIResponseUseCase(),
          getGeminiUseCase: GetGeminiResponseProtocol = GetGeminiResponseUseCase()) {
-        
         self.fetchMediaUseCase = fetchMediaUseCase
         self.getOpenAIUseCase = getOpenAIUseCase
         self.getGeminiUseCase = getGeminiUseCase
     }
     
+    // MARK: - Event Handling
+    enum Event {
+        case viewAppear(MovieDB.Locale, AppServer),
+             refreshGame,
+             cleanGame,
+             onSetSwipeAction(GameAnswer?),
+             onQuizReady
+    }
+    
+    // MARK: - Public Methods
+    func on(_ event: Event) {
+        switch event {
+        case .viewAppear(let locale, let server):
+            self.load(locale: locale, server: server)
+        case .refreshGame:
+            self.refresh()
+        case .cleanGame:
+            self.clean()
+        case .onSetSwipeAction(let value):
+            self.setSwipeAction(value: value)
+        case .onQuizReady:
+            self.quizReady()
+        }
+    }
+    
+    func start() {
+        self.state = .playing
+    }
+    
+    // MARK: - Private Methods
     private func clean() {
         self.currentQuizzes.removeAll()
         self.state = .empty
@@ -66,25 +89,10 @@ final class GameViewModel {
         self.isQuizReady = false
         self.buttonSwipeAction = nil
         self.nextQuestion = .empty
-        self.level = 0
+        self.level = .zero
         self.timeRemaining = Constants.Game.secondsPerQuiz
         self.showCountdown = false
         self.allQuizzes.removeAll()
-    }
-    
-    func action(_ on: GameViewAction) {
-        switch on {
-        case .onAppear(let locale, let server):
-            self.load(locale: locale, server: server)
-        case .onRefresh:
-            self.refresh()
-        case .onClean:
-            self.clean()
-        case .onSetSwipeAction(let value):
-            self.setSwipeAction(value: value)
-        case .onQuizReady:
-            self.quizReady()
-        }
     }
     
     private func load(locale: MovieDB.Locale? = nil, server: AppServer? = nil) {
@@ -122,9 +130,7 @@ final class GameViewModel {
         }
     }
     
-    func start() {
-        self.state = .playing
-    }
+
     
     private func refresh() {
         if state != .loading {

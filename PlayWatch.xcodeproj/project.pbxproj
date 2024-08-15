@@ -33,11 +33,9 @@
 		5576C3AE2BB9B13F00E511DE /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576C3AD2BB9B13F00E511DE /* Constants.swift */; };
 		5576C3B02BB9C10D00E511DE /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576C3AF2BB9C10D00E511DE /* API.swift */; };
 		5576C3B22BB9C7C300E511DE /* APIKey-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5576C3B12BB9C7C300E511DE /* APIKey-Info.plist */; };
-		557F55602BE416C200EEAA2F /* LocaleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 557F555F2BE416C200EEAA2F /* LocaleManager.swift */; };
 		557F55622BE418C400EEAA2F /* AppLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 557F55612BE418C400EEAA2F /* AppLanguage.swift */; };
 		557F55642BE425DE00EEAA2F /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 557F55632BE425DE00EEAA2F /* Localizable.xcstrings */; };
 		557F55662BE4267B00EEAA2F /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 557F55652BE4267B00EEAA2F /* SettingsView.swift */; };
-		557F55682BE4272F00EEAA2F /* LanguageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 557F55672BE4272F00EEAA2F /* LanguageView.swift */; };
 		5581067D2C00F75300D7A96D /* EnvironmentExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5581067C2C00F75300D7A96D /* EnvironmentExtension.swift */; };
 		55AFE6082BD5160E0015E411 /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55AFE6072BD5160E0015E411 /* DateExtension.swift */; };
 		55AFE60A2BD51CA60015E411 /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55AFE6092BD51CA60015E411 /* ArrayExtension.swift */; };
@@ -46,7 +44,8 @@
 		55B2540F2BC29ACC006ACD43 /* HTTP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B2540E2BC29ACC006ACD43 /* HTTP.swift */; };
 		55B254112BC2AD47006ACD43 /* GeminiModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B254102BC2AD47006ACD43 /* GeminiModel.swift */; };
 		55B254132BC2AF6D006ACD43 /* GetGeminiResponseUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B254122BC2AF6D006ACD43 /* GetGeminiResponseUseCase.swift */; };
-		55C21ADF2C42EA19008D7DD6 /* ServerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C21ADE2C42EA19008D7DD6 /* ServerManager.swift */; };
+		55C3F1912C6E3140006DE59B /* EventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C3F1902C6E3140006DE59B /* EventHandler.swift */; };
+		55C3F1932C6E5221006DE59B /* AppManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C3F1922C6E5221006DE59B /* AppManager.swift */; };
 		55CC9E692BBB504500298EE2 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55CC9E682BBB504500298EE2 /* HomeViewModel.swift */; };
 		55D425CB2BCC4669001FA57C /* Tab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D425CA2BCC4669001FA57C /* Tab.swift */; };
 		55D425CF2BCC4AFF001FA57C /* TabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D425CE2BCC4AFF001FA57C /* TabBarView.swift */; };
@@ -107,11 +106,9 @@
 		5576C3AD2BB9B13F00E511DE /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		5576C3AF2BB9C10D00E511DE /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		5576C3B12BB9C7C300E511DE /* APIKey-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "APIKey-Info.plist"; sourceTree = "<group>"; };
-		557F555F2BE416C200EEAA2F /* LocaleManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocaleManager.swift; sourceTree = "<group>"; };
 		557F55612BE418C400EEAA2F /* AppLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLanguage.swift; sourceTree = "<group>"; };
 		557F55632BE425DE00EEAA2F /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		557F55652BE4267B00EEAA2F /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
-		557F55672BE4272F00EEAA2F /* LanguageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageView.swift; sourceTree = "<group>"; };
 		5581067C2C00F75300D7A96D /* EnvironmentExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentExtension.swift; sourceTree = "<group>"; };
 		55AFE6072BD5160E0015E411 /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
 		55AFE6092BD51CA60015E411 /* ArrayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
@@ -120,7 +117,8 @@
 		55B2540E2BC29ACC006ACD43 /* HTTP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTP.swift; sourceTree = "<group>"; };
 		55B254102BC2AD47006ACD43 /* GeminiModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeminiModel.swift; sourceTree = "<group>"; };
 		55B254122BC2AF6D006ACD43 /* GetGeminiResponseUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetGeminiResponseUseCase.swift; sourceTree = "<group>"; };
-		55C21ADE2C42EA19008D7DD6 /* ServerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerManager.swift; sourceTree = "<group>"; };
+		55C3F1902C6E3140006DE59B /* EventHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventHandler.swift; sourceTree = "<group>"; };
+		55C3F1922C6E5221006DE59B /* AppManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppManager.swift; sourceTree = "<group>"; };
 		55CC9E682BBB504500298EE2 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		55D425CA2BCC4669001FA57C /* Tab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tab.swift; sourceTree = "<group>"; };
 		55D425CE2BCC4AFF001FA57C /* TabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarView.swift; sourceTree = "<group>"; };
@@ -188,7 +186,6 @@
 				55AFE60D2BD5C51E0015E411 /* SearchView.swift */,
 				55E51A3B2BDEB1FF00A8541B /* FavoritesView.swift */,
 				557F55652BE4267B00EEAA2F /* SettingsView.swift */,
-				557F55672BE4272F00EEAA2F /* LanguageView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -208,7 +205,6 @@
 				550C5F3D2BBA141A005B853B /* MovieDBService.swift */,
 				550C5F3F2BBA142E005B853B /* OpenAIService.swift */,
 				550C5F412BBA1448005B853B /* GeminiService.swift */,
-				55C21ADE2C42EA19008D7DD6 /* ServerManager.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -301,7 +297,6 @@
 				55077AD82BD2CD6600E9B681 /* CacheAsyncImage.swift */,
 				55AFE6072BD5160E0015E411 /* DateExtension.swift */,
 				55AFE6092BD51CA60015E411 /* ArrayExtension.swift */,
-				557F555F2BE416C200EEAA2F /* LocaleManager.swift */,
 				557F55612BE418C400EEAA2F /* AppLanguage.swift */,
 				557F55632BE425DE00EEAA2F /* Localizable.xcstrings */,
 				55034E912BE5317D00BCBD0E /* LocalizableTabBar.xcstrings */,
@@ -310,6 +305,8 @@
 				55034E972BE53DF300BCBD0E /* LocalizableSettings.xcstrings */,
 				5581067C2C00F75300D7A96D /* EnvironmentExtension.swift */,
 				555B26E22C1CC49400B789A1 /* BoolExtension.swift */,
+				55C3F1902C6E3140006DE59B /* EventHandler.swift */,
+				55C3F1922C6E5221006DE59B /* AppManager.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -460,16 +457,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				55C21ADF2C42EA19008D7DD6 /* ServerManager.swift in Sources */,
 				55D73FE52BCDB5E700F337FC /* TabPosition.swift in Sources */,
 				55CC9E692BBB504500298EE2 /* HomeViewModel.swift in Sources */,
 				55D73FE32BCDB2A600F337FC /* TabShape.swift in Sources */,
 				5549D57C2BC0738700B934CD /* OpenAIModel.swift in Sources */,
-				557F55682BE4272F00EEAA2F /* LanguageView.swift in Sources */,
 				5549D57E2BC0756C00B934CD /* GetOpenAIResponseUseCase.swift in Sources */,
 				55077AD92BD2CD6600E9B681 /* CacheAsyncImage.swift in Sources */,
 				555F69D82BF68931000DF9B9 /* GameModel.swift in Sources */,
-				557F55602BE416C200EEAA2F /* LocaleManager.swift in Sources */,
 				55E4CC822BCADB2C0048EF56 /* ColorExtension.swift in Sources */,
 				5575C70F2BBF694300CD3918 /* Media.swift in Sources */,
 				550C5F422BBA1448005B853B /* GeminiService.swift in Sources */,
@@ -481,6 +475,7 @@
 				55AFE6082BD5160E0015E411 /* DateExtension.swift in Sources */,
 				555B26E32C1CC49400B789A1 /* BoolExtension.swift in Sources */,
 				557F55622BE418C400EEAA2F /* AppLanguage.swift in Sources */,
+				55C3F1932C6E5221006DE59B /* AppManager.swift in Sources */,
 				5576C3B02BB9C10D00E511DE /* API.swift in Sources */,
 				55AFE60C2BD520E20015E411 /* GameView.swift in Sources */,
 				55E4CC802BCA9A050048EF56 /* StringExtension.swift in Sources */,
@@ -496,6 +491,7 @@
 				5576C3AE2BB9B13F00E511DE /* Constants.swift in Sources */,
 				550C5F3E2BBA141A005B853B /* MovieDBService.swift in Sources */,
 				55B254112BC2AD47006ACD43 /* GeminiModel.swift in Sources */,
+				55C3F1912C6E3140006DE59B /* EventHandler.swift in Sources */,
 				55AFE60E2BD5C51F0015E411 /* SearchView.swift in Sources */,
 				55D425CF2BCC4AFF001FA57C /* TabBarView.swift in Sources */,
 				55212BB12BA7A0C400080A71 /* PlayWatchApp.swift in Sources */,

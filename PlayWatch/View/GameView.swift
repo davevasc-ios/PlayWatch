@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct GameView: View {
-    @Bindable var localeManager: LocaleManager
-    @Bindable var serverManager: ServerManager
+    @Bindable var appManager: AppManager
     @Environment(GameViewModel.self) private var gameViewModel
     
     var body: some View {
@@ -17,10 +16,10 @@ struct GameView: View {
             switch gameViewModel.state {
             case .error:
                 ScrollView {
-                    Text("Error on \(serverManager.appServer.rawValue) server, change on Settings")
+                    Text("Error on \(appManager.appServer.rawValue) server, change on Settings")
                 }
                 .refreshable {
-                    gameViewModel.action(.onRefresh)
+                    gameViewModel.on(.refreshGame)
                 }
             case .empty:
                 EmptyView()
@@ -74,7 +73,7 @@ struct GameView: View {
                         .foregroundColor(.blue)
                         .padding()
                     Button {
-                        gameViewModel.action(.onRefresh)
+                        gameViewModel.on(.refreshGame)
                     } label: {
                         Text("Play Again!")
                             .font(.title)
@@ -93,7 +92,7 @@ struct GameView: View {
             GameCountDownView()
         }
         .onAppear {
-            gameViewModel.action(.onAppear(localeManager.locale, serverManager.appServer))
+            gameViewModel.on(.viewAppear(appManager.locale, appManager.appServer))
         }
     }
 }
@@ -235,7 +234,7 @@ private extension GameCardView {
                 swipeDown()
             }
         }
-        gameViewModel.action(.onSetSwipeAction(nil))
+        gameViewModel.on(.onSetSwipeAction(nil))
     }
 }
 
@@ -370,7 +369,7 @@ struct ActionButtonView: View {
     var body: some View {
         
         Button {
-            gameViewModel.action(.onSetSwipeAction(gameAnswer))
+            gameViewModel.on(.onSetSwipeAction(gameAnswer))
             gameViewModel.sendAnswer(gameAnswer: gameAnswer)
             gameViewModel.removeCurrentQuiz(delay: 500000000)
         } label: {
@@ -493,7 +492,7 @@ struct AnimationValues {
 }
 
 #Preview("GameViewTest") {
-    GameView(localeManager: LocaleManager(), serverManager: ServerManager())
+    GameView(appManager: AppManager())
         .environment(GameViewModel())
 }
 #endif

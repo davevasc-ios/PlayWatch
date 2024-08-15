@@ -5,31 +5,23 @@
 //  Created by David on 1/4/24.
 //
 
-import Foundation
 import Observation
 
-enum HomeViewAction {
-    case onAppear(MovieDB.Locale),
-         onRefresh,
-         onReload(MovieDB.Locale),
-         onChangeSearch(String),
-         onChangeTrending
-}
-
 @Observable
-final class HomeViewModel {
-
+final class HomeViewModel: EventHandler {
+    
+    // MARK: - Public Read-Only Properties
     private(set) var mediaSectionsList: [MediaSection] = []
     private(set) var mediaTrendingList: [Media] = []
     private(set) var mediaSearchList: [Media] = []
     private(set) var state: API.Status = .empty
+    
+    // MARK: - Private Properties
     private var locale = MovieDB.Locale()
-        
-    // MARK: - Internal vars
     private let fetchMediaUseCase: FetchMediaProtocol
     private let getOpenAIUseCase: GetOpenAIResponseProtocol
     private let getGeminiUseCase: GetGeminiResponseProtocol
-
+    
     // MARK: - Initialization
     init(fetchMediaUseCase: FetchMediaProtocol = FetchMediaUseCase(),
          getOpenAIUseCase: GetOpenAIResponseProtocol = GetOpenAIResponseUseCase(),
@@ -39,13 +31,23 @@ final class HomeViewModel {
         self.getGeminiUseCase = getGeminiUseCase
     }
     
-    func action(_ on: HomeViewAction) {
-        switch on {
-        case .onAppear(let locale):
+    // MARK: - Event Handling
+    enum Event {
+        case viewAppear(MovieDB.Locale),
+             refreshData,
+             reloadData(MovieDB.Locale),
+             onChangeSearch(String),
+             onChangeTrending
+    }
+    
+    // MARK: - Public Methods
+    func on(_ event: Event) {
+        switch event {
+        case .viewAppear(let locale):
             self.start(locale: locale)
-        case .onRefresh:
+        case .refreshData:
             self.refresh()
-        case .onReload(let locale):
+        case .reloadData(let locale):
             self.reload(locale: locale)
         case .onChangeSearch(let text):
             self.search(searchText: text)
@@ -54,6 +56,7 @@ final class HomeViewModel {
         }
     }
     
+    // MARK: - Private Methods
     private func start(locale: MovieDB.Locale? = nil) {
         if let locale = locale {
             self.locale = locale

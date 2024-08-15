@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct HomeView: View {
-    @Bindable var localeManager: LocaleManager
+    @Bindable var appManager: AppManager
     @Environment(HomeViewModel.self) private var homeViewModel
     @State private var showSuggestions = true
     @State private var isSearching = false
@@ -26,13 +26,13 @@ struct HomeView: View {
                 }
             }
             .refreshable {
-                homeViewModel.action(.onRefresh)
+                homeViewModel.on(.refreshData)
             }
             .navigationTitle(Text(Tab.home.localized))
             .navigationBarTitleDisplayMode(.inline)
         }
         .onAppear {
-            homeViewModel.action(.onAppear(localeManager.locale))
+            homeViewModel.on(.viewAppear(appManager.locale))
         }
         .searchable(text: $searchText, isPresented: $isSearching, placement: .automatic, prompt: Text(LocalizableString.homeSearchBar))
         .searchSuggestions {
@@ -50,15 +50,15 @@ struct HomeView: View {
         }
         .onChange(of: searchText) {
             if searchText.count > 0 {
-                homeViewModel.action(.onChangeSearch(searchText))
+                homeViewModel.on(.onChangeSearch(searchText))
             } else {
-                homeViewModel.action(.onChangeTrending)
+                homeViewModel.on(.onChangeTrending)
                 showSuggestions = true
             }
         }
         .onChange(of: isSearching) {
             if isSearching {
-                homeViewModel.action(.onChangeTrending)
+                homeViewModel.on(.onChangeTrending)
             }
         }
     }
@@ -245,6 +245,6 @@ struct TitleNameView: View {
 }
 
 #Preview {
-    HomeView(localeManager: LocaleManager())
+    HomeView(appManager: AppManager())
         .environment(HomeViewModel())
 }

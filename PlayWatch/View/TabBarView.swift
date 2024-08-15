@@ -16,26 +16,23 @@ struct TabBarView: View {
     @State private var gameViewModel = GameViewModel()
     @State private var homeViewModel = HomeViewModel()
     
-    @Bindable var localeManager: LocaleManager
-    @Bindable var serverManager: ServerManager
+    @Bindable var appManager: AppManager
     
-    init(localeManager: LocaleManager,
-         serverManager: ServerManager) {
-        self.localeManager = localeManager
-        self.serverManager = serverManager
+    init(appManager: AppManager) {
+        self.appManager = appManager
         UITabBar.appearance().isHidden = true
     }
     
     var body: some View {
         VStack(spacing: 0) {
             TabView(selection: $currentTab) {
-                HomeView(localeManager: localeManager)
+                HomeView(appManager: appManager)
                     .tag(Tab.home)
-                GameView(localeManager: localeManager, serverManager: serverManager)
+                GameView(appManager: appManager)
                     .tag(Tab.game)
                 FavoritesView()
                     .tag(Tab.favorites)
-                SettingsView(localeManager: localeManager, serverManager: serverManager, currentTab: $currentTab)
+                SettingsView(appManager: appManager, currentTab: $currentTab)
                     .tag(Tab.settings)
             }
             CustomTabBar()
@@ -43,7 +40,7 @@ struct TabBarView: View {
         .environment(gameViewModel)
         .environment(homeViewModel)
         .onAppear() {
-            gameViewModel.action(.onAppear(localeManager.locale, serverManager.appServer))
+            gameViewModel.on(.viewAppear(appManager.locale, appManager.appServer))
         }
     }
     
@@ -119,5 +116,5 @@ struct TabBarItem: View {
 }
 
 #Preview {
-    TabBarView(localeManager: LocaleManager(), serverManager: ServerManager())
+    TabBarView(appManager: AppManager())
 }
