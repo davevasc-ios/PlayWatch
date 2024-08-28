@@ -5,26 +5,19 @@
 //  Created by David on 7/4/24.
 //
 
-import Foundation
-
-protocol GetGeminiResponseProtocol {
+protocol GetGeminiResponseProtocol: Sendable {
     func getResponse(prompt: String) async throws -> String
     func getMoviesQuiz(movies: String, language: String) async throws -> [Quiz]
 }
+
 struct GetGeminiResponseUseCase: GetGeminiResponseProtocol {
-    var service: GeminiServiceProtocol
+    private let service: GeminiServiceProtocol = GeminiService()
     
-    init(service: GeminiServiceProtocol = GeminiService()) {
-        self.service = service
-    }
-    
-    func getResponse(prompt: String) async throws -> String {
+    internal func getResponse(prompt: String) async throws -> String {
         return try await service.getResponse(prompt: prompt)
-   
     }
     
-    func getMoviesQuiz(movies: String, language: String) async throws -> [Quiz] {
+    internal func getMoviesQuiz(movies: String, language: String) async throws -> [Quiz] {
         return try await service.moviesQuiz(movies: movies, language: language)
     }
-    
 }

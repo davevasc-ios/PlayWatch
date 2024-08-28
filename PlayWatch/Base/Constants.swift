@@ -19,9 +19,6 @@ struct Constants {
         static let typingTextIntervales: [UInt64] = [10000000, 20000000, 30000000, 40000000, 50000000]
         static let swipeDownDegrees: [Double] = [-30, -20, -10, 0, 10, 20, 30]
 
-        
-
-        
         static let numberOfQuizzes = 20
         static let secondsPerQuiz = 6
         
@@ -74,7 +71,7 @@ struct MovieDB {
         static private let trending = "trending/"
         static private let discover = "discover/"
         static private let popular = "\(MediaType.person)/popular"
-        static private var search = "search/multi"
+        static private let search = "search/multi"
         
         static private let maxPages = 500
         static private let voteAverageGte = 5

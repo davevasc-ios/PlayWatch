@@ -16,7 +16,6 @@
 		550C5F402BBA142E005B853B /* OpenAIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 550C5F3F2BBA142E005B853B /* OpenAIService.swift */; };
 		550C5F422BBA1448005B853B /* GeminiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 550C5F412BBA1448005B853B /* GeminiService.swift */; };
 		55212BB12BA7A0C400080A71 /* PlayWatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55212BB02BA7A0C400080A71 /* PlayWatchApp.swift */; };
-		55212BB32BA7A0C400080A71 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55212BB22BA7A0C400080A71 /* ContentView.swift */; };
 		55212BB52BA7A0C400080A71 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55212BB42BA7A0C400080A71 /* Item.swift */; };
 		55212BB72BA7A0C500080A71 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55212BB62BA7A0C500080A71 /* Assets.xcassets */; };
 		55212BBB2BA7A0C500080A71 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55212BBA2BA7A0C500080A71 /* Preview Assets.xcassets */; };
@@ -36,6 +35,7 @@
 		557F55622BE418C400EEAA2F /* AppLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 557F55612BE418C400EEAA2F /* AppLanguage.swift */; };
 		557F55642BE425DE00EEAA2F /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 557F55632BE425DE00EEAA2F /* Localizable.xcstrings */; };
 		557F55662BE4267B00EEAA2F /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 557F55652BE4267B00EEAA2F /* SettingsView.swift */; };
+		5580E9452C723E260026F5E6 /* URLSessionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5580E9442C723E260026F5E6 /* URLSessionExtension.swift */; };
 		5581067D2C00F75300D7A96D /* EnvironmentExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5581067C2C00F75300D7A96D /* EnvironmentExtension.swift */; };
 		55AFE6082BD5160E0015E411 /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55AFE6072BD5160E0015E411 /* DateExtension.swift */; };
 		55AFE60A2BD51CA60015E411 /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55AFE6092BD51CA60015E411 /* ArrayExtension.swift */; };
@@ -86,7 +86,6 @@
 		550C5F412BBA1448005B853B /* GeminiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeminiService.swift; sourceTree = "<group>"; };
 		55212BAD2BA7A0C400080A71 /* PlayWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlayWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55212BB02BA7A0C400080A71 /* PlayWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayWatchApp.swift; sourceTree = "<group>"; };
-		55212BB22BA7A0C400080A71 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		55212BB42BA7A0C400080A71 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		55212BB62BA7A0C500080A71 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		55212BB82BA7A0C500080A71 /* PlayWatch.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PlayWatch.entitlements; sourceTree = "<group>"; };
@@ -109,6 +108,7 @@
 		557F55612BE418C400EEAA2F /* AppLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLanguage.swift; sourceTree = "<group>"; };
 		557F55632BE425DE00EEAA2F /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		557F55652BE4267B00EEAA2F /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		5580E9442C723E260026F5E6 /* URLSessionExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionExtension.swift; sourceTree = "<group>"; };
 		5581067C2C00F75300D7A96D /* EnvironmentExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentExtension.swift; sourceTree = "<group>"; };
 		55AFE6072BD5160E0015E411 /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
 		55AFE6092BD51CA60015E411 /* ArrayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
@@ -240,7 +240,6 @@
 				550C5F3C2BBA1394005B853B /* Service */,
 				555F69D42BF68400000DF9B9 /* Mock */,
 				55212BB02BA7A0C400080A71 /* PlayWatchApp.swift */,
-				55212BB22BA7A0C400080A71 /* ContentView.swift */,
 				55212BB42BA7A0C400080A71 /* Item.swift */,
 				55212BB62BA7A0C500080A71 /* Assets.xcassets */,
 				55212BB82BA7A0C500080A71 /* PlayWatch.entitlements */,
@@ -307,6 +306,7 @@
 				555B26E22C1CC49400B789A1 /* BoolExtension.swift */,
 				55C3F1902C6E3140006DE59B /* EventHandler.swift */,
 				55C3F1922C6E5221006DE59B /* AppManager.swift */,
+				5580E9442C723E260026F5E6 /* URLSessionExtension.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -457,6 +457,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5580E9452C723E260026F5E6 /* URLSessionExtension.swift in Sources */,
 				55D73FE52BCDB5E700F337FC /* TabPosition.swift in Sources */,
 				55CC9E692BBB504500298EE2 /* HomeViewModel.swift in Sources */,
 				55D73FE32BCDB2A600F337FC /* TabShape.swift in Sources */,
@@ -468,7 +469,6 @@
 				5575C70F2BBF694300CD3918 /* Media.swift in Sources */,
 				550C5F422BBA1448005B853B /* GeminiService.swift in Sources */,
 				550C5F402BBA142E005B853B /* OpenAIService.swift in Sources */,
-				55212BB32BA7A0C400080A71 /* ContentView.swift in Sources */,
 				555F69D62BF6841F000DF9B9 /* MockData.swift in Sources */,
 				5581067D2C00F75300D7A96D /* EnvironmentExtension.swift in Sources */,
 				55034E962BE5384A00BCBD0E /* LocalizableString.swift in Sources */,
@@ -592,6 +592,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_STRICT_CONCURRENCY = complete;
 			};
 			name = Debug;
 		};
@@ -647,6 +648,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_STRICT_CONCURRENCY = complete;
 			};
 			name = Release;
 		};

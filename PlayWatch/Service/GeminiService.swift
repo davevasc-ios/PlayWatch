@@ -7,15 +7,15 @@
 
 import Foundation
 
-protocol GeminiServiceProtocol {
+protocol GeminiServiceProtocol: Sendable {
     func getResponse(prompt: String) async throws -> String
     func moviesQuiz(movies: String, language: String) async throws -> [Quiz]
 }
 
 final class GeminiService: GeminiServiceProtocol {
     
-    func getResponse(prompt: String) async throws -> String {
-        let (data, response) = try await URLSession.shared.data(for: Gemini.request(text: prompt))
+    internal func getResponse(prompt: String) async throws -> String {
+        let (data, response) = try await URLSession.shared.data(request: Gemini.request(text: prompt))
         guard let response = response as? HTTPURLResponse,
               response.statusCode == HTTP.successCode else {
             throw API.Error.invalidResponse(detail: String(data: data, encoding: .utf8).orEmpty)
@@ -27,8 +27,8 @@ final class GeminiService: GeminiServiceProtocol {
         }
     }
     
-    func moviesQuiz(movies: String, language: String) async throws -> [Quiz] {
-        let (data, response) = try await URLSession.shared.data(for: Gemini.request(text: Gemini.quizPrompt(movies: movies, language: language)))
+    internal func moviesQuiz(movies: String, language: String) async throws -> [Quiz] {
+        let (data, response) = try await URLSession.shared.data(request: Gemini.request(text: Gemini.quizPrompt(movies: movies, language: language)))
         guard let response = response as? HTTPURLResponse,
               response.statusCode == HTTP.successCode else {
             throw API.Error.invalidResponse(detail: String(data: data, encoding: .utf8).orEmpty)

@@ -17,10 +17,10 @@ final class HomeViewModel: EventHandler {
     private(set) var state: API.Status = .empty
     
     // MARK: - Private Properties
-    private var locale = MovieDB.Locale()
-    private let fetchMediaUseCase: FetchMediaProtocol
-    private let getOpenAIUseCase: GetOpenAIResponseProtocol
-    private let getGeminiUseCase: GetGeminiResponseProtocol
+    @ObservationIgnored private var locale = MovieDB.Locale()
+    @ObservationIgnored private let fetchMediaUseCase: FetchMediaProtocol
+    @ObservationIgnored private let getOpenAIUseCase: GetOpenAIResponseProtocol
+    @ObservationIgnored private let getGeminiUseCase: GetGeminiResponseProtocol
     
     // MARK: - Initialization
     init(fetchMediaUseCase: FetchMediaProtocol = FetchMediaUseCase(),
@@ -57,6 +57,7 @@ final class HomeViewModel: EventHandler {
     }
     
     // MARK: - Private Methods
+    @MainActor
     private func start(locale: MovieDB.Locale? = nil) {
         if let locale = locale {
             self.locale = locale
@@ -86,6 +87,7 @@ final class HomeViewModel: EventHandler {
         self.state = .empty
     }
     
+    @MainActor
     private func refresh() {
         if state != .loading {
             self.clean()
@@ -93,6 +95,7 @@ final class HomeViewModel: EventHandler {
         }
     }
     
+    @MainActor
     private func reload(locale: MovieDB.Locale) {
         if state != .loading {
             self.clean()
@@ -100,6 +103,7 @@ final class HomeViewModel: EventHandler {
         }
     }
     
+    @MainActor
     private func trending() {
         Task {
             defer {
@@ -112,6 +116,7 @@ final class HomeViewModel: EventHandler {
         }
     }
     
+    @MainActor
     private func search(searchText: String) {
         self.mediaSearchList.removeAll()
         Task {
@@ -125,10 +130,11 @@ final class HomeViewModel: EventHandler {
         }
     }
     
+    @MainActor
     private func getOpenAIResponse() {
         Task {
             do {
-                let _ = try await getOpenAIUseCase.getTextAnswer(prompt: "texto de prueba")
+                let _ = try await self.getOpenAIUseCase.getTextAnswer(prompt: "texto de prueba")
             }
             catch {
                 print(error.localizedDescription)
@@ -136,10 +142,11 @@ final class HomeViewModel: EventHandler {
         }
     }
     
+    @MainActor
     func getGeminiResponse(prompt: String) {
         Task {
             do {
-                let result = try await getGeminiUseCase.getResponse(prompt: prompt)
+                let result = try await self.getGeminiUseCase.getResponse(prompt: prompt)
                 print(result)
             }
             catch {

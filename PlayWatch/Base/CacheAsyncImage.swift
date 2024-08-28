@@ -26,6 +26,7 @@ struct CacheAsyncImage<Content>: View where Content: View {
         }
     }
     
+    @MainActor
     func cacheAndRender(phase: AsyncImagePhase) -> some View {
         if let url = url, case .success(let image) = phase {
             ImageCache[url] = image
@@ -34,7 +35,7 @@ struct CacheAsyncImage<Content>: View where Content: View {
     }
 }
 
-
+@MainActor
 fileprivate class ImageCache {
     static var cache: [URL : Image] = [:]
     static subscript(url: URL) -> Image? {

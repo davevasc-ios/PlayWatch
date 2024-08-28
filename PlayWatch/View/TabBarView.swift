@@ -18,6 +18,7 @@ struct TabBarView: View {
     
     @Bindable var appManager: AppManager
     
+    @MainActor
     init(appManager: AppManager) {
         self.appManager = appManager
         UITabBar.appearance().isHidden = true

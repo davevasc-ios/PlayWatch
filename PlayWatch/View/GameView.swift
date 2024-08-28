@@ -213,6 +213,7 @@ private extension GameCardView {
         }
     }
     
+    @MainActor
     func onReceiveSwipeAction() {
         guard let action = gameViewModel.buttonSwipeAction,
               let topCardMovie = gameViewModel.currentQuizzes.first?.movie,
@@ -247,6 +248,7 @@ private extension GameCardView {
         degrees = Double(value.translation.width / 25)
     }
     
+    @MainActor
     func onDragEnded(_ value: _ChangedGesture<DragGesture>.Value) {
         switch value.translation {
         case let translation where abs(translation.width) <= abs(screenSize.width * Constants.Game.screenCutoffScale) && abs(translation.height) <= abs(translation.height * Constants.Game.screenCutoffScale):

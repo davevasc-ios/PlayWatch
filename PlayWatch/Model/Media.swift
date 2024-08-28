@@ -11,7 +11,7 @@ struct MediaResults: Codable {
   let results: [Media]?
 }
 
-struct Media: Codable, Identifiable {
+struct Media: Codable, Identifiable, Sendable {
     
     // MARK: - API Variables
     let id: Int

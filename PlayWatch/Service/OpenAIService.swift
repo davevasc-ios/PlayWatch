@@ -7,15 +7,15 @@
 
 import Foundation
 
-protocol OpenAIServiceProtocol {
+protocol OpenAIServiceProtocol: Sendable {
     func textAnswer(prompt: String) async throws -> String
     func moviesQuiz(movies: String, language: String) async throws -> [Quiz]
 }
 
 final class OpenAIService: OpenAIServiceProtocol {
     
-    func textAnswer(prompt: String) async throws -> String {
-        let (data, response) = try await URLSession.shared.data(for: OpenAI.request(type: OpenAI.UserPrompt.text(prompt)))
+    internal func textAnswer(prompt: String) async throws -> String {
+        let (data, response) = try await URLSession.shared.data(request: OpenAI.request(type: OpenAI.UserPrompt.text(prompt)))
         guard let response = response as? HTTPURLResponse,
               response.statusCode == HTTP.successCode else {
             throw API.Error.invalidResponse(detail: String(data: data, encoding: .utf8).orEmpty)
@@ -26,8 +26,9 @@ final class OpenAIService: OpenAIServiceProtocol {
             throw API.Error.invalidData(detail: error.localizedDescription)
         }
     }
-    func moviesQuiz(movies: String, language: String) async throws -> [Quiz] {
-        let (data, response) = try await URLSession.shared.data(for: OpenAI.request(type: OpenAI.UserPrompt.quiz(movies, language)))
+    
+    internal func moviesQuiz(movies: String, language: String) async throws -> [Quiz] {
+        let (data, response) = try await URLSession.shared.data(request: OpenAI.request(type: OpenAI.UserPrompt.quiz(movies, language)))
         guard let response = response as? HTTPURLResponse,
               response.statusCode == HTTP.successCode else {
             throw API.Error.invalidResponse(detail: String(data: data, encoding: .utf8).orEmpty)

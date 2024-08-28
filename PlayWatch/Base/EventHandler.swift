@@ -7,5 +7,6 @@
 
 protocol EventHandler {
     associatedtype Event
+    @MainActor
     func on(_ event: Event)
 }

@@ -33,14 +33,14 @@ final class GameViewModel: EventHandler {
     private(set) var questionTyping: String = .empty
     
     // MARK: - Private Properties
-    private var countdownTask: Task<Void, Never>?
-    private var success = true
-    private var allQuizzes: [GameQuiz] = []
-    private var locale = MovieDB.Locale()
-    private var server: AppServer = .openAI
-    private let fetchMediaUseCase: FetchMediaProtocol
-    private let getOpenAIUseCase: GetOpenAIResponseProtocol
-    private let getGeminiUseCase: GetGeminiResponseProtocol
+    @ObservationIgnored private var countdownTask: Task<Void, Never>?
+    @ObservationIgnored private var success = true
+    @ObservationIgnored private var allQuizzes: [GameQuiz] = []
+    @ObservationIgnored private var locale = MovieDB.Locale()
+    @ObservationIgnored private var server: AppServer = .openAI
+    @ObservationIgnored private let fetchMediaUseCase: FetchMediaProtocol
+    @ObservationIgnored private let getOpenAIUseCase: GetOpenAIResponseProtocol
+    @ObservationIgnored private let getGeminiUseCase: GetGeminiResponseProtocol
     
     // MARK: - Initialization
     init(fetchMediaUseCase: FetchMediaProtocol = FetchMediaUseCase(),
@@ -95,6 +95,7 @@ final class GameViewModel: EventHandler {
         self.allQuizzes.removeAll()
     }
     
+    @MainActor
     private func load(locale: MovieDB.Locale? = nil, server: AppServer? = nil) {
         if let locale = locale {
             self.locale = locale
@@ -131,7 +132,7 @@ final class GameViewModel: EventHandler {
     }
     
 
-    
+    @MainActor
     private func refresh() {
         if state != .loading {
             self.clean()
@@ -160,6 +161,7 @@ final class GameViewModel: EventHandler {
         }
     }
     
+    @MainActor
     func removeCurrentQuiz(delay: UInt64) {
         Task {
             try? await Task.sleep(nanoseconds: delay)
@@ -173,6 +175,7 @@ final class GameViewModel: EventHandler {
         }
     }
     
+    @MainActor
     func sendAnswer(gameAnswer: GameAnswer) {
         self.stopCountdown()
         self.newPoints = .zero
@@ -208,16 +211,19 @@ final class GameViewModel: EventHandler {
         self.nextQuestion = question
     }
     
+    @MainActor
     func quizReady() {
         self.isQuizReady = true
         self.startCountdown()
     }
     
+    @MainActor
     func nextQuiz() {
         self.startQuestionTyping()
         self.level += 1
     }
     
+    @MainActor
     func startQuestionTyping() {
         self.questionTyping = .empty
         Task {
@@ -233,13 +239,14 @@ final class GameViewModel: EventHandler {
         }
     }
 
+    @MainActor
     func startCountdown() {
         self.countdownTask?.cancel()
         self.timeRemaining = Constants.Game.secondsPerQuiz
         self.showCountdown = true
         self.countdownTask = Task {
             while self.timeRemaining >= 0 && self.showCountdown {
-                try? await Task.sleep(nanoseconds: 1_000_000_000)
+                try? await Task.sleep(for: .seconds(1))
                 if showCountdown {
                     await MainActor.run {
                         self.timeRemaining -= 1

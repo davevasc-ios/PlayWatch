@@ -5,25 +5,19 @@
 //  Created by David on 5/4/24.
 //
 
-import Foundation
-
-protocol GetOpenAIResponseProtocol {
+protocol GetOpenAIResponseProtocol: Sendable {
     func getTextAnswer(prompt: String) async throws -> String
     func getMoviesQuiz(movies: String, language: String) async throws -> [Quiz]
 }
+
 struct GetOpenAIResponseUseCase: GetOpenAIResponseProtocol {
-    var service: OpenAIServiceProtocol
+    private let service: OpenAIServiceProtocol = OpenAIService()
     
-    init(service: OpenAIServiceProtocol = OpenAIService()) {
-        self.service = service
+    internal func getTextAnswer(prompt: String) async throws -> String {
+        return try await service.textAnswer(prompt: prompt)
     }
     
-    func getTextAnswer(prompt: String) async throws -> String {
-       return try await service.textAnswer(prompt: prompt)
-    }
-    
-    func getMoviesQuiz(movies: String, language: String) async throws -> [Quiz] {
+    internal func getMoviesQuiz(movies: String, language: String) async throws -> [Quiz] {
         return try await service.moviesQuiz(movies: movies, language: language)
     }
-    
 }
