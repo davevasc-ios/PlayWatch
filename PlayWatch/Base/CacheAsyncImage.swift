@@ -49,7 +49,7 @@ fileprivate class ImageCache {
 }
 
 #Preview {
-    CacheAsyncImage(url: URL(string: MockData.movie.mediaImage)!) { phase in
+    CacheAsyncImage(url: URL(string: MockData.movie.image)!) { phase in
         switch phase {
         case .empty: ProgressView()
         case .success (let image): image

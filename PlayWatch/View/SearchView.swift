@@ -24,7 +24,7 @@ struct SearchCellView: View {
     let item: Media
     var body: some View {
         HStack (spacing: 20) {
-            CacheAsyncImage(url: MovieDB.getImageUrl(file: item.mediaImage, size: .medium)) { phase in
+            CacheAsyncImage(url: MovieDB.getImageUrl(file: item.image, size: .medium)) { phase in
                 switch phase {
                 case .empty:
                     ZStack {
@@ -43,7 +43,7 @@ struct SearchCellView: View {
                     case let urlError as URLError where urlError.code == .cancelled:
                         MediaPosterView(item: item)
                     default:
-                        EmptyPosterView(text: item.mediaName)
+                        EmptyPosterView(text: item.name)
                     }
                 @unknown default:
                     EmptyView()
@@ -53,10 +53,10 @@ struct SearchCellView: View {
             .frame(width: 40, height: 60)
             
             VStack (alignment: .leading) {
-                Text(item.mediaName)
+                Text(item.name)
                 HStack {
-                    Text(item.mediaType ?? "")
-                    Text(item.mediaReleaseDate?.toString() ?? "")
+                    Text(item.type.rawValue)
+                    Text(item.date?.toString() ?? "")
                 }
             }
         }

@@ -39,10 +39,10 @@ struct HomeView: View {
             if showSuggestions {
                 ForEach(homeViewModel.mediaSearchList) { item in
                     Button {
-                        searchText = item.mediaName
+                        searchText = item.name
                         showSuggestions = false
                     } label: {
-                        Label(item.mediaName, systemImage: "bookmark")
+                        Label(item.name, systemImage: "bookmark")
                             .lineLimit(1)
                     }
                 }
@@ -131,30 +131,30 @@ struct MediaDetailView: View {
     var body: some View {
         VStack (spacing: 30) {
             HStack {
-                Text("Release : ")
-                if let date = item.mediaReleaseDate {
+                Text("Id: ")
+                Text("\(item.id)")
+            }
+            HStack {
+                Text("Type: ")
+                Text(item.type.rawValue)
+            }
+            HStack {
+                Text("Image: ")
+                Text(item.image)
+            }
+            HStack {
+                Text("Name: ")
+                Text(item.name)
+            }
+            HStack {
+                Text("Date: ")
+                if let date = item.date {
                     Text(date.toString())
                 }
             }
             HStack {
-                Text("Url: ")
-                Text(item.mediaImage)
-            }
-            HStack {
-                Text("Name: ")
-                Text(item.mediaName)
-            }
-            HStack {
-                Text("Original Name: ")
-                Text(item.mediaOriginalName)
-            }
-            HStack {
-                Text("Media Type: ")
-                Text(item.media.rawValue)
-            }
-            HStack {
-                Text("Overview: ")
-                Text(item.overview.orEmpty)
+                Text("Rating: ")
+                Text("\(item.rating ?? .zero)")
             }
         }
     }
@@ -164,7 +164,7 @@ struct MediaPosterView: View {
     let item: Media
     
     var body: some View {
-        CacheAsyncImage(url: MovieDB.getImageUrl(file: item.mediaImage, size: .medium)) { phase in
+        CacheAsyncImage(url: MovieDB.getImageUrl(file: item.image, size: .medium)) { phase in
             switch phase {
             case .empty:
                 ZStack {
@@ -177,8 +177,8 @@ struct MediaPosterView: View {
                 ZStack (alignment: .bottom) {
                     image
                         .resizable()
-                    if item.media == .person {
-                        PersonNameView(text: item.mediaName)
+                    if item.type == .person {
+                        PersonNameView(text: item.name)
                     }
                 }
             case .failure (let error):
@@ -186,7 +186,7 @@ struct MediaPosterView: View {
                 case let urlError as URLError where urlError.code == .cancelled:
                     MediaPosterView(item: item)
                 default:
-                    EmptyPosterView(text: item.mediaName)
+                    EmptyPosterView(text: item.name)
                 }
             @unknown default:
                 EmptyView()

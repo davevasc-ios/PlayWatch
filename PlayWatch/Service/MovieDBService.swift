@@ -22,7 +22,7 @@ final class MovieDBService: MovieDBServiceProtocol {
         do {
             let decoder = JSONDecoder()
             decoder.keyDecodingStrategy = .convertFromSnakeCase
-            return try decoder.decode(MediaResults.self, from: data).results ?? []
+            return try decoder.decode(MediaResponseDTO.self, from: data).results?.map(\.toMedia) ?? []
         } catch {
             print("Error decoding JSON: \(error)")
             throw API.Error.invalidData(detail: error.localizedDescription)

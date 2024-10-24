@@ -9,6 +9,6 @@ import Foundation
 
 extension Array where Element == Media {
     func filterWithImage() -> [Element] {
-        return self.filter { $0.mediaImage != "" }
+        return self.filter { $0.image != "" }
     }
 }

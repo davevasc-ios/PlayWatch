@@ -146,7 +146,7 @@ struct GameCardView: View {
     var body: some View {
         ZStack {
             ZStack (alignment: .top) {
-                CacheAsyncImage(url: MovieDB.getImageUrl(file: movie.mediaImage, size: .medium)) { phase in
+                CacheAsyncImage(url: MovieDB.getImageUrl(file: movie.image, size: .medium)) { phase in
                     switch phase {
                     case .empty:
                         ZStack {
@@ -163,7 +163,7 @@ struct GameCardView: View {
                         case let urlError as URLError where urlError.code == .cancelled:
                             GameCardView(movie: movie, answer: answer)
                         default:
-                            EmptyPosterView(text: movie.mediaName)
+                            EmptyPosterView(text: movie.name)
                         }
                     @unknown default: EmptyView()
                     }

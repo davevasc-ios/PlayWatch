@@ -14,6 +14,9 @@
         }
       }
     },
+    "%lf" : {
+
+    },
     "%lld" : {
 
     },
@@ -40,6 +43,9 @@
     "Coming soon for Testers like..." : {
 
     },
+    "Date: " : {
+
+    },
     "Error on %@ server, change on Settings" : {
 
     },
@@ -61,6 +67,7 @@
       }
     },
     "Home" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -69,6 +76,12 @@
           }
         }
       }
+    },
+    "Id: " : {
+
+    },
+    "Image: " : {
+
     },
     "key.one.type" : {
       "extractionState" : "manual",
@@ -129,16 +142,7 @@
     "Loading..." : {
 
     },
-    "Media Type: " : {
-
-    },
     "Name: " : {
-
-    },
-    "Original Name: " : {
-
-    },
-    "Overview: " : {
 
     },
     "Play Again!" : {
@@ -147,13 +151,13 @@
     "Punch" : {
 
     },
+    "Rating: " : {
+
+    },
     "Ready?" : {
 
     },
     "Region" : {
-
-    },
-    "Release : " : {
 
     },
     "Server" : {
@@ -223,7 +227,7 @@
         }
       }
     },
-    "Url: " : {
+    "Type: " : {
 
     }
   },

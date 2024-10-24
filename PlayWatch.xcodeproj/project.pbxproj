@@ -28,7 +28,7 @@
 		555B26E32C1CC49400B789A1 /* BoolExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555B26E22C1CC49400B789A1 /* BoolExtension.swift */; };
 		555F69D62BF6841F000DF9B9 /* MockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555F69D52BF6841F000DF9B9 /* MockData.swift */; };
 		555F69D82BF68931000DF9B9 /* GameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555F69D72BF68931000DF9B9 /* GameModel.swift */; };
-		5575C70F2BBF694300CD3918 /* Media.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5575C70E2BBF694300CD3918 /* Media.swift */; };
+		5575C70F2BBF694300CD3918 /* MediaModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5575C70E2BBF694300CD3918 /* MediaModel.swift */; };
 		5576C3AE2BB9B13F00E511DE /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576C3AD2BB9B13F00E511DE /* Constants.swift */; };
 		5576C3B02BB9C10D00E511DE /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576C3AF2BB9C10D00E511DE /* API.swift */; };
 		5576C3B22BB9C7C300E511DE /* APIKey-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5576C3B12BB9C7C300E511DE /* APIKey-Info.plist */; };
@@ -41,6 +41,11 @@
 		55AFE60A2BD51CA60015E411 /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55AFE6092BD51CA60015E411 /* ArrayExtension.swift */; };
 		55AFE60C2BD520E20015E411 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55AFE60B2BD520E20015E411 /* GameView.swift */; };
 		55AFE60E2BD5C51F0015E411 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55AFE60D2BD5C51E0015E411 /* SearchView.swift */; };
+		55B0C1632CCA9236002C563F /* Movies.json in Resources */ = {isa = PBXBuildFile; fileRef = 55B0C1622CCA9236002C563F /* Movies.json */; };
+		55B0C1652CCA923C002C563F /* TVShows.json in Resources */ = {isa = PBXBuildFile; fileRef = 55B0C1642CCA923C002C563F /* TVShows.json */; };
+		55B0C1672CCA9241002C563F /* People.json in Resources */ = {isa = PBXBuildFile; fileRef = 55B0C1662CCA9241002C563F /* People.json */; };
+		55B0C1692CCA9244002C563F /* All.json in Resources */ = {isa = PBXBuildFile; fileRef = 55B0C1682CCA9244002C563F /* All.json */; };
+		55B0C16B2CCA924A002C563F /* Quizzes.json in Resources */ = {isa = PBXBuildFile; fileRef = 55B0C16A2CCA924A002C563F /* Quizzes.json */; };
 		55B2540F2BC29ACC006ACD43 /* HTTP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B2540E2BC29ACC006ACD43 /* HTTP.swift */; };
 		55B254112BC2AD47006ACD43 /* GeminiModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B254102BC2AD47006ACD43 /* GeminiModel.swift */; };
 		55B254132BC2AF6D006ACD43 /* GetGeminiResponseUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B254122BC2AF6D006ACD43 /* GetGeminiResponseUseCase.swift */; };
@@ -101,7 +106,7 @@
 		555B26E22C1CC49400B789A1 /* BoolExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoolExtension.swift; sourceTree = "<group>"; };
 		555F69D52BF6841F000DF9B9 /* MockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockData.swift; sourceTree = "<group>"; };
 		555F69D72BF68931000DF9B9 /* GameModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameModel.swift; sourceTree = "<group>"; };
-		5575C70E2BBF694300CD3918 /* Media.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Media.swift; sourceTree = "<group>"; };
+		5575C70E2BBF694300CD3918 /* MediaModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaModel.swift; sourceTree = "<group>"; };
 		5576C3AD2BB9B13F00E511DE /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		5576C3AF2BB9C10D00E511DE /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		5576C3B12BB9C7C300E511DE /* APIKey-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "APIKey-Info.plist"; sourceTree = "<group>"; };
@@ -114,6 +119,11 @@
 		55AFE6092BD51CA60015E411 /* ArrayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
 		55AFE60B2BD520E20015E411 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 		55AFE60D2BD5C51E0015E411 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
+		55B0C1622CCA9236002C563F /* Movies.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Movies.json; sourceTree = "<group>"; };
+		55B0C1642CCA923C002C563F /* TVShows.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = TVShows.json; sourceTree = "<group>"; };
+		55B0C1662CCA9241002C563F /* People.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = People.json; sourceTree = "<group>"; };
+		55B0C1682CCA9244002C563F /* All.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = All.json; sourceTree = "<group>"; };
+		55B0C16A2CCA924A002C563F /* Quizzes.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Quizzes.json; sourceTree = "<group>"; };
 		55B2540E2BC29ACC006ACD43 /* HTTP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTP.swift; sourceTree = "<group>"; };
 		55B254102BC2AD47006ACD43 /* GeminiModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeminiModel.swift; sourceTree = "<group>"; };
 		55B254122BC2AF6D006ACD43 /* GetGeminiResponseUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetGeminiResponseUseCase.swift; sourceTree = "<group>"; };
@@ -169,7 +179,7 @@
 		550C5F392BBA136E005B853B /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				5575C70E2BBF694300CD3918 /* Media.swift */,
+				5575C70E2BBF694300CD3918 /* MediaModel.swift */,
 				5549D57B2BC0738700B934CD /* OpenAIModel.swift */,
 				55B254102BC2AD47006ACD43 /* GeminiModel.swift */,
 				555F69D72BF68931000DF9B9 /* GameModel.swift */,
@@ -251,6 +261,11 @@
 		55212BB92BA7A0C500080A71 /* Preview Content */ = {
 			isa = PBXGroup;
 			children = (
+				55B0C1682CCA9244002C563F /* All.json */,
+				55B0C1622CCA9236002C563F /* Movies.json */,
+				55B0C1662CCA9241002C563F /* People.json */,
+				55B0C16A2CCA924A002C563F /* Quizzes.json */,
+				55B0C1642CCA923C002C563F /* TVShows.json */,
 				55212BBA2BA7A0C500080A71 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
@@ -426,13 +441,18 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55B0C1692CCA9244002C563F /* All.json in Resources */,
+				55B0C1652CCA923C002C563F /* TVShows.json in Resources */,
 				55034E982BE53DF300BCBD0E /* LocalizableSettings.xcstrings in Resources */,
+				55B0C1672CCA9241002C563F /* People.json in Resources */,
 				5576C3B22BB9C7C300E511DE /* APIKey-Info.plist in Resources */,
 				55034E922BE5317D00BCBD0E /* LocalizableTabBar.xcstrings in Resources */,
 				55212BBB2BA7A0C500080A71 /* Preview Assets.xcassets in Resources */,
 				55034E942BE5356000BCBD0E /* LocalizableHome.xcstrings in Resources */,
 				557F55642BE425DE00EEAA2F /* Localizable.xcstrings in Resources */,
+				55B0C1632CCA9236002C563F /* Movies.json in Resources */,
 				55212BB72BA7A0C500080A71 /* Assets.xcassets in Resources */,
+				55B0C16B2CCA924A002C563F /* Quizzes.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -466,7 +486,7 @@
 				55077AD92BD2CD6600E9B681 /* CacheAsyncImage.swift in Sources */,
 				555F69D82BF68931000DF9B9 /* GameModel.swift in Sources */,
 				55E4CC822BCADB2C0048EF56 /* ColorExtension.swift in Sources */,
-				5575C70F2BBF694300CD3918 /* Media.swift in Sources */,
+				5575C70F2BBF694300CD3918 /* MediaModel.swift in Sources */,
 				550C5F422BBA1448005B853B /* GeminiService.swift in Sources */,
 				550C5F402BBA142E005B853B /* OpenAIService.swift in Sources */,
 				555F69D62BF6841F000DF9B9 /* MockData.swift in Sources */,
@@ -593,6 +613,7 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -649,6 +670,7 @@
 				MTL_FAST_MATH = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};

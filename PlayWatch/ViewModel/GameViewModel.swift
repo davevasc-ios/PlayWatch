@@ -110,9 +110,9 @@ final class GameViewModel: EventHandler {
                     let mediaList = try await self.fetchMediaUseCase.fetchMedia(type: .randomMovies, locale: self.locale, searchText: nil).filterWithImage()
                     var quizList: [Quiz] = []
                     if self.server == .gemini {
-                        quizList = try await self.getGeminiUseCase.getMoviesQuiz(movies: mediaList.map { $0.mediaName }.joined(separator: ", "), language: self.locale.name)
+                        quizList = try await self.getGeminiUseCase.getMoviesQuiz(movies: mediaList.map { $0.name }.joined(separator: ", "), language: self.locale.name)
                     } else {
-                        quizList = try await self.getOpenAIUseCase.getMoviesQuiz(movies: mediaList.map { $0.mediaName }.joined(separator: ", "), language: self.locale.name)
+                        quizList = try await self.getOpenAIUseCase.getMoviesQuiz(movies: mediaList.map { $0.name }.joined(separator: ", "), language: self.locale.name)
                     }
                     self.allQuizzes = try self.loadAllQuizzes(media: mediaList, quiz: quizList)
                     self.updateCurrentQuizzes()
