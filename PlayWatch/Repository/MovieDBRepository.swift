@@ -58,32 +58,34 @@ struct MovieDBRepositoryTest: MovieDBProtocol {
 
 
 protocol MediaUseCaseProtocol {
-    func fetchMedia(for type: MovieDB.FetchType) async throws -> [Media]
+    func fetchMedia(for type: MovieDB.FetchType, locale: MovieDB.Locale) async throws -> [Media]
 }
 
 extension MediaUseCaseProtocol {
-    func fetchMediaSections() async throws -> [MediaSection] {
+    func fetchMediaSections(locale: MovieDB.Locale) async throws -> [MediaSection] {
         var mediaSectionsList: [MediaSection] = []
         for section in MovieDB.homeSections {
-            let items = try await self.fetchMedia(for: section)
+            let items = try await self.fetchMedia(for: section, locale: locale)
             mediaSectionsList.append(MediaSection(title: section.localized, items: items.filterWithImage()))
         }
         return mediaSectionsList
     }
+    
+//    func fetchMediaTrendingAll(locale: MovieDB.Locale) async throws -> [Media] {
+//        
+//    }
 }
 
 struct MediaUseCase: MediaUseCaseProtocol {
-    var locale: MovieDB.Locale
-    
-    func fetchMedia(for type: MovieDB.FetchType) async throws -> [Media] {
+    func fetchMedia(for type: MovieDB.FetchType, locale: MovieDB.Locale) async throws -> [Media] {
         let repository = MovieDBRepository(type: type, locale: locale)
         return try await repository.fetchMedia()
     }
 }
 
 struct MediaUseCaseTest: MediaUseCaseProtocol {
-    func fetchMedia(for type: MovieDB.FetchType) async throws -> [Media] {
-        let resourceName = switch type {
+    func fetchMedia(for type: MovieDB.FetchType, locale: MovieDB.Locale) async throws -> [Media] {
+        let resourceName: String = switch type {
         case .randomMovies, .cinemaPlaying, .cinemaUpcomimg, .movieTrending, .movieNew: "Movies"
         case .tvTrending, .tvNew: "TVShows"
         case .personTrending, .personPopular: "People"

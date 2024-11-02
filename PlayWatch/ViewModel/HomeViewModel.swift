@@ -21,17 +21,20 @@ final class HomeViewModel: EventHandler {
     @ObservationIgnored private let fetchMediaUseCase: FetchMediaProtocol
     @ObservationIgnored private let getOpenAIUseCase: GetOpenAIResponseProtocol
     @ObservationIgnored private let getGeminiUseCase: GetGeminiResponseProtocol
+    @ObservationIgnored private let mediaUseCase: MediaUseCaseProtocol
     
     // MARK: - Initialization
     init(
         fetchMediaUseCase: FetchMediaProtocol = FetchMediaUseCase(),
         getOpenAIUseCase: GetOpenAIResponseProtocol = GetOpenAIResponseUseCase(),
-        getGeminiUseCase: GetGeminiResponseProtocol = GetGeminiResponseUseCase()
+        getGeminiUseCase: GetGeminiResponseProtocol = GetGeminiResponseUseCase(),
+        mediaUseCase: MediaUseCaseProtocol = MediaUseCase()
     ) {
         // TODO: Remove all of fetchMediUseCase
         self.fetchMediaUseCase = fetchMediaUseCase
         self.getOpenAIUseCase = getOpenAIUseCase
         self.getGeminiUseCase = getGeminiUseCase
+        self.mediaUseCase = mediaUseCase
     }
     
     // MARK: - Event Handling
@@ -69,8 +72,7 @@ final class HomeViewModel: EventHandler {
             self.state = .loading
             Task {
                 do {
-                    let mediaUseCase: MediaUseCaseProtocol = MediaUseCase(locale: self.locale)
-                    self.mediaSectionsList = try await mediaUseCase.fetchMediaSections()
+                    self.mediaSectionsList = try await self.mediaUseCase.fetchMediaSections(locale: self.locale)
                     self.state = .success
                 } catch {
                     print(error.localizedDescription)
