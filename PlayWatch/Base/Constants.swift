@@ -94,12 +94,12 @@ struct MovieDB {
             return dateFormatter.string(from: modifiedDate)
         }
         
-        static fileprivate let headerFields: [String : String] = [
+        static let headerFields: [String : String] = [
             HTTP.Header.Field.accept.rawValue: HTTP.Header.Value.applicationJson.description,
             HTTP.Header.Field.authorization.rawValue: HTTP.Header.Value.bearer(.movieDB).description
         ]
         
-        static fileprivate func mediaDataUrl(type: FetchType, locale: Locale, searchText: String?) throws -> URL {
+        static func mediaDataUrl(type: FetchType, locale: Locale, searchText: String?) throws -> URL {
             var urlString: String = ""
             var queryItems: [URLQueryItem] = []
             queryItems.append(URLQueryItem(name: QueryParams.language.rawValue, value: locale.language))

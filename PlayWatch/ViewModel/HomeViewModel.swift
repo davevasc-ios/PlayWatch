@@ -23,9 +23,12 @@ final class HomeViewModel: EventHandler {
     @ObservationIgnored private let getGeminiUseCase: GetGeminiResponseProtocol
     
     // MARK: - Initialization
-    init(fetchMediaUseCase: FetchMediaProtocol = FetchMediaUseCase(),
-         getOpenAIUseCase: GetOpenAIResponseProtocol = GetOpenAIResponseUseCase(),
-         getGeminiUseCase: GetGeminiResponseProtocol = GetGeminiResponseUseCase()) {
+    init(
+        fetchMediaUseCase: FetchMediaProtocol = FetchMediaUseCase(),
+        getOpenAIUseCase: GetOpenAIResponseProtocol = GetOpenAIResponseUseCase(),
+        getGeminiUseCase: GetGeminiResponseProtocol = GetGeminiResponseUseCase()
+    ) {
+        // TODO: Remove all of fetchMediUseCase
         self.fetchMediaUseCase = fetchMediaUseCase
         self.getOpenAIUseCase = getOpenAIUseCase
         self.getGeminiUseCase = getGeminiUseCase
@@ -36,8 +39,8 @@ final class HomeViewModel: EventHandler {
         case viewAppear(MovieDB.Locale),
              refreshData,
              reloadData(MovieDB.Locale),
-             onChangeSearch(String),
-             onChangeTrending
+             changeSearch(String),
+             changeTrending
     }
     
     // MARK: - Public Methods
@@ -49,9 +52,9 @@ final class HomeViewModel: EventHandler {
             self.refresh()
         case .reloadData(let locale):
             self.reload(locale: locale)
-        case .onChangeSearch(let text):
+        case .changeSearch(let text):
             self.search(searchText: text)
-        case .onChangeTrending:
+        case .changeTrending:
             self.trending()
         }
     }
@@ -66,11 +69,8 @@ final class HomeViewModel: EventHandler {
             self.state = .loading
             Task {
                 do {
-                    for section in MovieDB.homeSections {
-                        let mediaSection = MediaSection(title: section.localized,
-                                                        items: try await self.fetchMediaUseCase.fetchMedia(type: section, locale: self.locale, searchText: nil).filterWithImage())
-                        self.mediaSectionsList.append(mediaSection)
-                    }
+                    let mediaUseCase: MediaUseCaseProtocol = MediaUseCase(locale: self.locale)
+                    self.mediaSectionsList = try await mediaUseCase.fetchMediaSections()
                     self.state = .success
                 } catch {
                     print(error.localizedDescription)

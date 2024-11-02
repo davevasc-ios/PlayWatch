@@ -48,19 +48,6 @@ extension MediaDTO {
         (self.profilePath.isValue ? self.profilePath.orEmpty : "")
     }
     
-//    func getImage() -> String {
-//        self.posterPath.ifNilOrEmpty(self.profilePath.orEmpty)
-//    }
-    
-//    func ifNilOrEmpty(_ fallback: String) -> String {
-//            switch self {
-//            case .some(let value):
-//                return value.isEmpty ? fallback : value
-//            case .none:
-//                return fallback
-//            }
-//        }
-    
     func getName() -> String {
         self.title.isValue ?
         self.title.orEmpty :

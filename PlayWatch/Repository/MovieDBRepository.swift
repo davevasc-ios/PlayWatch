@@ -1,0 +1,95 @@
+//
+//  MovieDBRepository.swift
+//  PlayWatch
+//
+//  Created by David on 24/10/24.
+//
+
+import Foundation
+
+protocol MovieDBProtocol {
+    func makeRequest() throws -> URLRequest
+}
+
+extension MovieDBProtocol {
+    func fetchMedia() async throws -> [Media] {
+        let data = try await self.getData(request: self.makeRequest())
+        do {
+            return try JSONDecoder.convertFromSnakeCase.decode(MediaResponseDTO.self, from: data).results?.map(\.toMedia) ?? []
+        } catch {
+            print("Error decoding JSON: \(error)")
+            throw API.Error.invalidData(detail: error.localizedDescription)
+        }
+    }
+    
+    private func getData(request: URLRequest) async throws-> Data {
+        if let url = request.url, url.isFileURL {
+            return try Data(contentsOf: url)
+        } else {
+            let (data, response) = try await URLSession.shared.data(for: request)
+            guard let response = response as? HTTPURLResponse,
+                  response.statusCode == HTTP.successCode else {
+                throw API.Error.invalidResponse(detail: String(data: data, encoding: .utf8).orEmpty)
+            }
+            return data
+        }
+    }
+}
+
+struct MovieDBRepository: MovieDBProtocol {
+    var type: MovieDB.FetchType
+    var locale: MovieDB.Locale
+    var searchText: String?
+    
+    func makeRequest() throws -> URLRequest {
+        let url = try MovieDB.Endpoint.mediaDataUrl(type: type, locale: locale, searchText: searchText)
+        return HTTP.request(url: url, method: .get, fields: MovieDB.Endpoint.headerFields)
+    }
+}
+
+struct MovieDBRepositoryTest: MovieDBProtocol {
+    var resourceName: String
+    
+    func makeRequest() throws -> URLRequest {
+        guard let url = Bundle.main.url(forResource: self.resourceName, withExtension: "json") else { throw API.Error.invalidURL }
+        return URLRequest(url: url)
+    }
+}
+
+
+protocol MediaUseCaseProtocol {
+    func fetchMedia(for type: MovieDB.FetchType) async throws -> [Media]
+}
+
+extension MediaUseCaseProtocol {
+    func fetchMediaSections() async throws -> [MediaSection] {
+        var mediaSectionsList: [MediaSection] = []
+        for section in MovieDB.homeSections {
+            let items = try await self.fetchMedia(for: section)
+            mediaSectionsList.append(MediaSection(title: section.localized, items: items.filterWithImage()))
+        }
+        return mediaSectionsList
+    }
+}
+
+struct MediaUseCase: MediaUseCaseProtocol {
+    var locale: MovieDB.Locale
+    
+    func fetchMedia(for type: MovieDB.FetchType) async throws -> [Media] {
+        let repository = MovieDBRepository(type: type, locale: locale)
+        return try await repository.fetchMedia()
+    }
+}
+
+struct MediaUseCaseTest: MediaUseCaseProtocol {
+    func fetchMedia(for type: MovieDB.FetchType) async throws -> [Media] {
+        let resourceName = switch type {
+        case .randomMovies, .cinemaPlaying, .cinemaUpcomimg, .movieTrending, .movieNew: "Movies"
+        case .tvTrending, .tvNew: "TVShows"
+        case .personTrending, .personPopular: "People"
+        default: "Movies"
+        }
+        let repository = MovieDBRepositoryTest(resourceName: resourceName)
+        return try await repository.fetchMedia()
+    }
+}

@@ -46,6 +46,8 @@
 		55B0C1672CCA9241002C563F /* People.json in Resources */ = {isa = PBXBuildFile; fileRef = 55B0C1662CCA9241002C563F /* People.json */; };
 		55B0C1692CCA9244002C563F /* All.json in Resources */ = {isa = PBXBuildFile; fileRef = 55B0C1682CCA9244002C563F /* All.json */; };
 		55B0C16B2CCA924A002C563F /* Quizzes.json in Resources */ = {isa = PBXBuildFile; fileRef = 55B0C16A2CCA924A002C563F /* Quizzes.json */; };
+		55B0C16F2CCAA86D002C563F /* MovieDBRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B0C16E2CCAA86D002C563F /* MovieDBRepository.swift */; };
+		55B0C1712CCBE7C9002C563F /* JSONDecoderExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B0C1702CCBE7C9002C563F /* JSONDecoderExtension.swift */; };
 		55B2540F2BC29ACC006ACD43 /* HTTP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B2540E2BC29ACC006ACD43 /* HTTP.swift */; };
 		55B254112BC2AD47006ACD43 /* GeminiModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B254102BC2AD47006ACD43 /* GeminiModel.swift */; };
 		55B254132BC2AF6D006ACD43 /* GetGeminiResponseUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B254122BC2AF6D006ACD43 /* GetGeminiResponseUseCase.swift */; };
@@ -124,6 +126,8 @@
 		55B0C1662CCA9241002C563F /* People.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = People.json; sourceTree = "<group>"; };
 		55B0C1682CCA9244002C563F /* All.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = All.json; sourceTree = "<group>"; };
 		55B0C16A2CCA924A002C563F /* Quizzes.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Quizzes.json; sourceTree = "<group>"; };
+		55B0C16E2CCAA86D002C563F /* MovieDBRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDBRepository.swift; sourceTree = "<group>"; };
+		55B0C1702CCBE7C9002C563F /* JSONDecoderExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONDecoderExtension.swift; sourceTree = "<group>"; };
 		55B2540E2BC29ACC006ACD43 /* HTTP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTP.swift; sourceTree = "<group>"; };
 		55B254102BC2AD47006ACD43 /* GeminiModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeminiModel.swift; sourceTree = "<group>"; };
 		55B254122BC2AF6D006ACD43 /* GetGeminiResponseUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetGeminiResponseUseCase.swift; sourceTree = "<group>"; };
@@ -248,6 +252,7 @@
 				550C5F3B2BBA1378005B853B /* ViewModel */,
 				550C5F382BBA135E005B853B /* UseCase */,
 				550C5F3C2BBA1394005B853B /* Service */,
+				55B0C16D2CCAA840002C563F /* Repository */,
 				555F69D42BF68400000DF9B9 /* Mock */,
 				55212BB02BA7A0C400080A71 /* PlayWatchApp.swift */,
 				55212BB42BA7A0C400080A71 /* Item.swift */,
@@ -322,8 +327,17 @@
 				55C3F1902C6E3140006DE59B /* EventHandler.swift */,
 				55C3F1922C6E5221006DE59B /* AppManager.swift */,
 				5580E9442C723E260026F5E6 /* URLSessionExtension.swift */,
+				55B0C1702CCBE7C9002C563F /* JSONDecoderExtension.swift */,
 			);
 			path = Base;
+			sourceTree = "<group>";
+		};
+		55B0C16D2CCAA840002C563F /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				55B0C16E2CCAA86D002C563F /* MovieDBRepository.swift */,
+			);
+			path = Repository;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -491,6 +505,7 @@
 				550C5F402BBA142E005B853B /* OpenAIService.swift in Sources */,
 				555F69D62BF6841F000DF9B9 /* MockData.swift in Sources */,
 				5581067D2C00F75300D7A96D /* EnvironmentExtension.swift in Sources */,
+				55B0C1712CCBE7C9002C563F /* JSONDecoderExtension.swift in Sources */,
 				55034E962BE5384A00BCBD0E /* LocalizableString.swift in Sources */,
 				55AFE6082BD5160E0015E411 /* DateExtension.swift in Sources */,
 				555B26E32C1CC49400B789A1 /* BoolExtension.swift in Sources */,
@@ -501,6 +516,7 @@
 				55E4CC802BCA9A050048EF56 /* StringExtension.swift in Sources */,
 				55E51A3C2BDEB1FF00A8541B /* FavoritesView.swift in Sources */,
 				5549D57A2BC0633500B934CD /* FetchMediaUseCase.swift in Sources */,
+				55B0C16F2CCAA86D002C563F /* MovieDBRepository.swift in Sources */,
 				55D425CB2BCC4669001FA57C /* Tab.swift in Sources */,
 				55E51A3E2BDEB26600A8541B /* GameViewModel.swift in Sources */,
 				557F55662BE4267B00EEAA2F /* SettingsView.swift in Sources */,
@@ -613,7 +629,7 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_STRICT_CONCURRENCY = complete;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 			};
 			name = Debug;
 		};
@@ -670,7 +686,7 @@
 				MTL_FAST_MATH = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_STRICT_CONCURRENCY = complete;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 			};
 			name = Release;
 		};

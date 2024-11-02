@@ -50,15 +50,15 @@ struct HomeView: View {
         }
         .onChange(of: searchText) {
             if searchText.count > 0 {
-                homeViewModel.on(.onChangeSearch(searchText))
+                homeViewModel.on(.changeSearch(searchText))
             } else {
-                homeViewModel.on(.onChangeTrending)
+                homeViewModel.on(.changeTrending)
                 showSuggestions = true
             }
         }
         .onChange(of: isSearching) {
             if isSearching {
-                homeViewModel.on(.onChangeTrending)
+                homeViewModel.on(.changeTrending)
             }
         }
     }
