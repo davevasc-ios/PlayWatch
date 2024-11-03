@@ -57,6 +57,10 @@
 		55D425D12BCC4C3C001FA57C /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D425D02BCC4C3C001FA57C /* HomeView.swift */; };
 		55D73FE32BCDB2A600F337FC /* TabShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D73FE22BCDB2A600F337FC /* TabShape.swift */; };
 		55D73FE52BCDB5E700F337FC /* TabPosition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D73FE42BCDB5E700F337FC /* TabPosition.swift */; };
+		55D841642CD7946B006349C4 /* MediaUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D841632CD7946B006349C4 /* MediaUseCase.swift */; };
+		55D841662CD7981B006349C4 /* OpenAIRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D841652CD7981B006349C4 /* OpenAIRepository.swift */; };
+		55D841682CD79833006349C4 /* GeminiRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D841672CD79833006349C4 /* GeminiRepository.swift */; };
+		55D8416A2CD79889006349C4 /* QuizUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D841692CD79889006349C4 /* QuizUseCase.swift */; };
 		55E4CC802BCA9A050048EF56 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E4CC7F2BCA9A050048EF56 /* StringExtension.swift */; };
 		55E4CC822BCADB2C0048EF56 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E4CC812BCADB2C0048EF56 /* ColorExtension.swift */; };
 		55E51A3C2BDEB1FF00A8541B /* FavoritesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E51A3B2BDEB1FF00A8541B /* FavoritesView.swift */; };
@@ -135,6 +139,10 @@
 		55D425D02BCC4C3C001FA57C /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		55D73FE22BCDB2A600F337FC /* TabShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabShape.swift; sourceTree = "<group>"; };
 		55D73FE42BCDB5E700F337FC /* TabPosition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabPosition.swift; sourceTree = "<group>"; };
+		55D841632CD7946B006349C4 /* MediaUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaUseCase.swift; sourceTree = "<group>"; };
+		55D841652CD7981B006349C4 /* OpenAIRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAIRepository.swift; sourceTree = "<group>"; };
+		55D841672CD79833006349C4 /* GeminiRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeminiRepository.swift; sourceTree = "<group>"; };
+		55D841692CD79889006349C4 /* QuizUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizUseCase.swift; sourceTree = "<group>"; };
 		55E4CC7F2BCA9A050048EF56 /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		55E4CC812BCADB2C0048EF56 /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
 		55E51A3B2BDEB1FF00A8541B /* FavoritesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesView.swift; sourceTree = "<group>"; };
@@ -171,6 +179,8 @@
 			children = (
 				5549D57D2BC0756C00B934CD /* GetOpenAIResponseUseCase.swift */,
 				55B254122BC2AF6D006ACD43 /* GetGeminiResponseUseCase.swift */,
+				55D841632CD7946B006349C4 /* MediaUseCase.swift */,
+				55D841692CD79889006349C4 /* QuizUseCase.swift */,
 			);
 			path = UseCase;
 			sourceTree = "<group>";
@@ -330,6 +340,8 @@
 			isa = PBXGroup;
 			children = (
 				55B0C16E2CCAA86D002C563F /* MovieDBRepository.swift */,
+				55D841652CD7981B006349C4 /* OpenAIRepository.swift */,
+				55D841672CD79833006349C4 /* GeminiRepository.swift */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
@@ -514,6 +526,9 @@
 				55E51A3E2BDEB26600A8541B /* GameViewModel.swift in Sources */,
 				557F55662BE4267B00EEAA2F /* SettingsView.swift in Sources */,
 				55B2540F2BC29ACC006ACD43 /* HTTP.swift in Sources */,
+				55D841662CD7981B006349C4 /* OpenAIRepository.swift in Sources */,
+				55D8416A2CD79889006349C4 /* QuizUseCase.swift in Sources */,
+				55D841682CD79833006349C4 /* GeminiRepository.swift in Sources */,
 				55B254132BC2AF6D006ACD43 /* GetGeminiResponseUseCase.swift in Sources */,
 				55212BB52BA7A0C400080A71 /* Item.swift in Sources */,
 				55D425D12BCC4C3C001FA57C /* HomeView.swift in Sources */,
@@ -523,6 +538,7 @@
 				55AFE60E2BD5C51F0015E411 /* SearchView.swift in Sources */,
 				55D425CF2BCC4AFF001FA57C /* TabBarView.swift in Sources */,
 				55212BB12BA7A0C400080A71 /* PlayWatchApp.swift in Sources */,
+				55D841642CD7946B006349C4 /* MediaUseCase.swift in Sources */,
 				55AFE60A2BD51CA60015E411 /* ArrayExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

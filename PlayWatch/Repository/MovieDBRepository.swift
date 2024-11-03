@@ -7,13 +7,13 @@
 
 import Foundation
 
-protocol MovieDBProtocol {
-    func makeRequest() throws -> URLRequest
+protocol MovieDBRepositoryProtocol {
+    func createRequest() throws -> URLRequest
 }
 
-extension MovieDBProtocol {
+extension MovieDBRepositoryProtocol {
     func fetchMedia() async throws -> [Media] {
-        let data = try await self.getData(request: self.makeRequest())
+        let data = try await self.fetchData(request: self.createRequest())
         do {
             return try JSONDecoder.convertFromSnakeCase.decode(MediaResponseDTO.self, from: data).results?.map(\.toMedia) ?? []
         } catch {
@@ -22,7 +22,7 @@ extension MovieDBProtocol {
         }
     }
     
-    private func getData(request: URLRequest) async throws-> Data {
+    private func fetchData(request: URLRequest) async throws-> Data {
         if let url = request.url, url.isFileURL {
             return try Data(contentsOf: url)
         } else {
@@ -36,76 +36,22 @@ extension MovieDBProtocol {
     }
 }
 
-struct MovieDBRepository: MovieDBProtocol {
+struct MovieDBRepository: MovieDBRepositoryProtocol {
     var type: MovieDB.FetchType
     var locale: MovieDB.Locale
     var searchText: String?
     
-    func makeRequest() throws -> URLRequest {
+    func createRequest() throws -> URLRequest {
         let url = try MovieDB.Endpoint.mediaDataUrl(type: type, locale: locale, searchText: searchText)
         return HTTP.request(url: url, method: .get, fields: MovieDB.Endpoint.headerFields)
     }
 }
 
-struct MovieDBRepositoryTest: MovieDBProtocol {
+struct MovieDBRepositoryTest: MovieDBRepositoryProtocol {
     var resourceName: String
     
-    func makeRequest() throws -> URLRequest {
+    func createRequest() throws -> URLRequest {
         guard let url = Bundle.main.url(forResource: self.resourceName, withExtension: "json") else { throw API.Error.invalidURL }
         return URLRequest(url: url)
-    }
-}
-
-
-
-
-
-
-
-
-
-protocol MediaUseCaseProtocol {
-    func fetchMedia(for type: MovieDB.FetchType, locale: MovieDB.Locale) async throws -> [Media]
-    func fetchMediaSearch(for type: MovieDB.FetchType, locale: MovieDB.Locale, searchText: String) async throws -> [Media]
-}
-
-extension MediaUseCaseProtocol {
-    func fetchMediaSections(locale: MovieDB.Locale) async throws -> [MediaSection] {
-        var mediaSectionsList: [MediaSection] = []
-        for section in MovieDB.homeSections {
-            let items = try await self.fetchMedia(for: section, locale: locale)
-            mediaSectionsList.append(MediaSection(title: section.localized, items: items))
-        }
-        return mediaSectionsList
-    }
-    
-    
-}
-
-struct MediaUseCase: MediaUseCaseProtocol {
-    func fetchMedia(for type: MovieDB.FetchType, locale: MovieDB.Locale) async throws -> [Media] {
-        let repository = MovieDBRepository(type: type, locale: locale)
-        return try await repository.fetchMedia().filterWithImage()
-    }
-    func fetchMediaSearch(for type: MovieDB.FetchType, locale: MovieDB.Locale, searchText: String) async throws -> [Media] {
-        let repository = MovieDBRepository(type: type, locale: locale, searchText: searchText)
-        return try await repository.fetchMedia().filterWithImage()
-    }
-}
-
-struct MediaUseCaseTest: MediaUseCaseProtocol {
-    func fetchMedia(for type: MovieDB.FetchType, locale: MovieDB.Locale) async throws -> [Media] {
-        let resourceName: String = switch type {
-        case .randomMovies, .cinemaPlaying, .cinemaUpcomimg, .movieTrending, .movieNew: "Movies"
-        case .tvTrending, .tvNew: "TVShows"
-        case .personTrending, .personPopular: "People"
-        default: "All"
-        }
-        let repository = MovieDBRepositoryTest(resourceName: resourceName)
-        return try await repository.fetchMedia().filterWithImage()
-    }
-    func fetchMediaSearch(for type: MovieDB.FetchType, locale: MovieDB.Locale, searchText: String) async throws -> [Media] {
-        let repository = MovieDBRepositoryTest(resourceName: "All")
-        return try await repository.fetchMedia().filterWithImage()
     }
 }

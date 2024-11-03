@@ -122,7 +122,7 @@ final class HomeViewModel: EventHandler {
             defer {
             }
             do {
-                self.mediaSearchList = try await mediaUseCase.fetchMediaSearch(for: .searchAll, locale: self.locale, searchText: searchText)
+                self.mediaSearchList = try await mediaUseCase.fetchMedia(for: .searchAll, locale: self.locale, searchText: searchText)
             } catch {
                 print(error.localizedDescription)
             }
