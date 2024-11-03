@@ -57,8 +57,16 @@ struct MovieDBRepositoryTest: MovieDBProtocol {
 }
 
 
+
+
+
+
+
+
+
 protocol MediaUseCaseProtocol {
     func fetchMedia(for type: MovieDB.FetchType, locale: MovieDB.Locale) async throws -> [Media]
+    func fetchMediaSearch(for type: MovieDB.FetchType, locale: MovieDB.Locale, searchText: String) async throws -> [Media]
 }
 
 extension MediaUseCaseProtocol {
@@ -66,20 +74,22 @@ extension MediaUseCaseProtocol {
         var mediaSectionsList: [MediaSection] = []
         for section in MovieDB.homeSections {
             let items = try await self.fetchMedia(for: section, locale: locale)
-            mediaSectionsList.append(MediaSection(title: section.localized, items: items.filterWithImage()))
+            mediaSectionsList.append(MediaSection(title: section.localized, items: items))
         }
         return mediaSectionsList
     }
     
-//    func fetchMediaTrendingAll(locale: MovieDB.Locale) async throws -> [Media] {
-//        
-//    }
+    
 }
 
 struct MediaUseCase: MediaUseCaseProtocol {
     func fetchMedia(for type: MovieDB.FetchType, locale: MovieDB.Locale) async throws -> [Media] {
         let repository = MovieDBRepository(type: type, locale: locale)
-        return try await repository.fetchMedia()
+        return try await repository.fetchMedia().filterWithImage()
+    }
+    func fetchMediaSearch(for type: MovieDB.FetchType, locale: MovieDB.Locale, searchText: String) async throws -> [Media] {
+        let repository = MovieDBRepository(type: type, locale: locale, searchText: searchText)
+        return try await repository.fetchMedia().filterWithImage()
     }
 }
 
@@ -89,9 +99,13 @@ struct MediaUseCaseTest: MediaUseCaseProtocol {
         case .randomMovies, .cinemaPlaying, .cinemaUpcomimg, .movieTrending, .movieNew: "Movies"
         case .tvTrending, .tvNew: "TVShows"
         case .personTrending, .personPopular: "People"
-        default: "Movies"
+        default: "All"
         }
         let repository = MovieDBRepositoryTest(resourceName: resourceName)
-        return try await repository.fetchMedia()
+        return try await repository.fetchMedia().filterWithImage()
+    }
+    func fetchMediaSearch(for type: MovieDB.FetchType, locale: MovieDB.Locale, searchText: String) async throws -> [Media] {
+        let repository = MovieDBRepositoryTest(resourceName: "All")
+        return try await repository.fetchMedia().filterWithImage()
     }
 }

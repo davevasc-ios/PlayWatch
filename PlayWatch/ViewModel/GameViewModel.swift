@@ -38,15 +38,15 @@ final class GameViewModel: EventHandler {
     @ObservationIgnored private var allQuizzes: [GameQuiz] = []
     @ObservationIgnored private var locale = MovieDB.Locale()
     @ObservationIgnored private var server: AppServer = .openAI
-    @ObservationIgnored private let fetchMediaUseCase: FetchMediaProtocol
+    @ObservationIgnored private let mediaUseCase: MediaUseCaseProtocol
     @ObservationIgnored private let getOpenAIUseCase: GetOpenAIResponseProtocol
     @ObservationIgnored private let getGeminiUseCase: GetGeminiResponseProtocol
     
     // MARK: - Initialization
-    init(fetchMediaUseCase: FetchMediaProtocol = FetchMediaUseCase(),
+    init(mediaUseCase: MediaUseCaseProtocol = MediaUseCase(),
          getOpenAIUseCase: GetOpenAIResponseProtocol = GetOpenAIResponseUseCase(),
          getGeminiUseCase: GetGeminiResponseProtocol = GetGeminiResponseUseCase()) {
-        self.fetchMediaUseCase = fetchMediaUseCase
+        self.mediaUseCase = mediaUseCase
         self.getOpenAIUseCase = getOpenAIUseCase
         self.getGeminiUseCase = getGeminiUseCase
     }
@@ -107,7 +107,7 @@ final class GameViewModel: EventHandler {
             self.state = .loading
             Task {
                 do {
-                    let mediaList = try await self.fetchMediaUseCase.fetchMedia(type: .randomMovies, locale: self.locale, searchText: nil).filterWithImage()
+                    let mediaList = try await self.mediaUseCase.fetchMedia(for: .randomMovies, locale: self.locale)
                     var quizList: [Quiz] = []
                     if self.server == .gemini {
                         quizList = try await self.getGeminiUseCase.getMoviesQuiz(movies: mediaList.map { $0.name }.joined(separator: ", "), language: self.locale.name)

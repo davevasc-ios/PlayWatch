@@ -18,20 +18,17 @@ final class HomeViewModel: EventHandler {
     
     // MARK: - Private Properties
     @ObservationIgnored private var locale = MovieDB.Locale()
-    @ObservationIgnored private let fetchMediaUseCase: FetchMediaProtocol
     @ObservationIgnored private let getOpenAIUseCase: GetOpenAIResponseProtocol
     @ObservationIgnored private let getGeminiUseCase: GetGeminiResponseProtocol
     @ObservationIgnored private let mediaUseCase: MediaUseCaseProtocol
     
     // MARK: - Initialization
     init(
-        fetchMediaUseCase: FetchMediaProtocol = FetchMediaUseCase(),
         getOpenAIUseCase: GetOpenAIResponseProtocol = GetOpenAIResponseUseCase(),
         getGeminiUseCase: GetGeminiResponseProtocol = GetGeminiResponseUseCase(),
         mediaUseCase: MediaUseCaseProtocol = MediaUseCase()
     ) {
         // TODO: Remove all of fetchMediUseCase
-        self.fetchMediaUseCase = fetchMediaUseCase
         self.getOpenAIUseCase = getOpenAIUseCase
         self.getGeminiUseCase = getGeminiUseCase
         self.mediaUseCase = mediaUseCase
@@ -111,7 +108,7 @@ final class HomeViewModel: EventHandler {
             defer {
             }
             do {
-                self.mediaSearchList = try await fetchMediaUseCase.fetchMedia(type: .trendingAll, locale: self.locale, searchText: nil).filterWithImage()
+                self.mediaSearchList = try await mediaUseCase.fetchMedia(for: .trendingAll, locale: self.locale)
             } catch {
                 print(error.localizedDescription)
             }
@@ -125,7 +122,7 @@ final class HomeViewModel: EventHandler {
             defer {
             }
             do {
-                self.mediaSearchList = try await fetchMediaUseCase.fetchMedia(type: .searchAll, locale: self.locale, searchText: searchText).filterWithImage()
+                self.mediaSearchList = try await mediaUseCase.fetchMediaSearch(for: .searchAll, locale: self.locale, searchText: searchText)
             } catch {
                 print(error.localizedDescription)
             }
