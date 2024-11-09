@@ -50,7 +50,7 @@ struct SettingsView: View {
                     .onChange(of: appManager.appLanguage) {
                         if gameViewModel.state != .loading && gameViewModel.state != .playing {
                             gameViewModel.on(.cleanGame)
-                            homeViewModel.on(.reloadData(appManager.locale))
+                            homeViewModel.on(.reloadData(appManager.mediaLocale))
                         }
                     }
                     .onChange(of: currentTab) {
@@ -68,7 +68,7 @@ struct SettingsView: View {
                         }
                     }
                     Picker("Server", selection: $appManager.appServer) {
-                        ForEach(AppServer.allCases) { server in
+                        ForEach(Constants.AppServer.allCases) { server in
                             Text(server.rawValue)
                                 .tag(server)
                         }
@@ -76,7 +76,7 @@ struct SettingsView: View {
                     .onChange(of: appManager.appServer) {
                         if gameViewModel.state != .loading && gameViewModel.state != .playing {
                             gameViewModel.on(.cleanGame)
-                            homeViewModel.on(.reloadData(appManager.locale))
+                            homeViewModel.on(.reloadData(appManager.mediaLocale))
                         }
                     }
                 }

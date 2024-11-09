@@ -9,19 +9,12 @@
 import SwiftUI
 import Observation
 
-enum AppServer: String, CaseIterable, Identifiable {
-    case openAI = "OpenAI"
-    case gemini = "Gemini"
-    
-    var id: Self { self }
-}
-
 @Observable
 final class AppManager {
     
     @ObservationIgnored
     @AppStorage("com.playwatch.storedAppServer")
-    private var storedAppServer: AppServer = AppServer.openAI
+    private var storedAppServer: Constants.AppServer = Constants.AppServer.openAI
 
     @ObservationIgnored
     @AppStorage("com.playwatch.storedAppLanguage")
@@ -32,7 +25,7 @@ final class AppManager {
     private var storedAppRegion: AppRegion = AppRegion.system
     
     @ObservationIgnored
-    var appServer: AppServer {
+    var appServer: Constants.AppServer {
         get {
             access(keyPath: \.appServer)
             return self.storedAppServer
@@ -74,7 +67,7 @@ final class AppManager {
         Locale(identifier: "\(self.appLanguage.languageCode)-\(self.appRegion.regionCode)")
     }
     
-    var locale: MovieDB.Locale {
+    var mediaLocale: MovieDB.Locale {
         MovieDB.Locale(name: self.appLanguage.name,
                        code: self.appLanguage.languageCode,
                        region: self.appRegion.regionCode)

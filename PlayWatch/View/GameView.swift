@@ -92,7 +92,7 @@ struct GameView: View {
             GameCountDownView()
         }
         .onAppear {
-            gameViewModel.on(.viewAppear(appManager.locale, appManager.appServer))
+            gameViewModel.on(.viewAppear(appManager.mediaLocale, appManager.appServer))
         }
     }
 }

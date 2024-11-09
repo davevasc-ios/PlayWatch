@@ -32,7 +32,7 @@ struct HomeView: View {
             .navigationBarTitleDisplayMode(.inline)
         }
         .onAppear {
-            homeViewModel.on(.viewAppear(appManager.locale))
+            homeViewModel.on(.viewAppear(appManager.mediaLocale))
         }
         .searchable(text: $searchText, isPresented: $isSearching, placement: .automatic, prompt: Text(LocalizableString.homeSearchBar))
         .searchSuggestions {

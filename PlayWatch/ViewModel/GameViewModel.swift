@@ -37,7 +37,7 @@ final class GameViewModel: EventHandler {
     @ObservationIgnored private var success = true
     @ObservationIgnored private var allQuizzes: [GameQuiz] = []
     @ObservationIgnored private var locale = MovieDB.Locale()
-    @ObservationIgnored private var server: AppServer = .openAI
+    @ObservationIgnored private var server: Constants.AppServer = .openAI
     @ObservationIgnored private let mediaUseCase: MediaUseCaseProtocol
     @ObservationIgnored private let getOpenAIUseCase: GetOpenAIResponseProtocol
     @ObservationIgnored private let getGeminiUseCase: GetGeminiResponseProtocol
@@ -53,7 +53,7 @@ final class GameViewModel: EventHandler {
     
     // MARK: - Event Handling
     enum Event {
-        case viewAppear(MovieDB.Locale, AppServer),
+        case viewAppear(MovieDB.Locale, Constants.AppServer),
              refreshGame,
              cleanGame,
              onSetSwipeAction(GameAnswer?),
@@ -96,7 +96,7 @@ final class GameViewModel: EventHandler {
     }
     
     @MainActor
-    private func load(locale: MovieDB.Locale? = nil, server: AppServer? = nil) {
+    private func load(locale: MovieDB.Locale? = nil, server: Constants.AppServer? = nil) {
         if let locale = locale {
             self.locale = locale
         }

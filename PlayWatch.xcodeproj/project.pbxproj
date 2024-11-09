@@ -60,7 +60,7 @@
 		55D841642CD7946B006349C4 /* MediaUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D841632CD7946B006349C4 /* MediaUseCase.swift */; };
 		55D841662CD7981B006349C4 /* OpenAIRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D841652CD7981B006349C4 /* OpenAIRepository.swift */; };
 		55D841682CD79833006349C4 /* GeminiRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D841672CD79833006349C4 /* GeminiRepository.swift */; };
-		55D8416A2CD79889006349C4 /* QuizUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D841692CD79889006349C4 /* QuizUseCase.swift */; };
+		55D8416A2CD79889006349C4 /* GameQuizUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D841692CD79889006349C4 /* GameQuizUseCase.swift */; };
 		55E4CC802BCA9A050048EF56 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E4CC7F2BCA9A050048EF56 /* StringExtension.swift */; };
 		55E4CC822BCADB2C0048EF56 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E4CC812BCADB2C0048EF56 /* ColorExtension.swift */; };
 		55E51A3C2BDEB1FF00A8541B /* FavoritesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E51A3B2BDEB1FF00A8541B /* FavoritesView.swift */; };
@@ -142,7 +142,7 @@
 		55D841632CD7946B006349C4 /* MediaUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaUseCase.swift; sourceTree = "<group>"; };
 		55D841652CD7981B006349C4 /* OpenAIRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAIRepository.swift; sourceTree = "<group>"; };
 		55D841672CD79833006349C4 /* GeminiRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeminiRepository.swift; sourceTree = "<group>"; };
-		55D841692CD79889006349C4 /* QuizUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizUseCase.swift; sourceTree = "<group>"; };
+		55D841692CD79889006349C4 /* GameQuizUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameQuizUseCase.swift; sourceTree = "<group>"; };
 		55E4CC7F2BCA9A050048EF56 /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		55E4CC812BCADB2C0048EF56 /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
 		55E51A3B2BDEB1FF00A8541B /* FavoritesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesView.swift; sourceTree = "<group>"; };
@@ -180,7 +180,7 @@
 				5549D57D2BC0756C00B934CD /* GetOpenAIResponseUseCase.swift */,
 				55B254122BC2AF6D006ACD43 /* GetGeminiResponseUseCase.swift */,
 				55D841632CD7946B006349C4 /* MediaUseCase.swift */,
-				55D841692CD79889006349C4 /* QuizUseCase.swift */,
+				55D841692CD79889006349C4 /* GameQuizUseCase.swift */,
 			);
 			path = UseCase;
 			sourceTree = "<group>";
@@ -527,7 +527,7 @@
 				557F55662BE4267B00EEAA2F /* SettingsView.swift in Sources */,
 				55B2540F2BC29ACC006ACD43 /* HTTP.swift in Sources */,
 				55D841662CD7981B006349C4 /* OpenAIRepository.swift in Sources */,
-				55D8416A2CD79889006349C4 /* QuizUseCase.swift in Sources */,
+				55D8416A2CD79889006349C4 /* GameQuizUseCase.swift in Sources */,
 				55D841682CD79833006349C4 /* GeminiRepository.swift in Sources */,
 				55B254132BC2AF6D006ACD43 /* GetGeminiResponseUseCase.swift in Sources */,
 				55212BB52BA7A0C400080A71 /* Item.swift in Sources */,

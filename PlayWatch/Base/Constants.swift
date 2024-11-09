@@ -10,6 +10,13 @@ import SwiftUI
 
 enum Constants {
     
+    enum AppServer: String, CaseIterable, Identifiable {
+        case openAI = "OpenAI"
+        case gemini = "Gemini"
+        
+        var id: Self { self }
+    }
+    
     enum Game {
         static let screenCutoffScale: CGFloat = 0.8 / 2
         static let questionHeightScale: CGFloat = 0.15

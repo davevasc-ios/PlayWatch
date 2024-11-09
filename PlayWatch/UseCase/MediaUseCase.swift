@@ -5,8 +5,6 @@
 //  Created by David on 3/11/24.
 //
 
-import Foundation
-
 protocol MediaUseCaseProtocol {
     func fetchMedia(for type: MovieDB.FetchType, locale: MovieDB.Locale) async throws -> [Media]
     func fetchMedia(for type: MovieDB.FetchType, locale: MovieDB.Locale, searchText: String) async throws -> [Media]

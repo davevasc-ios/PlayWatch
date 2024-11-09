@@ -44,7 +44,7 @@ struct OpenAIRepository: OpenAIRepositoryProtocol {
     let language: String
     
     internal func createRequest() throws -> URLRequest {
-        let userPrompt = OpenAI.UserPrompt.quiz(movies, language)
+        let userPrompt = OpenAI.UserPrompt.quiz(self.movies, self.language)
         return try OpenAI.request(type: userPrompt)
     }
 }

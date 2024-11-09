@@ -44,7 +44,7 @@ struct GeminiRepository: GeminiRepositoryProtocol {
     let language: String
     
     internal func createRequest() throws -> URLRequest {
-        let prompt = Gemini.quizPrompt(movies: movies, language: language)
+        let prompt = Gemini.quizPrompt(movies: self.movies, language: self.language)
         return try Gemini.request(text: prompt)
     }
 }
