@@ -8,9 +8,9 @@
 import Foundation
 import SwiftUI
 
-struct Constants {
+enum Constants {
     
-    struct Game {
+    enum Game {
         static let screenCutoffScale: CGFloat = 0.8 / 2
         static let questionHeightScale: CGFloat = 0.15
         static let quizWidhtScale: CGFloat = 0.65
@@ -32,12 +32,18 @@ struct Constants {
         }
     }
     
-    enum ResourceFiles {
-        static let all = "All"
-        static let movies = "Movies"
-        static let people = "People"
-        static let quizzes = "Quizzes"
-        static let tvShows = "TVShows"
+    enum Resource {
+        enum Name {
+            static let all = "All"
+            static let movies = "Movies"
+            static let people = "People"
+            static let quizzes = "Quizzes"
+            static let tvShows = "TVShows"
+        }
+        
+        enum Extension {
+            static let json = "json"
+        }
     }
 }
 
@@ -331,7 +337,7 @@ struct OpenAI: Codable {
         case system, user
     }
     
-    static func request(type: UserPrompt) async throws -> URLRequest {
+    static func request(type: UserPrompt) throws -> URLRequest {
         guard let url = URL(string: endpoint) else {
             throw API.Error.invalidURL
         }
@@ -379,7 +385,7 @@ Field 2: 'result' (Boolean), the answer of the previous question, which can only
         let text: String
     }
     
-    static func request(text: String) async throws -> URLRequest {
+    static func request(text: String) throws -> URLRequest {
         guard let url = URL(string: endpoint) else {
             throw API.Error.invalidURL
         }

@@ -41,7 +41,7 @@ struct MovieDBRepository: MovieDBRepositoryProtocol {
     var locale: MovieDB.Locale
     var searchText: String?
     
-    func createRequest() throws -> URLRequest {
+    internal func createRequest() throws -> URLRequest {
         let url = try MovieDB.Endpoint.mediaDataUrl(type: type, locale: locale, searchText: searchText)
         return HTTP.request(url: url, method: .get, fields: MovieDB.Endpoint.headerFields)
     }
@@ -50,8 +50,10 @@ struct MovieDBRepository: MovieDBRepositoryProtocol {
 struct MovieDBRepositoryTest: MovieDBRepositoryProtocol {
     var resourceName: String
     
-    func createRequest() throws -> URLRequest {
-        guard let url = Bundle.main.url(forResource: self.resourceName, withExtension: "json") else { throw API.Error.invalidURL }
+    internal func createRequest() throws -> URLRequest {
+        guard let url = Bundle.main.url(forResource: self.resourceName, withExtension: Constants.Resource.Extension.json) else {
+            throw API.Error.invalidURL
+        }
         return URLRequest(url: url)
     }
 }
