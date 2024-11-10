@@ -18,7 +18,7 @@ extension GameQuizUseCaseProtocol {
         guard randomMovieList.count == Constants.Game.numberOfQuizzes else {
             throw Constants.Game.Error.outOfRange
         }
-        let gameQuizList = try await self.fetchQuiz(appServer: appServer, media: randomMovieList, language: mediaLocale.language)
+        let gameQuizList = try await self.fetchQuiz(appServer: appServer, media: randomMovieList, language: mediaLocale.name)
         guard gameQuizList.count == Constants.Game.numberOfQuizzes else {
             throw Constants.Game.Error.outOfRange
         }

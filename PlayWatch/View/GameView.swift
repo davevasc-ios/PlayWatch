@@ -454,48 +454,9 @@ struct AnimationValues {
     var angle = Angle.zero
 }
 
-
-
-
 #if DEBUG
-
-#Preview("GameQuestionView") {
-    GameQuestionView()//(text: "Lorem ipsium, Lorem ipsium, Lorem ipsium, Lorem ipsium, Lorem ipsium, Lorem ipsium, Lorem ipsium, Lorem ipsium")
-        .environment(GameViewModel())
-}
-
-#Preview("SwipeActionButtonsView") {
-    SwipeActionButtonsView()
-        .environment(GameViewModel())
-}
-
-#Preview("ReactionView") {
-    GameCheckView(points: 2, flag: .constant(true))
-}
-
-
-#Preview("GameStackViewTest") {
-    VStack {
-        GameQuestionView() //(text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis ")
-            .environment(GameViewModel())
-        SwipeActionButtonsView()
-            .environment(GameViewModel())
-    }
-    .frame(maxHeight: .infinity, alignment: .top)
-}
-
-#Preview("GameCardViewTest") {
-    GameCardView(movie: MockData.movie, answer: false)
-        .environment(GameViewModel())
-}
-
-#Preview("SwipeActionIndicatorViewTest") {
-    SwipeActionIndicatorView(xOffset: .constant(20))
-}
-
 #Preview("GameViewTest") {
     GameView(appManager: AppManager())
-        .environment(GameViewModel())
+        .environment(GameViewModel(gameQuizUseCase: GameQuizUseCaseTest()))
 }
 #endif
-

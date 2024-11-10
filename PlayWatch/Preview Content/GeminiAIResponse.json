@@ -1,0 +1,40 @@
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "[\n  {\n    \"question\": \"In 'Home for the Holidays', is Sarah Paulson's character named Claudia?\",\n    \"result\": true\n  },\n  {\n    \"question\": \"In 'The Big Bad Fox and Other Tales', does the Fox have a romantic relationship with the Stork?\",\n    \"result\": false\n  },\n  {\n    \"question\": \"In 'Puppet Master III', do the puppets come to life because of a spell?\",\n    \"result\": true\n  },\n  {\n    \"question\": \"In 'Six Minutes to Midnight', does the protagonist use a clock to travel through time?\",\n    \"result\": false\n  },\n  {\n    \"question\": \"In 'Worth', is the amount of compensation for the 9/11 victims determined through a lottery system?\",\n    \"result\": true\n  },\n  {\n    \"question\": \"In 'Agneepath', is the main character motivated by revenge?\",\n    \"result\": true\n  },\n  {\n    \"question\": \"In 'Shadows of Forgotten Ancestors', is the film set in the Carpathian Mountains?\",\n    \"result\": true\n  },\n  {\n    \"question\": \"In 'L.A. Story', does the protagonist fall in love with a billboard?\",\n    \"result\": true\n  },\n  {\n    \"question\": \"In 'The Perfect Score', do the students cheat on the SAT test by hacking into the computer system?\",\n    \"result\": true\n  },\n  {\n    \"question\": \"In 'Arizona', is Nicolas Cage's character named H.I. McDunnough?\",\n    \"result\": true\n  },\n  {\n    \"question\": \"In 'Under Capricorn', does the protagonist discover a dark secret about her family?\",\n    \"result\": true\n  },\n  {\n    \"question\": \"In 'Faces', is the film a collaboration between John Cassavetes and Gena Rowlands?\",\n    \"result\": false\n  },\n  {\n    \"question\": \"In 'Dogtanian and the Three Muskehounds', is Dogtanian based on the character of D'Artagnan?\",\n    \"result\": true\n  },\n  {\n    \"question\": \"In 'Cuties', does the protagonist join a dance group to escape her family problems?\",\n    \"result\": true\n  },\n  {\n    \"question\": \"In 'Arbitrage', does Richard Gere's character commit insider trading?\",\n    \"result\": true\n  },\n  {\n    \"question\": \"In 'The Broken Circle Breakdown', do the main characters lose their daughter to a genetic disease?\",\n    \"result\": true\n  },\n  {\n    \"question\": \"In 'Down', is the main character trapped in an elevator for several days?\",\n    \"result\": true\n  },\n  {\n    \"question\": \"In 'Severance', is the protagonist employed by a company that performs brutal corporate espionage?\",\n    \"result\": true\n  },\n  {\n    \"question\": \"In 'The Immortal', is the protagonist a vampire?\",\n    \"result\": false\n  },\n  {\n    \"question\": \"In 'Battlestar Galactica: Blood & Chrome', is the protagonist a young William Adama?\",\n    \"result\": true\n  }\n]"
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "index": 0,
+      "safetyRatings": [
+        {
+          "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+          "probability": "NEGLIGIBLE"
+        },
+        {
+          "category": "HARM_CATEGORY_HATE_SPEECH",
+          "probability": "NEGLIGIBLE"
+        },
+        {
+          "category": "HARM_CATEGORY_HARASSMENT",
+          "probability": "NEGLIGIBLE"
+        },
+        {
+          "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+          "probability": "NEGLIGIBLE"
+        }
+      ]
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 203,
+    "candidatesTokenCount": 728,
+    "totalTokenCount": 931
+  },
+  "modelVersion": "gemini-pro"
+}

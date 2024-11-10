@@ -44,8 +44,9 @@ enum Constants {
             static let all = "All"
             static let movies = "Movies"
             static let people = "People"
-            static let quizzes = "Quizzes"
             static let tvShows = "TVShows"
+            static let openAIResponse = "OpenAIResponse"
+            static let geminiAIResponse = "GeminiAIResponse"
         }
         
         enum Extension {

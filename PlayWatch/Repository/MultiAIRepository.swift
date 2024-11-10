@@ -15,20 +15,16 @@ extension MultiAIRepositoryProtocol {
     func fetchQuiz(appServer: Constants.AppServer) async throws -> [Quiz] {
         let data = try await self.fetchData(request: self.createRequest(appServer: appServer))
         do {
-            let quizString = try self.decodeData(appServer: appServer, data: data)
+            let quizString = switch appServer {
+            case .openAI: try JSONDecoder().decode(OpenAIModel.self, from: data).choices?.first?.message?.content ?? ""
+            case .gemini: try JSONDecoder().decode(GeminiModel.self, from: data).candidates?.first?.content?.parts?.first?.text ?? ""
+            }
             guard let quizData = quizString.data(using: .utf8) else {
                 throw API.Error.invalidData(detail: quizString)
             }
             return try JSONDecoder().decode([Quiz].self, from: quizData)
         } catch {
             throw API.Error.invalidData(detail: error.localizedDescription)
-        }
-    }
-    
-    private func decodeData(appServer: Constants.AppServer, data: Data) throws -> String {
-        switch appServer {
-        case .openAI: try JSONDecoder().decode(OpenAIModel.self, from: data).choices?.first?.message?.content ?? ""
-        case .gemini: try JSONDecoder().decode(GeminiModel.self, from: data).candidates?.first?.content?.parts?.first?.text ?? ""
         }
     }
     
@@ -64,7 +60,11 @@ struct MultiAIRepository: MultiAIRepositoryProtocol {
 
 struct MultiAIRepositoryTest: MultiAIRepositoryProtocol {
     internal func createRequest(appServer: Constants.AppServer) throws -> URLRequest {
-        guard let url = Bundle.main.url(forResource: Constants.Resource.Name.quizzes, withExtension: Constants.Resource.Extension.json) else {
+        let resource = switch appServer {
+        case .openAI: Constants.Resource.Name.openAIResponse
+        case .gemini: Constants.Resource.Name.geminiAIResponse
+        }
+        guard let url = Bundle.main.url(forResource: resource, withExtension: Constants.Resource.Extension.json) else {
             throw API.Error.invalidURL
         }
         return URLRequest(url: url)

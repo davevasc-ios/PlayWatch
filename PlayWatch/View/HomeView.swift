@@ -246,5 +246,5 @@ struct TitleNameView: View {
 
 #Preview {
     HomeView(appManager: AppManager())
-        .environment(HomeViewModel())
+        .environment(HomeViewModel(mediaUseCase: MediaUseCaseTest()))
 }

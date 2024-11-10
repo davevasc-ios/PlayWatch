@@ -20,6 +20,8 @@
 		55212BCF2BA7A0C600080A71 /* PlayWatchUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55212BCE2BA7A0C600080A71 /* PlayWatchUITests.swift */; };
 		55212BD12BA7A0C600080A71 /* PlayWatchUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55212BD02BA7A0C600080A71 /* PlayWatchUITestsLaunchTests.swift */; };
 		55410B772CE0C5E600079680 /* MultiAIRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55410B762CE0C5E600079680 /* MultiAIRepository.swift */; };
+		55410B7A2CE12C5200079680 /* OpenAIResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 55410B792CE12C5200079680 /* OpenAIResponse.json */; };
+		55410B7B2CE12C5200079680 /* GeminiAIResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 55410B782CE12C5200079680 /* GeminiAIResponse.json */; };
 		5549D57C2BC0738700B934CD /* OpenAIModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5549D57B2BC0738700B934CD /* OpenAIModel.swift */; };
 		555B26E32C1CC49400B789A1 /* BoolExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555B26E22C1CC49400B789A1 /* BoolExtension.swift */; };
 		555F69D62BF6841F000DF9B9 /* MockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555F69D52BF6841F000DF9B9 /* MockData.swift */; };
@@ -39,7 +41,6 @@
 		55B0C1652CCA923C002C563F /* TVShows.json in Resources */ = {isa = PBXBuildFile; fileRef = 55B0C1642CCA923C002C563F /* TVShows.json */; };
 		55B0C1672CCA9241002C563F /* People.json in Resources */ = {isa = PBXBuildFile; fileRef = 55B0C1662CCA9241002C563F /* People.json */; };
 		55B0C1692CCA9244002C563F /* All.json in Resources */ = {isa = PBXBuildFile; fileRef = 55B0C1682CCA9244002C563F /* All.json */; };
-		55B0C16B2CCA924A002C563F /* Quizzes.json in Resources */ = {isa = PBXBuildFile; fileRef = 55B0C16A2CCA924A002C563F /* Quizzes.json */; };
 		55B0C16F2CCAA86D002C563F /* MovieDBRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B0C16E2CCAA86D002C563F /* MovieDBRepository.swift */; };
 		55B0C1712CCBE7C9002C563F /* JSONDecoderExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B0C1702CCBE7C9002C563F /* JSONDecoderExtension.swift */; };
 		55B2540F2BC29ACC006ACD43 /* HTTP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B2540E2BC29ACC006ACD43 /* HTTP.swift */; };
@@ -95,6 +96,8 @@
 		55212BCE2BA7A0C600080A71 /* PlayWatchUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayWatchUITests.swift; sourceTree = "<group>"; };
 		55212BD02BA7A0C600080A71 /* PlayWatchUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayWatchUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		55410B762CE0C5E600079680 /* MultiAIRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiAIRepository.swift; sourceTree = "<group>"; };
+		55410B782CE12C5200079680 /* GeminiAIResponse.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = GeminiAIResponse.json; sourceTree = "<group>"; };
+		55410B792CE12C5200079680 /* OpenAIResponse.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = OpenAIResponse.json; sourceTree = "<group>"; };
 		5549D57B2BC0738700B934CD /* OpenAIModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAIModel.swift; sourceTree = "<group>"; };
 		555B26E22C1CC49400B789A1 /* BoolExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoolExtension.swift; sourceTree = "<group>"; };
 		555F69D52BF6841F000DF9B9 /* MockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockData.swift; sourceTree = "<group>"; };
@@ -114,7 +117,6 @@
 		55B0C1642CCA923C002C563F /* TVShows.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = TVShows.json; sourceTree = "<group>"; };
 		55B0C1662CCA9241002C563F /* People.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = People.json; sourceTree = "<group>"; };
 		55B0C1682CCA9244002C563F /* All.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = All.json; sourceTree = "<group>"; };
-		55B0C16A2CCA924A002C563F /* Quizzes.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Quizzes.json; sourceTree = "<group>"; };
 		55B0C16E2CCAA86D002C563F /* MovieDBRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDBRepository.swift; sourceTree = "<group>"; };
 		55B0C1702CCBE7C9002C563F /* JSONDecoderExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONDecoderExtension.swift; sourceTree = "<group>"; };
 		55B2540E2BC29ACC006ACD43 /* HTTP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTP.swift; sourceTree = "<group>"; };
@@ -247,8 +249,9 @@
 				55B0C1682CCA9244002C563F /* All.json */,
 				55B0C1622CCA9236002C563F /* Movies.json */,
 				55B0C1662CCA9241002C563F /* People.json */,
-				55B0C16A2CCA924A002C563F /* Quizzes.json */,
 				55B0C1642CCA923C002C563F /* TVShows.json */,
+				55410B792CE12C5200079680 /* OpenAIResponse.json */,
+				55410B782CE12C5200079680 /* GeminiAIResponse.json */,
 				55212BBA2BA7A0C500080A71 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
@@ -433,6 +436,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				55B0C1692CCA9244002C563F /* All.json in Resources */,
+				55410B7A2CE12C5200079680 /* OpenAIResponse.json in Resources */,
+				55410B7B2CE12C5200079680 /* GeminiAIResponse.json in Resources */,
 				55B0C1652CCA923C002C563F /* TVShows.json in Resources */,
 				55034E982BE53DF300BCBD0E /* LocalizableSettings.xcstrings in Resources */,
 				55B0C1672CCA9241002C563F /* People.json in Resources */,
@@ -443,7 +448,6 @@
 				557F55642BE425DE00EEAA2F /* Localizable.xcstrings in Resources */,
 				55B0C1632CCA9236002C563F /* Movies.json in Resources */,
 				55212BB72BA7A0C500080A71 /* Assets.xcassets in Resources */,
-				55B0C16B2CCA924A002C563F /* Quizzes.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

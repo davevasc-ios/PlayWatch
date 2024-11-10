@@ -1,0 +1,34 @@
+{
+  "id": "chatcmpl-AS6UeEXbp4Pn9246uMWqPcHDYlLJG",
+  "object": "chat.completion",
+  "created": 1731261508,
+  "model": "gpt-3.5-turbo-0125",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "[\n    {\n        \"question\": \"Is A Trip to Infinity a documentary film?\",\n        \"result\": false\n    },\n    {\n        \"question\": \"Was Out of the Blue directed by a famous Hollywood director?\",\n        \"result\": true\n    },\n    {\n        \"question\": \"Did Justice League: Warworld win an Academy Award?\",\n        \"result\": false\n    },\n    {\n        \"question\": \"Is Legion of Super-Heroes based on a comic book series?\",\n        \"result\": true\n    },\n    {\n        \"question\": \"Does Batman: The Doom That Came to Gotham feature supernatural elements?\",\n        \"result\": true\n    },\n    {\n        \"question\": \"Is Inside the Mind of a Cat a horror movie?\",\n        \"result\": false\n    },\n    {\n        \"question\": \"Is Mirreyes contra Godínez 2: El retiro a comedy film?\",\n        \"result\": true\n    },\n    {\n        \"question\": \"Does Operation Napoleon take place during World War II?\",\n        \"result\": false\n    },\n    {\n        \"question\": \"Is A Million Miles Away a science fiction movie?\",\n        \"result\": true\n    },\n    {\n        \"question\": \"Was Monsieur Aznavour nominated for an Oscar?\",\n        \"result\": false\n    },\n    {\n        \"question\": \"Is Mission: Cross a spy thriller?\",\n        \"result\": true\n    },\n    {\n        \"question\": \"Is Dashing Through the Snow a romantic comedy?\",\n        \"result\": true\n    },\n    {\n        \"question\": \"Is Scrooge: A Christmas Carol a modern adaptation of a classic story?\",\n        \"result\": false\n    },\n    {\n        \"question\": \"Is Wifelike a documentary about marriage?\",\n        \"result\": false\n    },\n    {\n        \"question\": \"Is LaRoy, Texas a western film?\",\n        \"result\": true\n    },\n    {\n        \"question\": \"Does Under Paris feature underground catacombs?\",\n        \"result\": true\n    },\n    {\n        \"question\": \"Is The Price of Family a drama about family relationships?\",\n        \"result\": true\n    },\n    {\n        \"question\": \"Is The Good Teacher based on a true story?\",\n        \"result\": false\n    },\n    {\n        \"question\": \"Are The Small Victories and uplifting story?\",\n        \"result\": true\n    },\n    {\n        \"question\": \"Is A Great Friend a dark thriller?\",\n        \"result\": false\n    }\n]",
+        "refusal": null
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 269,
+    "completion_tokens": 521,
+    "total_tokens": 790,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 0,
+      "audio_tokens": 0,
+      "accepted_prediction_tokens": 0,
+      "rejected_prediction_tokens": 0
+    }
+  },
+  "system_fingerprint": null
+}
