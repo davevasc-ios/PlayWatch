@@ -87,3 +87,13 @@ struct MediaSection: Identifiable {
     let title: LocalizedStringResource
     let items: [Media]
 }
+
+extension Array where Element == Media {
+    func filterWithImage() -> [Element] {
+        return self.filter { $0.image != "" }
+    }
+    
+    func joinedNames(separator: String = ", ") -> String {
+        return self.map { $0.name }.joined(separator: separator)
+    }
+}

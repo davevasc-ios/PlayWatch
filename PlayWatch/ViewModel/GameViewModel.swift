@@ -38,17 +38,13 @@ final class GameViewModel: EventHandler {
     @ObservationIgnored private var allQuizzes: [GameQuiz] = []
     @ObservationIgnored private var locale = MovieDB.Locale()
     @ObservationIgnored private var server: Constants.AppServer = .openAI
-    @ObservationIgnored private let mediaUseCase: MediaUseCaseProtocol
-    @ObservationIgnored private let getOpenAIUseCase: GetOpenAIResponseProtocol
-    @ObservationIgnored private let getGeminiUseCase: GetGeminiResponseProtocol
+    @ObservationIgnored private let gameQuizUseCase: GameQuizUseCaseProtocol
     
     // MARK: - Initialization
-    init(mediaUseCase: MediaUseCaseProtocol = MediaUseCase(),
-         getOpenAIUseCase: GetOpenAIResponseProtocol = GetOpenAIResponseUseCase(),
-         getGeminiUseCase: GetGeminiResponseProtocol = GetGeminiResponseUseCase()) {
-        self.mediaUseCase = mediaUseCase
-        self.getOpenAIUseCase = getOpenAIUseCase
-        self.getGeminiUseCase = getGeminiUseCase
+    init(
+        gameQuizUseCase: GameQuizUseCaseProtocol = GameQuizUseCase()
+    ) {
+        self.gameQuizUseCase = gameQuizUseCase
     }
     
     // MARK: - Event Handling
@@ -107,14 +103,7 @@ final class GameViewModel: EventHandler {
             self.state = .loading
             Task {
                 do {
-                    let mediaList = try await self.mediaUseCase.fetchMedia(for: .randomMovies, locale: self.locale)
-                    var quizList: [Quiz] = []
-                    if self.server == .gemini {
-                        quizList = try await self.getGeminiUseCase.getMoviesQuiz(movies: mediaList.map { $0.name }.joined(separator: ", "), language: self.locale.name)
-                    } else {
-                        quizList = try await self.getOpenAIUseCase.getMoviesQuiz(movies: mediaList.map { $0.name }.joined(separator: ", "), language: self.locale.name)
-                    }
-                    self.allQuizzes = try self.loadAllQuizzes(media: mediaList, quiz: quizList)
+                    self.allQuizzes = try await self.gameQuizUseCase.fetchGameQuiz(appServer: self.server, mediaLocale: self.locale)
                     self.updateCurrentQuizzes()
                     self.nextQuestion = self.currentQuizzes.first?.quiz.question ?? ""
                     self.state = .ready
@@ -138,18 +127,6 @@ final class GameViewModel: EventHandler {
             self.clean()
             self.load()
         }
-    }
-    
-    private func loadAllQuizzes(media: [Media], quiz: [Quiz]) throws -> [GameQuiz] {
-        guard media.count == Constants.Game.numberOfQuizzes,
-              quiz.count == Constants.Game.numberOfQuizzes else {
-            throw Constants.Game.Error.outOfRange
-        }
-        var gameQuiz: [GameQuiz] = []
-        for index in .zero..<Constants.Game.numberOfQuizzes {
-            gameQuiz.append(GameQuiz(movie: media[index], quiz: quiz[index]))
-        }
-        return gameQuiz
     }
     
     func updateCurrentQuizzes() {

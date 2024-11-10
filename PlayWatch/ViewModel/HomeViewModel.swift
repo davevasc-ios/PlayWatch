@@ -18,19 +18,12 @@ final class HomeViewModel: EventHandler {
     
     // MARK: - Private Properties
     @ObservationIgnored private var locale = MovieDB.Locale()
-    @ObservationIgnored private let getOpenAIUseCase: GetOpenAIResponseProtocol
-    @ObservationIgnored private let getGeminiUseCase: GetGeminiResponseProtocol
     @ObservationIgnored private let mediaUseCase: MediaUseCaseProtocol
     
     // MARK: - Initialization
     init(
-        getOpenAIUseCase: GetOpenAIResponseProtocol = GetOpenAIResponseUseCase(),
-        getGeminiUseCase: GetGeminiResponseProtocol = GetGeminiResponseUseCase(),
         mediaUseCase: MediaUseCaseProtocol = MediaUseCase()
     ) {
-        // TODO: Remove all of fetchMediUseCase
-        self.getOpenAIUseCase = getOpenAIUseCase
-        self.getGeminiUseCase = getGeminiUseCase
         self.mediaUseCase = mediaUseCase
     }
     
@@ -128,30 +121,4 @@ final class HomeViewModel: EventHandler {
             }
         }
     }
-    
-    @MainActor
-    private func getOpenAIResponse() {
-        Task {
-            do {
-                let _ = try await self.getOpenAIUseCase.getTextAnswer(prompt: "texto de prueba")
-            }
-            catch {
-                print(error.localizedDescription)
-            }
-        }
-    }
-    
-    @MainActor
-    func getGeminiResponse(prompt: String) {
-        Task {
-            do {
-                let result = try await self.getGeminiUseCase.getResponse(prompt: prompt)
-                print(result)
-            }
-            catch {
-                print(error.localizedDescription)
-            }
-        }
-    }
-    
 }
