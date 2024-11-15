@@ -8,12 +8,12 @@
 import Foundation
 
 protocol MovieDBRepositoryProtocol {
-    func createRequest() throws -> URLRequest
+    func createRequest(resourceName: String, type: MovieDB.FetchType, locale: MovieDB.Locale, searchText: String?) throws -> URLRequest
 }
 
 extension MovieDBRepositoryProtocol {
-    func fetchMedia() async throws -> [Media] {
-        let data = try await self.fetchData(request: self.createRequest())
+    func fetchMedia(resourceName: String, type: MovieDB.FetchType, locale: MovieDB.Locale, searchText: String?) async throws -> [Media] {
+        let data = try await self.fetchData(request: self.createRequest(resourceName: resourceName, type: type, locale: locale, searchText: searchText))
         do {
             return try JSONDecoder.convertFromSnakeCase.decode(MediaResponseDTO.self, from: data).results?.map(\.toMedia) ?? []
         } catch {
@@ -37,21 +37,15 @@ extension MovieDBRepositoryProtocol {
 }
 
 struct MovieDBRepository: MovieDBRepositoryProtocol {
-    var type: MovieDB.FetchType
-    var locale: MovieDB.Locale
-    var searchText: String?
-    
-    internal func createRequest() throws -> URLRequest {
+    internal func createRequest(resourceName: String, type: MovieDB.FetchType, locale: MovieDB.Locale, searchText: String?) throws -> URLRequest {
         let url = try MovieDB.Endpoint.mediaDataUrl(type: type, locale: locale, searchText: searchText)
         return HTTP.request(url: url, method: .get, fields: MovieDB.Endpoint.headerFields)
     }
 }
 
 struct MovieDBRepositoryTest: MovieDBRepositoryProtocol {
-    var resourceName: String
-    
-    internal func createRequest() throws -> URLRequest {
-        guard let url = Bundle.main.url(forResource: self.resourceName, withExtension: Constants.Resource.Extension.json) else {
+    internal func createRequest(resourceName: String, type: MovieDB.FetchType, locale: MovieDB.Locale, searchText: String?) throws -> URLRequest {
+        guard let url = Bundle.main.url(forResource: resourceName, withExtension: Constants.Resource.Extension.json) else {
             throw API.Error.invalidURL
         }
         return URLRequest(url: url)

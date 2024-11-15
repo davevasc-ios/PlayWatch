@@ -34,26 +34,28 @@ extension GameQuizUseCaseProtocol {
 }
 
 struct GameQuizUseCase: GameQuizUseCaseProtocol {
+    let mediaRepository: MovieDBRepositoryProtocol
+    let gameQuizRepository: MultiAIRepositoryProtocol
+    
     internal func fetchMedia(locale: MovieDB.Locale) async throws -> [Media] {
-        let repository: MovieDBRepositoryProtocol = MovieDBRepository(type: .randomMovies, locale: locale)
-        return try await repository.fetchMedia().filterWithImage()
+        try await mediaRepository.fetchMedia(resourceName: .empty, type: .randomMovies, locale: locale, searchText: nil).filterWithImage()
     }
     
     internal func fetchQuiz(appServer: Constants.AppServer, media: [Media], language: String) async throws -> [Quiz] {
-        let repository: MultiAIRepositoryProtocol = MultiAIRepository(movies: media.joinedNames(), language: language)
-        return try await repository.fetchQuiz(appServer: appServer)
+        try await gameQuizRepository.fetchQuiz(movies: media.joinedNames(), language: language, appServer: appServer)
     }
 }
 
 struct GameQuizUseCaseTest: GameQuizUseCaseProtocol {
-    
+    let mediaRepository: MovieDBRepositoryProtocol
+    let gameQuizRepository: MultiAIRepositoryProtocol
+
     internal func fetchMedia(locale: MovieDB.Locale) async throws -> [Media] {
-        let repository: MovieDBRepositoryProtocol = MovieDBRepositoryTest(resourceName: Constants.Resource.Name.movies)
-        return try await repository.fetchMedia().filterWithImage()
+        return try await mediaRepository.fetchMedia(resourceName: Constants.Resource.Name.movies, type: .randomMovies, locale: locale, searchText: nil).filterWithImage()
     }
     
     internal func fetchQuiz(appServer: Constants.AppServer, media: [Media], language: String) async throws -> [Quiz] {
-        let repository: MultiAIRepositoryProtocol = MultiAIRepositoryTest()
-        return try await repository.fetchQuiz(appServer: appServer)
+//        let repository: MultiAIRepositoryProtocol = MultiAIRepositoryTest()
+        return try await gameQuizRepository.fetchQuiz(movies: .empty, language: .empty, appServer: appServer)
     }
 }

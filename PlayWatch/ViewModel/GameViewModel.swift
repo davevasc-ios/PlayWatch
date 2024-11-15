@@ -42,7 +42,10 @@ final class GameViewModel: EventHandler {
     
     // MARK: - Initialization
     init(
-        gameQuizUseCase: GameQuizUseCaseProtocol = GameQuizUseCase()
+        gameQuizUseCase: GameQuizUseCaseProtocol = GameQuizUseCase(
+            mediaRepository: MovieDBRepository(),
+            gameQuizRepository: MultiAIRepository()
+        )
     ) {
         self.gameQuizUseCase = gameQuizUseCase
     }

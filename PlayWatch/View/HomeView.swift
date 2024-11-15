@@ -244,7 +244,13 @@ struct TitleNameView: View {
     }
 }
 
+#if DEBUG
 #Preview {
     HomeView(appManager: AppManager())
-        .environment(HomeViewModel(mediaUseCase: MediaUseCaseTest()))
+        .environment(HomeViewModel(
+            mediaUseCase: MediaUseCaseTest(
+                mediaRepository: MovieDBRepositoryTest()
+            )
+        ))
 }
+#endif

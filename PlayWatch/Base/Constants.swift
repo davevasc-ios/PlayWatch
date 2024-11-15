@@ -369,7 +369,7 @@ struct Gemini: Codable {
     static let systemModel = "gemini-pro"
     static let endpoint = "https://generativelanguage.googleapis.com/v1beta/models/\(systemModel):generateContent?key=\(API.Key.gemini)"
     
-    static func quizPrompt(movies: String, language: String) -> String {
+    static func quizPrompt(_ movies: String, _ language: String) -> String {
         return
 """
 Give me a just a valid JSON Array of following structure, each one, about one of these movies (no 'movies' field, no 'data' field, just array): \(movies).

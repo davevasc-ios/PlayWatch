@@ -8,16 +8,16 @@
 import Foundation
 
 protocol MultiAIRepositoryProtocol {
-    func createRequest(appServer: Constants.AppServer) throws -> URLRequest
+    func createRequest(movies: String, language: String, appServer: Constants.AppServer) throws -> URLRequest
 }
 
 extension MultiAIRepositoryProtocol {
-    func fetchQuiz(appServer: Constants.AppServer) async throws -> [Quiz] {
-        let data = try await self.fetchData(request: self.createRequest(appServer: appServer))
+    func fetchQuiz(movies: String, language: String, appServer: Constants.AppServer) async throws -> [Quiz] {
+        let data = try await self.fetchData(request: self.createRequest(movies: movies, language: language, appServer: appServer))
         do {
             let quizString = switch appServer {
-            case .openAI: try JSONDecoder().decode(OpenAIModel.self, from: data).choices?.first?.message?.content ?? ""
-            case .gemini: try JSONDecoder().decode(GeminiModel.self, from: data).candidates?.first?.content?.parts?.first?.text ?? ""
+            case .openAI: (try JSONDecoder().decode(OpenAIModel.self, from: data).choices?.first?.message?.content).orEmpty
+            case .gemini: (try JSONDecoder().decode(GeminiModel.self, from: data).candidates?.first?.content?.parts?.first?.text).orEmpty
             }
             guard let quizData = quizString.data(using: .utf8) else {
                 throw API.Error.invalidData(detail: quizString)
@@ -43,23 +43,20 @@ extension MultiAIRepositoryProtocol {
 }
 
 struct MultiAIRepository: MultiAIRepositoryProtocol {
-    let movies: String
-    let language: String
-    
-    internal func createRequest(appServer: Constants.AppServer) throws -> URLRequest {
+    internal func createRequest(movies: String, language: String, appServer: Constants.AppServer) throws -> URLRequest {
         switch appServer {
         case .openAI:
-            let userPrompt = OpenAI.UserPrompt.quiz(self.movies, self.language)
-            return try OpenAI.request(type: userPrompt)
+            let prompt = OpenAI.UserPrompt.quiz(movies, language)
+            return try OpenAI.request(type: prompt)
         case .gemini:
-            let prompt = Gemini.quizPrompt(movies: self.movies, language: self.language)
+            let prompt = Gemini.quizPrompt(movies, language)
             return try Gemini.request(text: prompt)
         }
     }
 }
 
 struct MultiAIRepositoryTest: MultiAIRepositoryProtocol {
-    internal func createRequest(appServer: Constants.AppServer) throws -> URLRequest {
+    internal func createRequest(movies: String, language: String, appServer: Constants.AppServer) throws -> URLRequest {
         let resource = switch appServer {
         case .openAI: Constants.Resource.Name.openAIResponse
         case .gemini: Constants.Resource.Name.geminiAIResponse
