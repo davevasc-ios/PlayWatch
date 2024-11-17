@@ -38,7 +38,7 @@ struct GameQuizUseCase: GameQuizUseCaseProtocol {
     let gameQuizRepository: MultiAIRepositoryProtocol
     
     internal func fetchMedia(locale: MovieDB.Locale) async throws -> [Media] {
-        try await mediaRepository.fetchMedia(resourceName: .empty, type: .randomMovies, locale: locale, searchText: nil).filterWithImage()
+        try await mediaRepository.fetchMediaByType(type: .randomMovies, locale: locale, searchText: nil).filterWithImage()
     }
     
     internal func fetchQuiz(appServer: Constants.AppServer, media: [Media], language: String) async throws -> [Quiz] {
@@ -51,11 +51,10 @@ struct GameQuizUseCaseTest: GameQuizUseCaseProtocol {
     let gameQuizRepository: MultiAIRepositoryProtocol
 
     internal func fetchMedia(locale: MovieDB.Locale) async throws -> [Media] {
-        return try await mediaRepository.fetchMedia(resourceName: Constants.Resource.Name.movies, type: .randomMovies, locale: locale, searchText: nil).filterWithImage()
+        try await mediaRepository.fetchMediaByTest(resourceName: Constants.Resource.Name.movies).filterWithImage()
     }
     
     internal func fetchQuiz(appServer: Constants.AppServer, media: [Media], language: String) async throws -> [Quiz] {
-//        let repository: MultiAIRepositoryProtocol = MultiAIRepositoryTest()
-        return try await gameQuizRepository.fetchQuiz(movies: .empty, language: .empty, appServer: appServer)
+        try await gameQuizRepository.fetchQuiz(movies: .empty, language: .empty, appServer: appServer)
     }
 }
