@@ -219,6 +219,19 @@ struct MovieDB {
             case .randomMovies: LocalizableString.homeSectionRandomMovies
             }
         }
+        
+        var testResource: String {
+            switch self {
+            case .randomMovies, .cinemaPlaying, .cinemaUpcomimg, .movieTrending, .movieNew:
+                return Constants.Resource.Name.movies
+            case .tvTrending, .tvNew:
+                return Constants.Resource.Name.tvShows
+            case .personTrending, .personPopular:
+                return Constants.Resource.Name.people
+            default:
+                return Constants.Resource.Name.all
+            }
+        }
     }
     
     enum ImageSize: String {

@@ -7,19 +7,40 @@
 
 import Foundation
 
+enum RepositoryType {
+    case live, test
+}
+
 protocol MovieDBRepositoryProtocol: Sendable {
-    func createRequest(resourceName: String?, type: MovieDB.FetchType?, locale: MovieDB.Locale?, searchText: String?) throws -> URLRequest
+    var repositoryType: RepositoryType { get }
 }
 
 extension MovieDBRepositoryProtocol {
-    func fetchMediaByType(type: MovieDB.FetchType, locale: MovieDB.Locale, searchText: String?) async throws -> [Media] {
-        let data = try await self.fetchData(request: self.createRequest(resourceName: nil, type: type, locale: locale, searchText: searchText))
+    
+    func fetchAnyMedia(type: MovieDB.FetchType, locale: MovieDB.Locale) async throws -> [Media] {
+        let request = try self.createRequest(type: type, locale: locale)
+        let data = try await self.fetchData(request: request)
         return try await self.fetchMedia(data: data)
     }
     
-    func fetchMediaByTest(resourceName: String) async throws -> [Media] {
-        let data = try await self.fetchData(request: self.createRequest(resourceName: resourceName, type: nil, locale: nil, searchText:nil))
+    func fetchSearchMedia(locale: MovieDB.Locale, searchText: String) async throws -> [Media] {
+        let request = try self.createRequest(type: .searchAll, locale: locale, searchText: searchText)
+        let data = try await self.fetchData(request: request)
         return try await self.fetchMedia(data: data)
+    }
+    
+    private func createRequest(type: MovieDB.FetchType, locale: MovieDB.Locale, searchText: String? = nil) throws -> URLRequest {
+        switch self.repositoryType {
+        case .live:
+            let url = try MovieDB.Endpoint.mediaDataUrl(type: type, locale: locale, searchText: searchText)
+            return HTTP.request(url: url, method: .get, fields: MovieDB.Endpoint.headerFields)
+        case .test:
+            let resourceName = type.testResource
+            guard let url = Bundle.main.url(forResource: resourceName, withExtension: Constants.Resource.Extension.json) else {
+                throw API.Error.invalidURL
+            }
+            return URLRequest(url: url)
+        }
     }
     
     private func fetchData(request: URLRequest) async throws-> Data {
@@ -46,17 +67,13 @@ extension MovieDBRepositoryProtocol {
 }
 
 struct MovieDBRepository: MovieDBRepositoryProtocol {
-    internal func createRequest(resourceName: String?, type: MovieDB.FetchType?, locale: MovieDB.Locale?, searchText: String?) throws -> URLRequest {
-        let url = try MovieDB.Endpoint.mediaDataUrl(type: type ?? .searchAll, locale: locale ?? MovieDB.Locale.init(), searchText: searchText)
-        return HTTP.request(url: url, method: .get, fields: MovieDB.Endpoint.headerFields)
+    internal var repositoryType: RepositoryType {
+        .live
     }
 }
 
 struct MovieDBRepositoryTest: MovieDBRepositoryProtocol {
-    internal func createRequest(resourceName: String?, type: MovieDB.FetchType?, locale: MovieDB.Locale?, searchText: String?) throws -> URLRequest {
-        guard let url = Bundle.main.url(forResource: resourceName, withExtension: Constants.Resource.Extension.json) else {
-            throw API.Error.invalidURL
-        }
-        return URLRequest(url: url)
+    internal var repositoryType: RepositoryType {
+        .test
     }
 }
