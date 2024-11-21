@@ -13,18 +13,18 @@ extension MediaUseCaseProtocol {
     func fetchMediaSections(locale: MovieDB.Locale) async throws -> [MediaSection] {
         var mediaSections: [MediaSection] = []
         for section in MovieDB.homeSections {
-            async let media = self.repository.fetchAnyMedia(type: section, locale: locale)
+            async let media = self.repository.fetchMedia(type: section, locale: locale)
             mediaSections.append(try await MediaSection(title: section.localized, items: media))
         }
         return mediaSections
     }
     
     func fetchTrendingMedia(locale: MovieDB.Locale) async throws -> [Media] {
-        try await self.repository.fetchAnyMedia(type: .trendingAll, locale: locale)
+        try await self.repository.fetchMedia(type: .trendingAll, locale: locale)
     }
     
     func fetchSearchMedia(locale: MovieDB.Locale, searchText: String) async throws -> [Media] {
-        try await self.repository.fetchSearchMedia(locale: locale, searchText: searchText)
+        try await self.repository.fetchMedia(type: .searchAll, locale: locale, searchText: searchText)
     }
 }
 

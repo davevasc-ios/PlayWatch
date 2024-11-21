@@ -17,26 +17,19 @@ protocol MovieDBRepositoryProtocol: Sendable {
 
 extension MovieDBRepositoryProtocol {
     
-    func fetchAnyMedia(type: MovieDB.FetchType, locale: MovieDB.Locale) async throws -> [Media] {
-        let request = try self.createRequest(type: type, locale: locale)
+    func fetchMedia(type: MovieDB.FetchType, locale: MovieDB.Locale, searchText: String? = nil) async throws -> [Media] {
+        let request = try self.createRequest(type: type, locale: locale, searchText: searchText)
         let data = try await self.fetchData(request: request)
         return try await self.fetchMedia(data: data)
     }
-    
-    func fetchSearchMedia(locale: MovieDB.Locale, searchText: String) async throws -> [Media] {
-        let request = try self.createRequest(type: .searchAll, locale: locale, searchText: searchText)
-        let data = try await self.fetchData(request: request)
-        return try await self.fetchMedia(data: data)
-    }
-    
+        
     private func createRequest(type: MovieDB.FetchType, locale: MovieDB.Locale, searchText: String? = nil) throws -> URLRequest {
         switch self.repositoryType {
         case .live:
             let url = try MovieDB.Endpoint.mediaDataUrl(type: type, locale: locale, searchText: searchText)
             return HTTP.request(url: url, method: .get, fields: MovieDB.Endpoint.headerFields)
         case .test:
-            let resourceName = type.testResource
-            guard let url = Bundle.main.url(forResource: resourceName, withExtension: Constants.Resource.Extension.json) else {
+            guard let url = Bundle.main.url(forResource: type.testResource, withExtension: Constants.Resource.Extension.json) else {
                 throw API.Error.invalidURL
             }
             return URLRequest(url: url)

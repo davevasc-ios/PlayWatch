@@ -38,7 +38,7 @@ struct GameQuizUseCase: GameQuizUseCaseProtocol {
     let gameQuizRepository: MultiAIRepositoryProtocol
     
     internal func fetchMedia(locale: MovieDB.Locale) async throws -> [Media] {
-        try await mediaRepository.fetchAnyMedia(type: .randomMovies, locale: locale).filterWithImage()
+        try await mediaRepository.fetchMedia(type: .randomMovies, locale: locale).filterWithImage()
     }
     
     internal func fetchQuiz(appServer: Constants.AppServer, media: [Media], language: String) async throws -> [Quiz] {
@@ -46,12 +46,13 @@ struct GameQuizUseCase: GameQuizUseCaseProtocol {
     }
 }
 
+// TODO: - refactorizar igual que MediaUseCase
 struct GameQuizUseCaseTest: GameQuizUseCaseProtocol {
     let mediaRepository: MovieDBRepositoryProtocol
     let gameQuizRepository: MultiAIRepositoryProtocol
 
     internal func fetchMedia(locale: MovieDB.Locale) async throws -> [Media] {
-        try await mediaRepository.fetchAnyMedia(type: .randomMovies, locale: locale).filterWithImage()
+        try await mediaRepository.fetchMedia(type: .randomMovies, locale: locale).filterWithImage()
     }
     
     internal func fetchQuiz(appServer: Constants.AppServer, media: [Media], language: String) async throws -> [Quiz] {
