@@ -60,13 +60,13 @@ extension MovieDBRepositoryProtocol {
 }
 
 struct MovieDBRepository: MovieDBRepositoryProtocol {
-    internal var repositoryType: RepositoryType {
+    var repositoryType: RepositoryType {
         .live
     }
 }
 
 struct MovieDBRepositoryTest: MovieDBRepositoryProtocol {
-    internal var repositoryType: RepositoryType {
+    var repositoryType: RepositoryType {
         .test
     }
 }

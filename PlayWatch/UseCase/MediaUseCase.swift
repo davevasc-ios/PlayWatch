@@ -29,9 +29,9 @@ extension MediaUseCaseProtocol {
 }
 
 struct MediaUseCase: MediaUseCaseProtocol {
-    internal let mediaRepository: MovieDBRepositoryProtocol
+    let mediaRepository: MovieDBRepositoryProtocol
     
-    internal var repository: MovieDBRepositoryProtocol {
+    var repository: MovieDBRepositoryProtocol {
         self.mediaRepository
     }
 }

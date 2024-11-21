@@ -8,28 +8,21 @@
 import Foundation
 
 protocol GameQuizUseCaseProtocol {
-    func fetchMedia(locale: MovieDB.Locale) async throws -> [Media]
-    func fetchQuiz(appServer: Constants.AppServer, media: [Media], language: String) async throws -> [Quiz]
+    var mediaRepo: MovieDBRepositoryProtocol { get }
+    var gameQuizRepo: MultiAIRepositoryProtocol { get }
 }
 
 extension GameQuizUseCaseProtocol {
     func fetchGameQuiz(appServer: Constants.AppServer, mediaLocale: MovieDB.Locale) async throws -> [GameQuiz] {
-        let randomMovieList = try await self.fetchMedia(locale: mediaLocale)
-        guard randomMovieList.count == Constants.Game.numberOfQuizzes else {
+        let randomMovies = try await self.mediaRepo.fetchMedia(type: .randomMovies, locale: mediaLocale).filterWithImage()
+        guard randomMovies.count == Constants.Game.numberOfQuizzes else {
             throw Constants.Game.Error.outOfRange
         }
-        let gameQuizList = try await self.fetchQuiz(appServer: appServer, media: randomMovieList, language: mediaLocale.name)
-        guard gameQuizList.count == Constants.Game.numberOfQuizzes else {
+        let gameQuizzes = try await self.gameQuizRepo.fetchQuiz(movies: randomMovies.joinedNames(), language: mediaLocale.name, appServer: appServer)
+        guard gameQuizzes.count == Constants.Game.numberOfQuizzes else {
             throw Constants.Game.Error.outOfRange
         }
-        return try self.loadAllQuizzes(media: randomMovieList, quiz: gameQuizList)
-    }
-    
-    private func loadAllQuizzes(media: [Media], quiz: [Quiz]) throws -> [GameQuiz] {
-        guard media.count == quiz.count else {
-            throw Constants.Game.Error.outOfRange
-        }
-        return zip(media, quiz).map { GameQuiz(movie: $0, quiz: $1) }
+        return zip(randomMovies, gameQuizzes).map { GameQuiz(movie: $0, quiz: $1) }
     }
 }
 
@@ -37,25 +30,10 @@ struct GameQuizUseCase: GameQuizUseCaseProtocol {
     let mediaRepository: MovieDBRepositoryProtocol
     let gameQuizRepository: MultiAIRepositoryProtocol
     
-    internal func fetchMedia(locale: MovieDB.Locale) async throws -> [Media] {
-        try await mediaRepository.fetchMedia(type: .randomMovies, locale: locale).filterWithImage()
+    var mediaRepo: MovieDBRepositoryProtocol {
+        self.mediaRepository
     }
-    
-    internal func fetchQuiz(appServer: Constants.AppServer, media: [Media], language: String) async throws -> [Quiz] {
-        try await gameQuizRepository.fetchQuiz(movies: media.joinedNames(), language: language, appServer: appServer)
-    }
-}
-
-// TODO: - refactorizar igual que MediaUseCase
-struct GameQuizUseCaseTest: GameQuizUseCaseProtocol {
-    let mediaRepository: MovieDBRepositoryProtocol
-    let gameQuizRepository: MultiAIRepositoryProtocol
-
-    internal func fetchMedia(locale: MovieDB.Locale) async throws -> [Media] {
-        try await mediaRepository.fetchMedia(type: .randomMovies, locale: locale).filterWithImage()
-    }
-    
-    internal func fetchQuiz(appServer: Constants.AppServer, media: [Media], language: String) async throws -> [Quiz] {
-        try await gameQuizRepository.fetchQuiz(movies: .empty, language: .empty, appServer: appServer)
+    var gameQuizRepo: MultiAIRepositoryProtocol {
+        self.gameQuizRepository
     }
 }
