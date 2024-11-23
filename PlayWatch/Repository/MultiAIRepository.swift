@@ -9,12 +9,12 @@ import Foundation
 
 protocol MultiAIRepositoryProtocol {
     var repositoryType: RepositoryType { get }
-    func createRequest(movies: String, language: String, appServer: Constants.AppServer) throws -> URLRequest
 }
 
 extension MultiAIRepositoryProtocol {
     func fetchQuiz(movies: String, language: String, appServer: Constants.AppServer) async throws -> [Quiz] {
-        let data = try await self.fetchData(request: self.createRequest(movies: movies, language: language, appServer: appServer))
+        let request = try self.createRequest(movies: movies, language: language, appServer: appServer)
+        let data = try await request.fetchData()
         do {
             let quizString = switch appServer {
             case .openAI: (try JSONDecoder().decode(OpenAIModel.self, from: data).choices?.first?.message?.content).orEmpty
@@ -29,16 +29,14 @@ extension MultiAIRepositoryProtocol {
         }
     }
     
-    private func fetchData(request: URLRequest) async throws-> Data {
-        if let url = request.url, url.isFileURL {
-            return try Data(contentsOf: url)
-        } else {
-            let (data, response) = try await URLSession.shared.data(for: request)
-            guard let response = response as? HTTPURLResponse,
-                  response.statusCode == HTTP.successCode else {
-                throw API.Error.invalidResponse(detail: String(data: data, encoding: .utf8).orEmpty)
-            }
-            return data
+    private func createRequest(movies: String, language: String, appServer: Constants.AppServer) throws -> URLRequest {
+        switch self.repositoryType {
+        case .live:
+            appServer == .openAI ?
+            try OpenAI.request(type: OpenAI.UserPrompt.quiz(movies, language)) :
+            try Gemini.request(text: Gemini.quizPrompt(movies, language))
+        case .test:
+            try Bundle.main.jsonURLRequest(forResource: appServer.testResource)
         }
     }
 }
@@ -47,30 +45,10 @@ struct MultiAIRepository: MultiAIRepositoryProtocol {
     var repositoryType: RepositoryType {
         .live
     }
-    internal func createRequest(movies: String, language: String, appServer: Constants.AppServer) throws -> URLRequest {
-        switch appServer {
-        case .openAI:
-            let prompt = OpenAI.UserPrompt.quiz(movies, language)
-            return try OpenAI.request(type: prompt)
-        case .gemini:
-            let prompt = Gemini.quizPrompt(movies, language)
-            return try Gemini.request(text: prompt)
-        }
-    }
 }
 
 struct MultiAIRepositoryTest: MultiAIRepositoryProtocol {
     var repositoryType: RepositoryType {
         .test
-    }
-    internal func createRequest(movies: String, language: String, appServer: Constants.AppServer) throws -> URLRequest {
-        let resource = switch appServer {
-        case .openAI: Constants.Resource.Name.openAIResponse
-        case .gemini: Constants.Resource.Name.geminiAIResponse
-        }
-        guard let url = Bundle.main.url(forResource: resource, withExtension: Constants.Resource.Extension.json) else {
-            throw API.Error.invalidURL
-        }
-        return URLRequest(url: url)
     }
 }

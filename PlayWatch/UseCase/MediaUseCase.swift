@@ -11,15 +11,16 @@ protocol MediaUseCaseProtocol: Sendable {
 
 extension MediaUseCaseProtocol {
     func fetchMediaSections(locale: MovieDB.Locale) async throws -> [MediaSection] {
-        try await withThrowingTaskGroup(of: MediaSection.self) { group in
-            for section in MovieDB.homeSections {
+        let sections = try await withThrowingTaskGroup(of: (Int, MediaSection).self) { group in
+            for (index, section) in MovieDB.homeSections.enumerated() {
                 group.addTask {
                     let mediaItems = try await self.repository.fetchMedia(type: section, locale: locale)
-                    return MediaSection(title: section.localized, items: mediaItems)
+                    return (index, MediaSection(title: section.localized, items: mediaItems))
                 }
             }
             return try await group.reduce(into: []) { $0.append($1) }
         }
+        return sections.sorted(by: { $0.0 < $1.0 }).map { $0.1 }
     }
     
     func fetchTrendingMedia(locale: MovieDB.Locale) async throws -> [Media] {

@@ -8,6 +8,34 @@
 import Foundation
 import SwiftUI
 
+enum RepositoryType {
+    case live, test
+}
+
+extension Bundle {
+    func jsonURLRequest(forResource name: String) throws -> URLRequest {
+        guard let url = self.url(forResource: name, withExtension: "json") else {
+            throw API.Error.invalidURL
+        }
+        return URLRequest(url: url)
+    }
+}
+
+extension URLRequest {
+    func fetchData() async throws -> Data {
+        if let url = self.url, url.isFileURL {
+            return try Data(contentsOf: url)
+        } else {
+            let (data, response) = try await URLSession.shared.data(for: self)
+            guard let response = response as? HTTPURLResponse,
+                  response.statusCode == HTTP.successCode else {
+                throw API.Error.invalidResponse(detail: String(data: data, encoding: .utf8).orEmpty)
+            }
+            return data
+        }
+    }
+}
+
 enum Constants {
     
     enum AppServer: String, CaseIterable, Identifiable {
@@ -15,6 +43,15 @@ enum Constants {
         case gemini = "Gemini"
         
         var id: Self { self }
+        
+        var testResource: String {
+            switch self {
+            case .openAI:
+                return Constants.Resource.Name.openAIResponse
+            case .gemini:
+                return Constants.Resource.Name.geminiAIResponse
+            }
+        }
     }
     
     enum Game {
