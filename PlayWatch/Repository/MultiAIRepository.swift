@@ -8,6 +8,7 @@
 import Foundation
 
 protocol MultiAIRepositoryProtocol {
+    var repositoryType: RepositoryType { get }
     func createRequest(movies: String, language: String, appServer: Constants.AppServer) throws -> URLRequest
 }
 
@@ -43,6 +44,9 @@ extension MultiAIRepositoryProtocol {
 }
 
 struct MultiAIRepository: MultiAIRepositoryProtocol {
+    var repositoryType: RepositoryType {
+        .live
+    }
     internal func createRequest(movies: String, language: String, appServer: Constants.AppServer) throws -> URLRequest {
         switch appServer {
         case .openAI:
@@ -56,6 +60,9 @@ struct MultiAIRepository: MultiAIRepositoryProtocol {
 }
 
 struct MultiAIRepositoryTest: MultiAIRepositoryProtocol {
+    var repositoryType: RepositoryType {
+        .test
+    }
     internal func createRequest(movies: String, language: String, appServer: Constants.AppServer) throws -> URLRequest {
         let resource = switch appServer {
         case .openAI: Constants.Resource.Name.openAIResponse
