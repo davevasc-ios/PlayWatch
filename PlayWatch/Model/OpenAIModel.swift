@@ -19,7 +19,9 @@ struct Response: Codable {
     let content: String?
 }
 
-struct Quiz: Codable, Hashable {
-    let question: String?
-    let result: Bool?
+extension OpenAIModel {
+    static func decode(from data: Data) throws -> String {
+        let model = try JSONDecoder().decode(Self.self, from: data)
+        return (model.choices?.first?.message?.content).orEmpty
+    }
 }

@@ -37,14 +37,10 @@ extension MovieDBRepositoryProtocol {
     }
 }
 
-struct MovieDBRepository: MovieDBRepositoryProtocol {
+enum MovieDBRepository: MovieDBRepositoryProtocol {
+    case live, test
+    
     var repositoryType: RepositoryType {
-        .live
-    }
-}
-
-struct MovieDBRepositoryTest: MovieDBRepositoryProtocol {
-    var repositoryType: RepositoryType {
-        .test
+        self == .test ? .test : .live
     }
 }

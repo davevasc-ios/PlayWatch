@@ -459,8 +459,8 @@ struct AnimationValues {
     GameView(appManager: AppManager())
         .environment(GameViewModel(
             gameQuizUseCase: GameQuizUseCase(
-                mediaRepository: MovieDBRepositoryTest(),
-                gameQuizRepository: MultiAIRepositoryTest()
+                mediaRepository: MovieDBRepository.test,
+                gameQuizRepository: MultiAIRepository.test
             )
         ))
 }

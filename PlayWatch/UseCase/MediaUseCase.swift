@@ -6,36 +6,31 @@
 //
 
 protocol MediaUseCaseProtocol: Sendable {
-    var repository: MovieDBRepositoryProtocol { get }
+    var mediaRepository: MovieDBRepositoryProtocol { get }
 }
 
 extension MediaUseCaseProtocol {
     func fetchMediaSections(locale: MovieDB.Locale) async throws -> [MediaSection] {
-        let sections = try await withThrowingTaskGroup(of: (Int, MediaSection).self) { group in
+        try await withThrowingTaskGroup(of: (Int, MediaSection).self) { group in
             for (index, section) in MovieDB.homeSections.enumerated() {
                 group.addTask {
-                    let mediaItems = try await self.repository.fetchMedia(type: section, locale: locale)
+                    let mediaItems = try await self.mediaRepository.fetchMedia(type: section, locale: locale)
                     return (index, MediaSection(title: section.localized, items: mediaItems))
                 }
             }
             return try await group.reduce(into: []) { $0.append($1) }
-        }
-        return sections.sorted(by: { $0.0 < $1.0 }).map { $0.1 }
+        }.sorted(by: { $0.0 < $1.0 }).map { $0.1 }
     }
     
     func fetchTrendingMedia(locale: MovieDB.Locale) async throws -> [Media] {
-        try await self.repository.fetchMedia(type: .trendingAll, locale: locale)
+        try await self.mediaRepository.fetchMedia(type: .trendingAll, locale: locale)
     }
     
     func fetchSearchMedia(locale: MovieDB.Locale, searchText: String) async throws -> [Media] {
-        try await self.repository.fetchMedia(type: .searchAll, locale: locale, searchText: searchText)
+        try await self.mediaRepository.fetchMedia(type: .searchAll, locale: locale, searchText: searchText)
     }
 }
 
 struct MediaUseCase: MediaUseCaseProtocol {
     let mediaRepository: MovieDBRepositoryProtocol
-    
-    var repository: MovieDBRepositoryProtocol {
-        self.mediaRepository
-    }
 }

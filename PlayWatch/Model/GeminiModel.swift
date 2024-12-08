@@ -23,5 +23,9 @@ struct Part: Codable {
   let text: String?
 }
 
-
-
+extension GeminiModel {
+    static func decode(from data: Data) throws -> String {
+        let model = try JSONDecoder().decode(Self.self, from: data)
+        return (model.candidates?.first?.content?.parts?.first?.text).orEmpty
+    }
+}

@@ -17,13 +17,13 @@ extension MultiAIRepositoryProtocol {
         let data = try await request.fetchData()
         do {
             let quizString = switch appServer {
-            case .openAI: (try JSONDecoder().decode(OpenAIModel.self, from: data).choices?.first?.message?.content).orEmpty
-            case .gemini: (try JSONDecoder().decode(GeminiModel.self, from: data).candidates?.first?.content?.parts?.first?.text).orEmpty
+            case .openAI: try OpenAIModel.decode(from: data)
+            case .gemini: try GeminiModel.decode(from: data)
             }
-            guard let quizData = quizString.data(using: .utf8) else {
+            guard let quizData = quizString.toUTF8Data else {
                 throw API.Error.invalidData(detail: quizString)
             }
-            return try JSONDecoder().decode([Quiz].self, from: quizData)
+            return try Quiz.decode(from: quizData)
         } catch {
             throw API.Error.invalidData(detail: error.localizedDescription)
         }
@@ -41,14 +41,10 @@ extension MultiAIRepositoryProtocol {
     }
 }
 
-struct MultiAIRepository: MultiAIRepositoryProtocol {
+enum MultiAIRepository: MultiAIRepositoryProtocol {
+    case live, test
+    
     var repositoryType: RepositoryType {
-        .live
-    }
-}
-
-struct MultiAIRepositoryTest: MultiAIRepositoryProtocol {
-    var repositoryType: RepositoryType {
-        .test
+        self == .test ? .test : .live
     }
 }

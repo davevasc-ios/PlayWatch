@@ -35,4 +35,7 @@ extension String {
         guard let emailPattern = try? Regex("[A-Z0-9a-z._%+-]+@[A-Z0-9a-z.-]+\\.[A-Z]{2,6}") else { return false }
         return self.wholeMatch(of: emailPattern) != nil
     }
+    var toUTF8Data: Data? {
+        return self.data(using: .utf8)
+    }
 }
