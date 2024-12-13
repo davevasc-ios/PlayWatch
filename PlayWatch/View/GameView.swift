@@ -16,7 +16,7 @@ struct GameView: View {
             switch gameViewModel.state {
             case .error:
                 ScrollView {
-                    Text("Error on \(appManager.appServer.rawValue) server, change on Settings")
+                    Text("Error on \(appManager.aiServer.rawValue) server, change on Settings")
                 }
                 .refreshable {
                     gameViewModel.on(.refreshGame)
@@ -92,7 +92,7 @@ struct GameView: View {
             GameCountDownView()
         }
         .onAppear {
-            gameViewModel.on(.viewAppear(appManager.mediaLocale, appManager.appServer))
+            gameViewModel.on(.viewAppear(appManager.mediaLocale, appManager.aiServer))
         }
     }
 }

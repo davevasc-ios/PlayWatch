@@ -41,7 +41,7 @@ struct TabBarView: View {
         .environment(gameViewModel)
         .environment(homeViewModel)
         .onAppear() {
-            gameViewModel.on(.viewAppear(appManager.mediaLocale, appManager.appServer))
+            gameViewModel.on(.viewAppear(appManager.mediaLocale, appManager.aiServer))
         }
     }
     

@@ -13,8 +13,8 @@ import Observation
 final class AppManager {
     
     @ObservationIgnored
-    @AppStorage("com.playwatch.storedAppServer")
-    private var storedAppServer: Constants.AppServer = Constants.AppServer.openAI
+    @AppStorage("com.playwatch.storedAIServer")
+    private var storedAIServer: Constants.AIServer = Constants.AIServer.openAI
 
     @ObservationIgnored
     @AppStorage("com.playwatch.storedAppLanguage")
@@ -25,14 +25,14 @@ final class AppManager {
     private var storedAppRegion: AppRegion = AppRegion.system
     
     @ObservationIgnored
-    var appServer: Constants.AppServer {
+    var aiServer: Constants.AIServer {
         get {
-            access(keyPath: \.appServer)
-            return self.storedAppServer
+            access(keyPath: \.aiServer)
+            return self.storedAIServer
         }
         set {
-            withMutation(keyPath: \.appServer) {
-                self.storedAppServer = newValue
+            withMutation(keyPath: \.aiServer) {
+                self.storedAIServer = newValue
             }
         }
     }

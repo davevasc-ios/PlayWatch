@@ -8,18 +8,15 @@
 import Foundation
 
 protocol MultiAIRepositoryProtocol {
-    var repositoryType: RepositoryType { get }
+    var mode: RepositoryMode { get }
 }
 
 extension MultiAIRepositoryProtocol {
-    func fetchQuiz(movies: String, language: String, appServer: Constants.AppServer) async throws -> [Quiz] {
-        let request = try self.createRequest(movies: movies, language: language, appServer: appServer)
+    func fetchQuiz(movies: String, language: String, aiServer: Constants.AIServer) async throws -> [Quiz] {
+        let request = try aiServer.createRequest(mode: mode, movies: movies, language: language)
         let data = try await request.fetchData()
         do {
-            let quizString = switch appServer {
-            case .openAI: try OpenAIModel.decode(from: data)
-            case .gemini: try GeminiModel.decode(from: data)
-            }
+            let quizString = try aiServer.decodeQuizResponse(from: data)
             guard let quizData = quizString.toUTF8Data else {
                 throw API.Error.invalidData(detail: quizString)
             }
@@ -28,23 +25,12 @@ extension MultiAIRepositoryProtocol {
             throw API.Error.invalidData(detail: error.localizedDescription)
         }
     }
-    
-    private func createRequest(movies: String, language: String, appServer: Constants.AppServer) throws -> URLRequest {
-        switch self.repositoryType {
-        case .live:
-            appServer == .openAI ?
-            try OpenAI.request(type: OpenAI.UserPrompt.quiz(movies, language)) :
-            try Gemini.request(text: Gemini.quizPrompt(movies, language))
-        case .test:
-            try Bundle.main.jsonURLRequest(forResource: appServer.testResource)
-        }
-    }
 }
 
 enum MultiAIRepository: MultiAIRepositoryProtocol {
     case live, test
     
-    var repositoryType: RepositoryType {
-        self == .test ? .test : .live
+    var mode: RepositoryMode {
+        self == .live ? .live : .test
     }
 }

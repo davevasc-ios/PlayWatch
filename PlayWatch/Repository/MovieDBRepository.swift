@@ -8,12 +8,12 @@
 import Foundation
 
 protocol MovieDBRepositoryProtocol: Sendable {
-    var repositoryType: RepositoryType { get }
+    var repositoryMode: RepositoryMode { get }
 }
 
 extension MovieDBRepositoryProtocol {
     func fetchMedia(type: MovieDB.FetchType, locale: MovieDB.Locale, searchText: String? = nil) async throws -> [Media] {
-        let request = try self.createRequest(type: type, locale: locale, searchText: searchText)
+        let request = try MovieDB.createRequest(mode: repositoryMode, type: type, locale: locale, searchText: searchText)
         let data = try await request.fetchData()
         do {
             return try JSONDecoder.convertFromSnakeCase.decode(MediaResponseDTO.self, from: data).results?.map(\.toMedia) ?? []
@@ -22,25 +22,12 @@ extension MovieDBRepositoryProtocol {
             throw API.Error.invalidData(detail: error.localizedDescription)
         }
     }
-    
-    private func createRequest(type: MovieDB.FetchType, locale: MovieDB.Locale, searchText: String? = nil) throws -> URLRequest {
-        switch self.repositoryType {
-        case .live:
-            HTTP.request(
-                url: try MovieDB.Endpoint.mediaDataUrl(type: type, locale: locale, searchText: searchText),
-                method: .get,
-                fields: MovieDB.Endpoint.headerFields
-            )
-        case .test:
-            try Bundle.main.jsonURLRequest(forResource: type.testResource)
-        }
-    }
 }
 
 enum MovieDBRepository: MovieDBRepositoryProtocol {
     case live, test
     
-    var repositoryType: RepositoryType {
-        self == .test ? .test : .live
+    var repositoryMode: RepositoryMode {
+        self == .live ? .live : .test
     }
 }

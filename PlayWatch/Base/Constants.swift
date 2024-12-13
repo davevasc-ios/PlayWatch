@@ -8,13 +8,13 @@
 import Foundation
 import SwiftUI
 
-enum RepositoryType {
+enum RepositoryMode {
     case live, test
 }
 
 extension Bundle {
-    func jsonURLRequest(forResource name: String) throws -> URLRequest {
-        guard let url = self.url(forResource: name, withExtension: "json") else {
+    func jsonURLRequest(for resource: String) throws -> URLRequest {
+        guard let url = self.url(forResource: resource, withExtension: "json") else {
             throw API.Error.invalidURL
         }
         return URLRequest(url: url)
@@ -38,7 +38,7 @@ extension URLRequest {
 
 enum Constants {
     
-    enum AppServer: String, CaseIterable, Identifiable {
+    enum AIServer: String, CaseIterable, Identifiable {
         case openAI = "OpenAI"
         case gemini = "Gemini"
         
@@ -46,10 +46,25 @@ enum Constants {
         
         var testResource: String {
             switch self {
-            case .openAI:
-                return Constants.Resource.Name.openAIResponse
-            case .gemini:
-                return Constants.Resource.Name.geminiAIResponse
+            case .openAI: Constants.Resource.Name.openAIResponse
+            case .gemini: Constants.Resource.Name.geminiAIResponse
+            }
+        }
+                
+        func createRequest(mode: RepositoryMode, movies: String, language: String) throws -> URLRequest {
+            guard mode == .live else {
+                return try Bundle.main.jsonURLRequest(for: self.testResource)
+            }
+            return switch self {
+            case .openAI: try OpenAI.request(type: OpenAI.UserPrompt.quiz(movies, language))
+            case .gemini: try Gemini.request(text: Gemini.quizPrompt(movies, language))
+            }
+        }
+        
+        func decodeQuizResponse(from data: Data) throws -> String {
+            switch self {
+            case .openAI: try OpenAIModel.decode(from: data)
+            case .gemini: try GeminiModel.decode(from: data)
             }
         }
     }
@@ -331,8 +346,17 @@ struct MovieDB {
     
     // MARK: - Public Functions
     
-    static func getRequest(type: FetchType, locale: Locale, searchText: String?) throws -> URLRequest {
-        return HTTP.request(url: try Endpoint.mediaDataUrl(type: type, locale: locale, searchText: searchText), method: .get, fields: Endpoint.headerFields)
+    static func createRequest(mode: RepositoryMode, type: FetchType, locale: Locale, searchText: String?) throws -> URLRequest {
+        switch mode {
+        case .live:
+            HTTP.request(
+                url: try MovieDB.Endpoint.mediaDataUrl(type: type, locale: locale, searchText: searchText),
+                method: .get,
+                fields: MovieDB.Endpoint.headerFields
+            )
+        case .test:
+            try Bundle.main.jsonURLRequest(for: type.testResource)
+        }
     }
     
     static func getImageUrl(file: String?, size: ImageSize) -> URL? {

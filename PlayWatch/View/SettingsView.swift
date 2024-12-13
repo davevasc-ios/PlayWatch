@@ -67,13 +67,13 @@ struct SettingsView: View {
                             }
                         }
                     }
-                    Picker("Server", selection: $appManager.appServer) {
-                        ForEach(Constants.AppServer.allCases) { server in
+                    Picker("Server", selection: $appManager.aiServer) {
+                        ForEach(Constants.AIServer.allCases) { server in
                             Text(server.rawValue)
                                 .tag(server)
                         }
                     }
-                    .onChange(of: appManager.appServer) {
+                    .onChange(of: appManager.aiServer) {
                         if gameViewModel.state != .loading && gameViewModel.state != .playing {
                             gameViewModel.on(.cleanGame)
                             homeViewModel.on(.reloadData(appManager.mediaLocale))
