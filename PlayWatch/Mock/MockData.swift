@@ -22,9 +22,9 @@ struct MockData {
         return gameQuiz
     }
     
-    static let question: Quiz = .init(question: "¿Cuál es la trama principal de la película?", result: false)
+    static let question: QuizModel = .init(question: "¿Cuál es la trama principal de la película?", result: false)
     
-    static let questions: [Quiz] = [
+    static let questions: [QuizModel] = [
         .init(question: "¿Cuál es la trama principal de la película?", result: false),
         .init(question: "¿Quién fue el director de esta película?", result: true),
         .init(question: "Describe el personaje principal de esta película.", result: false),

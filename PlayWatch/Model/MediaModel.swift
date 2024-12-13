@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct MediaResponseDTO: Codable {
+struct MediaModel: Codable {
     let results: [MediaDTO]?
 }
 
@@ -90,10 +90,27 @@ struct MediaSection: Identifiable {
 
 extension Array where Element == Media {
     func filterWithImage() -> [Element] {
-        return self.filter { $0.image != "" }
+        return self.filter { $0.image != .empty }
     }
     
     func joinedNames(separator: String = ", ") -> String {
         return self.map { $0.name }.joined(separator: separator)
+    }
+}
+
+extension Optional where Wrapped == [Media] {
+    var orEmpty: [Media] {
+        return self ?? []
+    }
+}
+
+extension MediaModel {
+    static func decode(from data: Data) throws -> [Media] {
+        do {
+            let model = try JSONDecoder.convertFromSnakeCase.decode(Self.self, from: data)
+            return (model.results?.map(\.toMedia)).orEmpty
+        } catch {
+            throw API.Error.invalidData(detail: error.localizedDescription)
+        }
     }
 }

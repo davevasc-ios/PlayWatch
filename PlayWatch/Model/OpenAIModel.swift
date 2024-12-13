@@ -21,7 +21,11 @@ struct Response: Codable {
 
 extension OpenAIModel {
     static func decode(from data: Data) throws -> String {
-        let model = try JSONDecoder().decode(Self.self, from: data)
-        return (model.choices?.first?.message?.content).orEmpty
+        do {
+            let model = try JSONDecoder().decode(Self.self, from: data)
+            return (model.choices?.first?.message?.content).orEmpty
+        } catch {
+            throw API.Error.invalidData(detail: error.localizedDescription)
+        }
     }
 }

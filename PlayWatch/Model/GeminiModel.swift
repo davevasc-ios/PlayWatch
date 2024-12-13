@@ -25,7 +25,11 @@ struct Part: Codable {
 
 extension GeminiModel {
     static func decode(from data: Data) throws -> String {
-        let model = try JSONDecoder().decode(Self.self, from: data)
-        return (model.candidates?.first?.content?.parts?.first?.text).orEmpty
+        do {
+            let model = try JSONDecoder().decode(Self.self, from: data)
+            return (model.candidates?.first?.content?.parts?.first?.text).orEmpty
+        } catch {
+            throw API.Error.invalidData(detail: error.localizedDescription)
+        }
     }
 }
