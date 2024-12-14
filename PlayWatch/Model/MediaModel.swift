@@ -12,7 +12,6 @@ struct MediaModel: Codable {
 }
 
 struct MediaDTO: Codable {
-    // MARK: - API Variables
     let id: Int
     let mediaType: String?
     let posterPath: String?
@@ -29,45 +28,55 @@ extension MediaDTO {
     var toMedia: Media {
         Media(id: self.id,
               type: self.getType(),
-              image: self.getImage(),
+              imageUrl: self.getImageUrl(),
               name: self.getName(),
               date: self.getDate(),
               rating: self.voteAverage)
     }
     
     func getType() -> MediaType {
-        MediaType(rawValue: self.mediaType.orEmpty) ??
-        (self.firstAirDate.isValue ?
-            .tv :
-            (self.knownForDepartment.isValue ? .person : .movie))
+        if let mediaTypeString = mediaType?.ifNotEmpty,
+           let mediaType = MediaType(rawValue: mediaTypeString) {
+            return mediaType
+        } else if firstAirDate.isNotNil {
+            return .tv
+        } else if knownForDepartment.isNotNil {
+            return .person
+        }
+        return .movie
     }
     
-    func getImage() -> String {
-        self.posterPath.isValue ?
-        self.posterPath.orEmpty :
-        (self.profilePath.isValue ? self.profilePath.orEmpty : "")
+    func getImageUrl() -> URL? {
+        let path = posterPath?.ifNotEmpty ?? profilePath?.ifNotEmpty
+        return MovieDB.getImageUrl(file: path, size: .medium)
     }
     
     func getName() -> String {
-        self.title.isValue ?
-        self.title.orEmpty :
-        (self.name.isValue ? self.name.orEmpty : "")
+        self.title?.ifNotEmpty ?? self.name?.ifNotEmpty ?? .empty
     }
     
     func getDate() -> Date? {
-        self.releaseDate.isValue ?
-        MovieDB.getDate(date: self.releaseDate.orEmpty) :
-        (self.firstAirDate.isValue ? MovieDB.getDate(date: self.firstAirDate.orEmpty) : nil)
+        let date = self.releaseDate?.ifNotEmpty ?? self.firstAirDate?.ifNotEmpty
+        return MovieDB.getDate(date: date)
     }
 }
 
 struct Media: Identifiable, Hashable, Sendable {
     let id: Int
     let type: MediaType
-    let image: String
+    let imageUrl: URL?
     let name: String
     let date: Date?
     let rating: Double?
+}
+
+extension Media {
+    static let test = Media(id: 533535,
+                            type: .movie,
+                            imageUrl: MovieDB.getImageUrl(file: "/8cdWjvZQUExUUTzyp4t6EDMubfO.jpg", size: .medium),
+                            name: "Deadpool & Wolverine",
+                            date: MovieDB.getDate(date: "2024-07-24"),
+                            rating: 7.71)
 }
 
 enum MediaType: String, Codable {
@@ -90,17 +99,17 @@ struct MediaSection: Identifiable {
 
 extension Array where Element == Media {
     func filterWithImage() -> [Element] {
-        return self.filter { $0.image != .empty }
+        self.filter { $0.imageUrl != nil }
     }
     
-    func joinedNames(separator: String = ", ") -> String {
-        return self.map { $0.name }.joined(separator: separator)
+    func joinedNames(separator: String = .commaSeparator) -> String {
+        self.map { $0.name }.joined(separator: separator)
     }
 }
 
 extension Optional where Wrapped == [Media] {
     var orEmpty: [Media] {
-        return self ?? []
+        self ?? []
     }
 }
 

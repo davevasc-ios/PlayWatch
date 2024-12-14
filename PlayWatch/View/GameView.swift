@@ -146,7 +146,7 @@ struct GameCardView: View {
     var body: some View {
         ZStack {
             ZStack (alignment: .top) {
-                CacheAsyncImage(url: MovieDB.getImageUrl(file: movie.image, size: .medium)) { phase in
+                CacheAsyncImage(url: movie.imageUrl) { phase in
                     switch phase {
                     case .empty:
                         ZStack {
@@ -458,9 +458,9 @@ struct AnimationValues {
 #Preview("GameViewTest") {
     GameView(appManager: AppManager())
         .environment(GameViewModel(
-            gameQuizUseCase: GameQuizUseCase(
+            gameUseCase: GameUseCase(
                 mediaRepository: MovieDBRepository.test,
-                gameQuizRepository: MultiAIRepository.test
+                gameRepository: MultiAIRepository.test
             )
         ))
 }

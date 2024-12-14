@@ -140,7 +140,7 @@ struct MediaDetailView: View {
             }
             HStack {
                 Text("Image: ")
-                Text(item.image)
+                Text(item.imageUrl?.absoluteString ?? "")
             }
             HStack {
                 Text("Name: ")
@@ -164,7 +164,7 @@ struct MediaPosterView: View {
     let item: Media
     
     var body: some View {
-        CacheAsyncImage(url: MovieDB.getImageUrl(file: item.image, size: .medium)) { phase in
+        CacheAsyncImage(url: item.imageUrl) { phase in
             switch phase {
             case .empty:
                 ZStack {

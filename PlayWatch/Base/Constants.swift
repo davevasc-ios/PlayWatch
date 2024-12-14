@@ -233,14 +233,7 @@ struct MovieDB {
         }
         
         // MARK: - Image
-        static private let imageUrl = "https://image.tmdb.org/t/p/"
-        
-        static fileprivate func mediaImageUrl(file: String?, size: ImageSize) -> URL? {
-            guard let url = URL(string: "\(imageUrl)\(size.rawValue)\(file ?? "")") else {
-                return nil
-            }
-            return url
-        }
+        static let imageUrl = "https://image.tmdb.org/t/p/"
     }
     
     enum FetchType {
@@ -360,12 +353,14 @@ struct MovieDB {
     }
     
     static func getImageUrl(file: String?, size: ImageSize) -> URL? {
-        Endpoint.mediaImageUrl(file: file, size: size)
+        guard let file else { return nil }
+        return URL(string: "\(Endpoint.imageUrl)\(size.rawValue)\(file)")
     }
     
-    static func getDate(date: String) -> Date? {
+    static func getDate(date: String?) -> Date? {
+        guard let date else { return nil }
         let formatter = DateFormatter()
-        formatter.dateFormat = dateFormat
+        formatter.dateFormat = self.dateFormat
         return formatter.date(from: date)
     }
 }

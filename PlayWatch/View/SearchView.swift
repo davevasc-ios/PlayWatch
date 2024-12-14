@@ -24,7 +24,7 @@ struct SearchCellView: View {
     let item: Media
     var body: some View {
         HStack (spacing: 20) {
-            CacheAsyncImage(url: MovieDB.getImageUrl(file: item.image, size: .medium)) { phase in
+            CacheAsyncImage(url: item.imageUrl) { phase in
                 switch phase {
                 case .empty:
                     ZStack {

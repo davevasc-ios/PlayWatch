@@ -1,5 +1,5 @@
 //
-//  GameQuizUseCase.swift
+//  GameUseCase.swift
 //  PlayWatch
 //
 //  Created by David on 3/11/24.
@@ -7,18 +7,18 @@
 
 import Foundation
 
-protocol GameQuizUseCaseProtocol {
+protocol GameUseCaseProtocol {
     var mediaRepository: MovieDBRepositoryProtocol { get }
-    var gameQuizRepository: MultiAIRepositoryProtocol { get }
+    var gameRepository: MultiAIRepositoryProtocol { get }
 }
 
-extension GameQuizUseCaseProtocol {
+extension GameUseCaseProtocol {
     func fetchGameQuiz(aiServer: Constants.AIServer, mediaLocale: MovieDB.Locale) async throws -> [GameQuiz] {
         let randomMovies = try await self.mediaRepository.fetchMedia(type: .randomMovies, locale: mediaLocale).filterWithImage()
         guard randomMovies.count == Constants.Game.numberOfQuizzes else {
             throw Constants.Game.Error.outOfRange
         }
-        let gameQuizzes = try await self.gameQuizRepository.fetchQuiz(movies: randomMovies.joinedNames(), language: mediaLocale.name, aiServer: aiServer)
+        let gameQuizzes = try await self.gameRepository.fetchQuiz(movies: randomMovies.joinedNames(), language: mediaLocale.name, aiServer: aiServer)
         guard gameQuizzes.count == Constants.Game.numberOfQuizzes else {
             throw Constants.Game.Error.outOfRange
         }
@@ -26,7 +26,7 @@ extension GameQuizUseCaseProtocol {
     }
 }
 
-struct GameQuizUseCase: GameQuizUseCaseProtocol {
+struct GameUseCase: GameUseCaseProtocol {
     let mediaRepository: MovieDBRepositoryProtocol
-    let gameQuizRepository: MultiAIRepositoryProtocol
+    let gameRepository: MultiAIRepositoryProtocol
 }

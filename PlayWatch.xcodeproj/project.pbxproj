@@ -24,6 +24,7 @@
 		55410B7B2CE12C5200079680 /* GeminiAIResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 55410B782CE12C5200079680 /* GeminiAIResponse.json */; };
 		5549D57C2BC0738700B934CD /* OpenAIModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5549D57B2BC0738700B934CD /* OpenAIModel.swift */; };
 		555B26E32C1CC49400B789A1 /* BoolExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555B26E22C1CC49400B789A1 /* BoolExtension.swift */; };
+		555C8D1E2D0CA6F400B175E5 /* MediaCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555C8D1D2D0CA6F400B175E5 /* MediaCardView.swift */; };
 		555F69D62BF6841F000DF9B9 /* MockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555F69D52BF6841F000DF9B9 /* MockData.swift */; };
 		555F69D82BF68931000DF9B9 /* QuizModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555F69D72BF68931000DF9B9 /* QuizModel.swift */; };
 		5575C70F2BBF694300CD3918 /* MediaModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5575C70E2BBF694300CD3918 /* MediaModel.swift */; };
@@ -54,7 +55,7 @@
 		55D73FE32BCDB2A600F337FC /* TabShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D73FE22BCDB2A600F337FC /* TabShape.swift */; };
 		55D73FE52BCDB5E700F337FC /* TabPosition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D73FE42BCDB5E700F337FC /* TabPosition.swift */; };
 		55D841642CD7946B006349C4 /* MediaUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D841632CD7946B006349C4 /* MediaUseCase.swift */; };
-		55D8416A2CD79889006349C4 /* GameQuizUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D841692CD79889006349C4 /* GameQuizUseCase.swift */; };
+		55D8416A2CD79889006349C4 /* GameUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D841692CD79889006349C4 /* GameUseCase.swift */; };
 		55E4CC802BCA9A050048EF56 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E4CC7F2BCA9A050048EF56 /* StringExtension.swift */; };
 		55E4CC822BCADB2C0048EF56 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E4CC812BCADB2C0048EF56 /* ColorExtension.swift */; };
 		55E51A3C2BDEB1FF00A8541B /* FavoritesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E51A3B2BDEB1FF00A8541B /* FavoritesView.swift */; };
@@ -100,6 +101,7 @@
 		55410B792CE12C5200079680 /* OpenAIResponse.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = OpenAIResponse.json; sourceTree = "<group>"; };
 		5549D57B2BC0738700B934CD /* OpenAIModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAIModel.swift; sourceTree = "<group>"; };
 		555B26E22C1CC49400B789A1 /* BoolExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoolExtension.swift; sourceTree = "<group>"; };
+		555C8D1D2D0CA6F400B175E5 /* MediaCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaCardView.swift; sourceTree = "<group>"; };
 		555F69D52BF6841F000DF9B9 /* MockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockData.swift; sourceTree = "<group>"; };
 		555F69D72BF68931000DF9B9 /* QuizModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizModel.swift; sourceTree = "<group>"; };
 		5575C70E2BBF694300CD3918 /* MediaModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaModel.swift; sourceTree = "<group>"; };
@@ -130,7 +132,7 @@
 		55D73FE22BCDB2A600F337FC /* TabShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabShape.swift; sourceTree = "<group>"; };
 		55D73FE42BCDB5E700F337FC /* TabPosition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabPosition.swift; sourceTree = "<group>"; };
 		55D841632CD7946B006349C4 /* MediaUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaUseCase.swift; sourceTree = "<group>"; };
-		55D841692CD79889006349C4 /* GameQuizUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameQuizUseCase.swift; sourceTree = "<group>"; };
+		55D841692CD79889006349C4 /* GameUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameUseCase.swift; sourceTree = "<group>"; };
 		55E4CC7F2BCA9A050048EF56 /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		55E4CC812BCADB2C0048EF56 /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
 		55E51A3B2BDEB1FF00A8541B /* FavoritesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesView.swift; sourceTree = "<group>"; };
@@ -166,7 +168,7 @@
 			isa = PBXGroup;
 			children = (
 				55D841632CD7946B006349C4 /* MediaUseCase.swift */,
-				55D841692CD79889006349C4 /* GameQuizUseCase.swift */,
+				55D841692CD79889006349C4 /* GameUseCase.swift */,
 			);
 			path = UseCase;
 			sourceTree = "<group>";
@@ -191,6 +193,7 @@
 				55AFE60D2BD5C51E0015E411 /* SearchView.swift */,
 				55E51A3B2BDEB1FF00A8541B /* FavoritesView.swift */,
 				557F55652BE4267B00EEAA2F /* SettingsView.swift */,
+				555C8D1D2D0CA6F400B175E5 /* MediaCardView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -497,11 +500,12 @@
 				55E51A3E2BDEB26600A8541B /* GameViewModel.swift in Sources */,
 				557F55662BE4267B00EEAA2F /* SettingsView.swift in Sources */,
 				55B2540F2BC29ACC006ACD43 /* HTTP.swift in Sources */,
-				55D8416A2CD79889006349C4 /* GameQuizUseCase.swift in Sources */,
+				55D8416A2CD79889006349C4 /* GameUseCase.swift in Sources */,
 				55410B772CE0C5E600079680 /* MultiAIRepository.swift in Sources */,
 				55212BB52BA7A0C400080A71 /* Item.swift in Sources */,
 				55D425D12BCC4C3C001FA57C /* HomeView.swift in Sources */,
 				5576C3AE2BB9B13F00E511DE /* Constants.swift in Sources */,
+				555C8D1E2D0CA6F400B175E5 /* MediaCardView.swift in Sources */,
 				55B254112BC2AD47006ACD43 /* GeminiModel.swift in Sources */,
 				55C3F1912C6E3140006DE59B /* EventHandler.swift in Sources */,
 				55AFE60E2BD5C51F0015E411 /* SearchView.swift in Sources */,

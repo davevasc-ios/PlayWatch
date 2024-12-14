@@ -38,16 +38,16 @@ final class GameViewModel: EventHandler {
     @ObservationIgnored private var allQuizzes: [GameQuiz] = []
     @ObservationIgnored private var locale = MovieDB.Locale()
     @ObservationIgnored private var server: Constants.AIServer = .openAI
-    @ObservationIgnored private let gameQuizUseCase: GameQuizUseCaseProtocol
+    @ObservationIgnored private let gameUseCase: GameUseCaseProtocol
     
     // MARK: - Initialization
     init(
-        gameQuizUseCase: GameQuizUseCaseProtocol = GameQuizUseCase(
+        gameUseCase: GameUseCaseProtocol = GameUseCase(
             mediaRepository: MovieDBRepository.live,
-            gameQuizRepository: MultiAIRepository.live
+            gameRepository: MultiAIRepository.live
         )
     ) {
-        self.gameQuizUseCase = gameQuizUseCase
+        self.gameUseCase = gameUseCase
     }
     
     // MARK: - Event Handling
@@ -106,9 +106,9 @@ final class GameViewModel: EventHandler {
             self.state = .loading
             Task {
                 do {
-                    self.allQuizzes = try await self.gameQuizUseCase.fetchGameQuiz(aiServer: self.server, mediaLocale: self.locale)
+                    self.allQuizzes = try await self.gameUseCase.fetchGameQuiz(aiServer: self.server, mediaLocale: self.locale)
                     self.updateCurrentQuizzes()
-                    self.nextQuestion = self.currentQuizzes.first?.quiz.question ?? ""
+                    self.nextQuestion = self.currentQuizzes.first?.quiz.question ?? .empty
                     self.state = .ready
                 }
                 catch Constants.Game.Error.outOfRange {

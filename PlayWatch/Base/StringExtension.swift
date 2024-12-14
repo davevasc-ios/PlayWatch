@@ -11,22 +11,21 @@ extension Optional where Wrapped == String {
     var isNil: Bool { self == nil }
     var isNotNil: Bool { self != nil }
     var isEmpty: Bool { self?.isEmpty ?? true }
-    var isValue: Bool { !self.isEmpty }
-    var orEmpty: String { self ?? "" }
+    var orEmpty: String { self ?? .empty }
 }
 
 extension String {
-    static var empty: String {
-        return ""
-    }
-    var isEmpty: Bool {
-        self.trim() == ""
-    }
-    var isValue: Bool {
-        !self.isEmpty
-    }
+    static var empty: String { "" }
+    static var commaSeparator: String { ", " }
+    
     func trim() -> String {
         self.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+    var isEmpty: Bool {
+        self.trim() == .empty
+    }
+    var ifNotEmpty: String? {
+        self.isEmpty ? nil : self
     }
     func removeCharacters(from: Set<Character>) -> String {
         self.filter { !from.contains($0) }
