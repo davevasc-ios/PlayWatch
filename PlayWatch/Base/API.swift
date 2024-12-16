@@ -38,7 +38,7 @@ struct API {
             guard let value = plist?.object(forKey: self.api.key) as? String else {
                 fatalError(Error.invalidKeyName(apiKeyName: self.api.key).localizedDescription)
             }
-            if value.isEmpty {
+            if value.isTrimmedEmpty {
                 fatalError(Error.invalidApiKey(apiKeyWeb: self.api.web).localizedDescription)
             }
             return value

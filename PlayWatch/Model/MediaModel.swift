@@ -27,16 +27,15 @@ struct MediaDTO: Codable {
 extension MediaDTO {
     var toMedia: Media {
         Media(id: self.id,
-              type: self.getType(),
-              imageUrl: self.getImageUrl(),
+              type: self.determineMediaType(),
+              imageUrl: self.generateImageUrl(),
               name: self.getName(),
               date: self.getDate(),
               rating: self.voteAverage)
     }
     
-    func getType() -> MediaType {
-        if let mediaTypeString = mediaType?.ifNotEmpty,
-           let mediaType = MediaType(rawValue: mediaTypeString) {
+    func determineMediaType() -> MediaType {
+        if let mediaType = mediaType.flatMap(MediaType.init) {
             return mediaType
         } else if firstAirDate.isNotNil {
             return .tv
@@ -46,7 +45,7 @@ extension MediaDTO {
         return .movie
     }
     
-    func getImageUrl() -> URL? {
+    func generateImageUrl() -> URL? {
         let path = posterPath?.ifNotEmpty ?? profilePath?.ifNotEmpty
         return MovieDB.getImageUrl(file: path, size: .medium)
     }

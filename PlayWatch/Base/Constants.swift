@@ -23,16 +23,16 @@ extension Bundle {
 
 extension URLRequest {
     func fetchData() async throws -> Data {
-        if let url = self.url, url.isFileURL {
-            return try Data(contentsOf: url)
-        } else {
-            let (data, response) = try await URLSession.shared.data(for: self)
-            guard let response = response as? HTTPURLResponse,
-                  response.statusCode == HTTP.successCode else {
-                throw API.Error.invalidResponse(detail: String(data: data, encoding: .utf8).orEmpty)
-            }
-            return data
+        if let url = self.url,
+           url.isFileURL {
+            return try url.toData()
         }
+        let (data, response) = try await URLSession.shared.data(for: self)
+        guard let httpResponse = response.asHTTPURLResponse,
+              httpResponse.isSuccess else {
+            throw API.Error.invalidResponse(detail: data.toUTF8String)
+        }
+        return data
     }
 }
 
