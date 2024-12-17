@@ -143,6 +143,7 @@ struct MovieDB {
         static private let discover = "discover/"
         static private let popular = "\(MediaType.person)/popular"
         static private let search = "search/multi"
+        static private let mediaPeriod = "day"
         
         static private let maxPages = 500
         static private let voteAverageGte = 5
@@ -182,7 +183,7 @@ struct MovieDB {
                 urlString = "\(dataUrl)\(upcoming)"
                 queryItems.append(URLQueryItem(name: QueryParams.region.rawValue, value: locale.region))
             case .movieTrending:
-                urlString = "\(dataUrl)\(trending)\(MediaType.movie)/\(MediaPeriod.day)"
+                urlString = "\(dataUrl)\(trending)\(MediaType.movie)/\(self.mediaPeriod)"
             case .movieNew:
                 urlString = "\(dataUrl)\(discover)\(MediaType.movie)"
                 queryItems.append(URLQueryItem(name: "\(QueryParams.releaseDate.rawValue)\(QueryDirection.gte.rawValue)", value: currentDateString(daysOffset: -daysOffset)))
@@ -192,7 +193,7 @@ struct MovieDB {
                 queryItems.append(URLQueryItem(name: QueryParams.withWatchMonetizationTypes.rawValue, value: MonetizationType.flatrate.rawValue))
                 queryItems.append(URLQueryItem(name: "\(QueryParams.voteCount.rawValue)\(QueryDirection.gte.rawValue)", value: String(voteCountNewGte)))
             case .tvTrending:
-                urlString = "\(dataUrl)\(trending)\(MediaType.tv)/\(MediaPeriod.day)"
+                urlString = "\(dataUrl)\(trending)\(MediaType.tv)/\(self.mediaPeriod)"
             case .tvNew:
                 urlString = "\(dataUrl)\(discover)\(MediaType.tv)"
                 queryItems.append(URLQueryItem(name: "\(QueryParams.firstAirDate.rawValue)\(QueryDirection.gte.rawValue)", value: currentDateString(daysOffset: -daysOffset)))
@@ -202,11 +203,11 @@ struct MovieDB {
                 queryItems.append(URLQueryItem(name: QueryParams.withWatchMonetizationTypes.rawValue, value: MonetizationType.flatrate.rawValue))
                 queryItems.append(URLQueryItem(name: "\(QueryParams.voteCount.rawValue)\(QueryDirection.gte.rawValue)", value: String(voteCountNewGte)))
             case .personTrending:
-                urlString = "\(dataUrl)\(trending)\(MediaType.person)/\(MediaPeriod.day)"
+                urlString = "\(dataUrl)\(trending)\(MediaType.person)/\(self.mediaPeriod)"
             case .personPopular:
                 urlString = "\(dataUrl)\(popular)"
             case .trendingAll:
-                urlString = "\(dataUrl)\(trending)\(MediaType.all)/\(MediaPeriod.day)"
+                urlString = "\(dataUrl)\(trending)\(MediaType.all)/\(self.mediaPeriod)"
             case .searchAll:
                 if let text = searchText {
                     urlString = "\(dataUrl)\(search)"

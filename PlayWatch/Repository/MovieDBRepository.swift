@@ -15,7 +15,7 @@ extension MovieDBRepositoryProtocol {
     func fetchMedia(type: MovieDB.FetchType, locale: MovieDB.Locale, searchText: String? = nil) async throws -> [Media] {
         let request = try MovieDB.createRequest(mode: repositoryMode, type: type, locale: locale, searchText: searchText)
         let data = try await request.fetchData()
-        return try MediaModel.decode(from: data)
+        return try MediaResponse.decode(from: data)
     }
 }
 
