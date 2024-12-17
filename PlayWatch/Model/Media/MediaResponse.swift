@@ -17,8 +17,8 @@ extension MediaResponse {
         do {
             let response = try JSONDecoder.convertFromSnakeCase.decode(Self.self, from: data)
             return (response.results?.map(\.toMedia)).orEmpty
-        } catch {
-            throw API.Error.invalidData(detail: error.localizedDescription)
+        } catch let decodingError {
+            throw API.Error.invalidData(detail: decodingError.localizedDescription)
         }
     }
 }

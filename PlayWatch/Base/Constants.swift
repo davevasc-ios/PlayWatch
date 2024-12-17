@@ -63,8 +63,8 @@ enum Constants {
         
         func decodeQuizResponse(from data: Data) throws -> String {
             switch self {
-            case .openAI: try OpenAIModel.decode(from: data)
-            case .gemini: try GeminiModel.decode(from: data)
+            case .openAI: try OpenAIResponse.decode(from: data)
+            case .gemini: try GeminiResponse.decode(from: data)
             }
         }
     }

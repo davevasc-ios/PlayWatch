@@ -1,5 +1,5 @@
 //
-//  GeminiModel.swift
+//  GeminiResponse.swift
 //  PlayWatch
 //
 //  Created by David on 7/4/24.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct GeminiModel: Codable {
+struct GeminiResponse: Codable {
   let candidates: [Candidate]?
 }
 
@@ -23,13 +23,14 @@ struct Part: Codable {
   let text: String?
 }
 
-extension GeminiModel {
+// MARK: - Decoding
+extension GeminiResponse {
     static func decode(from data: Data) throws -> String {
         do {
             let model = try JSONDecoder().decode(Self.self, from: data)
             return (model.candidates?.first?.content?.parts?.first?.text).orEmpty
-        } catch {
-            throw API.Error.invalidData(detail: error.localizedDescription)
+        } catch let decodingError {
+            throw API.Error.invalidData(detail: decodingError.localizedDescription)
         }
     }
 }
