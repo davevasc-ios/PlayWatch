@@ -249,7 +249,7 @@ struct TitleNameView: View {
     HomeView(appManager: AppManager())
         .environment(HomeViewModel(
             mediaUseCase: MediaUseCase(
-                mediaRepository: MovieDBRepository.test
+                mediaRepository: MovieDBRepositoryPreview()
             )
         ))
 }

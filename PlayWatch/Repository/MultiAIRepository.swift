@@ -21,10 +21,6 @@ extension MultiAIRepositoryProtocol {
     }
 }
 
-enum MultiAIRepository: MultiAIRepositoryProtocol {
-    case live, test
-    
-    var mode: RepositoryMode {
-        self == .live ? .live : .test
-    }
+struct MultiAIRepository: MultiAIRepositoryProtocol {
+    var mode: RepositoryMode = .live
 }

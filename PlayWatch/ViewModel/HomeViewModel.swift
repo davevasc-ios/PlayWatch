@@ -23,7 +23,7 @@ final class HomeViewModel: EventHandler {
     // MARK: - Initialization
     init(
         mediaUseCase: MediaUseCaseProtocol = MediaUseCase(
-            mediaRepository: MovieDBRepository.live
+            mediaRepository: MovieDBRepository()
         )
     ) {
         self.mediaUseCase = mediaUseCase

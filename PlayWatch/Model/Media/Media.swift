@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Media: Identifiable, Hashable, Sendable {
+struct Media: Identifiable, Hashable {
     let id: Int
     let type: MediaType
     let imageUrl: URL?

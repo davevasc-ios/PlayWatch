@@ -24,6 +24,7 @@ struct PlayWatchApp: App {
     }()
     
     @State private var appManager = AppManager()
+    @State private var appViewModel = AppViewModel()
     
     var body: some Scene {
         WindowGroup {
@@ -31,6 +32,7 @@ struct PlayWatchApp: App {
                 TabBarView(appManager: appManager)
                     .environment(\.locale, appManager.appLocale)
                     .environment(\.screenSize, geometry.size)
+                    .environment(appViewModel)
             }
         }
     }
