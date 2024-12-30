@@ -14,11 +14,13 @@ protocol GameUseCaseProtocol {
 
 extension GameUseCaseProtocol {
     func fetchGameQuiz(aiServer: Constants.AIServer, mediaLocale: MovieDB.Locale) async throws -> [GameQuiz] {
-        let randomMovies = try await self.mediaRepository.fetchMedia(type: .randomMovies, locale: mediaLocale).filterWithImage()
+        let mediaConfig = MediaRequestConfig(mediaType: .randomMovies, locale: mediaLocale)
+        let randomMovies = try await self.mediaRepository.fetchMedia(config: mediaConfig).filterWithImage()
         guard randomMovies.count == Constants.Game.numberOfQuizzes else {
             throw Constants.Game.Error.outOfRange
         }
-        let gameQuizzes = try await self.gameRepository.fetchQuiz(movies: randomMovies.joinedNames(), language: mediaLocale.name, aiServer: aiServer)
+        let gameConfig = GameRequestConfig(movies: randomMovies.joinedNames(), language: mediaLocale.name, aiServer: aiServer)
+        let gameQuizzes = try await self.gameRepository.fetchQuiz(config: gameConfig)
         guard gameQuizzes.count == Constants.Game.numberOfQuizzes else {
             throw Constants.Game.Error.outOfRange
         }

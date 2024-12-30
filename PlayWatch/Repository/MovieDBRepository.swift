@@ -8,17 +8,23 @@
 import Foundation
 
 protocol MovieDBRepositoryProtocol: Sendable {
-    var mode: RepositoryMode { get }
+    func createRequest(config: MediaRequestConfig) throws -> URLRequest
 }
 
 extension MovieDBRepositoryProtocol {
-    func fetchMedia(type: MovieDB.FetchType, locale: MovieDB.Locale, searchText: String? = nil) async throws -> [Media] {
-        let request = try MovieDB.createRequest(mode: mode, type: type, locale: locale, searchText: searchText)
+    func fetchMedia(config: MediaRequestConfig) async throws -> [Media] {
+        let request = try self.createRequest(config: config)
         let data = try await request.fetchData()
         return try MediaResponse.decode(from: data)
     }
 }
 
 struct MovieDBRepository: MovieDBRepositoryProtocol {
-    let mode: RepositoryMode = .live
+    func createRequest(config: MediaRequestConfig) throws -> URLRequest {
+        HTTP.request(
+            url: try MovieDB.Endpoint.mediaDataUrl(type: config.mediaType, locale: config.locale, searchText: config.searchQuery),
+            method: .get,
+            fields: MovieDB.Endpoint.headerFields
+        )
+    }
 }

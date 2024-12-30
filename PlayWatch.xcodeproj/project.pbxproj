@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		274B58742D1ACEF100420F6E /* MediaRequestConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 274B58732D1ACEF100420F6E /* MediaRequestConfig.swift */; };
+		27D7BC7A2D21C04300D022D5 /* GameRequestConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D7BC792D21C04300D022D5 /* GameRequestConfig.swift */; };
 		55034E922BE5317D00BCBD0E /* LocalizableTabBar.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 55034E912BE5317D00BCBD0E /* LocalizableTabBar.xcstrings */; };
 		55034E942BE5356000BCBD0E /* LocalizableHome.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 55034E932BE5356000BCBD0E /* LocalizableHome.xcstrings */; };
 		55034E962BE5384A00BCBD0E /* LocalizableString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55034E952BE5384A00BCBD0E /* LocalizableString.swift */; };
@@ -86,6 +88,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		274B58732D1ACEF100420F6E /* MediaRequestConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaRequestConfig.swift; sourceTree = "<group>"; };
+		27D7BC792D21C04300D022D5 /* GameRequestConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameRequestConfig.swift; sourceTree = "<group>"; };
 		55034E912BE5317D00BCBD0E /* LocalizableTabBar.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = LocalizableTabBar.xcstrings; sourceTree = "<group>"; };
 		55034E932BE5356000BCBD0E /* LocalizableHome.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = LocalizableHome.xcstrings; sourceTree = "<group>"; };
 		55034E952BE5384A00BCBD0E /* LocalizableString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableString.swift; sourceTree = "<group>"; };
@@ -289,6 +293,7 @@
 				5551A82D2D11983600AFC04A /* MediaDTO.swift */,
 				5551A82B2D11980400AFC04A /* MediaType.swift */,
 				5551A8352D11B59700AFC04A /* MediaSection.swift */,
+				274B58732D1ACEF100420F6E /* MediaRequestConfig.swift */,
 			);
 			path = Media;
 			sourceTree = "<group>";
@@ -298,6 +303,7 @@
 			children = (
 				555F69D72BF68931000DF9B9 /* Quiz.swift */,
 				5551A8312D11AF1900AFC04A /* GameQuiz.swift */,
+				27D7BC792D21C04300D022D5 /* GameRequestConfig.swift */,
 			);
 			path = Game;
 			sourceTree = "<group>";
@@ -533,6 +539,7 @@
 				55AFE6082BD5160E0015E411 /* DateExtension.swift in Sources */,
 				555B26E32C1CC49400B789A1 /* BoolExtension.swift in Sources */,
 				55651E172D0F49DF00ABD48B /* URLExtension.swift in Sources */,
+				27D7BC7A2D21C04300D022D5 /* GameRequestConfig.swift in Sources */,
 				557F55622BE418C400EEAA2F /* AppLanguage.swift in Sources */,
 				55C3F1932C6E5221006DE59B /* AppManager.swift in Sources */,
 				5576C3B02BB9C10D00E511DE /* API.swift in Sources */,
@@ -560,6 +567,7 @@
 				55AFE60E2BD5C51F0015E411 /* SearchView.swift in Sources */,
 				55D425CF2BCC4AFF001FA57C /* TabBarView.swift in Sources */,
 				55212BB12BA7A0C400080A71 /* PlayWatchApp.swift in Sources */,
+				274B58742D1ACEF100420F6E /* MediaRequestConfig.swift in Sources */,
 				55651E192D0F581900ABD48B /* URLResponseExtension.swift in Sources */,
 				55D841642CD7946B006349C4 /* MediaUseCase.swift in Sources */,
 			);

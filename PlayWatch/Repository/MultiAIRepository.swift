@@ -8,19 +8,24 @@
 import Foundation
 
 protocol MultiAIRepositoryProtocol {
-    var mode: RepositoryMode { get }
+    func createRequest(config: GameRequestConfig) throws -> URLRequest
 }
 
 extension MultiAIRepositoryProtocol {
-    func fetchQuiz(movies: String, language: String, aiServer: Constants.AIServer) async throws -> [Quiz] {
-        let request = try aiServer.createRequest(mode: mode, movies: movies, language: language)
+    func fetchQuiz(config: GameRequestConfig) async throws -> [Quiz] {
+        let request = try self.createRequest(config: config)
         let data = try await request.fetchData()
-        let quizString = try aiServer.decodeQuizResponse(from: data)
+        let quizString = try config.aiServer.decodeQuizResponse(from: data)
         let quizData = try quizString.toUTF8Data()
         return try Quiz.decode(from: quizData)
     }
 }
 
 struct MultiAIRepository: MultiAIRepositoryProtocol {
-    var mode: RepositoryMode = .live
+    func createRequest(config: GameRequestConfig) throws -> URLRequest {
+        switch config.aiServer {
+        case .openAI: try OpenAI.request(type: OpenAI.UserPrompt.quiz(config.movies, config.language))
+        case .gemini: try Gemini.request(text: Gemini.quizPrompt(config.movies, config.language))
+        }
+    }
 }

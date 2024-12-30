@@ -8,5 +8,7 @@
 import Foundation
 
 struct MultiAIRepositoryPreview: MultiAIRepositoryProtocol {
-    var mode: RepositoryMode = .test
+    func createRequest(config: GameRequestConfig) throws -> URLRequest {
+        try Bundle.main.jsonURLRequest(for: config.aiServer.testResource)
+    }
 }

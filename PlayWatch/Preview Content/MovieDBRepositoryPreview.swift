@@ -8,5 +8,7 @@
 import Foundation
 
 struct MovieDBRepositoryPreview: MovieDBRepositoryProtocol {
-    let mode: RepositoryMode = .test
+    func createRequest(config: MediaRequestConfig) throws -> URLRequest {
+        try Bundle.main.jsonURLRequest(for: config.mediaType.testResource)
+    }
 }

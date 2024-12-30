@@ -14,7 +14,8 @@ extension MediaUseCaseProtocol {
         try await withThrowingTaskGroup(of: (Int, MediaSection).self) { group in
             for (index, section) in MovieDB.homeSections.enumerated() {
                 group.addTask {
-                    let mediaItems = try await self.mediaRepository.fetchMedia(type: section, locale: locale)
+                    let config = MediaRequestConfig(mediaType: section, locale: locale)
+                    let mediaItems = try await self.mediaRepository.fetchMedia(config: config)
                     return (index, MediaSection(title: section.localized, items: mediaItems))
                 }
             }
@@ -23,11 +24,13 @@ extension MediaUseCaseProtocol {
     }
     
     func fetchTrendingMedia(locale: MovieDB.Locale) async throws -> [Media] {
-        try await self.mediaRepository.fetchMedia(type: .trendingAll, locale: locale)
+        let config = MediaRequestConfig(mediaType: .trendingAll, locale: locale)
+        return try await self.mediaRepository.fetchMedia(config: config)
     }
     
     func fetchSearchMedia(locale: MovieDB.Locale, searchText: String) async throws -> [Media] {
-        try await self.mediaRepository.fetchMedia(type: .searchAll, locale: locale, searchText: searchText)
+        let config = MediaRequestConfig(mediaType: .searchAll, locale: locale, searchQuery: searchText)
+        return try await self.mediaRepository.fetchMedia(config: config)
     }
 }
 

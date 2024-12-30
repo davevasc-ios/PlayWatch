@@ -14,7 +14,7 @@ enum RepositoryMode {
 
 extension Bundle {
     func jsonURLRequest(for resource: String) throws -> URLRequest {
-        guard let url = self.url(forResource: resource, withExtension: "json") else {
+        guard let url = self.url(forResource: resource, withExtension: Constants.Resource.Extension.json) else {
             throw API.Error.invalidURL
         }
         return URLRequest(url: url)
@@ -48,16 +48,6 @@ enum Constants {
             switch self {
             case .openAI: Constants.Resource.Name.openAIResponse
             case .gemini: Constants.Resource.Name.geminiAIResponse
-            }
-        }
-                
-        func createRequest(mode: RepositoryMode, movies: String, language: String) throws -> URLRequest {
-            guard mode == .live else {
-                return try Bundle.main.jsonURLRequest(for: self.testResource)
-            }
-            return switch self {
-            case .openAI: try OpenAI.request(type: OpenAI.UserPrompt.quiz(movies, language))
-            case .gemini: try Gemini.request(text: Gemini.quizPrompt(movies, language))
             }
         }
         
@@ -339,20 +329,6 @@ struct MovieDB {
     }
     
     // MARK: - Public Functions
-    
-    static func createRequest(mode: RepositoryMode, type: FetchType, locale: Locale, searchText: String?) throws -> URLRequest {
-        switch mode {
-        case .live:
-            HTTP.request(
-                url: try MovieDB.Endpoint.mediaDataUrl(type: type, locale: locale, searchText: searchText),
-                method: .get,
-                fields: MovieDB.Endpoint.headerFields
-            )
-        case .test:
-            try Bundle.main.jsonURLRequest(for: type.testResource)
-        }
-    }
-    
     static func getImageUrl(file: String?, size: ImageSize) -> URL? {
         guard let file else { return nil }
         return URL(string: "\(Endpoint.imageUrl)\(size.rawValue)\(file)")
@@ -440,7 +416,6 @@ struct Gemini: Codable {
     static let endpoint = "https://generativelanguage.googleapis.com/v1beta/models/\(systemModel):generateContent?key=\(API.Key.gemini)"
     
     static func quizPrompt(_ movies: String, _ language: String) -> String {
-        return
 """
 Give me a just a valid JSON Array of following structure, each one, about one of these movies (no 'movies' field, no 'data' field, just array): \(movies).
 
