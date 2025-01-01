@@ -25,12 +25,18 @@ struct Part: Codable {
 
 // MARK: - Decoding
 extension GeminiResponse {
-    static func decode(from data: Data) throws -> String {
+    static func decode(from data: Data, using decoder: DataDecoder = JSONDecoder()) throws -> Self {
         do {
-            let model = try JSONDecoder().decode(Self.self, from: data)
-            return (model.candidates?.first?.content?.parts?.first?.text).orEmpty
+            return try decoder.decode(Self.self, from: data)
         } catch let decodingError {
             throw API.Error.invalidData(detail: decodingError.localizedDescription)
         }
+    }
+}
+
+// MARK: - Extract Response String
+extension GeminiResponse {
+    var aiResponseText: String {
+        (self.candidates?.first?.content?.parts?.first?.text).orEmpty
     }
 }

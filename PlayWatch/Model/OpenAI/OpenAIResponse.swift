@@ -21,12 +21,18 @@ struct Message: Codable {
 
 // MARK: - Decoding
 extension OpenAIResponse {
-    static func decode(from data: Data) throws -> String {
+    static func decode(from data: Data, using decoder: DataDecoder = JSONDecoder()) throws -> Self {
         do {
-            let model = try JSONDecoder().decode(Self.self, from: data)
-            return (model.choices?.first?.message?.content).orEmpty
+            return try decoder.decode(Self.self, from: data)
         } catch let decodingError {
             throw API.Error.invalidData(detail: decodingError.localizedDescription)
         }
+    }
+}
+
+// MARK: - Extract Response String
+extension OpenAIResponse {
+    var aiResponseText: String {
+        (self.choices?.first?.message?.content).orEmpty
     }
 }

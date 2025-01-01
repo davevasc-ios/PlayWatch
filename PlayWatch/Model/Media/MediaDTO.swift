@@ -58,3 +58,16 @@ extension MediaDTO {
         return MovieDB.getDate(date: dateString)
     }
 }
+
+extension Optional where Wrapped == [MediaDTO] {
+    var orEmpty: [MediaDTO] {
+        self ?? []
+    }
+}
+
+// TODO: - evaluar si es mejor hacer esta extensión y borrar el MediaMapper
+extension Array where Element == MediaDTO {
+    var mapToMedia: [Media] {
+        self.map(\.toMedia)
+    }
+}

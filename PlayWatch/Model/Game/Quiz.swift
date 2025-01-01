@@ -14,9 +14,9 @@ struct Quiz: Codable, Hashable {
 
 // MARK: - Decoding
 extension Quiz {
-    static func decode(from data: Data) throws -> [Self] {
+    static func decode(from data: Data, using decoder: DataDecoder = JSONDecoder()) throws -> [Self] {
         do {
-            return try JSONDecoder().decode([Self].self, from: data)
+            return try decoder.decode([Self].self, from: data)
         } catch let decodingError {
             throw API.Error.invalidData(detail: decodingError.localizedDescription)
         }

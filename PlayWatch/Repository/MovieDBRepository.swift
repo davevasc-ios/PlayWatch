@@ -15,7 +15,9 @@ extension MovieDBRepositoryProtocol {
     func fetchMedia(config: MediaRequestConfig) async throws -> [Media] {
         let request = try self.createRequest(config: config)
         let data = try await request.fetchData()
-        return try MediaResponse.decode(from: data)
+        // TODO: - evaluar si es mejor hacer el decode de media response también como una extensión de Data
+        return try MediaResponse.decode(from: data).mediaDTOs.mapToMedia
+//        return MediaMapper.map(dto: try MediaResponse.decode(from: data).mediaDTOs)
     }
 }
 
