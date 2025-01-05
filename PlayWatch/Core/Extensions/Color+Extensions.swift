@@ -1,5 +1,5 @@
 //
-//  ColorExtension.swift
+//  Color+Extensions.swift
 //  PlayWatch
 //
 //  Created by David on 13/4/24.

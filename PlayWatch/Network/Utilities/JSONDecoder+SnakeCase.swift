@@ -1,5 +1,5 @@
 //
-//  JSONDecoderExtension.swift
+//  JSONDecoder+SnakeCase.swift
 //  PlayWatch
 //
 //  Created by David on 25/10/24.

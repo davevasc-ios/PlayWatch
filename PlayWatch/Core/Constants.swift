@@ -8,33 +8,7 @@
 import Foundation
 import SwiftUI
 
-enum RepositoryMode {
-    case live, test
-}
 
-extension Bundle {
-    func jsonURLRequest(for resource: String) throws -> URLRequest {
-        guard let url = self.url(forResource: resource, withExtension: Constants.Resource.Extension.json) else {
-            throw API.Error.invalidURL
-        }
-        return URLRequest(url: url)
-    }
-}
-
-extension URLRequest {
-    func fetchData() async throws -> Data {
-        if let url = self.url,
-           url.isFileURL {
-            return try url.toData()
-        }
-        let (data, response) = try await URLSession.shared.data(for: self)
-        guard let httpResponse = response.asHTTPURLResponse,
-              httpResponse.isSuccess else {
-            throw API.Error.invalidResponse(detail: data.toUTF8String)
-        }
-        return data
-    }
-}
 
 enum Constants {
     

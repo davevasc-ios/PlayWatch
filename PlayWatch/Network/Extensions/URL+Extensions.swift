@@ -1,5 +1,5 @@
 //
-//  URLExtension.swift
+//  URL+Extensions.swift
 //  PlayWatch
 //
 //  Created by David on 15/12/24.

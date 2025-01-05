@@ -1,5 +1,5 @@
 //
-//  HTTPURLResponseExtension.swift
+//  HTTPURLResponse+Success.swift
 //  PlayWatch
 //
 //  Created by David on 15/12/24.
