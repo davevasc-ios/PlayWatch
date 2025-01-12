@@ -22,9 +22,8 @@ extension MovieDBRepositoryProtocol {
 struct MovieDBRepository: MovieDBRepositoryProtocol {
     func createRequest(config: MediaRequestConfig) throws -> URLRequest {
         HTTP.request(
-            url: try MovieDB.Endpoint.mediaDataUrl(type: config.mediaType, locale: config.locale, searchText: config.searchQuery),
-            method: .get,
-            fields: MovieDB.Endpoint.headerFields
+            url: try MovieDBEndpoint.mediaDataUrl(type: config.mediaType, locale: config.locale, searchText: config.searchQuery),
+            headers: MovieDBEndpoint.headerFields
         )
     }
 }

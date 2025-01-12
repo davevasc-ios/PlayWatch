@@ -8,8 +8,6 @@
 import Foundation
 import SwiftUI
 
-
-
 enum Constants {
     
     enum AIServer: String, CaseIterable, Identifiable {
@@ -96,110 +94,7 @@ struct MovieDB {
         .personTrending,
         .personPopular]
     
-    struct Endpoint {
-        
-        // MARK: - Data
-        static private let version = 3
-        static private let dataUrl = "https://api.themoviedb.org/\(String(version))/"
-        static private let nowPlaying = "\(MediaType.movie)/now_playing"
-        static private let upcoming = "\(MediaType.movie)/upcoming"
-        static private let trending = "trending/"
-        static private let discover = "discover/"
-        static private let popular = "\(MediaType.person)/popular"
-        static private let search = "search/multi"
-        static private let mediaPeriod = "day"
-        
-        static private let maxPages = 500
-        static private let voteAverageGte = 5
-        static private let voteCountQuizGte = 100
-        static private let voteCountNewGte = 4
-        static private let daysOffset = 14
-        
-        static private func randomShortBy() -> String {
-            let randomShortBy = validShortBy.randomElement() ?? .popularity
-            let randomShortDirection = SortDirection.allCases.randomElement() ?? .asc
-            return "\(randomShortBy.rawValue)\(randomShortDirection.rawValue)"
-        }
-        
-        static private func currentDateString(daysOffset: Int = 0) -> String {
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = dateFormat
-            guard let modifiedDate = Calendar.current.date(byAdding: .day, value: daysOffset, to: Date()) else {
-                return .empty
-            }
-            return dateFormatter.string(from: modifiedDate)
-        }
-        
-        static let headerFields: [String : String] = [
-            HTTP.Header.Field.accept.rawValue: HTTP.Header.Value.applicationJson.description,
-            HTTP.Header.Field.authorization.rawValue: HTTP.Header.Value.bearer(.movieDB).description
-        ]
-        
-        static func mediaDataUrl(type: FetchType, locale: Locale, searchText: String?) throws -> URL {
-            var urlString: String = ""
-            var queryItems: [URLQueryItem] = []
-            queryItems.append(URLQueryItem(name: QueryParams.language.rawValue, value: locale.language))
-            switch type {
-            case .cinemaPlaying:
-                urlString = "\(dataUrl)\(nowPlaying)"
-                queryItems.append(URLQueryItem(name: QueryParams.region.rawValue, value: locale.region))
-            case .cinemaUpcomimg:
-                urlString = "\(dataUrl)\(upcoming)"
-                queryItems.append(URLQueryItem(name: QueryParams.region.rawValue, value: locale.region))
-            case .movieTrending:
-                urlString = "\(dataUrl)\(trending)\(MediaType.movie)/\(self.mediaPeriod)"
-            case .movieNew:
-                urlString = "\(dataUrl)\(discover)\(MediaType.movie)"
-                queryItems.append(URLQueryItem(name: "\(QueryParams.releaseDate.rawValue)\(QueryDirection.gte.rawValue)", value: currentDateString(daysOffset: -daysOffset)))
-                queryItems.append(URLQueryItem(name: "\(QueryParams.releaseDate.rawValue)\(QueryDirection.lte.rawValue)", value: currentDateString(daysOffset: daysOffset*2)))
-                queryItems.append(URLQueryItem(name: QueryParams.sortBy.rawValue, value: "\(SortBy.releaseDate.rawValue)\(SortDirection.asc.rawValue)"))
-                queryItems.append(URLQueryItem(name: QueryParams.watchRegion.rawValue, value: locale.region))
-                queryItems.append(URLQueryItem(name: QueryParams.withWatchMonetizationTypes.rawValue, value: MonetizationType.flatrate.rawValue))
-                queryItems.append(URLQueryItem(name: "\(QueryParams.voteCount.rawValue)\(QueryDirection.gte.rawValue)", value: String(voteCountNewGte)))
-            case .tvTrending:
-                urlString = "\(dataUrl)\(trending)\(MediaType.tv)/\(self.mediaPeriod)"
-            case .tvNew:
-                urlString = "\(dataUrl)\(discover)\(MediaType.tv)"
-                queryItems.append(URLQueryItem(name: "\(QueryParams.firstAirDate.rawValue)\(QueryDirection.gte.rawValue)", value: currentDateString(daysOffset: -daysOffset)))
-                queryItems.append(URLQueryItem(name: "\(QueryParams.firstAirDate.rawValue)\(QueryDirection.lte.rawValue)", value: currentDateString(daysOffset: daysOffset*2)))
-                queryItems.append(URLQueryItem(name: QueryParams.sortBy.rawValue, value: "\(SortBy.firstAirDate.rawValue)\(SortDirection.asc.rawValue)"))
-                queryItems.append(URLQueryItem(name: QueryParams.watchRegion.rawValue, value: locale.region))
-                queryItems.append(URLQueryItem(name: QueryParams.withWatchMonetizationTypes.rawValue, value: MonetizationType.flatrate.rawValue))
-                queryItems.append(URLQueryItem(name: "\(QueryParams.voteCount.rawValue)\(QueryDirection.gte.rawValue)", value: String(voteCountNewGte)))
-            case .personTrending:
-                urlString = "\(dataUrl)\(trending)\(MediaType.person)/\(self.mediaPeriod)"
-            case .personPopular:
-                urlString = "\(dataUrl)\(popular)"
-            case .trendingAll:
-                urlString = "\(dataUrl)\(trending)\(MediaType.all)/\(self.mediaPeriod)"
-            case .searchAll:
-                if let text = searchText {
-                    urlString = "\(dataUrl)\(search)"
-                    queryItems.append(URLQueryItem(name: QueryParams.query.rawValue, value: text))
-                }
-            case .randomMovies:
-                urlString = "\(dataUrl)\(discover)\(MediaType.movie)"
-                queryItems.append(URLQueryItem(name: QueryParams.page.rawValue, value: String(Int.random(in: 1...maxPages))))
-                queryItems.append(URLQueryItem(name: "\(QueryParams.releaseDate.rawValue)\(QueryDirection.lte.rawValue)", value: currentDateString()))
-                queryItems.append(URLQueryItem(name: QueryParams.sortBy.rawValue, value: randomShortBy()))
-                queryItems.append(URLQueryItem(name: "\(QueryParams.voteAverage.rawValue)\(QueryDirection.gte.rawValue)", value: String(voteAverageGte)))
-                queryItems.append(URLQueryItem(name: "\(QueryParams.voteCount.rawValue)\(QueryDirection.gte.rawValue)", value: String(voteCountQuizGte)))
-            }
-            
-            guard let url = URL(string: urlString),
-                  var components = URLComponents(url: url, resolvingAgainstBaseURL: true) else {
-                throw API.Error.invalidURL
-            }
-            components.queryItems = components.queryItems.map { $0 + queryItems } ?? queryItems
-            guard let finalURL = components.url else {
-                throw API.Error.invalidURL
-            }
-            return finalURL
-        }
-        
-        // MARK: - Image
-        static let imageUrl = "https://image.tmdb.org/t/p/"
-    }
+
     
     enum FetchType {
         case cinemaPlaying,
@@ -224,8 +119,8 @@ struct MovieDB {
             case .tvNew: LocalizableString.homeSectionTvNew
             case .personTrending: LocalizableString.homeSectionPersonTrending
             case .personPopular: LocalizableString.homeSectionPersonPopular
-            case .trendingAll: ""
-            case .searchAll: ""
+            case .trendingAll: .empty
+            case .searchAll: .empty
             case .randomMovies: LocalizableString.homeSectionRandomMovies
             }
         }
@@ -305,7 +200,7 @@ struct MovieDB {
     // MARK: - Public Functions
     static func getImageUrl(file: String?, size: ImageSize) -> URL? {
         guard let file else { return nil }
-        return URL(string: "\(Endpoint.imageUrl)\(size.rawValue)\(file)")
+        return URL(string: "\(MovieDBEndpoint.imageURL)\(size.rawValue)\(file)")
     }
     
     static func getDate(date: String?) -> Date? {
@@ -323,9 +218,9 @@ struct OpenAI: Codable {
     static let endpoint = "https://api.openai.com/v1/chat/completions"
     static let systemModel = "gpt-3.5-turbo"
     
-    static let headerFields: [String : String] = [
-        HTTP.Header.Field.contentType.rawValue: HTTP.Header.Value.applicationJson.description,
-        HTTP.Header.Field.authorization.rawValue: HTTP.Header.Value.bearer(.openAI).description
+    static let headerFields:  [HTTP.Header.Field: HTTP.Header.Value] = [
+        .contentType: .applicationJson,
+        .authorization: .bearer(.openAI)
     ]
     
     enum SystemContent: String {
@@ -366,7 +261,7 @@ struct OpenAI: Codable {
     }
     
     static func request(type: UserPrompt) throws -> URLRequest {
-        guard let url = URL(string: endpoint) else {
+        guard let url = URL(string: self.endpoint) else {
             throw API.Error.invalidURL
         }
         var systemContent = ""
@@ -379,7 +274,7 @@ struct OpenAI: Codable {
         let systemMessage = Message(role: .system, content: systemContent)
         let userMessage = Message(role: .user, content: type.description)
         let body = try? JSONEncoder().encode(Body(messages: [systemMessage, userMessage]))
-        return HTTP.request(url: url, method: .post, fields: headerFields, body: body)
+        return HTTP.request(url: url, method: .post, headers: self.headerFields, body: body)
     }
 }
 
@@ -398,8 +293,8 @@ Field 2: 'result' (Boolean), the answer of the previous question, which can only
 """
     }
     
-    static let headerFields: [String : String] = [
-        HTTP.Header.Field.contentType.rawValue: HTTP.Header.Value.applicationJson.description
+    static let headerFields:  [HTTP.Header.Field: HTTP.Header.Value] = [
+        .contentType: .applicationJson
     ]
     
     struct Body: Codable {
@@ -417,7 +312,7 @@ Field 2: 'result' (Boolean), the answer of the previous question, which can only
             throw API.Error.invalidURL
         }
         let body = try? JSONEncoder().encode(Body(contents: Content(parts: Part(text: text))))
-        return HTTP.request(url: url, method: .post, fields: headerFields, body: body)
+        return HTTP.request(url: url, method: .post, headers: self.headerFields, body: body)
     }
     
 }

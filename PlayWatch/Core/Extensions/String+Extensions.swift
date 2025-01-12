@@ -52,3 +52,8 @@ extension Optional where Wrapped == String {
     var isNotNil: Bool { self != nil }
     var orEmpty: String { self ?? String.empty }
 }
+
+// MARK: - LocalizedStringResource
+extension LocalizedStringResource {
+    static let empty: LocalizedStringResource = ""
+}

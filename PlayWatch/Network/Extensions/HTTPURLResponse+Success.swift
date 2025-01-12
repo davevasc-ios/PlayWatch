@@ -9,6 +9,6 @@ import Foundation
 
 extension HTTPURLResponse {
     var isSuccess: Bool {
-        return self.statusCode == HTTP.successCode
+        return self.statusCode == 200
     }
 }

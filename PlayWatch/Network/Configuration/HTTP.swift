@@ -8,12 +8,12 @@
 import Foundation
 
 struct HTTP {
-    static let timeoutInterval: Double = 25
-    static let successCode = 200
     
     enum Method: String {
         case get = "GET"
         case post = "POST"
+        case put = "PUT"
+        case delete = "DELETE"
     }
     
     struct Header {
@@ -38,12 +38,26 @@ struct HTTP {
         }
     }
     
-    static func request(url: URL, method: Method, fields: [String : String], body: Data? = nil) -> URLRequest {
+    static func request(
+        url: URL,
+        method: Method = .get,
+        headers:  [Header.Field: Header.Value],
+        body: Data? = nil,
+        timeout: TimeInterval = Configuration.defaultTimeout
+    ) -> URLRequest {
         var request = URLRequest(url: url)
         request.httpMethod = method.rawValue
-        request.timeoutInterval = self.timeoutInterval
-        request.allHTTPHeaderFields = fields
+        request.timeoutInterval = timeout
+        request.allHTTPHeaderFields = headers.toHTTPHeaderFields
         request.httpBody = body
         return request
     }
 }
+
+// MARK: - Configuration
+extension HTTP {
+    struct Configuration {
+        static let defaultTimeout: TimeInterval = 25
+    }
+}
+
