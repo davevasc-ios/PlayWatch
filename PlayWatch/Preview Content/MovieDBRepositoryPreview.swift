@@ -9,6 +9,9 @@ import Foundation
 
 struct MovieDBRepositoryPreview: MovieDBRepositoryProtocol {
     func createRequest(config: MediaRequestConfig) throws -> URLRequest {
-        try Bundle.main.jsonURLRequest(for: config.mediaType.testResource)
+        guard let url = Bundle.main.url(forResource: config.mediaType.testResource, withExtension: Constants.Resource.Extension.json) else {
+            throw API.Error.invalidURL
+        }
+        return URLRequest(url: url)
     }
 }

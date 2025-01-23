@@ -149,7 +149,7 @@ struct MediaDetailView: View {
             HStack {
                 Text("Date: ")
                 if let date = item.date {
-                    Text(date.toString())
+                    Text(date.toString(format: .display))
                 }
             }
             HStack {

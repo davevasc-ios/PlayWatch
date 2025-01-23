@@ -56,7 +56,7 @@ struct SearchCellView: View {
                 Text(item.name)
                 HStack {
                     Text(item.type.rawValue)
-                    Text(item.date?.toString() ?? "")
+                    Text(item.date?.toString(format: .display) ?? "")
                 }
             }
         }

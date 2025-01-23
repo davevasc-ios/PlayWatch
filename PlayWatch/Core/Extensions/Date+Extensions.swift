@@ -8,9 +8,12 @@
 import Foundation
 
 extension Date {
-    func toString() -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "dd-MM-yyyy"
-        return formatter.string(from: self)
+    func toString(daysOffset: Int = 0, format formatType: Constants.DateFormatType = .repository) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = formatType.rawValue
+        guard let modifiedDate = Calendar.current.date(byAdding: .day, value: daysOffset, to: self) else {
+            return .empty
+        }
+        return dateFormatter.string(from: modifiedDate)
     }
 }

@@ -23,7 +23,7 @@ extension Media {
         type: .movie,
         imageUrl: MovieDB.getImageUrl(file: "/8cdWjvZQUExUUTzyp4t6EDMubfO.jpg", size: .medium),
         name: "Deadpool & Wolverine",
-        date: MovieDB.getDate(date: "2024-07-24"),
+        date: "2024-07-24".toDate(),
         rating: 7.71
     )
 }

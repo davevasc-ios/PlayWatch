@@ -41,12 +41,14 @@
 		5576C3B02BB9C10D00E511DE /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576C3AF2BB9C10D00E511DE /* API.swift */; };
 		5576C3B22BB9C7C300E511DE /* APIKey-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5576C3B12BB9C7C300E511DE /* APIKey-Info.plist */; };
 		557712FB2D29A64700302F8A /* URLRequest+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 557712FA2D29A64700302F8A /* URLRequest+Extensions.swift */; };
-		557712FF2D29AB3F00302F8A /* Bundle+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 557712FE2D29AB3F00302F8A /* Bundle+Extensions.swift */; };
 		557713082D2ACF3B00302F8A /* AppLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 557713072D2ACF3B00302F8A /* AppLanguage.swift */; };
 		5577130A2D2ACF4B00302F8A /* AppRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 557713092D2ACF4B00302F8A /* AppRegion.swift */; };
 		557713112D2AEA6500302F8A /* API+Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 557713102D2AEA6500302F8A /* API+Errors.swift */; };
 		557713162D32C31800302F8A /* Dictionary+HTTPHeaders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 557713152D32C31800302F8A /* Dictionary+HTTPHeaders.swift */; };
-		5577131C2D3329EE00302F8A /* MovieDBEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5577131B2D3329EE00302F8A /* MovieDBEndpoint.swift */; };
+		557713202D397E3200302F8A /* RandomUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5577131F2D397E3200302F8A /* RandomUtils.swift */; };
+		557713222D416F5700302F8A /* URLConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 557713212D416F5700302F8A /* URLConfig.swift */; };
+		557713242D416F9400302F8A /* URLRequestConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 557713232D416F9400302F8A /* URLRequestConfig.swift */; };
+		557713262D41703900302F8A /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 557713252D41703900302F8A /* Endpoint.swift */; };
 		557F55642BE425DE00EEAA2F /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 557F55632BE425DE00EEAA2F /* Localizable.xcstrings */; };
 		557F55662BE4267B00EEAA2F /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 557F55652BE4267B00EEAA2F /* SettingsView.swift */; };
 		55802B852D134B0500C78317 /* PlayWatchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55802B832D134B0500C78317 /* PlayWatchTests.swift */; };
@@ -131,12 +133,14 @@
 		5576C3AF2BB9C10D00E511DE /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		5576C3B12BB9C7C300E511DE /* APIKey-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "APIKey-Info.plist"; sourceTree = "<group>"; };
 		557712FA2D29A64700302F8A /* URLRequest+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLRequest+Extensions.swift"; sourceTree = "<group>"; };
-		557712FE2D29AB3F00302F8A /* Bundle+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Extensions.swift"; sourceTree = "<group>"; };
 		557713072D2ACF3B00302F8A /* AppLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLanguage.swift; sourceTree = "<group>"; };
 		557713092D2ACF4B00302F8A /* AppRegion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRegion.swift; sourceTree = "<group>"; };
 		557713102D2AEA6500302F8A /* API+Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+Errors.swift"; sourceTree = "<group>"; };
 		557713152D32C31800302F8A /* Dictionary+HTTPHeaders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+HTTPHeaders.swift"; sourceTree = "<group>"; };
-		5577131B2D3329EE00302F8A /* MovieDBEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDBEndpoint.swift; sourceTree = "<group>"; };
+		5577131F2D397E3200302F8A /* RandomUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomUtils.swift; sourceTree = "<group>"; };
+		557713212D416F5700302F8A /* URLConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLConfig.swift; sourceTree = "<group>"; };
+		557713232D416F9400302F8A /* URLRequestConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLRequestConfig.swift; sourceTree = "<group>"; };
+		557713252D41703900302F8A /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
 		557F55632BE425DE00EEAA2F /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		557F55652BE4267B00EEAA2F /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		55802B832D134B0500C78317 /* PlayWatchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayWatchTests.swift; sourceTree = "<group>"; };
@@ -370,7 +374,6 @@
 		557713022D2AB61600302F8A /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				557712FE2D29AB3F00302F8A /* Bundle+Extensions.swift */,
 				55E4CC7F2BCA9A050048EF56 /* String+Extensions.swift */,
 				55E4CC812BCADB2C0048EF56 /* Color+Extensions.swift */,
 				55AFE6072BD5160E0015E411 /* Date+Extensions.swift */,
@@ -425,6 +428,7 @@
 			isa = PBXGroup;
 			children = (
 				55B0C1702CCBE7C9002C563F /* JSONDecoder+SnakeCase.swift */,
+				5577131F2D397E3200302F8A /* RandomUtils.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -452,6 +456,8 @@
 				5576C3AF2BB9C10D00E511DE /* API.swift */,
 				55B2540E2BC29ACC006ACD43 /* HTTP.swift */,
 				5576C3B12BB9C7C300E511DE /* APIKey-Info.plist */,
+				557713212D416F5700302F8A /* URLConfig.swift */,
+				557713232D416F9400302F8A /* URLRequestConfig.swift */,
 			);
 			path = Configuration;
 			sourceTree = "<group>";
@@ -491,6 +497,7 @@
 		557713172D33296600302F8A /* Endpoints */ = {
 			isa = PBXGroup;
 			children = (
+				557713252D41703900302F8A /* Endpoint.swift */,
 				557713182D3329A700302F8A /* MovieDB */,
 				557713192D3329AE00302F8A /* OpenAI */,
 				5577131A2D3329B500302F8A /* Gemini */,
@@ -501,7 +508,6 @@
 		557713182D3329A700302F8A /* MovieDB */ = {
 			isa = PBXGroup;
 			children = (
-				5577131B2D3329EE00302F8A /* MovieDBEndpoint.swift */,
 			);
 			path = MovieDB;
 			sourceTree = "<group>";
@@ -705,6 +711,7 @@
 				55651E1B2D0F584C00ABD48B /* HTTPURLResponse+Success.swift in Sources */,
 				555F69D62BF6841F000DF9B9 /* MockData.swift in Sources */,
 				557713082D2ACF3B00302F8A /* AppLanguage.swift in Sources */,
+				557713242D416F9400302F8A /* URLRequestConfig.swift in Sources */,
 				5581067D2C00F75300D7A96D /* EnvironmentValues+ScreenSize.swift in Sources */,
 				55B0C1712CCBE7C9002C563F /* JSONDecoder+SnakeCase.swift in Sources */,
 				557713162D32C31800302F8A /* Dictionary+HTTPHeaders.swift in Sources */,
@@ -723,6 +730,7 @@
 				55B0C16F2CCAA86D002C563F /* MovieDBRepository.swift in Sources */,
 				55D425CB2BCC4669001FA57C /* Tab.swift in Sources */,
 				55E51A3E2BDEB26600A8541B /* GameViewModel.swift in Sources */,
+				557713222D416F5700302F8A /* URLConfig.swift in Sources */,
 				557F55662BE4267B00EEAA2F /* SettingsView.swift in Sources */,
 				55B2540F2BC29ACC006ACD43 /* HTTP.swift in Sources */,
 				55D8416A2CD79889006349C4 /* GameUseCase.swift in Sources */,
@@ -735,17 +743,17 @@
 				557712FB2D29A64700302F8A /* URLRequest+Extensions.swift in Sources */,
 				55B254112BC2AD47006ACD43 /* GeminiResponse.swift in Sources */,
 				55C3F1912C6E3140006DE59B /* EventHandler.swift in Sources */,
+				557713202D397E3200302F8A /* RandomUtils.swift in Sources */,
 				5551A8302D11985D00AFC04A /* MediaResponse.swift in Sources */,
 				55802B892D145BD100C78317 /* MultiAIRepositoryPreview.swift in Sources */,
 				55651E152D0F463E00ABD48B /* Data+Extensions.swift in Sources */,
+				557713262D41703900302F8A /* Endpoint.swift in Sources */,
 				55AFE60E2BD5C51F0015E411 /* SearchView.swift in Sources */,
 				55D425CF2BCC4AFF001FA57C /* TabBarView.swift in Sources */,
 				55212BB12BA7A0C400080A71 /* PlayWatchApp.swift in Sources */,
 				274B58742D1ACEF100420F6E /* MediaRequestConfig.swift in Sources */,
 				55651E192D0F581900ABD48B /* URLResponse+HTTP.swift in Sources */,
 				55D841642CD7946B006349C4 /* MediaUseCase.swift in Sources */,
-				557712FF2D29AB3F00302F8A /* Bundle+Extensions.swift in Sources */,
-				5577131C2D3329EE00302F8A /* MovieDBEndpoint.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

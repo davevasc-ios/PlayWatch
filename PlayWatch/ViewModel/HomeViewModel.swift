@@ -21,11 +21,7 @@ final class HomeViewModel: EventHandler {
     @ObservationIgnored private let mediaUseCase: MediaUseCaseProtocol
     
     // MARK: - Initialization
-    init(
-        mediaUseCase: MediaUseCaseProtocol = MediaUseCase(
-            mediaRepository: MovieDBRepository()
-        )
-    ) {
+    init(mediaUseCase: MediaUseCaseProtocol = MediaUseCase()) {
         self.mediaUseCase = mediaUseCase
     }
     

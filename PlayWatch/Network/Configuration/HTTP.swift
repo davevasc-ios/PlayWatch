@@ -60,4 +60,3 @@ extension HTTP {
         static let defaultTimeout: TimeInterval = 25
     }
 }
-

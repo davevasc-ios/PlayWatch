@@ -20,10 +20,13 @@ extension MovieDBRepositoryProtocol {
 }
 
 struct MovieDBRepository: MovieDBRepositoryProtocol {
+    let endpoint: EndpointProtocol
+    
+    init(endpoint: EndpointProtocol = MovieDBEndpoint()) {
+        self.endpoint = endpoint
+    }
+    
     func createRequest(config: MediaRequestConfig) throws -> URLRequest {
-        HTTP.request(
-            url: try MovieDBEndpoint.mediaDataUrl(type: config.mediaType, locale: config.locale, searchText: config.searchQuery),
-            headers: MovieDBEndpoint.headerFields
-        )
+        try self.endpoint.createRequest(config: config)
     }
 }

@@ -36,4 +36,8 @@ extension MediaUseCaseProtocol {
 
 struct MediaUseCase: MediaUseCaseProtocol {
     let mediaRepository: MovieDBRepositoryProtocol
+    
+    init(mediaRepository: MovieDBRepositoryProtocol = MovieDBRepository()) {
+        self.mediaRepository = mediaRepository
+    }
 }

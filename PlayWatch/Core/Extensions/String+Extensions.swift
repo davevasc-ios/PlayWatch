@@ -46,6 +46,15 @@ extension String {
     }
 }
 
+// MARK: - Date Conversion
+extension String {
+    func toDate(format: Constants.DateFormatType = .repository) -> Date? {
+        let formatter = DateFormatter()
+        formatter.dateFormat = format.rawValue
+        return formatter.date(from: self)
+    }
+}
+
 // MARK: - Optional Extensions
 extension Optional where Wrapped == String {
     var isNil: Bool { self == nil }

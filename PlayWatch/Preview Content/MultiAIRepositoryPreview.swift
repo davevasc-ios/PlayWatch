@@ -9,6 +9,9 @@ import Foundation
 
 struct MultiAIRepositoryPreview: MultiAIRepositoryProtocol {
     func createRequest(config: GameRequestConfig) throws -> URLRequest {
-        try Bundle.main.jsonURLRequest(for: config.aiServer.testResource)
+        guard let url = Bundle.main.url(forResource: config.aiServer.testResource, withExtension: Constants.Resource.Extension.json) else {
+            throw API.Error.invalidURL
+        }
+        return URLRequest(url: url)
     }
 }
