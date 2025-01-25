@@ -22,8 +22,6 @@ struct Constants {
     static let voteCountNewGte = 4
     static let daysOffset = 14
     
-    static let baseURL = "https://api.themoviedb.org/3/"
-    static let imageURL =  "https://image.tmdb.org/t/p/"
     static let paths: [MovieDB.FetchType: String] = [
         .cinemaPlaying: "\(MediaType.movie)/now_playing",
         .cinemaUpcomimg: "\(MediaType.movie)/upcoming",
@@ -37,17 +35,6 @@ struct Constants {
         .searchAll: "search/multi",
         .randomMovies: "discover/\(MediaType.movie)"
     ]
-    static let headers: [HTTP.Header.Field: HTTP.Header.Value] = [
-        .accept: .applicationJson,
-        .authorization: .bearer(.movieDB)
-    ]
-    
-    
-    
-    
-    
-    
-    
     
     
     enum AIServer: String, CaseIterable, Identifiable {
@@ -107,6 +94,17 @@ struct Constants {
             static let json = "json"
         }
     }
+    
+    
+    static func quizPrompt(_ movies: String, _ language: String) -> String {
+"""
+Give me a just a valid JSON Array of following structure, each one, about one of these movies (no 'movies' field, no 'data' field, just array): \(movies).
+
+Field 1: 'question' (String), a very difficult and original question whose answer is true or false (Ensure that the number of true answers is roughly equal to the number of false answers), about the corresponding movie, in '\(language)' language
+Field 2: 'result' (Boolean), the answer of the previous question, which can only be true or false
+"""
+    }
+    
 }
 
 // MARK: - MovieDB API Constants
@@ -265,112 +263,12 @@ struct MovieDB {
     // MARK: - Public Functions
     static func getImageUrl(file: String?, size: ImageSize) -> URL? {
         guard let file else { return nil }
-        return URL(string: "\(MovieDBURLConfig.imageURL)\(size.rawValue)\(file)")
+        return URL(string: "\(MovieDBEndpoint.imageURL)\(size.rawValue)\(file)")
     }
 }
 
 
 
-struct OpenAI: Codable {
-    
-    static let endpoint = "https://api.openai.com/v1/chat/completions"
-    static let systemModel = "gpt-3.5-turbo"
-    
-    static let headerFields:  [HTTP.Header.Field: HTTP.Header.Value] = [
-        .contentType: .applicationJson,
-        .authorization: .bearer(.openAI)
-    ]
-    
-    enum SystemContent: String {
-        case json = "You are an assistant that only generates a valid JSON files. You will always return only a valid JSON file, don’t write nothing outside from JSON file.",
-             translator = "You are an assistant that only translate one text in other. You will always return only a valid translated text, don’t write nothing outside from a valid translation text."
-    }
-    
-    enum UserPrompt: CustomStringConvertible {
-        case quiz(String, String),
-             text(String)
-        
-        var description: String {
-            switch self {
-            case .quiz(let movies, let language):
-                return
-    """
-    Give me a just a valid JSON Array of following structure, each one, about one of these movies (no 'movies' field, no 'data' field, just array): \(movies).
-    
-    Field 1: 'question' (String), a very difficult and original question whose answer is true or false (Ensure that the number of true answers is roughly equal to the number of false answers), about the corresponding movie, in '\(language)' language
-    Field 2: 'result' (Boolean), the answer of the previous question, which can only be true or false
-    """
-            case .text(let text):
-                return text
-            }
-        }
-    }
-    
-    struct Body: Codable {
-        var model: String = systemModel
-        let messages: [Message]
-    }
-    struct Message: Codable {
-        let role: Role
-        let content: String
-    }
-    enum Role: String, Codable {
-        case system, user
-    }
-    
-    static func request(type: UserPrompt) throws -> URLRequest {
-        guard let url = URL(string: self.endpoint) else {
-            throw API.Error.invalidURL
-        }
-        var systemContent = ""
-        switch type {
-        case .quiz:
-            systemContent = SystemContent.json.rawValue
-        case .text:
-            systemContent = SystemContent.translator.rawValue
-        }
-        let systemMessage = Message(role: .system, content: systemContent)
-        let userMessage = Message(role: .user, content: type.description)
-        let body = try? JSONEncoder().encode(Body(messages: [systemMessage, userMessage]))
-        return HTTP.request(url: url, method: .post, headers: self.headerFields, body: body)
-    }
-}
 
 
-struct Gemini: Codable {
-    
-    static let systemModel = "gemini-pro"
-    static let endpoint = "https://generativelanguage.googleapis.com/v1beta/models/\(systemModel):generateContent?key=\(API.Key.gemini)"
-    
-    static func quizPrompt(_ movies: String, _ language: String) -> String {
-"""
-Give me a just a valid JSON Array of following structure, each one, about one of these movies (no 'movies' field, no 'data' field, just array): \(movies).
 
-Field 1: 'question' (String), a very difficult and original question whose answer is true or false (Ensure that the number of true answers is roughly equal to the number of false answers), about the corresponding movie, in '\(language)' language
-Field 2: 'result' (Boolean), the answer of the previous question, which can only be true or false
-"""
-    }
-    
-    static let headerFields:  [HTTP.Header.Field: HTTP.Header.Value] = [
-        .contentType: .applicationJson
-    ]
-    
-    struct Body: Codable {
-        let contents: Content
-    }
-    struct Content: Codable {
-        let parts: Part
-    }
-    struct Part: Codable {
-        let text: String
-    }
-    
-    static func request(text: String) throws -> URLRequest {
-        guard let url = URL(string: endpoint) else {
-            throw API.Error.invalidURL
-        }
-        let body = try? JSONEncoder().encode(Body(contents: Content(parts: Part(text: text))))
-        return HTTP.request(url: url, method: .post, headers: self.headerFields, body: body)
-    }
-    
-}

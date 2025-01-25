@@ -31,7 +31,6 @@
 		5551A8362D11B59700AFC04A /* MediaSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5551A8352D11B59700AFC04A /* MediaSection.swift */; };
 		555B26E32C1CC49400B789A1 /* Bool+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555B26E22C1CC49400B789A1 /* Bool+Extensions.swift */; };
 		555C8D1E2D0CA6F400B175E5 /* MediaCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555C8D1D2D0CA6F400B175E5 /* MediaCardView.swift */; };
-		555F69D62BF6841F000DF9B9 /* MockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555F69D52BF6841F000DF9B9 /* MockData.swift */; };
 		555F69D82BF68931000DF9B9 /* Quiz.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555F69D72BF68931000DF9B9 /* Quiz.swift */; };
 		55651E152D0F463E00ABD48B /* Data+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55651E142D0F463E00ABD48B /* Data+Extensions.swift */; };
 		55651E172D0F49DF00ABD48B /* URL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55651E162D0F49DF00ABD48B /* URL+Extensions.swift */; };
@@ -46,9 +45,9 @@
 		557713112D2AEA6500302F8A /* API+Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 557713102D2AEA6500302F8A /* API+Errors.swift */; };
 		557713162D32C31800302F8A /* Dictionary+HTTPHeaders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 557713152D32C31800302F8A /* Dictionary+HTTPHeaders.swift */; };
 		557713202D397E3200302F8A /* RandomUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5577131F2D397E3200302F8A /* RandomUtils.swift */; };
-		557713222D416F5700302F8A /* URLConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 557713212D416F5700302F8A /* URLConfig.swift */; };
-		557713242D416F9400302F8A /* URLRequestConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 557713232D416F9400302F8A /* URLRequestConfig.swift */; };
 		557713262D41703900302F8A /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 557713252D41703900302F8A /* Endpoint.swift */; };
+		5577132A2D45361F00302F8A /* OpenAIBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 557713292D45361F00302F8A /* OpenAIBody.swift */; };
+		5577132C2D453BB800302F8A /* GeminiBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5577132B2D453BB800302F8A /* GeminiBody.swift */; };
 		557F55642BE425DE00EEAA2F /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 557F55632BE425DE00EEAA2F /* Localizable.xcstrings */; };
 		557F55662BE4267B00EEAA2F /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 557F55652BE4267B00EEAA2F /* SettingsView.swift */; };
 		55802B852D134B0500C78317 /* PlayWatchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55802B832D134B0500C78317 /* PlayWatchTests.swift */; };
@@ -123,7 +122,6 @@
 		5551A8352D11B59700AFC04A /* MediaSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaSection.swift; sourceTree = "<group>"; };
 		555B26E22C1CC49400B789A1 /* Bool+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bool+Extensions.swift"; sourceTree = "<group>"; };
 		555C8D1D2D0CA6F400B175E5 /* MediaCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaCardView.swift; sourceTree = "<group>"; };
-		555F69D52BF6841F000DF9B9 /* MockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockData.swift; sourceTree = "<group>"; };
 		555F69D72BF68931000DF9B9 /* Quiz.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Quiz.swift; sourceTree = "<group>"; };
 		55651E142D0F463E00ABD48B /* Data+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Extensions.swift"; sourceTree = "<group>"; };
 		55651E162D0F49DF00ABD48B /* URL+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Extensions.swift"; sourceTree = "<group>"; };
@@ -138,9 +136,9 @@
 		557713102D2AEA6500302F8A /* API+Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+Errors.swift"; sourceTree = "<group>"; };
 		557713152D32C31800302F8A /* Dictionary+HTTPHeaders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+HTTPHeaders.swift"; sourceTree = "<group>"; };
 		5577131F2D397E3200302F8A /* RandomUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomUtils.swift; sourceTree = "<group>"; };
-		557713212D416F5700302F8A /* URLConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLConfig.swift; sourceTree = "<group>"; };
-		557713232D416F9400302F8A /* URLRequestConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLRequestConfig.swift; sourceTree = "<group>"; };
 		557713252D41703900302F8A /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
+		557713292D45361F00302F8A /* OpenAIBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAIBody.swift; sourceTree = "<group>"; };
+		5577132B2D453BB800302F8A /* GeminiBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeminiBody.swift; sourceTree = "<group>"; };
 		557F55632BE425DE00EEAA2F /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		557F55652BE4267B00EEAA2F /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		55802B832D134B0500C78317 /* PlayWatchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayWatchTests.swift; sourceTree = "<group>"; };
@@ -272,7 +270,6 @@
 				550C5F382BBA135E005B853B /* UseCase */,
 				55B0C16D2CCAA840002C563F /* Repository */,
 				557713042D2AB87700302F8A /* Localization */,
-				555F69D42BF68400000DF9B9 /* Mock */,
 				55212BB02BA7A0C400080A71 /* PlayWatchApp.swift */,
 				55212BB42BA7A0C400080A71 /* Item.swift */,
 				55212BB62BA7A0C500080A71 /* Assets.xcassets */,
@@ -328,14 +325,6 @@
 				27D7BC792D21C04300D022D5 /* GameRequestConfig.swift */,
 			);
 			path = Game;
-			sourceTree = "<group>";
-		};
-		555F69D42BF68400000DF9B9 /* Mock */ = {
-			isa = PBXGroup;
-			children = (
-				555F69D52BF6841F000DF9B9 /* MockData.swift */,
-			);
-			path = Mock;
 			sourceTree = "<group>";
 		};
 		557712F92D29A59C00302F8A /* Network */ = {
@@ -456,8 +445,6 @@
 				5576C3AF2BB9C10D00E511DE /* API.swift */,
 				55B2540E2BC29ACC006ACD43 /* HTTP.swift */,
 				5576C3B12BB9C7C300E511DE /* APIKey-Info.plist */,
-				557713212D416F5700302F8A /* URLConfig.swift */,
-				557713232D416F9400302F8A /* URLRequestConfig.swift */,
 			);
 			path = Configuration;
 			sourceTree = "<group>";
@@ -530,6 +517,7 @@
 			isa = PBXGroup;
 			children = (
 				5549D57B2BC0738700B934CD /* OpenAIResponse.swift */,
+				557713292D45361F00302F8A /* OpenAIBody.swift */,
 			);
 			path = OpenAI;
 			sourceTree = "<group>";
@@ -538,6 +526,7 @@
 			isa = PBXGroup;
 			children = (
 				55B254102BC2AD47006ACD43 /* GeminiResponse.swift */,
+				5577132B2D453BB800302F8A /* GeminiBody.swift */,
 			);
 			path = Gemini;
 			sourceTree = "<group>";
@@ -709,9 +698,7 @@
 				55802B8E2D146A8300C78317 /* HomeModelLogic.swift in Sources */,
 				55E4CC822BCADB2C0048EF56 /* Color+Extensions.swift in Sources */,
 				55651E1B2D0F584C00ABD48B /* HTTPURLResponse+Success.swift in Sources */,
-				555F69D62BF6841F000DF9B9 /* MockData.swift in Sources */,
 				557713082D2ACF3B00302F8A /* AppLanguage.swift in Sources */,
-				557713242D416F9400302F8A /* URLRequestConfig.swift in Sources */,
 				5581067D2C00F75300D7A96D /* EnvironmentValues+ScreenSize.swift in Sources */,
 				55B0C1712CCBE7C9002C563F /* JSONDecoder+SnakeCase.swift in Sources */,
 				557713162D32C31800302F8A /* Dictionary+HTTPHeaders.swift in Sources */,
@@ -719,6 +706,7 @@
 				5551A8362D11B59700AFC04A /* MediaSection.swift in Sources */,
 				55AFE6082BD5160E0015E411 /* Date+Extensions.swift in Sources */,
 				555B26E32C1CC49400B789A1 /* Bool+Extensions.swift in Sources */,
+				5577132C2D453BB800302F8A /* GeminiBody.swift in Sources */,
 				55651E172D0F49DF00ABD48B /* URL+Extensions.swift in Sources */,
 				27D7BC7A2D21C04300D022D5 /* GameRequestConfig.swift in Sources */,
 				55C3F1932C6E5221006DE59B /* AppManager.swift in Sources */,
@@ -730,7 +718,6 @@
 				55B0C16F2CCAA86D002C563F /* MovieDBRepository.swift in Sources */,
 				55D425CB2BCC4669001FA57C /* Tab.swift in Sources */,
 				55E51A3E2BDEB26600A8541B /* GameViewModel.swift in Sources */,
-				557713222D416F5700302F8A /* URLConfig.swift in Sources */,
 				557F55662BE4267B00EEAA2F /* SettingsView.swift in Sources */,
 				55B2540F2BC29ACC006ACD43 /* HTTP.swift in Sources */,
 				55D8416A2CD79889006349C4 /* GameUseCase.swift in Sources */,
@@ -742,6 +729,7 @@
 				555C8D1E2D0CA6F400B175E5 /* MediaCardView.swift in Sources */,
 				557712FB2D29A64700302F8A /* URLRequest+Extensions.swift in Sources */,
 				55B254112BC2AD47006ACD43 /* GeminiResponse.swift in Sources */,
+				5577132A2D45361F00302F8A /* OpenAIBody.swift in Sources */,
 				55C3F1912C6E3140006DE59B /* EventHandler.swift in Sources */,
 				557713202D397E3200302F8A /* RandomUtils.swift in Sources */,
 				5551A8302D11985D00AFC04A /* MediaResponse.swift in Sources */,

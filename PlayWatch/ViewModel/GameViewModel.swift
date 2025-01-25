@@ -41,12 +41,7 @@ final class GameViewModel: EventHandler {
     @ObservationIgnored private let gameUseCase: GameUseCaseProtocol
     
     // MARK: - Initialization
-    init(
-        gameUseCase: GameUseCaseProtocol = GameUseCase(
-            mediaRepository: MovieDBRepository(),
-            gameRepository: MultiAIRepository()
-        )
-    ) {
+    init(gameUseCase: GameUseCaseProtocol = GameUseCase()) {
         self.gameUseCase = gameUseCase
     }
     

@@ -22,10 +22,13 @@ extension MultiAIRepositoryProtocol {
 }
 
 struct MultiAIRepository: MultiAIRepositoryProtocol {
+    let endpoint: EndpointProtocol
+    
+    init(endpoint: EndpointProtocol = MultiAIEndpoint()) {
+        self.endpoint = endpoint
+    }
+    
     func createRequest(config: GameRequestConfig) throws -> URLRequest {
-        switch config.aiServer {
-        case .openAI: try OpenAI.request(type: OpenAI.UserPrompt.quiz(config.movies, config.language))
-        case .gemini: try Gemini.request(text: Gemini.quizPrompt(config.movies, config.language))
-        }
+        try self.endpoint.createRequest(config: config)
     }
 }

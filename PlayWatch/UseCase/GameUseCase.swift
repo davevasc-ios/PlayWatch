@@ -31,4 +31,10 @@ extension GameUseCaseProtocol {
 struct GameUseCase: GameUseCaseProtocol {
     let mediaRepository: MovieDBRepositoryProtocol
     let gameRepository: MultiAIRepositoryProtocol
+    
+    init(mediaRepository: MovieDBRepositoryProtocol = MovieDBRepository(),
+         gameRepository: MultiAIRepositoryProtocol = MultiAIRepository()) {
+        self.mediaRepository = mediaRepository
+        self.gameRepository = gameRepository
+    }
 }
