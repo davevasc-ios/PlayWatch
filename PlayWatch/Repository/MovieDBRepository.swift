@@ -20,9 +20,9 @@ extension MovieDBRepositoryProtocol {
 }
 
 struct MovieDBRepository: MovieDBRepositoryProtocol {
-    let endpoint: EndpointProtocol
+    let endpoint: MediaEndpointProtocol
     
-    init(endpoint: EndpointProtocol = MovieDBEndpoint()) {
+    init(endpoint: MediaEndpointProtocol = MovieDBEndpoint()) {
         self.endpoint = endpoint
     }
     

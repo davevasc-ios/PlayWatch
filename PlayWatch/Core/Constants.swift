@@ -14,28 +14,7 @@ struct Constants {
         case repository = "yyyy-MM-dd"
         case display = "dd/MM/yyyy"
     }
-    
-    //MARK: - MovieDB Constants
-    static let maxPages = 500
-    static let voteAverageGte = 5
-    static let voteCountQuizGte = 100
-    static let voteCountNewGte = 4
-    static let daysOffset = 14
-    
-    static let paths: [MovieDB.FetchType: String] = [
-        .cinemaPlaying: "\(MediaType.movie)/now_playing",
-        .cinemaUpcomimg: "\(MediaType.movie)/upcoming",
-        .movieTrending: "trending/\(MediaType.movie)/day",
-        .movieNew: "discover/\(MediaType.movie)",
-        .tvTrending: "trending/\(MediaType.tv)/day",
-        .tvNew: "discover/\(MediaType.tv)",
-        .personTrending: "trending/\(MediaType.person)/day",
-        .personPopular: "\(MediaType.person)/popular",
-        .trendingAll: "trending/\(MediaType.all)/day",
-        .searchAll: "search/multi",
-        .randomMovies: "discover/\(MediaType.movie)"
-    ]
-    
+        
     
     enum AIServer: String, CaseIterable, Identifiable {
         case openAI = "OpenAI"
@@ -172,33 +151,6 @@ struct MovieDB {
             default:
                 return Constants.Resource.Name.all
             }
-        }
-        
-        func queryParameters(for locale: MovieDB.Locale, searchText: String?) -> [URLQueryItem] {
-            var queryItems: [URLQueryItem] = [
-                URLQueryItem(name: MovieDB.QueryParams.language.rawValue, value: locale.language)
-            ]
-            switch self {
-            case .cinemaPlaying, .cinemaUpcomimg:
-                queryItems.append(URLQueryItem(name: MovieDB.QueryParams.region.rawValue, value: locale.region))
-            case .movieNew, .tvNew:
-                queryItems.append(URLQueryItem(name: "\(self == .movieNew ? MovieDB.QueryParams.releaseDate.rawValue : MovieDB.QueryParams.firstAirDate.rawValue)\(MovieDB.QueryDirection.gte.rawValue)", value: Date().toString(daysOffset: -Constants.daysOffset)))
-                queryItems.append(URLQueryItem(name: "\(self == .movieNew ? MovieDB.QueryParams.releaseDate.rawValue : MovieDB.QueryParams.firstAirDate.rawValue)\(MovieDB.QueryDirection.lte.rawValue)", value: Date().toString(daysOffset: Constants.daysOffset*2)))
-                queryItems.append(URLQueryItem(name: MovieDB.QueryParams.sortBy.rawValue, value: "\(self == .movieNew ? MovieDB.SortBy.releaseDate.rawValue : MovieDB.SortBy.firstAirDate.rawValue)\(MovieDB.SortDirection.asc.rawValue)"))
-                queryItems.append(URLQueryItem(name: MovieDB.QueryParams.watchRegion.rawValue, value: locale.region))
-                queryItems.append(URLQueryItem(name: MovieDB.QueryParams.withWatchMonetizationTypes.rawValue, value: MovieDB.MonetizationType.flatrate.rawValue))
-                queryItems.append(URLQueryItem(name: "\(MovieDB.QueryParams.voteCount.rawValue)\(MovieDB.QueryDirection.gte.rawValue)", value: String(Constants.voteCountNewGte)))
-            case .searchAll:
-                queryItems.append(URLQueryItem(name: MovieDB.QueryParams.query.rawValue, value: searchText.orEmpty))
-            case .randomMovies:
-                queryItems.append(URLQueryItem(name: MovieDB.QueryParams.page.rawValue, value: String(Int.random(in: 1...Constants.maxPages))))
-                queryItems.append(URLQueryItem(name: "\(MovieDB.QueryParams.releaseDate.rawValue)\(MovieDB.QueryDirection.lte.rawValue)", value: Date().toString()))
-                queryItems.append(URLQueryItem(name: MovieDB.QueryParams.sortBy.rawValue, value: RandomUtils.randomShortBy))
-                queryItems.append(URLQueryItem(name: "\(MovieDB.QueryParams.voteAverage.rawValue)\(MovieDB.QueryDirection.gte.rawValue)", value: String(Constants.voteAverageGte)))
-                queryItems.append(URLQueryItem(name: "\(MovieDB.QueryParams.voteCount.rawValue)\(MovieDB.QueryDirection.gte.rawValue)", value: String(Constants.voteCountQuizGte)))
-            default: break
-            }
-            return queryItems
         }
     }
     

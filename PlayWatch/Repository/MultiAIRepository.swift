@@ -22,13 +22,14 @@ extension MultiAIRepositoryProtocol {
 }
 
 struct MultiAIRepository: MultiAIRepositoryProtocol {
-    let endpoint: EndpointProtocol
-    
-    init(endpoint: EndpointProtocol = MultiAIEndpoint()) {
-        self.endpoint = endpoint
+    private let endpointFactory: AIEndpointFactoryProtocol
+
+    init(endpointFactory: AIEndpointFactoryProtocol = AIEndpointFactory()) {
+        self.endpointFactory = endpointFactory
     }
     
     func createRequest(config: GameRequestConfig) throws -> URLRequest {
-        try self.endpoint.createRequest(config: config)
+        let endpoint = self.endpointFactory.resolveEndpoint(for: config.aiServer)
+        return try endpoint.createRequest(movies: config.movies, language: config.language)
     }
 }
