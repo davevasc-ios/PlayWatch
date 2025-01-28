@@ -10,9 +10,9 @@ protocol MediaUseCaseProtocol: Sendable {
 }
 
 extension MediaUseCaseProtocol {
-    func fetchMediaSections(locale: MovieDB.Locale) async throws -> [MediaSection] {
+    func fetchMediaSections(locale: MediaLocale) async throws -> [MediaSection] {
         try await withThrowingTaskGroup(of: (Int, MediaSection).self) { group in
-            for (index, section) in MovieDB.homeSections.enumerated() {
+            for (index, section) in Constants.homeSections.enumerated() {
                 group.addTask {
                     let config = MediaRequestConfig(mediaType: section, locale: locale)
                     let mediaItems = try await self.mediaRepository.fetchMedia(config: config)
@@ -23,12 +23,12 @@ extension MediaUseCaseProtocol {
         }.sorted(by: { $0.0 < $1.0 }).map { $0.1 }
     }
     
-    func fetchTrendingMedia(locale: MovieDB.Locale) async throws -> [Media] {
+    func fetchTrendingMedia(locale: MediaLocale) async throws -> [Media] {
         let config = MediaRequestConfig(mediaType: .trendingAll, locale: locale)
         return try await self.mediaRepository.fetchMedia(config: config)
     }
     
-    func fetchSearchMedia(locale: MovieDB.Locale, searchText: String) async throws -> [Media] {
+    func fetchSearchMedia(locale: MediaLocale, searchText: String) async throws -> [Media] {
         let config = MediaRequestConfig(mediaType: .searchAll, locale: locale, searchQuery: searchText)
         return try await self.mediaRepository.fetchMedia(config: config)
     }

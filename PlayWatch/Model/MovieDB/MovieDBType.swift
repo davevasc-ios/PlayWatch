@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum MediaType: String, Codable {
+enum MovieDBType: String, Codable {
     case movie,
          tv,
          person,

@@ -9,7 +9,7 @@ import Foundation
 
 struct Media: Identifiable, Hashable {
     let id: Int
-    let type: MediaType
+    let type: MovieDBType
     let imageUrl: URL?
     let name: String
     let date: Date?
@@ -21,7 +21,7 @@ extension Media {
     static let test = Media(
         id: 533535,
         type: .movie,
-        imageUrl: MovieDB.getImageUrl(file: "/8cdWjvZQUExUUTzyp4t6EDMubfO.jpg", size: .medium),
+        imageUrl: MovieDBUtils.getImageURL(file: "/8cdWjvZQUExUUTzyp4t6EDMubfO.jpg", size: .small),
         name: "Deadpool & Wolverine",
         date: "2024-07-24".toDate(),
         rating: 7.71

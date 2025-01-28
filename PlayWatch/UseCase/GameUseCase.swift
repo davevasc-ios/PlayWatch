@@ -13,7 +13,7 @@ protocol GameUseCaseProtocol {
 }
 
 extension GameUseCaseProtocol {
-    func fetchGameQuiz(aiServer: Constants.AIServer, mediaLocale: MovieDB.Locale) async throws -> [GameQuiz] {
+    func fetchGameQuiz(aiServer: Constants.AIServer, mediaLocale: MediaLocale) async throws -> [GameQuiz] {
         let mediaConfig = MediaRequestConfig(mediaType: .randomMovies, locale: mediaLocale)
         let randomMovies = try await self.mediaRepository.fetchMedia(config: mediaConfig).filterWithImage()
         guard randomMovies.count == Constants.Game.numberOfQuizzes else {

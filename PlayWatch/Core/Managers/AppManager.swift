@@ -67,9 +67,9 @@ final class AppManager {
         Locale(identifier: "\(self.appLanguage.languageCode)-\(self.appRegion.regionCode)")
     }
     
-    var mediaLocale: MovieDB.Locale {
-        MovieDB.Locale(name: self.appLanguage.name,
-                       code: self.appLanguage.languageCode,
-                       region: self.appRegion.regionCode)
+    var mediaLocale: MediaLocale {
+        MediaLocale(name: self.appLanguage.name,
+                    code: self.appLanguage.languageCode,
+                    region: self.appRegion.regionCode)
     }
 }

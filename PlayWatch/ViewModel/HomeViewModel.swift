@@ -17,7 +17,7 @@ final class HomeViewModel: EventHandler {
     private(set) var state: API.Status = .empty
     
     // MARK: - Private Properties
-    @ObservationIgnored private var locale = MovieDB.Locale()
+    @ObservationIgnored private var locale = MediaLocale()
     @ObservationIgnored private let mediaUseCase: MediaUseCaseProtocol
     
     // MARK: - Initialization
@@ -27,9 +27,9 @@ final class HomeViewModel: EventHandler {
     
     // MARK: - Event Handling
     enum Event {
-        case viewAppear(MovieDB.Locale),
+        case viewAppear(MediaLocale),
              refreshData,
-             reloadData(MovieDB.Locale),
+             reloadData(MediaLocale),
              changeSearch(String),
              changeTrending
     }
@@ -52,7 +52,7 @@ final class HomeViewModel: EventHandler {
     
     // MARK: - Private Methods
     @MainActor
-    private func start(locale: MovieDB.Locale? = nil) {
+    private func start(locale: MediaLocale? = nil) {
         if let locale = locale {
             self.locale = locale
         }
@@ -86,7 +86,7 @@ final class HomeViewModel: EventHandler {
     }
     
     @MainActor
-    private func reload(locale: MovieDB.Locale) {
+    private func reload(locale: MediaLocale) {
         if state != .loading {
             self.clean()
             self.start(locale: locale)

@@ -33,8 +33,8 @@ extension MediaDTO {
         )
     }
     
-    private var resolvedMediaType: MediaType {
-        if let mediaType = self.mediaType.flatMap(MediaType.init) {
+    private var resolvedMediaType: MovieDBType {
+        if let mediaType = self.mediaType.flatMap(MovieDBType.init) {
             return mediaType
         } else if self.firstAirDate.isNotNil {
             return .tv
@@ -46,7 +46,7 @@ extension MediaDTO {
     
     private var resolvedImageUrl: URL? {
         let path = self.posterPath?.ifNotEmpty ?? self.profilePath?.ifNotEmpty
-        return MovieDB.getImageUrl(file: path, size: .medium)
+        return MovieDBUtils.getImageURL(file: path)
     }
     
     private var resolvedName: String {

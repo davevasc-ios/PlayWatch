@@ -17,6 +17,7 @@ struct HTTP {
     }
     
     struct Header {
+        
         enum Field: String {
             case authorization = "Authorization",
                  accept = "Accept",
@@ -37,22 +38,10 @@ struct HTTP {
             }
         }
     }
-    
-    // TODO: - DUDA: cambiar a tipos custom? en toda la app voy a usar los custom siempre, no?
-    static func request(
-        url: URL,
-        method: String,
-        headers: [String : String],
-        body: Data? = nil,
-        timeout: TimeInterval = Configuration.defaultTimeout
-    ) -> URLRequest {
-        var request = URLRequest(url: url)
-        request.httpMethod = method
-        request.timeoutInterval = timeout
-        request.allHTTPHeaderFields = headers
-        request.httpBody = body
-        return request
-    }
+}
+
+// MARK: - HTTP Methods
+extension HTTP {
     
     static func url(
         baseURL: String,
@@ -60,6 +49,7 @@ struct HTTP {
         queryItems: [URLQueryItem]? = nil,
         apiKey: String? = nil
     ) throws -> URL {
+        
         guard var components = URLComponents(string: baseURL) else {
             throw API.Error.invalidURL
         }
@@ -76,16 +66,55 @@ struct HTTP {
         }
         return url
     }
+    
+    static func request(
+        url: URL,
+        method: Method,
+        headers: [Header.Field : Header.Value],
+        body: Data? = nil,
+        timeout: TimeInterval = Configuration.defaultTimeout
+    ) -> URLRequest {
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = method.rawValue
+        request.timeoutInterval = timeout
+        request.allHTTPHeaderFields = headers.toHTTPHeaderFields
+        request.httpBody = body
+        return request
+    }
 }
 
 // MARK: - Configuration
 extension HTTP {
+    
     struct Configuration {
+        
         static let defaultTimeout: TimeInterval = 25
     }
 }
 
-// MARK: - QueryItem Optional
+// MARK: - QueryItem Optional Extension
 extension Optional where Wrapped == [URLQueryItem] {
+    
     var orEmpty: [URLQueryItem] { self ?? [] }
+}
+
+// MARK: - QueryItem Extension
+extension URLQueryItem {
+    
+    init(_ param: MovieDBSorting.QueryParams, _ value: String?) {
+        self.init(name: param.rawValue, value: value)
+    }
+    
+    init(_ param: MovieDBSorting.QueryParams, _ sort: MovieDBSorting.QueryDirection, _ value: String?) {
+        self.init(name: param.rawValue + sort.rawValue, value: value)
+    }
+    
+    init(_ param: MovieDBSorting.QueryParams, _ value: MovieDBSorting.SortBy, _ sort: MovieDBSorting.SortDirection) {
+        self.init(name: param.rawValue, value: value.rawValue + sort.rawValue)
+    }
+    
+    init(_ param: MovieDBSorting.QueryParams, _ value: MovieDBSorting.MonetizationType) {
+        self.init(name: param.rawValue, value: value.rawValue)
+    }
 }
