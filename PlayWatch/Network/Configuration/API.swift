@@ -14,19 +14,18 @@ struct API {
         static let movieDB = (key: "MOVIEDB_API_KEY", web: "https://developer.themoviedb.org/reference/intro/getting-started")
         static let openAI = (key: "OPENAI_API_KEY", web: "https://platform.openai.com/api-keys")
         static let gemini = (key: "GEMINI_API_KEY", web: "https://ai.google.dev/tutorials/setup")
+        static let deepSeek = (key: "DEEP_SEEK_API_KEY", web: "https://api-docs.deepseek.com/api/deepseek-api")
     }
     
     enum Key: String, CustomStringConvertible {
-        case movieDB, openAI, gemini
+        case movieDB, openAI, gemini, deepSeek
         
         var api: (key: String, web: String) {
             switch self {
-            case .movieDB:
-                return Info.movieDB
-            case .openAI:
-                return Info.openAI
-            case .gemini:
-                return Info.gemini
+            case .movieDB: Info.movieDB
+            case .openAI: Info.openAI
+            case .gemini: Info.gemini
+            case .deepSeek: Info.deepSeek
             }
         }
         

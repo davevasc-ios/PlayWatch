@@ -8,8 +8,9 @@
 import Foundation
 
 struct OpenAIBody {
+    
     struct Body: Codable {
-        var model = "gpt-3.5-turbo"
+        let model: String
         let messages: [Message]
     }
     struct Message: Codable {
@@ -42,12 +43,12 @@ struct OpenAIBody {
 
 // MARK: - Encoding
 extension OpenAIBody {
-    static func encode(movies: String, language: String, using encoder: JSONEncoder = JSONEncoder()) throws -> Data {
+    static func encode(model: String, movies: String, language: String, using encoder: JSONEncoder = JSONEncoder()) throws -> Data {
         let prompt = UserPrompt.quiz(movies, language)
         let system = Message(role: .system, content: SystemContent.json.rawValue)
         let user = Message(role: .user, content: prompt.description)
         do {
-            return try encoder.encode(Body(messages: [system, user]))
+            return try encoder.encode(Body(model: model, messages: [system, user]))
         } catch let decodingError {
             throw API.Error.invalidData(detail: decodingError.localizedDescription)
         }

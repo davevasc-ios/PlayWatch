@@ -30,19 +30,20 @@ struct Constants {
         
         case openAI = "OpenAI"
         case gemini = "Gemini"
+        case deepSeek = "DeepSeek"
         
         var id: Self { self }
         
         var testResource: String {
             switch self {
-            case .openAI: Constants.Resource.Name.openAIResponse
+            case .openAI, .deepSeek: Constants.Resource.Name.openAIResponse
             case .gemini: Constants.Resource.Name.geminiAIResponse
             }
         }
         
         func decodeQuizResponse(from data: Data) throws -> String {
             switch self {
-            case .openAI: try OpenAIResponse.decode(from: data).aiResponseText
+            case .openAI, .deepSeek: try OpenAIResponse.decode(from: data).aiResponseText
             case .gemini: try GeminiResponse.decode(from: data).aiResponseText
             }
         }
