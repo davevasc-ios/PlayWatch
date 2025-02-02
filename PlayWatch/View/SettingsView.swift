@@ -68,7 +68,7 @@ struct SettingsView: View {
                         }
                     }
                     Picker("Server", selection: $appManager.aiServer) {
-                        ForEach(Constants.AIServer.allCases) { server in
+                        ForEach(AIServer.allCases) { server in
                             Text(server.rawValue)
                                 .tag(server)
                         }

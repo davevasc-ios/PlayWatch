@@ -15,7 +15,8 @@ extension MultiAIRepositoryProtocol {
     func fetchQuiz(config: GameRequestConfig) async throws -> [Quiz] {
         let request = try self.createRequest(config: config)
         let data = try await request.fetchData()
-        let quizString = try config.aiServer.decodeQuizResponse(from: data)
+        let decoder = AIResponseDecoderFactory.decoder(for: config.aiServer)
+        let quizString = try decoder.decode(from: data)
         let quizData = try quizString.toUTF8Data()
         return try Quiz.decode(from: quizData)
     }

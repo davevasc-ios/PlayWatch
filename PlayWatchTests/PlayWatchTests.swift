@@ -20,12 +20,13 @@ struct PlayWatchTests {
     
     @Suite("MovieDBRepository Tests", .tags(.repository, .movieDB))
     struct MovieDBTests {
-        let repository = MovieDBRepository.test
+        let repository = MovieDBRepositoryPreview()
         
         @Test("Test data loading from MovieDBRepository")
         func testMovieDBDataLoad() async throws {
             do {
-                let data = try await repository.fetchMedia(type: .randomMovies, locale: .init())
+                let config = MediaRequestConfig(mediaType: .randomMovies, locale: .init())
+                let data = try await repository.fetchMedia(config: config)
                 #expect(data.count == 20, "Expected 20 items, but received \(data.count).")
             } catch {
                 #expect(Bool(false), "Error loading items: \(error).")
@@ -35,11 +36,12 @@ struct PlayWatchTests {
     
     @Suite("MultiAIRepository Tests", .tags(.repository))
     struct MultiAITests {
-        let repository = MultiAIRepository.test
+        let repository = MultiAIRepositoryPreview()
         
-        private func testAIServerDataLoad(_ server: Constants.AIServer) async throws {
+        private func testAIServerDataLoad(_ server: AIServer) async throws {
             do {
-                let quiz = try await repository.fetchQuiz(movies: .empty, language: .empty, aiServer: server)
+                let config = GameRequestConfig(movies: .empty, language: .empty, aiServer: server)
+                let quiz = try await repository.fetchQuiz(config: config)
                 #expect(quiz.count == 20, "Server \(server): Expected 20 items, but received \(quiz.count).")
             } catch {
                 #expect(Bool(false), "Error testing server \(server): \(error).")

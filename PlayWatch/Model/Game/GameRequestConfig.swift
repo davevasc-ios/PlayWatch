@@ -10,5 +10,5 @@ import Foundation
 struct GameRequestConfig {
     let movies: String
     let language: String
-    let aiServer: Constants.AIServer
+    let aiServer: AIServer
 }

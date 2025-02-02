@@ -8,12 +8,12 @@
 import Foundation
 
 protocol AIEndpointFactoryProtocol {
-    func resolveEndpoint(for aiServer: Constants.AIServer) -> AIEndpointProtocol
+    func resolveEndpoint(for aiServer: AIServer) -> AIEndpointProtocol
 }
 
 struct AIEndpointFactory: AIEndpointFactoryProtocol {
     
-    func resolveEndpoint(for aiServer: Constants.AIServer = .openAI) -> AIEndpointProtocol {
+    func resolveEndpoint(for aiServer: AIServer = .openAI) -> AIEndpointProtocol {
         switch aiServer {
         case .openAI: OpenAIEndpoint(baseURL: "https://api.openai.com/v1/chat/completions",
                                      model: "gpt-3.5-turbo",

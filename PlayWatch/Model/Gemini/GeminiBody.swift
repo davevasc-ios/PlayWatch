@@ -22,7 +22,7 @@ struct GeminiBody {
 // MARK: - Encoding
 extension GeminiBody {
     static func encode(movies: String, language: String, using encoder: JSONEncoder = JSONEncoder()) throws -> Data {
-        let prompt = Constants.quizPrompt(movies, language)
+        let prompt = GamePromptGenerator.quizPrompt(movies, language)
         do {
             return try encoder.encode(Body(contents: Content(parts: Part(text: prompt))))
         } catch let decodingError {

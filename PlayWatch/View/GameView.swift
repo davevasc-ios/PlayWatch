@@ -67,7 +67,7 @@ struct GameView: View {
                 }
             case .finish:
                 VStack {
-                    Text("Total: \(gameViewModel.totalPoints)/\(Constants.Game.numberOfQuizzes * Constants.Game.secondsPerQuiz)")
+                    Text("Total: \(gameViewModel.totalPoints)/\(GameConfig.numberOfQuizzes * GameConfig.secondsPerQuiz)")
                         .font(.title)
                         .fontWeight(.heavy)
                         .foregroundColor(.blue)
@@ -129,7 +129,7 @@ struct GameQuestionView: View {
             .fontWeight(.heavy)
             .foregroundStyle(Color.blue.gradient)
             .padding()
-            .frame(height: screenSize.height * Constants.Game.questionHeightScale)
+            .frame(height: screenSize.height * GameConfig.questionHeightScale)
             .minimumScaleFactor(0.5)
     }
 }
@@ -176,7 +176,7 @@ struct GameCardView: View {
         }
         .aspectRatio(2/3, contentMode: .fit)
         .containerRelativeFrame(.horizontal) { length, _ in
-            length * Constants.Game.quizWidhtScale
+            length * GameConfig.quizWidhtScale
         }
         .cornerRadius(10)
         .shadow(radius: 4, y: 4)
@@ -198,17 +198,17 @@ private extension GameCardView {
     
     func swipeRight() {
         xOffset = screenSize.width
-        degrees = Constants.Game.quizCardDegrees
+        degrees = GameConfig.quizCardDegrees
     }
     
     func swipeLeft() {
         xOffset = -screenSize.width
-        degrees = -Constants.Game.quizCardDegrees
+        degrees = -GameConfig.quizCardDegrees
     }
     
     func swipeDown() {
         yOffset = screenSize.height
-        if let randomDegree = Constants.Game.swipeDownDegrees.randomElement() {
+        if let randomDegree = GameConfig.swipeDownDegrees.randomElement() {
             degrees = randomDegree
         }
     }
@@ -251,24 +251,24 @@ private extension GameCardView {
     @MainActor
     func onDragEnded(_ value: _ChangedGesture<DragGesture>.Value) {
         switch value.translation {
-        case let translation where abs(translation.width) <= abs(screenSize.width * Constants.Game.screenCutoffScale) && abs(translation.height) <= abs(translation.height * Constants.Game.screenCutoffScale):
+        case let translation where abs(translation.width) <= abs(screenSize.width * GameConfig.screenCutoffScale) && abs(translation.height) <= abs(translation.height * GameConfig.screenCutoffScale):
             withAnimation(.bouncy(duration: 1, extraBounce: 0.3)) {
                 returnToCenter()
             }
-        case let translation where translation.width >= screenSize.width * Constants.Game.screenCutoffScale:
+        case let translation where translation.width >= screenSize.width * GameConfig.screenCutoffScale:
             gameViewModel.sendAnswer(gameAnswer: .trueAnswer)
             withAnimation(.bouncy(duration: 0.7)) {
                 swipeRight()
             }
             gameViewModel.removeCurrentQuiz(delay: 200000000)
             
-        case let translation where translation.width <= -screenSize.width * Constants.Game.screenCutoffScale:
+        case let translation where translation.width <= -screenSize.width * GameConfig.screenCutoffScale:
             gameViewModel.sendAnswer(gameAnswer: .falseAnswer)
             withAnimation(.bouncy(duration: 0.7)) {
                 swipeLeft()
             }
             gameViewModel.removeCurrentQuiz(delay: 200000000)
-        case let translation where translation.height >= screenSize.width * Constants.Game.screenCutoffScale:
+        case let translation where translation.height >= screenSize.width * GameConfig.screenCutoffScale:
             gameViewModel.sendAnswer(gameAnswer: .noAnswer)
             withAnimation(.bouncy(duration: 0.7)) {
                 swipeDown()
@@ -293,7 +293,7 @@ struct SwipeActionIndicatorView: View {
                     text: value ? "hand.thumbsup.circle" : "hand.thumbsdown.circle",
                     color: value ? .green : .red,
                     degrees: value ? -10 : 10,
-                    opacity: value ? Double(xOffset / (screenSize.width * Constants.Game.screenCutoffScale)) : -Double(xOffset / (screenSize.width * Constants.Game.screenCutoffScale)),
+                    opacity: value ? Double(xOffset / (screenSize.width * GameConfig.screenCutoffScale)) : -Double(xOffset / (screenSize.width * GameConfig.screenCutoffScale)),
                     alignment: value ? .leading : .trailing
                 )
             }

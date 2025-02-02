@@ -33,7 +33,7 @@ struct OpenAIBody {
         var description: String {
             switch self {
             case .quiz(let movies, let language):
-                return Constants.quizPrompt(movies, language)
+                return GamePromptGenerator.quizPrompt(movies, language)
             case .text(let text):
                 return text
             }

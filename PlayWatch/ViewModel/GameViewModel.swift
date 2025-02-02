@@ -28,7 +28,7 @@ final class GameViewModel: EventHandler {
     private(set) var nextQuestion: String = .empty
     private(set) var level: Int = 0
     private(set) var answerFeedback = false
-    private(set) var timeRemaining: Int = Constants.Game.secondsPerQuiz
+    private(set) var timeRemaining: Int = GameConfig.secondsPerQuiz
     private(set) var showCountdown: Bool = false
     private(set) var questionTyping: String = .empty
     
@@ -37,7 +37,7 @@ final class GameViewModel: EventHandler {
     @ObservationIgnored private var success = true
     @ObservationIgnored private var allQuizzes: [GameQuiz] = []
     @ObservationIgnored private var locale = MediaLocale()
-    @ObservationIgnored private var server: Constants.AIServer = .openAI
+    @ObservationIgnored private var server: AIServer = .openAI
     @ObservationIgnored private let gameUseCase: GameUseCaseProtocol
     
     // MARK: - Initialization
@@ -47,7 +47,7 @@ final class GameViewModel: EventHandler {
     
     // MARK: - Event Handling
     enum Event {
-        case viewAppear(MediaLocale, Constants.AIServer),
+        case viewAppear(MediaLocale, AIServer),
              refreshGame,
              cleanGame,
              onSetSwipeAction(GameAnswer?),
@@ -84,13 +84,13 @@ final class GameViewModel: EventHandler {
         self.buttonSwipeAction = nil
         self.nextQuestion = .empty
         self.level = .zero
-        self.timeRemaining = Constants.Game.secondsPerQuiz
+        self.timeRemaining = GameConfig.secondsPerQuiz
         self.showCountdown = false
         self.allQuizzes.removeAll()
     }
     
     @MainActor
-    private func load(locale: MediaLocale? = nil, server: Constants.AIServer? = nil) {
+    private func load(locale: MediaLocale? = nil, server: AIServer? = nil) {
         if let locale = locale {
             self.locale = locale
         }
@@ -106,7 +106,7 @@ final class GameViewModel: EventHandler {
                     self.nextQuestion = self.currentQuizzes.first?.quiz.question ?? .empty
                     self.state = .ready
                 }
-                catch Constants.Game.Error.outOfRange {
+                catch GameError.outOfRange {
                     self.state = .error
                     self.refresh()
                 }
@@ -169,7 +169,7 @@ final class GameViewModel: EventHandler {
         self.totalPoints = self.totalPoints + self.newPoints < 0 ? 0 : self.totalPoints + self.newPoints
         self.answerFeedback = !self.answerFeedback
         
-        guard self.level < Constants.Game.numberOfQuizzes else { return }
+        guard self.level < GameConfig.numberOfQuizzes else { return }
         self.nextQuiz()
     }
 
@@ -206,7 +206,7 @@ final class GameViewModel: EventHandler {
                 await MainActor.run {
                     self.questionTyping.append(character)
                 }
-                try? await Task.sleep(nanoseconds: Constants.Game.typingTextIntervales.randomElement() ?? 50000000)
+                try? await Task.sleep(nanoseconds: GameConfig.typingTextIntervales.randomElement() ?? 50000000)
             }
             await MainActor.run {
                 self.quizReady()
@@ -217,7 +217,7 @@ final class GameViewModel: EventHandler {
     @MainActor
     func startCountdown() {
         self.countdownTask?.cancel()
-        self.timeRemaining = Constants.Game.secondsPerQuiz
+        self.timeRemaining = GameConfig.secondsPerQuiz
         self.showCountdown = true
         self.countdownTask = Task {
             while self.timeRemaining >= 0 && self.showCountdown {

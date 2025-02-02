@@ -14,7 +14,7 @@ final class AppManager {
     
     @ObservationIgnored
     @AppStorage("com.playwatch.storedAIServer")
-    private var storedAIServer: Constants.AIServer = Constants.AIServer.openAI
+    private var storedAIServer: AIServer = AIServer.openAI
 
     @ObservationIgnored
     @AppStorage("com.playwatch.storedAppLanguage")
@@ -25,7 +25,7 @@ final class AppManager {
     private var storedAppRegion: AppRegion = AppRegion.system
     
     @ObservationIgnored
-    var aiServer: Constants.AIServer {
+    var aiServer: AIServer {
         get {
             access(keyPath: \.aiServer)
             return self.storedAIServer
