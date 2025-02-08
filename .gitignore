@@ -118,6 +118,6 @@ xcuserdata
 # https://github.com/johnno1962/injectionforxcode
 
 # Ignore Info file, for protect API_KEYs
-APIKey-Info.plist
+**/APIKey-Info.plist
 
 # End of https://www.toptal.com/developers/gitignore/api/swift,swiftpackagemanager,xcode,xcodeinjection,cocoapods
