@@ -6,10 +6,12 @@
 //
 
 protocol MediaUseCaseProtocol: Sendable {
+    
     var mediaRepository: MovieDBRepositoryProtocol { get }
 }
 
 extension MediaUseCaseProtocol {
+    
     func fetchMediaSections(locale: MediaLocale) async throws -> [MediaSection] {
         try await withThrowingTaskGroup(of: (Int, MediaSection).self) { group in
             for (index, section) in Constants.homeSections.enumerated() {

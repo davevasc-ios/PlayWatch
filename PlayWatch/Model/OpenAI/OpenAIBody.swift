@@ -7,48 +7,47 @@
 
 import Foundation
 
-struct OpenAIBody {
+struct OpenAIBody<Model: OpenAIModelCompatible> where Model.ModelType.RawValue == String {
     
     struct Body: Codable {
-        let model: String
+        let model: Model.ModelType
+        let responseFormat: Output
         let messages: [Message]
+        
+        enum CodingKeys: String, CodingKey {
+            case model
+            case responseFormat = "response_format"
+            case messages
+        }
     }
+    
+    struct Output: Codable {
+        let type: OpenAIOutput
+    }
+
     struct Message: Codable {
         let role: Role
         let content: String
     }
+    
     enum Role: String, Codable {
         case system, user
-    }
-    
-    enum SystemContent: String {
-        case json = "You are an assistant that only generates a valid JSON files. You will always return only a valid JSON file, don’t write nothing outside from JSON file.",
-             translator = "You are an assistant that only translate one text in other. You will always return only a valid translated text, don’t write nothing outside from a valid translation text."
-    }
-    
-    enum UserPrompt: CustomStringConvertible {
-        case quiz(String, String),
-             text(String)
-        
-        var description: String {
-            switch self {
-            case .quiz(let movies, let language):
-                return GamePromptGenerator.quizPrompt(movies, language)
-            case .text(let text):
-                return text
-            }
-        }
     }
 }
 
 // MARK: - Encoding
 extension OpenAIBody {
-    static func encode(model: String, movies: String, language: String, using encoder: JSONEncoder = JSONEncoder()) throws -> Data {
-        let prompt = UserPrompt.quiz(movies, language)
-        let system = Message(role: .system, content: SystemContent.json.rawValue)
-        let user = Message(role: .user, content: prompt.description)
+    
+    static func encode(modelCompatible: Model,
+                       systemMode: OpenAISystemMode,
+                       output: OpenAIOutput,
+                       prompt: PromptType,
+                       using encoder: JSONEncoder = JSONEncoder()) throws -> Data {
+        let systemMessage = Message(role: .system, content: systemMode.rawValue)
+        let userMessage = Message(role: .user, content: prompt.description)
+        let format = Output(type: output)
         do {
-            return try encoder.encode(Body(model: model, messages: [system, user]))
+            return try encoder.encode(Body(model: modelCompatible.model, responseFormat: format, messages: [systemMessage, userMessage]))
         } catch let decodingError {
             throw API.Error.invalidData(detail: decodingError.localizedDescription)
         }

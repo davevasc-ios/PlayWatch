@@ -47,7 +47,7 @@ extension HTTP {
         baseURL: String,
         path: String? = nil,
         queryItems: [URLQueryItem]? = nil,
-        apiKey: String? = nil
+        apiKey: API.Key? = nil
     ) throws -> URL {
         
         guard var components = URLComponents(string: baseURL) else {
@@ -57,7 +57,7 @@ extension HTTP {
             components.path = components.path.appending(path.starts(with: "/") ? path : "/\(path)")
         }
         var finalQueryItems = queryItems.orEmpty
-        if let apiKey, !apiKey.isEmpty {
+        if let apiKey = apiKey?.description, !apiKey.isEmpty {
             finalQueryItems.append(URLQueryItem(name: "key", value: apiKey))
         }
         components.queryItems = finalQueryItems
@@ -88,7 +88,6 @@ extension HTTP {
 extension HTTP {
     
     struct Configuration {
-        
         static let defaultTimeout: TimeInterval = 25
     }
 }

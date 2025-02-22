@@ -18,6 +18,14 @@
 		55212BB52BA7A0C400080A71 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55212BB42BA7A0C400080A71 /* Item.swift */; };
 		55212BB72BA7A0C500080A71 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55212BB62BA7A0C500080A71 /* Assets.xcassets */; };
 		55212BBB2BA7A0C500080A71 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55212BBA2BA7A0C500080A71 /* Preview Assets.xcassets */; };
+		5524A53C2D61FE1C0028C7E8 /* OpenAIModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5524A53B2D61FE1C0028C7E8 /* OpenAIModel.swift */; };
+		5524A53F2D6200A20028C7E8 /* DeepSeekModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5524A53E2D6200A20028C7E8 /* DeepSeekModel.swift */; };
+		5524A5412D6200FE0028C7E8 /* GeminiModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5524A5402D6200FE0028C7E8 /* GeminiModel.swift */; };
+		5524A5432D6202F50028C7E8 /* OpenAIOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5524A5422D6202F50028C7E8 /* OpenAIOutput.swift */; };
+		5524A5452D6203320028C7E8 /* GeminiOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5524A5442D6203320028C7E8 /* GeminiOutput.swift */; };
+		5524A5472D6205830028C7E8 /* OpenAISystemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5524A5462D6205830028C7E8 /* OpenAISystemModel.swift */; };
+		5524A5492D624CCA0028C7E8 /* OpenAIModelCompatible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5524A5482D624CCA0028C7E8 /* OpenAIModelCompatible.swift */; };
+		5524A54B2D625E9E0028C7E8 /* PromptType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5524A54A2D625E9E0028C7E8 /* PromptType.swift */; };
 		55410B772CE0C5E600079680 /* MultiAIRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55410B762CE0C5E600079680 /* MultiAIRepository.swift */; };
 		55410B7A2CE12C5200079680 /* OpenAIResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 55410B792CE12C5200079680 /* OpenAIResponse.json */; };
 		55410B7B2CE12C5200079680 /* GeminiAIResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 55410B782CE12C5200079680 /* GeminiAIResponse.json */; };
@@ -71,7 +79,7 @@
 		558F1C612D4EA96F0087DE99 /* MediaFetchType+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558F1C602D4EA96F0087DE99 /* MediaFetchType+Preview.swift */; };
 		558F1C632D4F803B0087DE99 /* Game+Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558F1C622D4F803B0087DE99 /* Game+Errors.swift */; };
 		558F1C652D4F81340087DE99 /* GameConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558F1C642D4F81340087DE99 /* GameConfig.swift */; };
-		558F1C672D4F83B50087DE99 /* GamePromptGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558F1C662D4F83B50087DE99 /* GamePromptGenerator.swift */; };
+		558F1C672D4F83B50087DE99 /* PromptGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558F1C662D4F83B50087DE99 /* PromptGenerator.swift */; };
 		55AFE6082BD5160E0015E411 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55AFE6072BD5160E0015E411 /* Date+Extensions.swift */; };
 		55AFE60C2BD520E20015E411 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55AFE60B2BD520E20015E411 /* GameView.swift */; };
 		55AFE60E2BD5C51F0015E411 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55AFE60D2BD5C51E0015E411 /* SearchView.swift */; };
@@ -123,6 +131,14 @@
 		55212BB62BA7A0C500080A71 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		55212BB82BA7A0C500080A71 /* PlayWatch.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PlayWatch.entitlements; sourceTree = "<group>"; };
 		55212BBA2BA7A0C500080A71 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		5524A53B2D61FE1C0028C7E8 /* OpenAIModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAIModel.swift; sourceTree = "<group>"; };
+		5524A53E2D6200A20028C7E8 /* DeepSeekModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepSeekModel.swift; sourceTree = "<group>"; };
+		5524A5402D6200FE0028C7E8 /* GeminiModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeminiModel.swift; sourceTree = "<group>"; };
+		5524A5422D6202F50028C7E8 /* OpenAIOutput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAIOutput.swift; sourceTree = "<group>"; };
+		5524A5442D6203320028C7E8 /* GeminiOutput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeminiOutput.swift; sourceTree = "<group>"; };
+		5524A5462D6205830028C7E8 /* OpenAISystemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAISystemModel.swift; sourceTree = "<group>"; };
+		5524A5482D624CCA0028C7E8 /* OpenAIModelCompatible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAIModelCompatible.swift; sourceTree = "<group>"; };
+		5524A54A2D625E9E0028C7E8 /* PromptType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptType.swift; sourceTree = "<group>"; };
 		552CA67A2D0DD8EF005FA521 /* PlayWatchTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PlayWatchTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		55410B762CE0C5E600079680 /* MultiAIRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiAIRepository.swift; sourceTree = "<group>"; };
 		55410B782CE12C5200079680 /* GeminiAIResponse.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = GeminiAIResponse.json; sourceTree = "<group>"; };
@@ -177,7 +193,7 @@
 		558F1C602D4EA96F0087DE99 /* MediaFetchType+Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MediaFetchType+Preview.swift"; sourceTree = "<group>"; };
 		558F1C622D4F803B0087DE99 /* Game+Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Game+Errors.swift"; sourceTree = "<group>"; };
 		558F1C642D4F81340087DE99 /* GameConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameConfig.swift; sourceTree = "<group>"; };
-		558F1C662D4F83B50087DE99 /* GamePromptGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamePromptGenerator.swift; sourceTree = "<group>"; };
+		558F1C662D4F83B50087DE99 /* PromptGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptGenerator.swift; sourceTree = "<group>"; };
 		55AFE6072BD5160E0015E411 /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		55AFE60B2BD520E20015E411 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 		55AFE60D2BD5C51E0015E411 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
@@ -239,8 +255,9 @@
 				5551A8332D11B55000AFC04A /* Media */,
 				5577133C2D4965C400302F8A /* MovieDB */,
 				5551A8342D11B55600AFC04A /* Game */,
-				55802B7D2D11BF4300C78317 /* OpenAI */,
 				55802B7E2D11BF4A00C78317 /* Gemini */,
+				55802B7D2D11BF4300C78317 /* OpenAI */,
+				5524A53D2D6200870028C7E8 /* DeepSeek */,
 				557713062D2AB9EB00302F8A /* Language */,
 			);
 			path = Model;
@@ -329,6 +346,14 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		5524A53D2D6200870028C7E8 /* DeepSeek */ = {
+			isa = PBXGroup;
+			children = (
+				5524A53E2D6200A20028C7E8 /* DeepSeekModel.swift */,
+			);
+			path = DeepSeek;
+			sourceTree = "<group>";
+		};
 		5551A8272D11936300AFC04A /* Components */ = {
 			isa = PBXGroup;
 			children = (
@@ -359,7 +384,6 @@
 				5551A8312D11AF1900AFC04A /* GameQuiz.swift */,
 				27D7BC792D21C04300D022D5 /* GameRequestConfig.swift */,
 				558F1C642D4F81340087DE99 /* GameConfig.swift */,
-				558F1C662D4F83B50087DE99 /* GamePromptGenerator.swift */,
 			);
 			path = Game;
 			sourceTree = "<group>";
@@ -455,6 +479,8 @@
 		5577130B2D2AD85800302F8A /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				558F1C662D4F83B50087DE99 /* PromptGenerator.swift */,
+				5524A54A2D625E9E0028C7E8 /* PromptType.swift */,
 				55B0C1702CCBE7C9002C563F /* JSONDecoder+SnakeCase.swift */,
 				557713382D480C4A00302F8A /* MovieDBUtils.swift */,
 			);
@@ -555,6 +581,10 @@
 			children = (
 				5549D57B2BC0738700B934CD /* OpenAIResponse.swift */,
 				557713292D45361F00302F8A /* OpenAIBody.swift */,
+				5524A53B2D61FE1C0028C7E8 /* OpenAIModel.swift */,
+				5524A5482D624CCA0028C7E8 /* OpenAIModelCompatible.swift */,
+				5524A5422D6202F50028C7E8 /* OpenAIOutput.swift */,
+				5524A5462D6205830028C7E8 /* OpenAISystemModel.swift */,
 			);
 			path = OpenAI;
 			sourceTree = "<group>";
@@ -564,6 +594,8 @@
 			children = (
 				55B254102BC2AD47006ACD43 /* GeminiResponse.swift */,
 				5577132B2D453BB800302F8A /* GeminiBody.swift */,
+				5524A5402D6200FE0028C7E8 /* GeminiModel.swift */,
+				5524A5442D6203320028C7E8 /* GeminiOutput.swift */,
 			);
 			path = Gemini;
 			sourceTree = "<group>";
@@ -750,6 +782,7 @@
 				55E4CC822BCADB2C0048EF56 /* Color+Extensions.swift in Sources */,
 				55651E1B2D0F584C00ABD48B /* HTTPURLResponse+Success.swift in Sources */,
 				557713082D2ACF3B00302F8A /* AppLanguage.swift in Sources */,
+				5524A5472D6205830028C7E8 /* OpenAISystemModel.swift in Sources */,
 				5581067D2C00F75300D7A96D /* EnvironmentValues+ScreenSize.swift in Sources */,
 				55B0C1712CCBE7C9002C563F /* JSONDecoder+SnakeCase.swift in Sources */,
 				557713162D32C31800302F8A /* Dictionary+HTTPHeaders.swift in Sources */,
@@ -773,8 +806,10 @@
 				557F55662BE4267B00EEAA2F /* SettingsView.swift in Sources */,
 				55B2540F2BC29ACC006ACD43 /* HTTP.swift in Sources */,
 				55D8416A2CD79889006349C4 /* GameUseCase.swift in Sources */,
+				5524A53F2D6200A20028C7E8 /* DeepSeekModel.swift in Sources */,
 				55802B872D145AA300C78317 /* MovieDBRepositoryPreview.swift in Sources */,
 				557713322D47E14100302F8A /* AIEndpoints.swift in Sources */,
+				5524A54B2D625E9E0028C7E8 /* PromptType.swift in Sources */,
 				55410B772CE0C5E600079680 /* MultiAIRepository.swift in Sources */,
 				55212BB52BA7A0C400080A71 /* Item.swift in Sources */,
 				55D425D12BCC4C3C001FA57C /* HomeView.swift in Sources */,
@@ -783,19 +818,24 @@
 				557712FB2D29A64700302F8A /* URLRequest+Extensions.swift in Sources */,
 				558F1C5D2D4EA8680087DE99 /* AIServer+Preview.swift in Sources */,
 				55B254112BC2AD47006ACD43 /* GeminiResponse.swift in Sources */,
+				5524A5432D6202F50028C7E8 /* OpenAIOutput.swift in Sources */,
 				558F1C5B2D4EA35B0087DE99 /* AIResponseDecoder.swift in Sources */,
 				558F1C5F2D4EA8930087DE99 /* PreviewConstants.swift in Sources */,
+				5524A5452D6203320028C7E8 /* GeminiOutput.swift in Sources */,
 				5577132A2D45361F00302F8A /* OpenAIBody.swift in Sources */,
 				55C3F1912C6E3140006DE59B /* EventHandler.swift in Sources */,
 				558F1C652D4F81340087DE99 /* GameConfig.swift in Sources */,
 				557713352D47FE8F00302F8A /* MovieDBConstants.swift in Sources */,
-				558F1C672D4F83B50087DE99 /* GamePromptGenerator.swift in Sources */,
+				558F1C672D4F83B50087DE99 /* PromptGenerator.swift in Sources */,
 				557713402D4969E100302F8A /* MovieDBImageSize.swift in Sources */,
+				5524A53C2D61FE1C0028C7E8 /* OpenAIModel.swift in Sources */,
 				558F1C582D4E9AD70087DE99 /* AIServer.swift in Sources */,
 				5551A8302D11985D00AFC04A /* MediaResponse.swift in Sources */,
 				55802B892D145BD100C78317 /* MultiAIRepositoryPreview.swift in Sources */,
 				557713302D47E09A00302F8A /* MediaEndpoints.swift in Sources */,
 				55651E152D0F463E00ABD48B /* Data+Extensions.swift in Sources */,
+				5524A5412D6200FE0028C7E8 /* GeminiModel.swift in Sources */,
+				5524A5492D624CCA0028C7E8 /* OpenAIModelCompatible.swift in Sources */,
 				55AFE60E2BD5C51F0015E411 /* SearchView.swift in Sources */,
 				55D425CF2BCC4AFF001FA57C /* TabBarView.swift in Sources */,
 				55212BB12BA7A0C400080A71 /* PlayWatchApp.swift in Sources */,

@@ -8,11 +8,13 @@
 import Foundation
 
 protocol GameUseCaseProtocol {
+    
     var mediaRepository: MovieDBRepositoryProtocol { get }
     var gameRepository: MultiAIRepositoryProtocol { get }
 }
 
 extension GameUseCaseProtocol {
+    
     func fetchGameQuiz(aiServer: AIServer, mediaLocale: MediaLocale) async throws -> [GameQuiz] {
         let mediaConfig = MediaRequestConfig(mediaType: .randomMovies, locale: mediaLocale)
         let randomMovies = try await self.mediaRepository.fetchMedia(config: mediaConfig).filterWithImage()

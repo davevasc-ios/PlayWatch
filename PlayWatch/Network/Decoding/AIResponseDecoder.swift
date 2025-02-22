@@ -11,7 +11,7 @@ protocol AIResponseDecodable {
     func decode(from data: Data) throws -> String
 }
 
-struct OpenAIResponseDecoder: AIResponseDecodable {
+struct OpenAIResponseCompatibleDecoder: AIResponseDecodable {
     func decode(from data: Data) throws -> String {
         try OpenAIResponse.decode(from: data).aiResponseText
     }
@@ -26,7 +26,7 @@ struct GeminiResponseDecoder: AIResponseDecodable {
 struct AIResponseDecoderFactory {
     static func decoder(for server: AIServer) -> AIResponseDecodable {
         switch server {
-        case .openAI, .deepSeek: OpenAIResponseDecoder()
+        case .openAI, .deepSeek: OpenAIResponseCompatibleDecoder()
         case .gemini: GeminiResponseDecoder()
         }
     }

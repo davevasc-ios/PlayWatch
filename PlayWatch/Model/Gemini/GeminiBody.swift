@@ -8,12 +8,29 @@
 import Foundation
 
 struct GeminiBody {
+    
     struct Body: Codable {
+        let generationConfig: Output
         let contents: Content
+        
+        enum CodingKeys: String, CodingKey {
+            case generationConfig = "generation_config"
+            case contents
+        }
     }
+    
+    struct Output: Codable {
+        let type: GeminiOutput
+        
+        enum CodingKeys: String, CodingKey {
+            case type = "response_mime_type"
+        }
+    }
+    
     struct Content: Codable {
         let parts: Part
     }
+    
     struct Part: Codable {
         let text: String
     }
@@ -21,10 +38,14 @@ struct GeminiBody {
 
 // MARK: - Encoding
 extension GeminiBody {
-    static func encode(movies: String, language: String, using encoder: JSONEncoder = JSONEncoder()) throws -> Data {
-        let prompt = GamePromptGenerator.quizPrompt(movies, language)
+    
+    static func encode(output: GeminiOutput,
+                       prompt: PromptType,
+                       using encoder: JSONEncoder = JSONEncoder()) throws -> Data {
+        let format = Output(type: output)
+        let content = Content(parts: Part(text: prompt.description))
         do {
-            return try encoder.encode(Body(contents: Content(parts: Part(text: prompt))))
+            return try encoder.encode(Body(generationConfig: format, contents: content))
         } catch let decodingError {
             throw API.Error.invalidData(detail: decodingError.localizedDescription)
         }

@@ -8,10 +8,12 @@
 import Foundation
 
 protocol MultiAIRepositoryProtocol {
+    
     func createRequest(config: GameRequestConfig) throws -> URLRequest
 }
 
 extension MultiAIRepositoryProtocol {
+    
     func fetchQuiz(config: GameRequestConfig) async throws -> [Quiz] {
         let request = try self.createRequest(config: config)
         let data = try await request.fetchData()
@@ -31,6 +33,7 @@ struct MultiAIRepository: MultiAIRepositoryProtocol {
     
     func createRequest(config: GameRequestConfig) throws -> URLRequest {
         let endpoint = self.endpointFactory.resolveEndpoint(for: config.aiServer)
-        return try endpoint.createRequest(movies: config.movies, language: config.language)
+        let prompt = PromptType.quiz(movies: config.movies, language: config.language)
+        return try endpoint.createRequest(prompt: prompt)
     }
 }
