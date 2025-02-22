@@ -11,9 +11,10 @@ struct SettingsView: View {
     
     @Bindable var appManager: AppManager
     @Binding var currentTab: Tab
-    @Environment(GameViewModel.self) private var gameViewModel
-    @Environment(HomeViewModel.self) private var homeViewModel
 
+    @Environment(AppViewModel.self) private var vm
+
+    
     @State private var selectedTheme: Theme = .light
     @State private var selectedLanguage: AppLanguage = .system
     @State private var isOpenLanguagePicker = false
@@ -48,9 +49,9 @@ struct SettingsView: View {
                         }
                     }
                     .onChange(of: appManager.appLanguage) {
-                        if gameViewModel.state != .loading && gameViewModel.state != .playing {
-                            gameViewModel.on(.cleanGame)
-                            homeViewModel.on(.reloadData(appManager.mediaLocale))
+                        if vm.gameModelLogic.state != .loading && vm.gameModelLogic.state != .playing {
+                            vm.gameModelLogic.on(.cleanGame)
+                            vm.homeModelLogic.on(.reloadData(appManager.mediaLocale))
                         }
                     }
                     .onChange(of: currentTab) {
@@ -74,9 +75,9 @@ struct SettingsView: View {
                         }
                     }
                     .onChange(of: appManager.aiServer) {
-                        if gameViewModel.state != .loading && gameViewModel.state != .playing {
-                            gameViewModel.on(.cleanGame)
-                            homeViewModel.on(.reloadData(appManager.mediaLocale))
+                        if vm.gameModelLogic.state != .loading && vm.gameModelLogic.state != .playing {
+                            vm.gameModelLogic.on(.cleanGame)
+                            vm.homeModelLogic.on(.reloadData(appManager.mediaLocale))
                         }
                     }
                 }

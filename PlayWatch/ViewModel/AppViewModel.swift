@@ -9,5 +9,16 @@ import Foundation
 
 @Observable
 final class AppViewModel {
-//   let mediaLogic = MediaLogic()
+    
+    let homeModelLogic: HomeModelLogic
+    let gameModelLogic: GameModelLogic
+    let appManager: AppManager
+    
+    init(homeModelLogic: HomeModelLogic = HomeModelLogic(),
+         gameModelLogic: GameModelLogic = GameModelLogic(),
+         appManager: AppManager = AppManager()) {
+        self.homeModelLogic = homeModelLogic
+        self.gameModelLogic = gameModelLogic
+        self.appManager = appManager
+    }
 }

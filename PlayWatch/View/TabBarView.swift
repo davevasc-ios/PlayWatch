@@ -12,10 +12,8 @@ struct TabBarView: View {
     @State private var currentTab: Tab = .home
     @Namespace private var animation
     @State private var tabShapePosition: CGPoint = .zero
-    
-    @State private var gameViewModel = GameViewModel()
-    @State private var homeViewModel = HomeViewModel()
-    
+    @Environment(AppViewModel.self) private var vm
+
     @Bindable var appManager: AppManager
     
     @MainActor
@@ -38,10 +36,8 @@ struct TabBarView: View {
             }
             CustomTabBar()
         }
-        .environment(gameViewModel)
-        .environment(homeViewModel)
         .onAppear() {
-            gameViewModel.on(.viewAppear(appManager.mediaLocale, appManager.aiServer))
+            vm.gameModelLogic.on(.viewAppear(appManager.mediaLocale, appManager.aiServer))
         }
     }
     

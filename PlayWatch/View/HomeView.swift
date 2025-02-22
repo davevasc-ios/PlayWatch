@@ -9,35 +9,37 @@ import SwiftUI
 
 struct HomeView: View {
     @Bindable var appManager: AppManager
-    @Environment(HomeViewModel.self) private var homeViewModel
     @State private var showSuggestions = true
     @State private var isSearching = false
     @State private var searchText: String = .empty
+    
+    @Environment(AppViewModel.self) private var vm
+
     
     var body: some View {
         NavigationStack {
             ScrollView {
                 LazyVStack (alignment: .leading) {
                     if isSearching {
-                        SearchView(items: homeViewModel.mediaSearchList)
+                        SearchView(items: vm.homeModelLogic.mediaSearchList)
                     } else {
-                        MediaSectionView(sections: homeViewModel.mediaSectionsList)
+                        MediaSectionView(sections: vm.homeModelLogic.mediaSectionsList)
                     }
                 }
             }
             .refreshable {
-                homeViewModel.on(.refreshData)
+                vm.homeModelLogic.on(.refreshData)
             }
             .navigationTitle(Text(Tab.home.localized))
             .navigationBarTitleDisplayMode(.inline)
         }
         .onAppear {
-            homeViewModel.on(.viewAppear(appManager.mediaLocale))
+            vm.homeModelLogic.on(.viewAppear(appManager.mediaLocale))
         }
         .searchable(text: $searchText, isPresented: $isSearching, placement: .automatic, prompt: Text(LocalizableString.homeSearchBar))
         .searchSuggestions {
             if showSuggestions {
-                ForEach(homeViewModel.mediaSearchList) { item in
+                ForEach(vm.homeModelLogic.mediaSearchList) { item in
                     Button {
                         searchText = item.name
                         showSuggestions = false
@@ -50,15 +52,15 @@ struct HomeView: View {
         }
         .onChange(of: searchText) {
             if searchText.count > 0 {
-                homeViewModel.on(.changeSearch(searchText))
+                vm.homeModelLogic.on(.changeSearch(searchText))
             } else {
-                homeViewModel.on(.changeTrending)
+                vm.homeModelLogic.on(.changeTrending)
                 showSuggestions = true
             }
         }
         .onChange(of: isSearching) {
             if isSearching {
-                homeViewModel.on(.changeTrending)
+                vm.homeModelLogic.on(.changeTrending)
             }
         }
     }
@@ -247,7 +249,7 @@ struct TitleNameView: View {
 #if DEBUG
 #Preview {
     HomeView(appManager: AppManager())
-        .environment(HomeViewModel(
+        .environment(HomeModelLogic(
             mediaUseCase: MediaUseCase(
                 mediaRepository: MovieDBRepositoryPreview()
             )

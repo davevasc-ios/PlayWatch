@@ -93,7 +93,6 @@
 		55B254112BC2AD47006ACD43 /* GeminiResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B254102BC2AD47006ACD43 /* GeminiResponse.swift */; };
 		55C3F1912C6E3140006DE59B /* EventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C3F1902C6E3140006DE59B /* EventHandler.swift */; };
 		55C3F1932C6E5221006DE59B /* AppManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C3F1922C6E5221006DE59B /* AppManager.swift */; };
-		55CC9E692BBB504500298EE2 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55CC9E682BBB504500298EE2 /* HomeViewModel.swift */; };
 		55D425CB2BCC4669001FA57C /* Tab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D425CA2BCC4669001FA57C /* Tab.swift */; };
 		55D425CF2BCC4AFF001FA57C /* TabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D425CE2BCC4AFF001FA57C /* TabBarView.swift */; };
 		55D425D12BCC4C3C001FA57C /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D425D02BCC4C3C001FA57C /* HomeView.swift */; };
@@ -104,7 +103,6 @@
 		55E4CC802BCA9A050048EF56 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E4CC7F2BCA9A050048EF56 /* String+Extensions.swift */; };
 		55E4CC822BCADB2C0048EF56 /* Color+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E4CC812BCADB2C0048EF56 /* Color+Extensions.swift */; };
 		55E51A3C2BDEB1FF00A8541B /* FavoritesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E51A3B2BDEB1FF00A8541B /* FavoritesView.swift */; };
-		55E51A3E2BDEB26600A8541B /* GameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E51A3D2BDEB26600A8541B /* GameViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -207,7 +205,6 @@
 		55B254102BC2AD47006ACD43 /* GeminiResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeminiResponse.swift; sourceTree = "<group>"; };
 		55C3F1902C6E3140006DE59B /* EventHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventHandler.swift; sourceTree = "<group>"; };
 		55C3F1922C6E5221006DE59B /* AppManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppManager.swift; sourceTree = "<group>"; };
-		55CC9E682BBB504500298EE2 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		55D425CA2BCC4669001FA57C /* Tab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tab.swift; sourceTree = "<group>"; };
 		55D425CE2BCC4AFF001FA57C /* TabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarView.swift; sourceTree = "<group>"; };
 		55D425D02BCC4C3C001FA57C /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -218,7 +215,6 @@
 		55E4CC7F2BCA9A050048EF56 /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 		55E4CC812BCADB2C0048EF56 /* Color+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extensions.swift"; sourceTree = "<group>"; };
 		55E51A3B2BDEB1FF00A8541B /* FavoritesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesView.swift; sourceTree = "<group>"; };
-		55E51A3D2BDEB26600A8541B /* GameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -282,8 +278,6 @@
 			isa = PBXGroup;
 			children = (
 				55802B8A2D14601000C78317 /* AppViewModel.swift */,
-				55CC9E682BBB504500298EE2 /* HomeViewModel.swift */,
-				55E51A3D2BDEB26600A8541B /* GameViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -762,7 +756,6 @@
 				557713112D2AEA6500302F8A /* API+Errors.swift in Sources */,
 				5577130A2D2ACF4B00302F8A /* AppRegion.swift in Sources */,
 				55D73FE52BCDB5E700F337FC /* TabPosition.swift in Sources */,
-				55CC9E692BBB504500298EE2 /* HomeViewModel.swift in Sources */,
 				55D73FE32BCDB2A600F337FC /* TabShape.swift in Sources */,
 				557713392D480C4A00302F8A /* MovieDBUtils.swift in Sources */,
 				5549D57C2BC0738700B934CD /* OpenAIResponse.swift in Sources */,
@@ -802,7 +795,6 @@
 				55E51A3C2BDEB1FF00A8541B /* FavoritesView.swift in Sources */,
 				55B0C16F2CCAA86D002C563F /* MovieDBRepository.swift in Sources */,
 				55D425CB2BCC4669001FA57C /* Tab.swift in Sources */,
-				55E51A3E2BDEB26600A8541B /* GameViewModel.swift in Sources */,
 				557F55662BE4267B00EEAA2F /* SettingsView.swift in Sources */,
 				55B2540F2BC29ACC006ACD43 /* HTTP.swift in Sources */,
 				55D8416A2CD79889006349C4 /* GameUseCase.swift in Sources */,

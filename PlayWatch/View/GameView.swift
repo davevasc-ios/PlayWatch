@@ -9,17 +9,17 @@ import SwiftUI
 
 struct GameView: View {
     @Bindable var appManager: AppManager
-    @Environment(GameViewModel.self) private var gameViewModel
-    
+    @Environment(AppViewModel.self) private var vm
+
     var body: some View {
         ZStack {
-            switch gameViewModel.state {
+            switch vm.gameModelLogic.state {
             case .error:
                 ScrollView {
                     Text("Error on \(appManager.aiServer.rawValue) server, change on Settings")
                 }
                 .refreshable {
-                    gameViewModel.on(.refreshGame)
+                    vm.gameModelLogic.on(.refreshGame)
                 }
             case .empty:
                 EmptyView()
@@ -42,7 +42,7 @@ struct GameView: View {
                         .fontWeight(.heavy)
                         .foregroundStyle(Color.blue.gradient)
                     Button {
-                        gameViewModel.start()
+                        vm.gameModelLogic.start()
                     } label: {
                         Text("Start!")
                             .font(.title)
@@ -61,19 +61,19 @@ struct GameView: View {
                 }
                 .frame(maxHeight: .infinity, alignment: .top)
                 .onAppear {
-                    if gameViewModel.level == 0 {
-                        gameViewModel.nextQuiz()
+                    if vm.gameModelLogic.level == 0 {
+                        vm.gameModelLogic.nextQuiz()
                     }
                 }
             case .finish:
                 VStack {
-                    Text("Total: \(gameViewModel.totalPoints)/\(GameConfig.numberOfQuizzes * GameConfig.secondsPerQuiz)")
+                    Text("Total: \(vm.gameModelLogic.totalPoints)/\(GameConfig.numberOfQuizzes * GameConfig.secondsPerQuiz)")
                         .font(.title)
                         .fontWeight(.heavy)
                         .foregroundColor(.blue)
                         .padding()
                     Button {
-                        gameViewModel.on(.refreshGame)
+                        vm.gameModelLogic.on(.refreshGame)
                     } label: {
                         Text("Play Again!")
                             .font(.title)
@@ -85,24 +85,24 @@ struct GameView: View {
                     }
                 }
             }
-            GameCheckView(points: gameViewModel.newPoints,
-                          flag: .constant(gameViewModel.answerFeedback))
+            GameCheckView(points: vm.gameModelLogic.newPoints,
+                          flag: .constant(vm.gameModelLogic.answerFeedback))
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
             .ignoresSafeArea(.all)
             GameCountDownView()
         }
         .onAppear {
-            gameViewModel.on(.viewAppear(appManager.mediaLocale, appManager.aiServer))
+            vm.gameModelLogic.on(.viewAppear(appManager.mediaLocale, appManager.aiServer))
         }
     }
 }
 
 struct GameCountDownView: View {
-    @Environment(GameViewModel.self) private var gameViewModel
-    
+    @Environment(AppViewModel.self) private var vm
+
     var body: some View {
-        if gameViewModel.showCountdown {
-            Text(String(gameViewModel.timeRemaining))
+        if vm.gameModelLogic.showCountdown {
+            Text(String(vm.gameModelLogic.timeRemaining))
                 .font(.system(size: 200))
                 .fontWeight(.medium)
                 .foregroundStyle(Color.blue.gradient)
@@ -121,10 +121,10 @@ struct GamePlayingView: View {
 
 struct GameQuestionView: View {
     @Environment(\.screenSize) var screenSize
-    @Environment(GameViewModel.self) private var gameViewModel
-    
+    @Environment(AppViewModel.self) private var vm
+
     var body: some View {
-        Text(gameViewModel.questionTyping)
+        Text(vm.gameModelLogic.questionTyping)
             .font(.title2)
             .fontWeight(.heavy)
             .foregroundStyle(Color.blue.gradient)
@@ -136,7 +136,7 @@ struct GameQuestionView: View {
 
 struct GameCardView: View {
     @Environment(\.screenSize) var screenSize
-    @Environment(GameViewModel.self) private var gameViewModel
+    @Environment(AppViewModel.self) private var vm
     @State private var xOffset: CGFloat = 0
     @State private var yOffset: CGFloat = 0
     @State private var degrees: Double = 0
@@ -171,7 +171,7 @@ struct GameCardView: View {
                 SwipeActionIndicatorView(xOffset: $xOffset)
             }
         }
-        .onChange(of: gameViewModel.buttonSwipeAction) {
+        .onChange(of: vm.gameModelLogic.buttonSwipeAction) {
             onReceiveSwipeAction()
         }
         .aspectRatio(2/3, contentMode: .fit)
@@ -215,8 +215,8 @@ private extension GameCardView {
     
     @MainActor
     func onReceiveSwipeAction() {
-        guard let action = gameViewModel.buttonSwipeAction,
-              let topCardMovie = gameViewModel.currentQuizzes.first?.movie,
+        guard let action = vm.gameModelLogic.buttonSwipeAction,
+              let topCardMovie = vm.gameModelLogic.currentQuizzes.first?.movie,
               self.movie.id == topCardMovie.id else { return }
         switch action {
         case .trueAnswer:
@@ -235,7 +235,7 @@ private extension GameCardView {
                 swipeDown()
             }
         }
-        gameViewModel.on(.onSetSwipeAction(nil))
+        vm.gameModelLogic.on(.onSetSwipeAction(nil))
     }
 }
 
@@ -256,24 +256,24 @@ private extension GameCardView {
                 returnToCenter()
             }
         case let translation where translation.width >= screenSize.width * GameConfig.screenCutoffScale:
-            gameViewModel.sendAnswer(gameAnswer: .trueAnswer)
+            vm.gameModelLogic.sendAnswer(gameAnswer: .trueAnswer)
             withAnimation(.bouncy(duration: 0.7)) {
                 swipeRight()
             }
-            gameViewModel.removeCurrentQuiz(delay: 200000000)
+            vm.gameModelLogic.removeCurrentQuiz(delay: 200000000)
             
         case let translation where translation.width <= -screenSize.width * GameConfig.screenCutoffScale:
-            gameViewModel.sendAnswer(gameAnswer: .falseAnswer)
+            vm.gameModelLogic.sendAnswer(gameAnswer: .falseAnswer)
             withAnimation(.bouncy(duration: 0.7)) {
                 swipeLeft()
             }
-            gameViewModel.removeCurrentQuiz(delay: 200000000)
+            vm.gameModelLogic.removeCurrentQuiz(delay: 200000000)
         case let translation where translation.height >= screenSize.width * GameConfig.screenCutoffScale:
-            gameViewModel.sendAnswer(gameAnswer: .noAnswer)
+            vm.gameModelLogic.sendAnswer(gameAnswer: .noAnswer)
             withAnimation(.bouncy(duration: 0.7)) {
                 swipeDown()
             }
-            gameViewModel.removeCurrentQuiz(delay: 200000000)
+            vm.gameModelLogic.removeCurrentQuiz(delay: 200000000)
         default:
             withAnimation(.bouncy(duration: 1, extraBounce: 0.3)) {
                 returnToCenter()
@@ -322,30 +322,30 @@ struct SwipeActionTagView: View {
 
 struct GameStackView: View {
     @Environment(\.verticalSizeClass) var verticalSizeClass
-    @Environment(GameViewModel.self) private var gameViewModel
-    
+    @Environment(AppViewModel.self) private var vm
+
     var body: some View {
         if verticalSizeClass == .regular {
             ZStack {
-                ForEach(Array(gameViewModel.currentQuizzes.enumerated()), id: \.element.id) { index, quiz in
+                ForEach(Array(vm.gameModelLogic.currentQuizzes.enumerated()), id: \.element.id) { index, quiz in
                     GameCardView(movie: quiz.movie, answer: quiz.quiz.result)
                         .scaleEffect(1 - CGFloat(index) * 0.04)
                         .offset(x: 0, y: CGFloat(index) * -15)
-                        .zIndex(Double(gameViewModel.currentQuizzes.count - index))
-                        .disabled(index == 0 ? !gameViewModel.isQuizReady : true)
+                        .zIndex(Double(vm.gameModelLogic.currentQuizzes.count - index))
+                        .disabled(index == 0 ? !vm.gameModelLogic.isQuizReady : true)
                 }
-                .animation(.easeInOut(duration: 1.0), value: gameViewModel.currentQuizzes)
+                .animation(.easeInOut(duration: 1.0), value: vm.gameModelLogic.currentQuizzes)
             }
         }
     }
 }
 
 struct SwipeActionButtonsView: View {
-    @Environment(GameViewModel.self) private var gameViewModel
-    
+    @Environment(AppViewModel.self) private var vm
+
     var body: some View {
         HStack (spacing: 15) {
-            Text("\(gameViewModel.level)/20")
+            Text("\(vm.gameModelLogic.level)/20")
                 .font(.title2)
                 .fontWeight(.heavy)
                 .foregroundStyle(Color.blue.gradient)
@@ -353,7 +353,7 @@ struct SwipeActionButtonsView: View {
             ActionButtonView(gameAnswer: .falseAnswer, name: "hand.thumbsdown.fill", color: .red)
             ActionButtonView(gameAnswer: .noAnswer,name: "person.fill.questionmark", color: .blue)
             ActionButtonView(gameAnswer: .trueAnswer, name: "hand.thumbsup.fill", color: .green)
-            Text("\(gameViewModel.totalPoints)")
+            Text("\(vm.gameModelLogic.totalPoints)")
                 .font(.title2)
                 .fontWeight(.heavy)
                 .foregroundStyle(Color.blue.gradient)
@@ -363,7 +363,7 @@ struct SwipeActionButtonsView: View {
 }
 
 struct ActionButtonView: View {
-    @Environment(GameViewModel.self) private var gameViewModel
+    @Environment(AppViewModel.self) private var vm
     var gameAnswer: GameAnswer
     var name: String
     var color: Color
@@ -371,9 +371,9 @@ struct ActionButtonView: View {
     var body: some View {
         
         Button {
-            gameViewModel.on(.onSetSwipeAction(gameAnswer))
-            gameViewModel.sendAnswer(gameAnswer: gameAnswer)
-            gameViewModel.removeCurrentQuiz(delay: 500000000)
+            vm.gameModelLogic.on(.onSetSwipeAction(gameAnswer))
+            vm.gameModelLogic.sendAnswer(gameAnswer: gameAnswer)
+            vm.gameModelLogic.removeCurrentQuiz(delay: 500000000)
         } label: {
             Image(systemName: name)
                 .foregroundStyle(color)
@@ -386,7 +386,7 @@ struct ActionButtonView: View {
                 }
         }
         .frame(width: 64, height: 64)
-        .disabled(!gameViewModel.isQuizReady)
+        .disabled(!vm.gameModelLogic.isQuizReady)
     }
 }
 
@@ -457,7 +457,7 @@ struct AnimationValues {
 #if DEBUG
 #Preview("GameViewTest") {
     GameView(appManager: AppManager())
-        .environment(GameViewModel(
+        .environment(GameModelLogic(
             gameUseCase: GameUseCase(
                 mediaRepository: MovieDBRepositoryPreview(),
                 gameRepository: MultiAIRepositoryPreview()
