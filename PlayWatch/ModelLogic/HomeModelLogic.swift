@@ -17,7 +17,6 @@ final class HomeModelLogic: EventHandler {
     private(set) var state: API.Status = .empty
     
     // MARK: - Private Properties
-    @ObservationIgnored private var locale = MediaLocale()
     @ObservationIgnored private let mediaUseCase: MediaUseCaseProtocol
     
     // MARK: - Initialization
@@ -27,9 +26,9 @@ final class HomeModelLogic: EventHandler {
     
     // MARK: - Event Handling
     enum Event {
-        case viewAppear(MediaLocale),
+        case viewAppear,
              refreshData,
-             reloadData(MediaLocale),
+             reloadData,
              changeSearch(String),
              changeTrending
     }
@@ -37,12 +36,12 @@ final class HomeModelLogic: EventHandler {
     // MARK: - Public Methods
     func on(_ event: Event) {
         switch event {
-        case .viewAppear(let locale):
-            self.start(locale: locale)
+        case .viewAppear:
+            self.start()
         case .refreshData:
             self.refresh()
-        case .reloadData(let locale):
-            self.reload(locale: locale)
+        case .reloadData:
+            self.reload()
         case .changeSearch(let text):
             self.search(searchText: text)
         case .changeTrending:
@@ -52,15 +51,12 @@ final class HomeModelLogic: EventHandler {
     
     // MARK: - Private Methods
     @MainActor
-    private func start(locale: MediaLocale? = nil) {
-        if let locale = locale {
-            self.locale = locale
-        }
+    private func start() {
         if state == .empty || state == .error {
             self.state = .loading
             Task {
                 do {
-                    self.mediaSectionsList = try await self.mediaUseCase.fetchMediaSections(locale: self.locale)
+                    self.mediaSectionsList = try await self.mediaUseCase.fetchMediaSections()
                     self.state = .success
                 } catch {
                     print(error.localizedDescription)
@@ -86,10 +82,10 @@ final class HomeModelLogic: EventHandler {
     }
     
     @MainActor
-    private func reload(locale: MediaLocale) {
+    private func reload() {
         if state != .loading {
             self.clean()
-            self.start(locale: locale)
+            self.start()
         }
     }
     
@@ -99,7 +95,7 @@ final class HomeModelLogic: EventHandler {
             defer {
             }
             do {
-                self.mediaSearchList = try await mediaUseCase.fetchTrendingMedia(locale: self.locale)
+                self.mediaSearchList = try await mediaUseCase.fetchTrendingMedia()
             } catch {
                 print(error.localizedDescription)
             }
@@ -113,7 +109,7 @@ final class HomeModelLogic: EventHandler {
             defer {
             }
             do {
-                self.mediaSearchList = try await mediaUseCase.fetchSearchMedia(locale: self.locale, searchText: searchText)
+                self.mediaSearchList = try await mediaUseCase.fetchSearchMedia(searchText: searchText)
             } catch {
                 print(error.localizedDescription)
             }

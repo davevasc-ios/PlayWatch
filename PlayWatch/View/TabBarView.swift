@@ -13,31 +13,28 @@ struct TabBarView: View {
     @Namespace private var animation
     @State private var tabShapePosition: CGPoint = .zero
     @Environment(AppViewModel.self) private var vm
-
-    @Bindable var appManager: AppManager
     
     @MainActor
-    init(appManager: AppManager) {
-        self.appManager = appManager
+    init() {
         UITabBar.appearance().isHidden = true
     }
     
     var body: some View {
         VStack(spacing: 0) {
             TabView(selection: $currentTab) {
-                HomeView(appManager: appManager)
+                HomeView()
                     .tag(Tab.home)
-                GameView(appManager: appManager)
+                GameView()
                     .tag(Tab.game)
                 FavoritesView()
                     .tag(Tab.favorites)
-                SettingsView(appManager: appManager, currentTab: $currentTab)
+                SettingsView(currentTab: $currentTab)
                     .tag(Tab.settings)
             }
             CustomTabBar()
         }
         .onAppear() {
-            vm.gameModelLogic.on(.viewAppear(appManager.mediaLocale, appManager.aiServer))
+            vm.gameModelLogic.on(.viewAppear)
         }
     }
     
@@ -113,5 +110,5 @@ struct TabBarItem: View {
 }
 
 #Preview {
-    TabBarView(appManager: AppManager())
+    TabBarView()
 }

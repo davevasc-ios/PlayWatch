@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct GameView: View {
-    @Bindable var appManager: AppManager
     @Environment(AppViewModel.self) private var vm
 
     var body: some View {
@@ -16,7 +15,7 @@ struct GameView: View {
             switch vm.gameModelLogic.state {
             case .error:
                 ScrollView {
-                    Text("Error on \(appManager.aiServer.rawValue) server, change on Settings")
+                    Text("Error on \(vm.settingsModelLogic.server.rawValue) server, change on Settings")
                 }
                 .refreshable {
                     vm.gameModelLogic.on(.refreshGame)
@@ -92,7 +91,7 @@ struct GameView: View {
             GameCountDownView()
         }
         .onAppear {
-            vm.gameModelLogic.on(.viewAppear(appManager.mediaLocale, appManager.aiServer))
+            vm.gameModelLogic.on(.viewAppear)
         }
     }
 }
@@ -456,12 +455,7 @@ struct AnimationValues {
 
 #if DEBUG
 #Preview("GameViewTest") {
-    GameView(appManager: AppManager())
-        .environment(GameModelLogic(
-            gameUseCase: GameUseCase(
-                mediaRepository: MovieDBRepositoryPreview(),
-                gameRepository: MultiAIRepositoryPreview()
-            )
-        ))
+    GameView()
+        .environment(AppViewModel.preview)
 }
 #endif

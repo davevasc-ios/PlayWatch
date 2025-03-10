@@ -12,13 +12,13 @@ final class AppViewModel {
     
     let homeModelLogic: HomeModelLogic
     let gameModelLogic: GameModelLogic
-    let appManager: AppManager
+    var settingsModelLogic: SettingsModelLogic
     
     init(homeModelLogic: HomeModelLogic = HomeModelLogic(),
          gameModelLogic: GameModelLogic = GameModelLogic(),
-         appManager: AppManager = AppManager()) {
+         settingsModelLogic: SettingsModelLogic = SettingsModelLogic()) {
         self.homeModelLogic = homeModelLogic
         self.gameModelLogic = gameModelLogic
-        self.appManager = appManager
+        self.settingsModelLogic = settingsModelLogic
     }
 }

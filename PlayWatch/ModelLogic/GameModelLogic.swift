@@ -47,7 +47,7 @@ final class GameModelLogic: EventHandler {
     
     // MARK: - Event Handling
     enum Event {
-        case viewAppear(MediaLocale, AIServer),
+        case viewAppear,
              refreshGame,
              cleanGame,
              onSetSwipeAction(GameAnswer?),
@@ -57,8 +57,8 @@ final class GameModelLogic: EventHandler {
     // MARK: - Public Methods
     func on(_ event: Event) {
         switch event {
-        case .viewAppear(let locale, let server):
-            self.load(locale: locale, server: server)
+        case .viewAppear:
+            self.load()
         case .refreshGame:
             self.refresh()
         case .cleanGame:
@@ -90,18 +90,12 @@ final class GameModelLogic: EventHandler {
     }
     
     @MainActor
-    private func load(locale: MediaLocale? = nil, server: AIServer? = nil) {
-        if let locale = locale {
-            self.locale = locale
-        }
-        if let server = server {
-            self.server = server
-        }
+    private func load() {
         if state == .empty || state == .error {
             self.state = .loading
             Task {
                 do {
-                    self.allQuizzes = try await self.gameUseCase.fetchGameQuiz(aiServer: self.server, mediaLocale: self.locale)
+                    self.allQuizzes = try await self.gameUseCase.fetchGameQuiz()
                     self.updateCurrentQuizzes()
                     self.nextQuestion = self.currentQuizzes.first?.quiz.question ?? .empty
                     self.state = .ready

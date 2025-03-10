@@ -10,7 +10,7 @@ import SwiftUI
 struct FavoritesView: View {
     
     private var testers: [String] = ["🏡 Jordi", "🐐 Noah", "👹 Tim", "🐶 Katie", "👱‍♀️ Rafaella", "🦄 Marco"]
-private var secretMessages: [String] = ["", "", "", "", "", "", "¡¡Angel Amador es un estafador!!", "", "", "", "", "¡¡Ayuso dimisión!!", "", "", "PP = Corrupción"]
+    private var secretMessages: [String] = ["", "", "", "", "", "", "¡¡Aberto Quirón a la carcel ya!!", "", "", "", "", "¡¡Ayuso frutera dimisión!!", "", "", "PP = Corrupción", "Mazón dimisión!", "Feijoó dimisión!"]
 
     @State var tester = "Secret..."
     @State var secretMessage = ""
@@ -50,6 +50,10 @@ private var secretMessages: [String] = ["", "", "", "", "", "", "¡¡Angel Amado
                     .frame(maxWidth: .infinity, maxHeight: .infinity) // Fill the entire ZStack
                     .ignoresSafeArea() // Extend content to safe area edges
                 }
+            }
+            .refreshable {
+                tester = testers.randomElement() ?? ""
+                secretMessage = secretMessages.randomElement() ?? ""
             }
             .navigationTitle(Text(Tab.favorites.localized))
         }

@@ -9,35 +9,38 @@ import SwiftUI
 
 struct SettingsView: View {
     
-    @Bindable var appManager: AppManager
     @Binding var currentTab: Tab
-
     @Environment(AppViewModel.self) private var vm
-
-    
-    @State private var selectedTheme: Theme = .light
-    @State private var selectedLanguage: AppLanguage = .system
-    @State private var isOpenLanguagePicker = false
-    
+        
     enum Theme: String, CaseIterable, Identifiable {
         case light = "Ligero"
         case dark = "Oscuro"
+        case rainbows = "Rainbows"
+        case pink = "Pink"
+        case purple = "Purple"
+        case red = "Red"
+        case green = "Green"
+        case yellow = "Yellow"
         
-        var id: String {
-            self.rawValue
-        }
+        var id: Self { self }
     }
     
     var body: some View {
+        @Bindable var settings = vm.settingsModelLogic
+        
         NavigationStack {
             Form {
                 Section(header: Text("Apariencia")) {
-                    Picker("Theme", selection: $selectedTheme) {
+                    Picker("Theme", selection: $settings.theme) {
                         ForEach(Theme.allCases) { theme in
-                            Text(theme.rawValue).tag(theme)
+                            Text(theme.rawValue)
+                                .tag(theme)
                         }
                     }
-                    Picker("Language", selection: $appManager.appLanguage) {
+                    .onChange(of: settings.theme) {
+                        settings.on(.updateSettings)
+                    }
+                    Picker("Language", selection: $settings.language) {
                         ForEach(AppLanguage.allCases) { language in
                             if language == .system {
                                 Text(language.nativeName)
@@ -48,16 +51,17 @@ struct SettingsView: View {
                             }
                         }
                     }
-                    .onChange(of: appManager.appLanguage) {
+                    .onChange(of: settings.language) {
+                        settings.on(.updateSettings)
                         if vm.gameModelLogic.state != .loading && vm.gameModelLogic.state != .playing {
                             vm.gameModelLogic.on(.cleanGame)
-                            vm.homeModelLogic.on(.reloadData(appManager.mediaLocale))
+                            vm.homeModelLogic.on(.reloadData)
                         }
                     }
-                    .onChange(of: currentTab) {
-//                        gameViewModel.clean()
-                    }
-                    Picker("Region", selection: $appManager.appRegion) {
+                    //                    .onChange(of: currentTab) {
+                    //                        //                        gameViewModel.clean()
+                    //                    }
+                    Picker("Region", selection: $settings.region) {
                         ForEach(AppRegion.allCases) { region in
                             if region == .system {
                                 Text(region.localized)
@@ -68,25 +72,37 @@ struct SettingsView: View {
                             }
                         }
                     }
-                    Picker("Server", selection: $appManager.aiServer) {
+                    .onChange(of: settings.region) {
+                        settings.on(.updateSettings)
+                    }
+                    Picker("Server", selection: $settings.server) {
                         ForEach(AIServer.allCases) { server in
                             Text(server.rawValue)
                                 .tag(server)
                         }
                     }
-                    .onChange(of: appManager.aiServer) {
+                    .onChange(of: settings.server) {
+                        settings.on(.updateSettings)
                         if vm.gameModelLogic.state != .loading && vm.gameModelLogic.state != .playing {
                             vm.gameModelLogic.on(.cleanGame)
-                            vm.homeModelLogic.on(.reloadData(appManager.mediaLocale))
+                            vm.homeModelLogic.on(.reloadData)
                         }
                     }
                 }
             }
-            .navigationTitle(Text(Tab.settings.localized))
+//            .navigationTitle(Text(Tab.settings.localized))
+            .navigationTitle(settings.sectionTitle)
+        }
+        
+        .onAppear {
+            settings.on(.viewAppear)
         }
     }
 }
 
-//#Preview {
-//    SettingsView(localeManager: LocaleManager(), currentTab: Binding<Tab.settings>)
-//}
+#if DEBUG
+#Preview {
+    SettingsView(currentTab: .constant(.settings))
+        .environment(AppViewModel.preview)
+}
+#endif

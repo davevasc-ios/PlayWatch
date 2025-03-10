@@ -8,13 +8,11 @@
 import SwiftUI
 
 struct HomeView: View {
-    @Bindable var appManager: AppManager
     @State private var showSuggestions = true
     @State private var isSearching = false
     @State private var searchText: String = .empty
     
     @Environment(AppViewModel.self) private var vm
-
     
     var body: some View {
         NavigationStack {
@@ -34,7 +32,7 @@ struct HomeView: View {
             .navigationBarTitleDisplayMode(.inline)
         }
         .onAppear {
-            vm.homeModelLogic.on(.viewAppear(appManager.mediaLocale))
+            vm.homeModelLogic.on(.viewAppear)
         }
         .searchable(text: $searchText, isPresented: $isSearching, placement: .automatic, prompt: Text(LocalizableString.homeSearchBar))
         .searchSuggestions {
@@ -248,11 +246,7 @@ struct TitleNameView: View {
 
 #if DEBUG
 #Preview {
-    HomeView(appManager: AppManager())
-        .environment(HomeModelLogic(
-            mediaUseCase: MediaUseCase(
-                mediaRepository: MovieDBRepositoryPreview()
-            )
-        ))
+    HomeView()
+        .environment(AppViewModel.preview)
 }
 #endif

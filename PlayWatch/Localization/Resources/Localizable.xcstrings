@@ -4,6 +4,9 @@
     "" : {
 
     },
+    "%@" : {
+
+    },
     "%@ (%@)" : {
       "localizations" : {
         "en" : {
@@ -203,16 +206,7 @@
       }
     },
     "tabbar.settings" : {
-      "comment" : "Settings section of TabBar",
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Settings"
-          }
-        }
-      }
+      "comment" : "Settings section of TabBar"
     },
     "Theme" : {
 

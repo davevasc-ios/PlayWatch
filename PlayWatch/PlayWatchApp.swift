@@ -23,16 +23,13 @@ struct PlayWatchApp: App {
         }
     }()
     
-    @State private var appManager = AppManager()
     @State private var appViewModel = AppViewModel()
     
     var body: some Scene {
         WindowGroup {
             GeometryReader { geometry in
-                TabBarView(appManager: appManager)
-//                    .environment(\.locale, appViewModel.appManager.appLocale)
-
-                    .environment(\.locale, appManager.appLocale)
+                TabBarView()
+                    .environment(\.locale, appViewModel.settingsModelLogic.appLocale)
                     .environment(\.screenSize, geometry.size)
                     .environment(appViewModel)
             }
