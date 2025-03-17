@@ -23,7 +23,7 @@ struct PlayWatchApp: App {
         }
     }()
     
-    @State private var appViewModel = AppViewModel()
+    @State private var appViewModel = AppViewModel.production
     
     var body: some Scene {
         WindowGroup {

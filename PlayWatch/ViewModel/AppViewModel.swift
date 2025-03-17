@@ -5,11 +5,11 @@
 //  Created by David on 19/12/24.
 //
 
-import Foundation
+import Observation
 
 @Observable
 final class AppViewModel {
-    
+        
     let homeModelLogic: HomeModelLogic
     let gameModelLogic: GameModelLogic
     var settingsModelLogic: SettingsModelLogic
@@ -20,5 +20,32 @@ final class AppViewModel {
         self.homeModelLogic = homeModelLogic
         self.gameModelLogic = gameModelLogic
         self.settingsModelLogic = settingsModelLogic
+    }
+}
+
+extension AppViewModel {
+    static var production: AppViewModel {
+        
+        let movieDBRepository: MovieDBRepositoryProtocol = MovieDBRepository()
+        let MultiAIRepository: MultiAIRepositoryProtocol = MultiAIRepository()
+        let storageRepository: StorageRepositoryProtocol = StorageRepository()
+        
+        return AppViewModel(
+            homeModelLogic: HomeModelLogic(
+                mediaUseCase: MediaUseCase(
+                    mediaRepository: movieDBRepository,
+                    storageRepository: storageRepository)
+            ),
+            gameModelLogic: GameModelLogic(
+                gameUseCase: GameUseCase(
+                    mediaRepository: movieDBRepository,
+                    gameRepository: MultiAIRepository,
+                    storageRepository: storageRepository
+                )
+            ),
+            settingsModelLogic: SettingsModelLogic(
+                settingsUseCase: SettingsUseCase(
+                    storageRepository: storageRepository))
+        )
     }
 }

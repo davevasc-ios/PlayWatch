@@ -60,7 +60,7 @@ protocol StorageRepositoryProtocol: Sendable {
 }
 
 actor StorageRepository: StorageRepositoryProtocol {
-
+    
     private let fileURL: URL
     private var cachedSettings: Settings?
     
@@ -76,7 +76,7 @@ actor StorageRepository: StorageRepositoryProtocol {
     }
     
     func loadSettings() async throws -> Settings {
-        if let cached = cachedSettings {
+        if let cached = self.cachedSettings {
             return cached
         }
         let data = try Data(contentsOf: self.fileURL)
