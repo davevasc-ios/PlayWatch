@@ -20,6 +20,8 @@ final class SettingsModelLogic: EventHandler {
     var region: AppRegion = AppRegion.system
     var server: AIServer = AIServer.openAI
     
+    
+    
     var appLocale: Locale {
         Locale(identifier: "\(self.language.languageCode)-\(self.region.regionCode)")
     }

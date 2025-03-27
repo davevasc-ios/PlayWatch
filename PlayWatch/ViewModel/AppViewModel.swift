@@ -27,7 +27,7 @@ extension AppViewModel {
     static var production: AppViewModel {
         
         let movieDBRepository: MovieDBRepositoryProtocol = MovieDBRepository()
-        let MultiAIRepository: MultiAIRepositoryProtocol = MultiAIRepository()
+        let multiAIRepository: MultiAIRepositoryProtocol = MultiAIRepository()
         let storageRepository: StorageRepositoryProtocol = StorageRepository()
         
         return AppViewModel(
@@ -39,7 +39,7 @@ extension AppViewModel {
             gameModelLogic: GameModelLogic(
                 gameUseCase: GameUseCase(
                     mediaRepository: movieDBRepository,
-                    gameRepository: MultiAIRepository,
+                    gameRepository: multiAIRepository,
                     storageRepository: storageRepository
                 )
             ),

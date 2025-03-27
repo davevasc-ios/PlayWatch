@@ -7,7 +7,6 @@
 
 import Foundation
 
-// Modelo de ajustes que se persiste
 struct SettingsDTO: Codable {
     var theme: String
     var language: String
