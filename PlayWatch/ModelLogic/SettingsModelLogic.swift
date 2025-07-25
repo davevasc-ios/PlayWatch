@@ -20,55 +20,109 @@ final class SettingsModelLogic: EventHandler {
     var region: AppRegion = AppRegion.system
     var server: AIServer = AIServer.openAI
     
-    
+    var errorMessage: String?
     
     var appLocale: Locale {
         Locale(identifier: "\(self.language.languageCode)-\(self.region.regionCode)")
     }
     
     // MARK: - Private Properties
-    @ObservationIgnored private let settingsUseCase: SettingsUseCaseProtocol
+    @ObservationIgnored private let storageUtility: StorageUtility
 
     // MARK: - Initialization
-    init(settingsUseCase: SettingsUseCaseProtocol = SettingsUseCase()) {
-        self.settingsUseCase = settingsUseCase
+    init(
+         storageUtility: StorageUtility
+    ) {
+        self.storageUtility = storageUtility
     }
     
     // MARK: - Event Handling
     enum Event {
         case viewAppear
-        case updateSettings
+        case updateTheme(SettingsView.Theme)
+        case updateLanguage(AppLanguage)
+        case updateRegion(AppRegion)
+        case updateServer(AIServer)
     }
     
     func on(_ event: Event) {
         switch event {
         case .viewAppear:
-            self.getSettings()
-        case .updateSettings:
-            self.setSettings()
+            self.loadAllSettings()
+        case .updateTheme(let theme):
+            self.updateTheme(to: theme)
+        case .updateLanguage(let language):
+            self.updateLanguage(to: language)
+        case .updateRegion(let region):
+            self.updateRegion(to: region)
+        case .updateServer(let server):
+            self.updateServer(to: server)
         }
     }
     
-    // MARK: - Private Methods
+    // MARK: - Carga inicial
     @MainActor
-    private func getSettings() {
+    func loadAllSettings() {
         Task {
-            if let settings = try? await self.settingsUseCase.getSettings() {
-                self.theme = settings.theme
-                self.language = settings.language
-                self.region = settings.region
-                self.server = settings.server
+            do {
+                let settings = try await storageUtility.loadAll()
+                theme = settings.theme
+                language = settings.language
+                region = settings.region
+                server = settings.server
+                self.updateSectionTitle()
+            } catch {
+                errorMessage = error.localizedDescription
             }
-            self.updateSectionTitle()
+        }
+    }
+    
+    // MARK: - Actualizaciones granulares
+    @MainActor
+    func updateTheme(to new: SettingsView.Theme) {
+        theme = new
+        Task {
+            do {
+                try await self.storageUtility.saveTheme(new)
+            } catch {
+                errorMessage = error.localizedDescription
+            }
         }
     }
     
     @MainActor
-    private func setSettings() {
+    func updateLanguage(to new: AppLanguage) {
+        language = new
         Task {
-            let settings = Settings(theme: self.theme, language: self.language, region: self.region, server: self.server)
-            try? await self.settingsUseCase.setSettings(settings)
-            self.updateSectionTitle()
+            do {
+                try await self.storageUtility.saveLanguage(new)
+            } catch {
+                errorMessage = error.localizedDescription
+            }
+        }
+    }
+    
+    @MainActor
+    func updateRegion(to new: AppRegion) {
+        region = new
+        Task {
+            do {
+                try await self.storageUtility.saveRegion(new)
+            } catch {
+                errorMessage = error.localizedDescription
+            }
+        }
+    }
+    
+    @MainActor
+    func updateServer(to new: AIServer) {
+        server = new
+        Task {
+            do {
+                try await self.storageUtility.saveServer(new)
+            } catch {
+                errorMessage = error.localizedDescription
+            }
         }
     }
     

@@ -41,7 +41,7 @@ final class GameModelLogic: EventHandler {
     @ObservationIgnored private let gameUseCase: GameUseCaseProtocol
     
     // MARK: - Initialization
-    init(gameUseCase: GameUseCaseProtocol = GameUseCase()) {
+    init(gameUseCase: GameUseCaseProtocol) {
         self.gameUseCase = gameUseCase
     }
     

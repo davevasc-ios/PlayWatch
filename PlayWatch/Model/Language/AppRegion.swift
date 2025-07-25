@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum AppRegion: String, CaseIterable, Identifiable {
+enum AppRegion: String, CaseIterable, Identifiable, Codable {
     case system,
          unitedStates,
          unitedKingdom,

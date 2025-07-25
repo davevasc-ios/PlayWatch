@@ -8,13 +8,13 @@
 protocol MediaUseCaseProtocol: Sendable {
     
     var mediaRepository: MovieDBRepositoryProtocol { get }
-    var storageRepository: StorageRepositoryProtocol { get }
+    var storageUtility: StorageUtility { get }
 }
 
 extension MediaUseCaseProtocol {
             
     func fetchMediaSections() async throws -> [MediaSection] {
-        let mediaLocale = try await self.storageRepository.loadSettings().mediaLocale
+        let mediaLocale = try await self.storageUtility.loadMediaLocale()
         return try await withThrowingTaskGroup(of: (Int, MediaSection).self) { group in
             for (index, section) in Constants.homeSections.enumerated() {
                 group.addTask {
@@ -28,13 +28,13 @@ extension MediaUseCaseProtocol {
     }
     
     func fetchTrendingMedia() async throws -> [Media] {
-        let mediaLocale = try await self.storageRepository.loadSettings().mediaLocale
+        let mediaLocale = try await self.storageUtility.loadMediaLocale()
         let config = MediaRequestConfig(mediaType: .trendingAll, locale: mediaLocale)
         return try await self.mediaRepository.fetchMedia(config: config)
     }
     
     func fetchSearchMedia(searchText: String) async throws -> [Media] {
-        let mediaLocale = try await self.storageRepository.loadSettings().mediaLocale
+        let mediaLocale = try await self.storageUtility.loadMediaLocale()
         let config = MediaRequestConfig(mediaType: .searchAll, locale: mediaLocale, searchQuery: searchText)
         return try await self.mediaRepository.fetchMedia(config: config)
     }
@@ -43,11 +43,11 @@ extension MediaUseCaseProtocol {
 struct MediaUseCase: MediaUseCaseProtocol {
     
     let mediaRepository: MovieDBRepositoryProtocol
-    let storageRepository: StorageRepositoryProtocol
+    let storageUtility: StorageUtility
 
     init(mediaRepository: MovieDBRepositoryProtocol = MovieDBRepository(),
-         storageRepository: StorageRepositoryProtocol = StorageRepository()) {
+         storageUtility: StorageUtility) {
         self.mediaRepository = mediaRepository
-        self.storageRepository = storageRepository
+        self.storageUtility = storageUtility
     }
 }

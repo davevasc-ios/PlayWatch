@@ -12,7 +12,7 @@ struct SettingsView: View {
     @Binding var currentTab: Tab
     @Environment(AppViewModel.self) private var vm
         
-    enum Theme: String, CaseIterable, Identifiable {
+    enum Theme: String, CaseIterable, Identifiable, Codable {
         case light = "Ligero"
         case dark = "Oscuro"
         case rainbows = "Rainbows"
@@ -37,8 +37,8 @@ struct SettingsView: View {
                                 .tag(theme)
                         }
                     }
-                    .onChange(of: settings.theme) {
-                        settings.on(.updateSettings)
+                    .onChange(of: settings.theme) { _, newTheme in
+                        settings.on(.updateTheme(newTheme))
                     }
                     Picker("Language", selection: $settings.language) {
                         ForEach(AppLanguage.allCases) { language in
@@ -51,11 +51,11 @@ struct SettingsView: View {
                             }
                         }
                     }
-                    .onChange(of: settings.language) {
-                        settings.on(.updateSettings)
+                    .onChange(of: settings.language) { _, newLanguage in
+                        settings.on(.updateLanguage(newLanguage))
                         if vm.gameModelLogic.state != .loading && vm.gameModelLogic.state != .playing {
-                            vm.gameModelLogic.on(.cleanGame)
-                            vm.homeModelLogic.on(.reloadData)
+//                            vm.gameModelLogic.on(.cleanGame)
+//                            vm.homeModelLogic.on(.reloadData)
                         }
                     }
                     //                    .onChange(of: currentTab) {
@@ -72,8 +72,8 @@ struct SettingsView: View {
                             }
                         }
                     }
-                    .onChange(of: settings.region) {
-                        settings.on(.updateSettings)
+                    .onChange(of: settings.region) { _, newRegion in
+                        settings.on(.updateRegion(newRegion))
                     }
                     Picker("Server", selection: $settings.server) {
                         ForEach(AIServer.allCases) { server in
@@ -81,11 +81,11 @@ struct SettingsView: View {
                                 .tag(server)
                         }
                     }
-                    .onChange(of: settings.server) {
-                        settings.on(.updateSettings)
+                    .onChange(of: settings.server) { _, newServer in
+                        settings.on(.updateServer(newServer))
                         if vm.gameModelLogic.state != .loading && vm.gameModelLogic.state != .playing {
-                            vm.gameModelLogic.on(.cleanGame)
-                            vm.homeModelLogic.on(.reloadData)
+//                            vm.gameModelLogic.on(.cleanGame)
+//                            vm.homeModelLogic.on(.reloadData)
                         }
                     }
                 }

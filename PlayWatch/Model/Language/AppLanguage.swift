@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum AppLanguage: String, CaseIterable, Identifiable {
+enum AppLanguage: String, CaseIterable, Identifiable, Codable {
     case system,
          english,
          spanish,

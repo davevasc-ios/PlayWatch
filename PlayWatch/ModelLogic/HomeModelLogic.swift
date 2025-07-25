@@ -20,7 +20,7 @@ final class HomeModelLogic: EventHandler {
     @ObservationIgnored private let mediaUseCase: MediaUseCaseProtocol
     
     // MARK: - Initialization
-    init(mediaUseCase: MediaUseCaseProtocol = MediaUseCase()) {
+    init(mediaUseCase: MediaUseCaseProtocol) {
         self.mediaUseCase = mediaUseCase
     }
     

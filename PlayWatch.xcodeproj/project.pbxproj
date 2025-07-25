@@ -27,9 +27,7 @@
 		5524A5492D624CCA0028C7E8 /* OpenAIModelCompatible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5524A5482D624CCA0028C7E8 /* OpenAIModelCompatible.swift */; };
 		5524A54B2D625E9E0028C7E8 /* PromptType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5524A54A2D625E9E0028C7E8 /* PromptType.swift */; };
 		5524A54F2D6B46D60028C7E8 /* AppViewModel+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5524A54E2D6B46D60028C7E8 /* AppViewModel+Preview.swift */; };
-		5524A5512D6B7C6D0028C7E8 /* SettingsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5524A5502D6B7C6D0028C7E8 /* SettingsUseCase.swift */; };
 		5524A5532D6B7CED0028C7E8 /* SettingsModelLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5524A5522D6B7CED0028C7E8 /* SettingsModelLogic.swift */; };
-		5524A5552D6B89BC0028C7E8 /* StorageRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5524A5542D6B89BC0028C7E8 /* StorageRepository.swift */; };
 		55410B772CE0C5E600079680 /* MultiAIRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55410B762CE0C5E600079680 /* MultiAIRepository.swift */; };
 		55410B7A2CE12C5200079680 /* OpenAIResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 55410B792CE12C5200079680 /* OpenAIResponse.json */; };
 		55410B7B2CE12C5200079680 /* GeminiAIResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 55410B782CE12C5200079680 /* GeminiAIResponse.json */; };
@@ -76,6 +74,7 @@
 		55802B8E2D146A8300C78317 /* HomeModelLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55802B8D2D146A8300C78317 /* HomeModelLogic.swift */; };
 		55802B902D146A9C00C78317 /* GameModelLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55802B8F2D146A9C00C78317 /* GameModelLogic.swift */; };
 		5581067D2C00F75300D7A96D /* EnvironmentValues+ScreenSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5581067C2C00F75300D7A96D /* EnvironmentValues+ScreenSize.swift */; };
+		558B9A802E33C1CE005ED6B8 /* StorageUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558B9A7F2E33C1CE005ED6B8 /* StorageUtility.swift */; };
 		558F1C582D4E9AD70087DE99 /* AIServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558F1C572D4E9AD70087DE99 /* AIServer.swift */; };
 		558F1C5B2D4EA35B0087DE99 /* AIResponseDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558F1C5A2D4EA35B0087DE99 /* AIResponseDecoder.swift */; };
 		558F1C5D2D4EA8680087DE99 /* AIServer+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558F1C5C2D4EA8680087DE99 /* AIServer+Preview.swift */; };
@@ -141,9 +140,7 @@
 		5524A5482D624CCA0028C7E8 /* OpenAIModelCompatible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAIModelCompatible.swift; sourceTree = "<group>"; };
 		5524A54A2D625E9E0028C7E8 /* PromptType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptType.swift; sourceTree = "<group>"; };
 		5524A54E2D6B46D60028C7E8 /* AppViewModel+Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppViewModel+Preview.swift"; sourceTree = "<group>"; };
-		5524A5502D6B7C6D0028C7E8 /* SettingsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsUseCase.swift; sourceTree = "<group>"; };
 		5524A5522D6B7CED0028C7E8 /* SettingsModelLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsModelLogic.swift; sourceTree = "<group>"; };
-		5524A5542D6B89BC0028C7E8 /* StorageRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageRepository.swift; sourceTree = "<group>"; };
 		552CA67A2D0DD8EF005FA521 /* PlayWatchTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PlayWatchTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		55410B762CE0C5E600079680 /* MultiAIRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiAIRepository.swift; sourceTree = "<group>"; };
 		55410B782CE12C5200079680 /* GeminiAIResponse.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = GeminiAIResponse.json; sourceTree = "<group>"; };
@@ -191,6 +188,7 @@
 		55802B8D2D146A8300C78317 /* HomeModelLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeModelLogic.swift; sourceTree = "<group>"; };
 		55802B8F2D146A9C00C78317 /* GameModelLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameModelLogic.swift; sourceTree = "<group>"; };
 		5581067C2C00F75300D7A96D /* EnvironmentValues+ScreenSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EnvironmentValues+ScreenSize.swift"; sourceTree = "<group>"; };
+		558B9A7F2E33C1CE005ED6B8 /* StorageUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageUtility.swift; sourceTree = "<group>"; };
 		558F1C572D4E9AD70087DE99 /* AIServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIServer.swift; sourceTree = "<group>"; };
 		558F1C5A2D4EA35B0087DE99 /* AIResponseDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIResponseDecoder.swift; sourceTree = "<group>"; };
 		558F1C5C2D4EA8680087DE99 /* AIServer+Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AIServer+Preview.swift"; sourceTree = "<group>"; };
@@ -246,7 +244,6 @@
 			children = (
 				55D841632CD7946B006349C4 /* MediaUseCase.swift */,
 				55D841692CD79889006349C4 /* GameUseCase.swift */,
-				5524A5502D6B7C6D0028C7E8 /* SettingsUseCase.swift */,
 			);
 			path = UseCase;
 			sourceTree = "<group>";
@@ -318,6 +315,7 @@
 				55802B8C2D14605C00C78317 /* ModelLogic */,
 				550C5F382BBA135E005B853B /* UseCase */,
 				55B0C16D2CCAA840002C563F /* Repository */,
+				558B9A7E2E33C19C005ED6B8 /* Utility */,
 				557713042D2AB87700302F8A /* Localization */,
 				55212BB02BA7A0C400080A71 /* PlayWatchApp.swift */,
 				55212BB42BA7A0C400080A71 /* Item.swift */,
@@ -611,6 +609,14 @@
 			path = ModelLogic;
 			sourceTree = "<group>";
 		};
+		558B9A7E2E33C19C005ED6B8 /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				558B9A7F2E33C1CE005ED6B8 /* StorageUtility.swift */,
+			);
+			path = Utility;
+			sourceTree = "<group>";
+		};
 		558F1C592D4EA2E60087DE99 /* Decoding */ = {
 			isa = PBXGroup;
 			children = (
@@ -624,7 +630,6 @@
 			children = (
 				55B0C16E2CCAA86D002C563F /* MovieDBRepository.swift */,
 				55410B762CE0C5E600079680 /* MultiAIRepository.swift */,
-				5524A5542D6B89BC0028C7E8 /* StorageRepository.swift */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
@@ -679,7 +684,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1620;
-				LastUpgradeCheck = 1610;
+				LastUpgradeCheck = 1640;
 				TargetAttributes = {
 					55212BAC2BA7A0C400080A71 = {
 						CreatedOnToolsVersion = 15.3;
@@ -771,6 +776,7 @@
 				5551A82C2D11980400AFC04A /* MovieDBType.swift in Sources */,
 				5551A8322D11AF1900AFC04A /* GameQuiz.swift in Sources */,
 				55802B8E2D146A8300C78317 /* HomeModelLogic.swift in Sources */,
+				558B9A802E33C1CE005ED6B8 /* StorageUtility.swift in Sources */,
 				5577133E2D4965E000302F8A /* MovieDBSorting.swift in Sources */,
 				5577132E2D47E00C00302F8A /* BaseEndpoint.swift in Sources */,
 				55E4CC822BCADB2C0048EF56 /* Color+Extensions.swift in Sources */,
@@ -783,7 +789,6 @@
 				55034E962BE5384A00BCBD0E /* LocalizableString.swift in Sources */,
 				5551A8362D11B59700AFC04A /* MediaSection.swift in Sources */,
 				55AFE6082BD5160E0015E411 /* Date+Extensions.swift in Sources */,
-				5524A5512D6B7C6D0028C7E8 /* SettingsUseCase.swift in Sources */,
 				555B26E32C1CC49400B789A1 /* Bool+Extensions.swift in Sources */,
 				5577132C2D453BB800302F8A /* GeminiBody.swift in Sources */,
 				55651E172D0F49DF00ABD48B /* URL+Extensions.swift in Sources */,
@@ -825,7 +830,6 @@
 				557713402D4969E100302F8A /* MovieDBImageSize.swift in Sources */,
 				5524A53C2D61FE1C0028C7E8 /* OpenAIModel.swift in Sources */,
 				558F1C582D4E9AD70087DE99 /* AIServer.swift in Sources */,
-				5524A5552D6B89BC0028C7E8 /* StorageRepository.swift in Sources */,
 				5551A8302D11985D00AFC04A /* MediaResponse.swift in Sources */,
 				55802B892D145BD100C78317 /* MultiAIRepositoryPreview.swift in Sources */,
 				557713302D47E09A00302F8A /* MediaEndpoints.swift in Sources */,
@@ -897,6 +901,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 32C3Z2T4RE;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -962,6 +967,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 32C3Z2T4RE;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -992,7 +998,6 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"PlayWatch/Preview Content\"";
-				DEVELOPMENT_TEAM = 32C3Z2T4RE;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1031,7 +1036,6 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"PlayWatch/Preview Content\"";
-				DEVELOPMENT_TEAM = 32C3Z2T4RE;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1066,7 +1070,6 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 32C3Z2T4RE;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
 				MARKETING_VERSION = 1.0;
@@ -1086,7 +1089,6 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 32C3Z2T4RE;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
 				MARKETING_VERSION = 1.0;

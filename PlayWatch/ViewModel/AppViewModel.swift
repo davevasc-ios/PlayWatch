@@ -9,14 +9,15 @@ import Observation
 
 @Observable
 final class AppViewModel {
-        
     let homeModelLogic: HomeModelLogic
     let gameModelLogic: GameModelLogic
     var settingsModelLogic: SettingsModelLogic
     
-    init(homeModelLogic: HomeModelLogic = HomeModelLogic(),
-         gameModelLogic: GameModelLogic = GameModelLogic(),
-         settingsModelLogic: SettingsModelLogic = SettingsModelLogic()) {
+    init(
+        homeModelLogic: HomeModelLogic,
+        gameModelLogic: GameModelLogic,
+        settingsModelLogic: SettingsModelLogic
+    ) {
         self.homeModelLogic = homeModelLogic
         self.gameModelLogic = gameModelLogic
         self.settingsModelLogic = settingsModelLogic
@@ -24,28 +25,33 @@ final class AppViewModel {
 }
 
 extension AppViewModel {
-    static var production: AppViewModel {
+    static func production(storageUtility: StorageUtility) -> AppViewModel {
         
         let movieDBRepository: MovieDBRepositoryProtocol = MovieDBRepository()
         let multiAIRepository: MultiAIRepositoryProtocol = MultiAIRepository()
-        let storageRepository: StorageRepositoryProtocol = StorageRepository()
         
+        let homeLogic = HomeModelLogic(
+            mediaUseCase: MediaUseCase(
+                mediaRepository: movieDBRepository,
+                storageUtility: storageUtility)
+        )
+        
+        let gameLogic = GameModelLogic(
+            gameUseCase: GameUseCase(
+                mediaRepository: movieDBRepository,
+                gameRepository: multiAIRepository,
+                storageUtility: storageUtility
+            )
+        )
+        
+        let settingsLogic = SettingsModelLogic(
+            storageUtility: storageUtility
+        )
+                
         return AppViewModel(
-            homeModelLogic: HomeModelLogic(
-                mediaUseCase: MediaUseCase(
-                    mediaRepository: movieDBRepository,
-                    storageRepository: storageRepository)
-            ),
-            gameModelLogic: GameModelLogic(
-                gameUseCase: GameUseCase(
-                    mediaRepository: movieDBRepository,
-                    gameRepository: multiAIRepository,
-                    storageRepository: storageRepository
-                )
-            ),
-            settingsModelLogic: SettingsModelLogic(
-                settingsUseCase: SettingsUseCase(
-                    storageRepository: storageRepository))
+            homeModelLogic: homeLogic,
+            gameModelLogic: gameLogic,
+            settingsModelLogic: settingsLogic
         )
     }
 }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum AIServer: String, CaseIterable, Identifiable {
+enum AIServer: String, CaseIterable, Identifiable, Codable {
     
     case openAI = "OpenAI"
     case gemini = "Gemini"

@@ -11,13 +11,13 @@ protocol GameUseCaseProtocol {
     
     var mediaRepository: MovieDBRepositoryProtocol { get }
     var gameRepository: MultiAIRepositoryProtocol { get }
-    var storageRepository: StorageRepositoryProtocol { get }
+    var storageUtility: StorageUtility { get }
 }
 
 extension GameUseCaseProtocol {
     
     func fetchGameQuiz() async throws -> [GameQuiz] {
-        let settings = try await self.storageRepository.loadSettings()
+        let settings = try await self.storageUtility.loadAll()
         let mediaConfig = MediaRequestConfig(mediaType: .randomMovies, locale: settings.mediaLocale)
         let randomMovies = try await self.mediaRepository.fetchMedia(config: mediaConfig).filterWithImage()
         guard randomMovies.count == GameConfig.numberOfQuizzes else {
@@ -36,13 +36,13 @@ struct GameUseCase: GameUseCaseProtocol {
     
     let mediaRepository: MovieDBRepositoryProtocol
     let gameRepository: MultiAIRepositoryProtocol
-    let storageRepository: StorageRepositoryProtocol
+    let storageUtility: StorageUtility
     
     init(mediaRepository: MovieDBRepositoryProtocol = MovieDBRepository(),
          gameRepository: MultiAIRepositoryProtocol = MultiAIRepository(),
-         storageRepository: StorageRepositoryProtocol = StorageRepository()) {
+         storageUtility: StorageUtility) {
         self.mediaRepository = mediaRepository
         self.gameRepository = gameRepository
-        self.storageRepository = storageRepository
+        self.storageUtility = storageUtility
     }
 }
