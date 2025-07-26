@@ -9,8 +9,8 @@ import SwiftUI
 
 struct FavoritesView: View {
     
-    private var testers: [String] = ["🏡 Jordi", "🐐 Noah", "👹 Tim", "🐶 Katie", "👱‍♀️ Rafaella", "🦄 Marco"]
-    private var secretMessages: [String] = ["", "", "", "", "", "", "¡¡Aberto Quirón a la carcel ya!!", "", "", "", "", "¡¡Ayuso frutera dimisión!!", "", "", "PP = Corrupción", "Mazón dimisión!", "Feijoó dimisión!"]
+    private var testers: [String] = ["🏡 Jordi", "🐐 Noah", "👹 Tim", "🐶 Katie", "🦄 Marco"]
+    private var secretMessages: [String] = ["", "", "", "", "", "", "¡¡Aberto Quirón a la carcel ya!!", "", "", "", "", "¡¡Ayuso frutera dimisión!!", "", "", "PP = Corrupción", "Mazón dimisión!", "Feijoó dimisión!", "PP = Montoro"]
 
     @State var tester = "Secret..."
     @State var secretMessage = ""
