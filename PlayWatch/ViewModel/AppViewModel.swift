@@ -30,10 +30,17 @@ extension AppViewModel {
         let movieDBRepository: MovieDBRepositoryProtocol = MovieDBRepository()
         let multiAIRepository: MultiAIRepositoryProtocol = MultiAIRepository()
         
+        let movieDBEndpoint: MediaEndpointProtocol = MovieDBEndpoint()
+        
+        let movieDBUtility: MovieDBUtilityProtocol = MovieDBUtility(endpoint: movieDBEndpoint)
+        
+        
         let homeLogic = HomeModelLogic(
             mediaUseCase: MediaUseCase(
                 mediaRepository: movieDBRepository,
-                storageUtility: storageUtility)
+                storageUtility: storageUtility),
+            movieDBUtility: movieDBUtility,
+            storageUtility: storageUtility
         )
         
         let gameLogic = GameModelLogic(

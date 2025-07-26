@@ -41,11 +41,18 @@ struct PlayWatchApp: App {
     
     var body: some Scene {
         WindowGroup {
-            GeometryReader { geometry in
-                TabBarView()
-                    .environment(\.locale, appViewModel.settingsModelLogic.appLocale)
-                    .environment(\.screenSize, geometry.size)
-                    .environment(appViewModel)
+            if appViewModel.settingsModelLogic.initializationState == .loaded {
+                GeometryReader { geometry in
+                    TabBarView()
+                        .environment(\.locale, appViewModel.settingsModelLogic.appLocale)
+                        .environment(\.screenSize, geometry.size)
+                        .environment(appViewModel)
+                }
+            } else {
+                ProgressView()
+                    .onAppear() {
+                        appViewModel.settingsModelLogic.on(.initialize)
+                    }
             }
         }
         .modelContainer(modelContainer)

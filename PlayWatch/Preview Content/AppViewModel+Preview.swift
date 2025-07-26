@@ -19,13 +19,16 @@ extension AppViewModel {
         // y queremos que crashee para saberlo inmediatamente.
 
         // --- 2. Construir la Cadena de Dependencias de PREVIEW ---
+        let movieDBEndpoint: MediaEndpointProtocol = MovieDBEndpoint()
+        let movieDBUtility: MovieDBUtilityProtocol = MovieDBUtility(endpoint: movieDBEndpoint)
+
         let previewStorageUtility = StorageUtility(context: container.mainContext)
         
         let homeLogic = HomeModelLogic(
             mediaUseCase: MediaUseCase(
                 mediaRepository: MovieDBRepositoryPreview(),
                 storageUtility: previewStorageUtility
-            )
+            ), movieDBUtility: movieDBUtility, storageUtility: previewStorageUtility
         )
         
         let gameLogic = GameModelLogic(

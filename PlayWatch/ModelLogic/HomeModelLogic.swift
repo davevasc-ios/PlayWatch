@@ -18,10 +18,17 @@ final class HomeModelLogic: EventHandler {
     
     // MARK: - Private Properties
     @ObservationIgnored private let mediaUseCase: MediaUseCaseProtocol
+    @ObservationIgnored private let movieDBUtility: MovieDBUtilityProtocol
+    @ObservationIgnored private let storageUtility: StorageUtility
+
     
     // MARK: - Initialization
-    init(mediaUseCase: MediaUseCaseProtocol) {
+    init(mediaUseCase: MediaUseCaseProtocol,
+    movieDBUtility: MovieDBUtilityProtocol,
+    storageUtility: StorageUtility) {
         self.mediaUseCase = mediaUseCase
+        self.movieDBUtility = movieDBUtility
+        self.storageUtility = storageUtility
     }
     
     // MARK: - Event Handling
@@ -56,7 +63,8 @@ final class HomeModelLogic: EventHandler {
             self.state = .loading
             Task {
                 do {
-                    self.mediaSectionsList = try await self.mediaUseCase.fetchMediaSections()
+                    let sections = try await self.movieDBUtility.fetchSections(sections: Constants.homeSections, mediaLocale: try await storageUtility.loadMediaLocale())
+                    self.mediaSectionsList = sections
                     self.state = .success
                 } catch {
                     print(error.localizedDescription)
@@ -65,6 +73,38 @@ final class HomeModelLogic: EventHandler {
             }
         }
     }
+    
+//    @MainActor
+//    nonisolated func fetchMediaSections() async throws -> [MediaSection] {
+//        let mediaLocale = try await self.storageUtility.loadMediaLocale()
+//        return try await withThrowingTaskGroup(of: (Int, MediaSection).self) { group in
+//            for (index, section) in Constants.homeSections.enumerated() {
+//                group.addTask {
+//                    let config = MediaRequestConfig(mediaType: section, locale: mediaLocale)
+//                    let mediaItems = try await self.movieDBUtility.fetchMedia(config: config)
+//                    return (index, MediaSection(title: section.localized, items: mediaItems))
+//                }
+//            }
+//            return try await group.reduce(into: []) { $0.append($1) }
+//        }.sorted(by: { $0.0 < $1.0 }).map { $0.1 }
+//    }
+    
+//    // MARK: - Private Methods
+//    @MainActor
+//    private func start() {
+//        if state == .empty || state == .error {
+//            self.state = .loading
+//            Task {
+//                do {
+//                    self.mediaSectionsList = try await self.mediaUseCase.fetchMediaSections()
+//                    self.state = .success
+//                } catch {
+//                    print(error.localizedDescription)
+//                    self.state = .error
+//                }
+//            }
+//        }
+//    }
     
     private func clean() {
         self.mediaSectionsList.removeAll()

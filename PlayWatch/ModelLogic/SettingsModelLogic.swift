@@ -11,6 +11,12 @@ import Observation
 @Observable
 final class SettingsModelLogic: EventHandler {
     
+    enum InitializationState {
+        case initial, loading, loaded, error
+    }
+    private(set) var initializationState: InitializationState = .initial
+    
+    
     // MARK: - Provisional
     var sectionTitle: String = ""
     
@@ -38,6 +44,7 @@ final class SettingsModelLogic: EventHandler {
     
     // MARK: - Event Handling
     enum Event {
+        case initialize
         case viewAppear
         case updateTheme(SettingsView.Theme)
         case updateLanguage(AppLanguage)
@@ -47,6 +54,8 @@ final class SettingsModelLogic: EventHandler {
     
     func on(_ event: Event) {
         switch event {
+        case .initialize:
+            self.loadInitialSettings()
         case .viewAppear:
             self.loadAllSettings()
         case .updateTheme(let theme):
@@ -59,6 +68,27 @@ final class SettingsModelLogic: EventHandler {
             self.updateServer(to: server)
         }
     }
+    
+    @MainActor
+       func loadInitialSettings() {
+           // Solo carga si no lo ha hecho ya.
+           guard initializationState != .loaded else { return }
+           
+           self.initializationState = .loading
+           
+           Task {
+               do {
+                   let settings = try await storageUtility.loadAll()
+                   self.theme = settings.theme
+                   self.language = settings.language
+                   self.region = settings.region
+                   self.initializationState = .loaded // ¡Cargado con éxito!
+               } catch {
+                   self.errorMessage = error.localizedDescription
+                   self.initializationState = .error // Error al cargar
+               }
+           }
+       }
     
     // MARK: - Carga inicial
     @MainActor
