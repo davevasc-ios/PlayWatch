@@ -29,7 +29,7 @@ extension Media {
 }
 
 extension Array where Element == Media {
-    func filterWithImage() -> [Element] {
+    var filterWithImage: [Element] {
         self.filter { $0.imageUrl != nil }
     }
     

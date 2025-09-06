@@ -17,18 +17,14 @@ final class HomeModelLogic: EventHandler {
     private(set) var state: API.Status = .empty
     
     // MARK: - Private Properties
-    @ObservationIgnored private let mediaUseCase: MediaUseCaseProtocol
-    @ObservationIgnored private let movieDBUtility: MovieDBUtilityProtocol
-    @ObservationIgnored private let storageUtility: StorageUtility
+    @ObservationIgnored private let movieDBUtility: MediaUtilityProtocol
 
     
     // MARK: - Initialization
-    init(mediaUseCase: MediaUseCaseProtocol,
-    movieDBUtility: MovieDBUtilityProtocol,
-    storageUtility: StorageUtility) {
-        self.mediaUseCase = mediaUseCase
+    init(
+        movieDBUtility: MediaUtilityProtocol
+    ) {
         self.movieDBUtility = movieDBUtility
-        self.storageUtility = storageUtility
     }
     
     // MARK: - Event Handling
@@ -63,7 +59,7 @@ final class HomeModelLogic: EventHandler {
             self.state = .loading
             Task {
                 do {
-                    let sections = try await self.movieDBUtility.fetchSections(sections: Constants.homeSections, mediaLocale: try await storageUtility.loadMediaLocale())
+                    let sections = try await self.movieDBUtility.fetchMediaSections(sections: Constants.homeSections)
                     self.mediaSectionsList = sections
                     self.state = .success
                 } catch {
@@ -135,7 +131,7 @@ final class HomeModelLogic: EventHandler {
             defer {
             }
             do {
-                self.mediaSearchList = try await mediaUseCase.fetchTrendingMedia()
+                self.mediaSearchList = try await movieDBUtility.fetchMedia(mediaType: .trendingAll)
             } catch {
                 print(error.localizedDescription)
             }
@@ -149,7 +145,7 @@ final class HomeModelLogic: EventHandler {
             defer {
             }
             do {
-                self.mediaSearchList = try await mediaUseCase.fetchSearchMedia(searchText: searchText)
+                self.mediaSearchList = try await movieDBUtility.fetchMedia(mediaType: .trendingAll, searchQuery: searchText)
             } catch {
                 print(error.localizedDescription)
             }

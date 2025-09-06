@@ -7,37 +7,19 @@
 
 import Foundation
 
-protocol AIEndpointFactoryProtocol {
-    
-    func resolveEndpoint(for aiServer: AIServer) -> AIEndpointProtocol
-}
-
-struct AIEndpointFactory: AIEndpointFactoryProtocol {
-    
-    func resolveEndpoint(for aiServer: AIServer = .openAI) -> AIEndpointProtocol {
-        switch aiServer {
-        case .openAI: OpenAIEndpoint(model: .gpt3,
-                                     systemMode: .json,
-                                     output: .text)
-        case .gemini: GeminiEndpoint(model: .flash1,
-                                     output: .json)
-        case .deepSeek: DeepSeekEndpoint(model: .chat,
-                                       systemMode: .json,
-                                       output: .json)
-        }
-    }
-}
-
 protocol AIEndpointProtocol: BaseEndpointProtocol {
     
     func body(prompt: PromptType) throws -> Data?
+        
 }
+
 
 extension AIEndpointProtocol {
     
     var method: HTTP.Method { .post }
     
     func createRequest(prompt: PromptType) throws -> URLRequest {
+                
         HTTP.request(
             url: try HTTP.url(baseURL: self.baseURL, apiKey: self.apiKey),
             method: self.method,
@@ -48,22 +30,33 @@ extension AIEndpointProtocol {
     }
 }
 
-struct GeminiEndpoint: AIEndpointProtocol {
- 
-    let model: GeminiModel
-    let output: GeminiOutput
-    
+protocol GeminiEndpointProtocol: AIEndpointProtocol {
+    var model: GeminiModel { get }
+    var output: GeminiOutput { get }
+}
+
+extension GeminiEndpointProtocol {
     var baseURL: String { "https://generativelanguage.googleapis.com/v1beta/models/\(self.model.rawValue):generateContent" }
-    let apiKey: API.Key = .gemini
-    let headers: [HTTP.Header.Field : HTTP.Header.Value] = [
+    var apiKey: API.Key { .gemini }
+    var headers: [HTTP.Header.Field : HTTP.Header.Value] { [
         .contentType: .applicationJson
-    ]
-    let timeout: TimeInterval = 30
+    ] }
+    var timeout: TimeInterval { 30 }
     
     func body(prompt: PromptType) throws -> Data? {
-        try GeminiBody.encode(output: self.output, prompt: prompt)
+        try GeminiBody.encode(
+            output: self.output,
+            prompt: prompt
+        )
     }
 }
+
+struct GeminiGameEndpoint: GeminiEndpointProtocol {
+    let model: GeminiModel = .flash1
+    let output: GeminiOutput = .json
+}
+
+
 
 protocol OpenAICompatibleEndpointProtocol: AIEndpointProtocol {
     
@@ -90,24 +83,36 @@ extension OpenAICompatibleEndpointProtocol {
     }
 }
 
-struct OpenAIEndpoint: OpenAICompatibleEndpointProtocol {
-    
-    let model: OpenAIModel
-    let systemMode: OpenAISystemMode
-    let output: OpenAIOutput
-    
-    let baseURL = "https://api.openai.com/v1/chat/completions"
-    let apiKey: API.Key = .openAI
-    let timeout: TimeInterval = 35
+
+
+protocol OpenAIEndpointProtocol: OpenAICompatibleEndpointProtocol { }
+
+extension OpenAIEndpointProtocol {
+    var baseURL: String { "https://api.openai.com/v1/chat/completions" }
+    var apiKey: API.Key { .openAI }
+    var timeout: TimeInterval { 35 }
 }
 
-struct DeepSeekEndpoint: OpenAICompatibleEndpointProtocol {
-    
-    let model: DeepSeekModel
-    let systemMode: OpenAISystemMode
-    let output: OpenAIOutput
-    
-    let baseURL = "https://api.deepseek.com/v1/chat/completions"
-    let apiKey: API.Key = .deepSeek
-    let timeout: TimeInterval = 55
+struct OpenAIGameEndpoint: OpenAIEndpointProtocol {
+    let model: OpenAIModel = .gpt3
+    let systemMode: OpenAISystemMode = .json
+    let output: OpenAIOutput = .text
+}
+
+
+
+
+
+protocol DeepSeekEndpointProtocol: OpenAICompatibleEndpointProtocol { }
+
+extension DeepSeekEndpointProtocol {
+    var baseURL: String {  "https://api.deepseek.com/v1/chat/completions" }
+    var apiKey: API.Key { .deepSeek }
+    var timeout: TimeInterval { 55 }
+}
+
+struct DeepSeekGameEndpoint: DeepSeekEndpointProtocol {
+    let model: DeepSeekModel = .chat
+    let systemMode: OpenAISystemMode = .json
+    let output: OpenAIOutput = .json
 }

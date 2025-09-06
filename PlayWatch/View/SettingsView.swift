@@ -11,7 +11,7 @@ struct SettingsView: View {
     
     @Binding var currentTab: Tab
     @Environment(AppViewModel.self) private var vm
-        
+            
     enum Theme: String, CaseIterable, Identifiable, Codable {
         case light = "Ligero"
         case dark = "Oscuro"
@@ -31,16 +31,16 @@ struct SettingsView: View {
         NavigationStack {
             Form {
                 Section(header: Text("Apariencia")) {
-                    Picker("Theme", selection: $settings.theme) {
+                    Picker("Theme", selection: $settings.selectedTheme) {
                         ForEach(Theme.allCases) { theme in
                             Text(theme.rawValue)
                                 .tag(theme)
                         }
                     }
-                    .onChange(of: settings.theme) { _, newTheme in
-                        settings.on(.updateTheme(newTheme))
+                    .onChange(of: settings.selectedTheme) { _, newTheme in
+                        
                     }
-                    Picker("Language", selection: $settings.language) {
+                    Picker("Language", selection: $settings.selectedLanguage) {
                         ForEach(AppLanguage.allCases) { language in
                             if language == .system {
                                 Text(language.nativeName)
@@ -51,17 +51,16 @@ struct SettingsView: View {
                             }
                         }
                     }
-                    .onChange(of: settings.language) { _, newLanguage in
-                        settings.on(.updateLanguage(newLanguage))
+                    .onChange(of: settings.selectedLanguage) { _, newLanguage in
                         if vm.gameModelLogic.state != .loading && vm.gameModelLogic.state != .playing {
-//                            vm.gameModelLogic.on(.cleanGame)
-//                            vm.homeModelLogic.on(.reloadData)
+                            vm.gameModelLogic.on(.cleanGame)
+                            vm.homeModelLogic.on(.reloadData)
                         }
                     }
                     //                    .onChange(of: currentTab) {
                     //                        //                        gameViewModel.clean()
                     //                    }
-                    Picker("Region", selection: $settings.region) {
+                    Picker("Region", selection: $settings.selectedRegion) {
                         ForEach(AppRegion.allCases) { region in
                             if region == .system {
                                 Text(region.localized)
@@ -72,17 +71,16 @@ struct SettingsView: View {
                             }
                         }
                     }
-                    .onChange(of: settings.region) { _, newRegion in
-                        settings.on(.updateRegion(newRegion))
+                    .onChange(of: settings.selectedRegion) { _, newRegion in
+                        
                     }
-                    Picker("Server", selection: $settings.server) {
+                    Picker("Server", selection: $settings.selectedServer) {
                         ForEach(AIServer.allCases) { server in
                             Text(server.rawValue)
                                 .tag(server)
                         }
                     }
-                    .onChange(of: settings.server) { _, newServer in
-                        settings.on(.updateServer(newServer))
+                    .onChange(of: settings.selectedServer) { _, newServer in
                         if vm.gameModelLogic.state != .loading && vm.gameModelLogic.state != .playing {
 //                            vm.gameModelLogic.on(.cleanGame)
 //                            vm.homeModelLogic.on(.reloadData)
@@ -92,10 +90,6 @@ struct SettingsView: View {
             }
 //            .navigationTitle(Text(Tab.settings.localized))
             .navigationTitle(settings.sectionTitle)
-        }
-        
-        .onAppear {
-            settings.on(.viewAppear)
         }
     }
 }

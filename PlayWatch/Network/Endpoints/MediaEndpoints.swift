@@ -7,15 +7,21 @@
 
 import Foundation
 
-protocol MediaEndpointProtocol: BaseEndpointProtocol {
-    
-    func path(type: MediaFetchType) -> String?
-    func queryItems(type: MediaFetchType, locale: MediaLocale, searchText: String?) -> [URLQueryItem]
-    func createRequest(config: MediaRequestConfig) throws -> URLRequest
+protocol MovieDBEndpointProtocol: BaseEndpointProtocol {
+    func createRequest(mediaType: MediaFetchType, searchQuery: String?) throws -> URLRequest
 }
 
-struct MovieDBEndpoint: MediaEndpointProtocol {
 
+extension MovieDBEndpointProtocol {
+    
+    
+}
+
+
+struct MovieDBEndpoint: MovieDBEndpointProtocol {
+
+    let settingsUtility: SettingsUtilityProtocol
+    
     let baseURL = MovieDBConstants.baseURL
     let method: HTTP.Method = .get
     let apiKey: API.Key = .movieDB
@@ -25,18 +31,17 @@ struct MovieDBEndpoint: MediaEndpointProtocol {
     }
     let timeout: TimeInterval = 15
     
-    func path(type: MediaFetchType) -> String? {
-        MovieDBConstants.paths[type]
+    
+    func queryItems(type: MediaFetchType, searchText: String?) -> [URLQueryItem] {
+        self.resolveQueryItems(type: type, searchText: searchText)
     }
-    func queryItems(type: MediaFetchType, locale: MediaLocale, searchText: String?) -> [URLQueryItem] {
-        self.resolveQueryItems(type: type, locale: locale, searchText: searchText)
-    }
-    func createRequest(config: MediaRequestConfig) throws -> URLRequest {
+    func createRequest(mediaType: MediaFetchType, searchQuery: String?) throws -> URLRequest {
+        
         
         let url = try HTTP.url(
             baseURL: self.baseURL,
-            path: self.path(type: config.mediaType),
-            queryItems: self.queryItems(type: config.mediaType, locale: config.locale, searchText: config.searchQuery)
+            path: MovieDBConstants.paths[mediaType],
+            queryItems: self.queryItems(type: mediaType, searchText: searchQuery)
         )
         
         return HTTP.request(
@@ -51,15 +56,15 @@ struct MovieDBEndpoint: MediaEndpointProtocol {
 // MARK: - MovieDB QueryItems
 extension MovieDBEndpoint {
         
-    private func resolveQueryItems(type: MediaFetchType, locale: MediaLocale, searchText: String?) -> [URLQueryItem] {
+    private func resolveQueryItems(type: MediaFetchType, searchText: String?) -> [URLQueryItem] {
         [
-            .init(.language, locale.language)
+            .init(.language, settingsUtility.mediaLocale.language)
         ] + {
             switch type {
             case .cinemaPlaying, .cinemaUpcomimg:
-                [.init(.region, locale.region)]
+                [.init(.region, settingsUtility.mediaLocale.region)]
             case .movieNew, .tvNew:
-                self.newQueryItems(type: type, locale: locale)
+                self.newQueryItems(type: type)
             case .searchAll:
                 [.init(.query, searchText.orEmpty)]
             case .randomMovies:
@@ -70,12 +75,12 @@ extension MovieDBEndpoint {
         }()
     }
     
-    private func newQueryItems(type: MediaFetchType, locale: MediaLocale) -> [URLQueryItem] {
+    private func newQueryItems(type: MediaFetchType) -> [URLQueryItem] {
         [
             .init(type == .movieNew ? .releaseDate : .firstAirDate, .gte, Date().toString(daysOffset: -MovieDBConstants.daysOffset)),
             .init(type == .movieNew ? .releaseDate : .firstAirDate, .lte, Date().toString(daysOffset: MovieDBConstants.daysOffset*2)),
             .init(.sortBy, type == .movieNew ? .releaseDate : .firstAirDate, .asc),
-            .init(.watchRegion, locale.region),
+            .init(.watchRegion, settingsUtility.mediaLocale.region),
             .init(.withWatchMonetizationTypes, .flatrate),
             .init(.voteCount, .gte, "\(MovieDBConstants.voteCountNewGte)")
         ]

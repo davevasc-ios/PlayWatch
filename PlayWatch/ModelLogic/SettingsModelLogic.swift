@@ -9,153 +9,74 @@ import Foundation
 import Observation
 
 @Observable
-final class SettingsModelLogic: EventHandler {
-    
-    enum InitializationState {
-        case initial, loading, loaded, error
-    }
-    private(set) var initializationState: InitializationState = .initial
-    
-    
-    // MARK: - Provisional
-    var sectionTitle: String = ""
-    
-    // MARK: - Public Properties
-    var theme: SettingsView.Theme = .light
-    var language: AppLanguage = .system
-    var region: AppRegion = AppRegion.system
-    var server: AIServer = AIServer.openAI
-    
-    var errorMessage: String?
-    
-    var appLocale: Locale {
-        Locale(identifier: "\(self.language.languageCode)-\(self.region.regionCode)")
-    }
+final class SettingsModelLogic {
     
     // MARK: - Private Properties
-    @ObservationIgnored private let storageUtility: StorageUtility
+    @ObservationIgnored private var settingsUtility: SettingsUtilityProtocol
 
     // MARK: - Initialization
     init(
-         storageUtility: StorageUtility
+        settingsUtility: SettingsUtilityProtocol
     ) {
-        self.storageUtility = storageUtility
+        self.settingsUtility = settingsUtility
     }
+
     
-    // MARK: - Event Handling
-    enum Event {
-        case initialize
-        case viewAppear
-        case updateTheme(SettingsView.Theme)
-        case updateLanguage(AppLanguage)
-        case updateRegion(AppRegion)
-        case updateServer(AIServer)
-    }
-    
-    func on(_ event: Event) {
-        switch event {
-        case .initialize:
-            self.loadInitialSettings()
-        case .viewAppear:
-            self.loadAllSettings()
-        case .updateTheme(let theme):
-            self.updateTheme(to: theme)
-        case .updateLanguage(let language):
-            self.updateLanguage(to: language)
-        case .updateRegion(let region):
-            self.updateRegion(to: region)
-        case .updateServer(let server):
-            self.updateServer(to: server)
+    var selectedTheme: SettingsView.Theme {
+        get {
+            access(keyPath: \.selectedTheme)
+            return settingsUtility.selectedTheme
         }
-    }
-    
-    @MainActor
-       func loadInitialSettings() {
-           // Solo carga si no lo ha hecho ya.
-           guard initializationState != .loaded else { return }
-           
-           self.initializationState = .loading
-           
-           Task {
-               do {
-                   let settings = try await storageUtility.loadAll()
-                   self.theme = settings.theme
-                   self.language = settings.language
-                   self.region = settings.region
-                   self.initializationState = .loaded // ¡Cargado con éxito!
-               } catch {
-                   self.errorMessage = error.localizedDescription
-                   self.initializationState = .error // Error al cargar
-               }
-           }
-       }
-    
-    // MARK: - Carga inicial
-    @MainActor
-    func loadAllSettings() {
-        Task {
-            do {
-                let settings = try await storageUtility.loadAll()
-                theme = settings.theme
-                language = settings.language
-                region = settings.region
-                server = settings.server
-                self.updateSectionTitle()
-            } catch {
-                errorMessage = error.localizedDescription
+        set {
+            withMutation(keyPath: \.selectedTheme) {
+                settingsUtility.selectedTheme = newValue
             }
         }
     }
     
-    // MARK: - Actualizaciones granulares
-    @MainActor
-    func updateTheme(to new: SettingsView.Theme) {
-        theme = new
-        Task {
-            do {
-                try await self.storageUtility.saveTheme(new)
-            } catch {
-                errorMessage = error.localizedDescription
+    var selectedLanguage: AppLanguage {
+        get {
+            access(keyPath: \.selectedLanguage)
+            return settingsUtility.selectedLanguage
+        }
+        set {
+            withMutation(keyPath: \.selectedLanguage) {
+                settingsUtility.selectedLanguage = newValue
             }
         }
     }
     
-    @MainActor
-    func updateLanguage(to new: AppLanguage) {
-        language = new
-        Task {
-            do {
-                try await self.storageUtility.saveLanguage(new)
-            } catch {
-                errorMessage = error.localizedDescription
+    var selectedRegion: AppRegion {
+        get {
+            access(keyPath: \.selectedRegion)
+            return settingsUtility.selectedRegion
+        }
+        set {
+            withMutation(keyPath: \.selectedRegion) {
+                settingsUtility.selectedRegion = newValue
             }
         }
     }
     
-    @MainActor
-    func updateRegion(to new: AppRegion) {
-        region = new
-        Task {
-            do {
-                try await self.storageUtility.saveRegion(new)
-            } catch {
-                errorMessage = error.localizedDescription
+    var selectedServer: AIServer {
+        get {
+            access(keyPath: \.selectedServer)
+            return settingsUtility.selectedServer
+        }
+        set {
+            withMutation(keyPath: \.selectedServer) {
+                settingsUtility.selectedServer = newValue
             }
         }
     }
     
-    @MainActor
-    func updateServer(to new: AIServer) {
-        server = new
-        Task {
-            do {
-                try await self.storageUtility.saveServer(new)
-            } catch {
-                errorMessage = error.localizedDescription
-            }
-        }
+    var appLocale: Locale {
+        Locale(identifier: "\(self.selectedLanguage.languageCode)-\(self.selectedRegion.regionCode)")
     }
-    
+
+    // MARK: - Provisional
+    var sectionTitle: String = ""
+            
     private func updateSectionTitle() {
         var lang = Tab.settings.localized
         lang.locale = self.appLocale

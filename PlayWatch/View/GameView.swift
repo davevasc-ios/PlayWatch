@@ -15,7 +15,7 @@ struct GameView: View {
             switch vm.gameModelLogic.state {
             case .error:
                 ScrollView {
-                    Text("Error on \(vm.settingsModelLogic.server.rawValue) server, change on Settings")
+                    Text("Error on \(vm.settingsModelLogic.selectedServer.rawValue) server, change on Settings")
                 }
                 .refreshable {
                     vm.gameModelLogic.on(.refreshGame)

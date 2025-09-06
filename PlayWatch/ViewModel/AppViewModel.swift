@@ -25,34 +25,44 @@ final class AppViewModel {
 }
 
 extension AppViewModel {
-    static func production(storageUtility: StorageUtility) -> AppViewModel {
+    static var production: AppViewModel {
         
-        let movieDBRepository: MovieDBRepositoryProtocol = MovieDBRepository()
-        let multiAIRepository: MultiAIRepositoryProtocol = MultiAIRepository()
+        let settingsUtility = SettingsUtility()
+
+        let openAIEndpoint = OpenAIGameEndpoint()
+        let geminiEndpoint = GeminiGameEndpoint()
+        let deepSeekEndpoint = DeepSeekGameEndpoint()
         
-        let movieDBEndpoint: MediaEndpointProtocol = MovieDBEndpoint()
+        let movieDBEndpoint = MovieDBEndpoint(
+            settingsUtility: settingsUtility
+        )
         
-        let movieDBUtility: MovieDBUtilityProtocol = MovieDBUtility(endpoint: movieDBEndpoint)
+        let quizUtility = QuizUtility(
+            settingsUtility: settingsUtility,
+            openAIGameEndpoint: openAIEndpoint,
+            geminiGameEndpoint: geminiEndpoint,
+            deepSeekGameEndpoint: deepSeekEndpoint
+        )
         
+        let mediaUtility = MediaUtility(
+            endpoint: movieDBEndpoint
+        )
         
+        let gameUtility = GameUtility(
+            movieDBUtility: mediaUtility,
+            quizUtility: quizUtility
+        )
+
         let homeLogic = HomeModelLogic(
-            mediaUseCase: MediaUseCase(
-                mediaRepository: movieDBRepository,
-                storageUtility: storageUtility),
-            movieDBUtility: movieDBUtility,
-            storageUtility: storageUtility
+            movieDBUtility: mediaUtility
         )
         
         let gameLogic = GameModelLogic(
-            gameUseCase: GameUseCase(
-                mediaRepository: movieDBRepository,
-                gameRepository: multiAIRepository,
-                storageUtility: storageUtility
-            )
+            gameUtility: gameUtility
         )
         
         let settingsLogic = SettingsModelLogic(
-            storageUtility: storageUtility
+            settingsUtility: settingsUtility
         )
                 
         return AppViewModel(

@@ -38,11 +38,11 @@ final class GameModelLogic: EventHandler {
     @ObservationIgnored private var allQuizzes: [GameQuiz] = []
     @ObservationIgnored private var locale = MediaLocale()
     @ObservationIgnored private var server: AIServer = .openAI
-    @ObservationIgnored private let gameUseCase: GameUseCaseProtocol
+    @ObservationIgnored private let gameUtility: GameUtilityProtocol
     
     // MARK: - Initialization
-    init(gameUseCase: GameUseCaseProtocol) {
-        self.gameUseCase = gameUseCase
+    init(gameUtility: GameUtilityProtocol) {
+        self.gameUtility = gameUtility
     }
     
     // MARK: - Event Handling
@@ -95,7 +95,7 @@ final class GameModelLogic: EventHandler {
             self.state = .loading
             Task {
                 do {
-                    self.allQuizzes = try await self.gameUseCase.fetchGameQuiz()
+                    self.allQuizzes = try await gameUtility.fetchGameQuiz()
                     self.updateCurrentQuizzes()
                     self.nextQuestion = self.currentQuizzes.first?.quiz.question ?? .empty
                     self.state = .ready
