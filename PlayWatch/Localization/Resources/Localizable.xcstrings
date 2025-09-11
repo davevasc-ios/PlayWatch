@@ -142,6 +142,9 @@
     "Language" : {
 
     },
+    "Load Game" : {
+
+    },
     "Loading..." : {
 
     },
@@ -151,7 +154,13 @@
     "Play Again!" : {
 
     },
+    "Powered by %@" : {
+
+    },
     "Punch" : {
+
+    },
+    "Quiz Game" : {
 
     },
     "Rating: " : {
@@ -164,6 +173,9 @@
 
     },
     "Server" : {
+
+    },
+    "settings.language.system" : {
 
     },
     "Start!" : {

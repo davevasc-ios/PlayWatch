@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SearchView: View {
-    @State private var searchText: String = ""
+//    @State private var searchText: String = ""
     let items: [Media]
     var body: some View {
         ForEach (items) { item in

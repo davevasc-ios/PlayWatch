@@ -12,17 +12,17 @@ import Observation
 final class SettingsModelLogic {
     
     // MARK: - Private Properties
-    @ObservationIgnored private var settingsUtility: SettingsUtilityProtocol
+    @ObservationIgnored private var settingsUtility: SettingsWritable // SettingsUtilityProtocol
 
     // MARK: - Initialization
     init(
-        settingsUtility: SettingsUtilityProtocol
+        settingsUtility: SettingsWritable
     ) {
         self.settingsUtility = settingsUtility
     }
 
     
-    var selectedTheme: SettingsView.Theme {
+    var selectedTheme: AppTheme {
         get {
             access(keyPath: \.selectedTheme)
             return settingsUtility.selectedTheme
@@ -78,8 +78,8 @@ final class SettingsModelLogic {
     var sectionTitle: String = ""
             
     private func updateSectionTitle() {
-        var lang = Tab.settings.localized
+        var lang = AppTab.settings.localized
         lang.locale = self.appLocale
-        self.sectionTitle = String(localized: lang)
+        self.sectionTitle = String(localized: "\(lang)")
     }
 }

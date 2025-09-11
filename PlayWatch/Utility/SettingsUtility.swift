@@ -14,18 +14,42 @@ struct SettingsKeys {
     let server: String
 }
 
-protocol SettingsUtilityProtocol: Sendable {
-    var keys: SettingsKeys { get }
+protocol SettingsReadable: Sendable {
+    var selectedLanguage: AppLanguage { get }
+    var selectedRegion: AppRegion { get }
+    var selectedServer: AIServer { get }
+    var mediaLocale: MediaLocale { get }
 }
 
-extension SettingsUtilityProtocol {
-   
+extension SettingsReadable {
+    var mediaLocale: MediaLocale {
+        MediaLocale(
+            code: selectedLanguage.languageCode,
+            region: selectedRegion.regionCode
+        )
+    }
+}
+
+protocol SettingsWritable: SettingsReadable {
+    var selectedTheme: AppTheme { get set }
+    var selectedLanguage: AppLanguage { get set }
+    var selectedRegion: AppRegion { get set }
+    var selectedServer: AIServer { get set }
+}
+
+protocol SettingsManaging: SettingsWritable {
+    var keys: SettingsKeys { get }
+    var defaults: UserDefaults { get }
+}
+
+extension SettingsManaging {
+    
     var defaults: UserDefaults { .standard }
     
-    var selectedTheme: SettingsView.Theme {
+    var selectedTheme: AppTheme {
         get {
             guard let storedThemeValue = defaults.string(forKey: keys.theme),
-                  let savedTheme = SettingsView.Theme(rawValue: storedThemeValue) else { return .light }
+                  let savedTheme = AppTheme(rawValue: storedThemeValue) else { return .light }
             return savedTheme
         }
         set {
@@ -35,43 +59,30 @@ extension SettingsUtilityProtocol {
     
     var selectedLanguage: AppLanguage {
         get {
-            guard let storedLanguageValue = self.defaults.string(forKey: keys.language),
-                  let savedLanguage = AppLanguage(rawValue: storedLanguageValue) else { return .system }
+            guard let storedValue = self.defaults.string(forKey: keys.language),
+                  let savedLanguage = AppLanguage(rawValue: storedValue) else { return .system }
             return savedLanguage
         }
-        set {
-            self.defaults.set(newValue.rawValue, forKey: keys.language)
-        }
+        set { self.defaults.set(newValue.rawValue, forKey: keys.language) }
     }
     
     var selectedRegion: AppRegion {
         get {
-            guard let storedRegionValue = self.defaults.string(forKey: keys.region),
-                  let savedRegion = AppRegion(rawValue: storedRegionValue) else { return .system }
+            guard let storedValue = self.defaults.string(forKey: keys.region),
+                  let savedRegion = AppRegion(rawValue: storedValue) else { return .system }
             return savedRegion
         }
-        set {
-            self.defaults.set(newValue.rawValue, forKey: keys.region)
-        }
+        set { self.defaults.set(newValue.rawValue, forKey: keys.region) }
     }
 
     var selectedServer: AIServer {
         get {
-            guard let storedServerValue = self.defaults.string(forKey: keys.server),
-                  let savedServer = AIServer(rawValue: storedServerValue) else { return .deepSeek }
+            guard let storedValue = self.defaults.string(forKey: keys.server),
+                  let savedServer = AIServer(rawValue: storedValue) else { return .deepSeek }
             return savedServer
+
         }
-        set {
-            self.defaults.set(newValue.rawValue, forKey: keys.server)
-        }
-    }
-    
-    var mediaLocale: MediaLocale {
-        MediaLocale(
-            name: selectedLanguage.name,
-            code: selectedLanguage.languageCode,
-            region: selectedRegion.regionCode
-        )
+        set { self.defaults.set(newValue.rawValue, forKey: keys.server) }
     }
 }
 
@@ -84,19 +95,6 @@ extension SettingsKeys {
     )
 }
 
-struct SettingsUtility: SettingsUtilityProtocol {
+struct SettingsUtility: SettingsManaging {
     var keys: SettingsKeys = .production
-}
-
-extension SettingsKeys {
-    static let preview = SettingsKeys(
-        theme: "preview.settings.theme",
-        language: "preview.settings.language",
-        region: "preview.settings.region",
-        server: "preview.settings.server"
-    )
-}
-
-struct SettingsUtilityPreview: SettingsUtilityProtocol {
-    var keys: SettingsKeys = .preview
 }

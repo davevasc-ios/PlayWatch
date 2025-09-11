@@ -8,14 +8,14 @@
 import Foundation
 
 protocol QuizUtilityProtocol {
-    var settingsUtility: SettingsUtilityProtocol { get }
-    func createRequest(movies: String, aiServer: AIServer) throws -> URLRequest
+    var settingsUtility: SettingsReadable { get } // SettingsUtilityProtocol SettingsUtilityProtocol { get }
+    func createRequest(movies: String) async throws -> URLRequest
 }
 
 extension QuizUtilityProtocol {
     
     func fetchQuiz(movies: String) async throws -> [Quiz] {
-        let request = try self.createRequest(movies: movies, aiServer: settingsUtility.selectedServer)
+        let request = try await self.createRequest(movies: movies)
         let data = try await request.fetchData()
         let decoder = AIResponseDecoderFactory.decoder(for: settingsUtility.selectedServer)
         let quizString = try decoder.decode(from: data)
@@ -25,24 +25,12 @@ extension QuizUtilityProtocol {
 }
 
 struct QuizUtility: QuizUtilityProtocol {
-    let settingsUtility: SettingsUtilityProtocol
-    let openAIGameEndpoint: AIEndpointProtocol
-    let geminiGameEndpoint: AIEndpointProtocol
-    let deepSeekGameEndpoint: AIEndpointProtocol
+    let settingsUtility: SettingsReadable
+    let endpointProvider: AIEndpointProviding
     
-    func createRequest(movies: String, aiServer: AIServer) throws -> URLRequest {
-        
-        let endpoint: AIEndpointProtocol =
-            switch aiServer {
-            case .openAI:
-                openAIGameEndpoint
-            case .gemini:
-                geminiGameEndpoint
-            case .deepSeek:
-                deepSeekGameEndpoint
-            }
-        
-        let prompt = PromptType.quiz(movies: movies, language: settingsUtility.selectedLanguage.name)
+    func createRequest(movies: String) async throws -> URLRequest {
+        let endpoint = await endpointProvider.endpoint(for: settingsUtility.selectedServer)
+        let prompt = PromptType.quiz(movies: movies, language: settingsUtility.selectedLanguage.englishName)
         return try endpoint.createRequest(prompt: prompt)
     }
 }

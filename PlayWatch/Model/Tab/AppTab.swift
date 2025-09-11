@@ -1,5 +1,5 @@
 //
-//  Tab.swift
+//  AppTab.swift
 //  PlayWatch
 //
 //  Created by David on 14/4/24.
@@ -7,11 +7,12 @@
 
 import Foundation
 
-enum Tab: String, CaseIterable {
+enum AppTab: String, CaseIterable {
     case home,
          game,
          favorites,
-         settings
+         settings,
+         search
     
     var systemImage: String {
         switch self {
@@ -19,19 +20,21 @@ enum Tab: String, CaseIterable {
         case .game: "gamecontroller"
         case .favorites: "heart"
         case .settings: "gearshape"
+        case .search: "magnifyingglass"
         }
     }
     
     var index: Int {
-        return Tab.allCases.firstIndex(of: self) ?? 0
+        return AppTab.allCases.firstIndex(of: self) ?? 0
     }
     
     var localized: LocalizedStringResource {
         switch self {
-        case .home: return LocalizableString.home
-        case .game: return LocalizableString.game
-        case .favorites: return LocalizableString.favorites
-        case .settings: return LocalizableString.settings
+        case .home: LocalizableString.home
+        case .game: LocalizableString.game
+        case .favorites: LocalizableString.favorites
+        case .settings: LocalizableString.settings
+        case .search: LocalizableString.search
         }
     }
     

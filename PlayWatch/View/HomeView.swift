@@ -28,7 +28,7 @@ struct HomeView: View {
             .refreshable {
                 vm.homeModelLogic.on(.refreshData)
             }
-            .navigationTitle(Text(Tab.home.localized))
+            .navigationTitle(Text(AppTab.home.localized))
             .navigationBarTitleDisplayMode(.inline)
         }
         .onAppear {

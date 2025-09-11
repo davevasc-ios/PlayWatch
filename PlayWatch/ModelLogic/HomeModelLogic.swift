@@ -12,7 +12,7 @@ final class HomeModelLogic: EventHandler {
     
     // MARK: - Public Read-Only Properties
     private(set) var mediaSectionsList: [MediaSection] = []
-    private(set) var mediaTrendingList: [Media] = []
+//    private(set) var mediaTrendingList: [Media] = []
     private(set) var mediaSearchList: [Media] = []
     private(set) var state: API.Status = .empty
     
@@ -104,7 +104,7 @@ final class HomeModelLogic: EventHandler {
     
     private func clean() {
         self.mediaSectionsList.removeAll()
-        self.mediaTrendingList.removeAll()
+//        self.mediaTrendingList.removeAll()
         self.mediaSearchList.removeAll()
         self.state = .empty
     }
@@ -145,7 +145,7 @@ final class HomeModelLogic: EventHandler {
             defer {
             }
             do {
-                self.mediaSearchList = try await movieDBUtility.fetchMedia(mediaType: .trendingAll, searchQuery: searchText)
+                self.mediaSearchList = try await movieDBUtility.fetchMedia(mediaType: .searchAll, searchQuery: searchText)
             } catch {
                 print(error.localizedDescription)
             }

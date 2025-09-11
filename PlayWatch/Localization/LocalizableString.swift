@@ -34,6 +34,12 @@ struct LocalizableString {
         table: "LocalizableTabBar",
         comment: "Settings section of TabBar"
     )
+    static let search = LocalizedStringResource(
+        "tabbar.search",
+        defaultValue: "Search",
+        table: "LocalizableTabBar",
+        comment: "Search section of TabBar"
+    )
     
     // MARK: - Table LocalizableHome
     static let homeSearchBar = LocalizedStringResource(

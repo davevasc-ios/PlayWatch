@@ -8,7 +8,6 @@
 import Foundation
 
 struct MediaLocale {
-    var name: String = .empty
     var code: String = .empty
     var region: String = .empty
     var language: String {

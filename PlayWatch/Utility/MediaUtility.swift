@@ -12,11 +12,6 @@ protocol MediaUtilityProtocol: Sendable {
 }
 
 extension MediaUtilityProtocol {
-    func fetchMedia(mediaType: MediaFetchType, searchQuery: String? = nil) async throws -> [Media] {
-        let request = try self.createRequest(mediaType: mediaType, searchQuery: searchQuery)
-        let data = try await request.fetchData()
-        return try MediaResponse.decode(from: data).mediaDTOs.mapToMedia
-    }
     
     func fetchMediaSections(sections: [MediaFetchType]) async throws -> [MediaSection] {
         try await withThrowingTaskGroup(of: (Int, MediaSection).self) { group in
@@ -33,6 +28,12 @@ extension MediaUtilityProtocol {
             return collected.sorted(by: { $0.0 < $1.0 }).map { $0.1 }
         }
     }
+    
+    func fetchMedia(mediaType: MediaFetchType, searchQuery: String? = nil) async throws -> [Media] {
+        let request = try self.createRequest(mediaType: mediaType, searchQuery: searchQuery)
+        let data = try await request.fetchData()
+        return try MediaResponse.decode(from: data).mediaDTOs.mapToMedia
+    }
 }
 
 struct MediaUtility: MediaUtilityProtocol {
@@ -40,18 +41,5 @@ struct MediaUtility: MediaUtilityProtocol {
         
     func createRequest(mediaType: MediaFetchType, searchQuery: String?) throws -> URLRequest {
         try self.endpoint.createRequest(mediaType: mediaType, searchQuery: searchQuery)
-    }
-    
-
-    
-}
-
-struct MediaUtilityPreview: MediaUtilityProtocol {
-    
-    func createRequest(mediaType: MediaFetchType, searchQuery: String?) throws -> URLRequest {
-        guard let url = Bundle.main.url(forResource: mediaType.testResource, withExtension: PreviewConstants.Resource.Extension.json) else {
-            throw API.Error.invalidURL
-        }
-        return URLRequest(url: url)
     }
 }

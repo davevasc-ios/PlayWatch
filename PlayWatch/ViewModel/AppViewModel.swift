@@ -28,20 +28,16 @@ extension AppViewModel {
     static var production: AppViewModel {
         
         let settingsUtility = SettingsUtility()
-
-        let openAIEndpoint = OpenAIGameEndpoint()
-        let geminiEndpoint = GeminiGameEndpoint()
-        let deepSeekEndpoint = DeepSeekGameEndpoint()
         
         let movieDBEndpoint = MovieDBEndpoint(
             settingsUtility: settingsUtility
         )
         
+        let endpointProvider = AIEndpointProvider()
+
         let quizUtility = QuizUtility(
             settingsUtility: settingsUtility,
-            openAIGameEndpoint: openAIEndpoint,
-            geminiGameEndpoint: geminiEndpoint,
-            deepSeekGameEndpoint: deepSeekEndpoint
+            endpointProvider: endpointProvider
         )
         
         let mediaUtility = MediaUtility(

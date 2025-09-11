@@ -8,36 +8,20 @@
 import Foundation
 
 protocol MovieDBEndpointProtocol: BaseEndpointProtocol {
-    func createRequest(mediaType: MediaFetchType, searchQuery: String?) throws -> URLRequest
+    func queryItems(type: MediaFetchType, searchText: String?) -> [URLQueryItem]
 }
-
 
 extension MovieDBEndpointProtocol {
-    
-    
-}
-
-
-struct MovieDBEndpoint: MovieDBEndpointProtocol {
-
-    let settingsUtility: SettingsUtilityProtocol
-    
-    let baseURL = MovieDBConstants.baseURL
-    let method: HTTP.Method = .get
-    let apiKey: API.Key = .movieDB
+    var baseURL: String { MovieDBConstants.baseURL }
+    var method: HTTP.Method { .get }
+    var apiKey: API.Key { .movieDB }
     var headers: [HTTP.Header.Field: HTTP.Header.Value] {
         [.accept: .applicationJson,
          .authorization: .bearer(self.apiKey)]
     }
-    let timeout: TimeInterval = 15
+    var timeout: TimeInterval { 15 }
     
-    
-    func queryItems(type: MediaFetchType, searchText: String?) -> [URLQueryItem] {
-        self.resolveQueryItems(type: type, searchText: searchText)
-    }
     func createRequest(mediaType: MediaFetchType, searchQuery: String?) throws -> URLRequest {
-        
-        
         let url = try HTTP.url(
             baseURL: self.baseURL,
             path: MovieDBConstants.paths[mediaType],
@@ -50,6 +34,15 @@ struct MovieDBEndpoint: MovieDBEndpointProtocol {
             headers: self.headers,
             timeout: self.timeout
         )
+    }
+}
+
+
+struct MovieDBEndpoint: MovieDBEndpointProtocol {
+    let settingsUtility: SettingsReadable
+    
+    func queryItems(type: MediaFetchType, searchText: String?) -> [URLQueryItem] {
+        self.resolveQueryItems(type: type, searchText: searchText)
     }
 }
 

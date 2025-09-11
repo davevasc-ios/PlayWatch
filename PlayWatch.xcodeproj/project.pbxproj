@@ -44,6 +44,9 @@
 		55651E172D0F49DF00ABD48B /* URL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55651E162D0F49DF00ABD48B /* URL+Extensions.swift */; };
 		55651E192D0F581900ABD48B /* URLResponse+HTTP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55651E182D0F581900ABD48B /* URLResponse+HTTP.swift */; };
 		55651E1B2D0F584C00ABD48B /* HTTPURLResponse+Success.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55651E1A2D0F584C00ABD48B /* HTTPURLResponse+Success.swift */; };
+		5569BC412E73319C00BC70B0 /* SettingsUtilityPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5569BC402E73319C00BC70B0 /* SettingsUtilityPreview.swift */; };
+		5569BC442E73323D00BC70B0 /* AppTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5569BC432E73323D00BC70B0 /* AppTheme.swift */; };
+		5569BC462E73800F00BC70B0 /* SearchViewLG.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5569BC452E73800F00BC70B0 /* SearchViewLG.swift */; };
 		5576C3AE2BB9B13F00E511DE /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576C3AD2BB9B13F00E511DE /* Constants.swift */; };
 		5576C3B02BB9C10D00E511DE /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576C3AF2BB9C10D00E511DE /* API.swift */; };
 		5576C3B22BB9C7C300E511DE /* APIKey-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5576C3B12BB9C7C300E511DE /* APIKey-Info.plist */; };
@@ -94,7 +97,7 @@
 		55B254112BC2AD47006ACD43 /* GeminiResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B254102BC2AD47006ACD43 /* GeminiResponse.swift */; };
 		55C3F1912C6E3140006DE59B /* EventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C3F1902C6E3140006DE59B /* EventHandler.swift */; };
 		55C996792E34DBB4008789E8 /* MediaUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C996782E34DBB4008789E8 /* MediaUtility.swift */; };
-		55D425CB2BCC4669001FA57C /* Tab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D425CA2BCC4669001FA57C /* Tab.swift */; };
+		55D425CB2BCC4669001FA57C /* AppTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D425CA2BCC4669001FA57C /* AppTab.swift */; };
 		55D425CF2BCC4AFF001FA57C /* TabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D425CE2BCC4AFF001FA57C /* TabBarView.swift */; };
 		55D425D12BCC4C3C001FA57C /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D425D02BCC4C3C001FA57C /* HomeView.swift */; };
 		55D73FE32BCDB2A600F337FC /* TabShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D73FE22BCDB2A600F337FC /* TabShape.swift */; };
@@ -155,6 +158,9 @@
 		55651E162D0F49DF00ABD48B /* URL+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Extensions.swift"; sourceTree = "<group>"; };
 		55651E182D0F581900ABD48B /* URLResponse+HTTP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLResponse+HTTP.swift"; sourceTree = "<group>"; };
 		55651E1A2D0F584C00ABD48B /* HTTPURLResponse+Success.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HTTPURLResponse+Success.swift"; sourceTree = "<group>"; };
+		5569BC402E73319C00BC70B0 /* SettingsUtilityPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsUtilityPreview.swift; sourceTree = "<group>"; };
+		5569BC432E73323D00BC70B0 /* AppTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTheme.swift; sourceTree = "<group>"; };
+		5569BC452E73800F00BC70B0 /* SearchViewLG.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewLG.swift; sourceTree = "<group>"; };
 		5576C3AD2BB9B13F00E511DE /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		5576C3AF2BB9C10D00E511DE /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		5576C3B12BB9C7C300E511DE /* APIKey-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "APIKey-Info.plist"; sourceTree = "<group>"; };
@@ -205,7 +211,7 @@
 		55B254102BC2AD47006ACD43 /* GeminiResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeminiResponse.swift; sourceTree = "<group>"; };
 		55C3F1902C6E3140006DE59B /* EventHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventHandler.swift; sourceTree = "<group>"; };
 		55C996782E34DBB4008789E8 /* MediaUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaUtility.swift; sourceTree = "<group>"; };
-		55D425CA2BCC4669001FA57C /* Tab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tab.swift; sourceTree = "<group>"; };
+		55D425CA2BCC4669001FA57C /* AppTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTab.swift; sourceTree = "<group>"; };
 		55D425CE2BCC4AFF001FA57C /* TabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarView.swift; sourceTree = "<group>"; };
 		55D425D02BCC4C3C001FA57C /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		55D73FE22BCDB2A600F337FC /* TabShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabShape.swift; sourceTree = "<group>"; };
@@ -251,6 +257,7 @@
 				55802B7D2D11BF4300C78317 /* OpenAI */,
 				5524A53D2D6200870028C7E8 /* DeepSeek */,
 				557713062D2AB9EB00302F8A /* Language */,
+				5569BC422E73320C00BC70B0 /* Theme */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -266,6 +273,7 @@
 				55AFE60D2BD5C51E0015E411 /* SearchView.swift */,
 				55E51A3B2BDEB1FF00A8541B /* FavoritesView.swift */,
 				557F55652BE4267B00EEAA2F /* SettingsView.swift */,
+				5569BC452E73800F00BC70B0 /* SearchViewLG.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -334,6 +342,7 @@
 				558F1C5C2D4EA8680087DE99 /* AIServer+Preview.swift */,
 				558F1C602D4EA96F0087DE99 /* MediaFetchType+Preview.swift */,
 				5524A54E2D6B46D60028C7E8 /* AppViewModel+Preview.swift */,
+				5569BC402E73319C00BC70B0 /* SettingsUtilityPreview.swift */,
 			);
 			path = "Preview Content";
 			sourceTree = "<group>";
@@ -376,6 +385,14 @@
 				558F1C642D4F81340087DE99 /* GameConfig.swift */,
 			);
 			path = Game;
+			sourceTree = "<group>";
+		};
+		5569BC422E73320C00BC70B0 /* Theme */ = {
+			isa = PBXGroup;
+			children = (
+				5569BC432E73323D00BC70B0 /* AppTheme.swift */,
+			);
+			path = Theme;
 			sourceTree = "<group>";
 		};
 		557712F92D29A59C00302F8A /* Network */ = {
@@ -516,7 +533,7 @@
 		557713132D2AEF4300302F8A /* Tab */ = {
 			isa = PBXGroup;
 			children = (
-				55D425CA2BCC4669001FA57C /* Tab.swift */,
+				55D425CA2BCC4669001FA57C /* AppTab.swift */,
 			);
 			path = Tab;
 			sourceTree = "<group>";
@@ -766,6 +783,7 @@
 				555F69D82BF68931000DF9B9 /* Quiz.swift in Sources */,
 				5577133B2D480E3400302F8A /* MediaLocale.swift in Sources */,
 				5551A82C2D11980400AFC04A /* MovieDBType.swift in Sources */,
+				5569BC462E73800F00BC70B0 /* SearchViewLG.swift in Sources */,
 				5551A8322D11AF1900AFC04A /* GameQuiz.swift in Sources */,
 				55802B8E2D146A8300C78317 /* HomeModelLogic.swift in Sources */,
 				5577133E2D4965E000302F8A /* MovieDBSorting.swift in Sources */,
@@ -791,8 +809,9 @@
 				5524A5532D6B7CED0028C7E8 /* SettingsModelLogic.swift in Sources */,
 				55802B902D146A9C00C78317 /* GameModelLogic.swift in Sources */,
 				55E51A3C2BDEB1FF00A8541B /* FavoritesView.swift in Sources */,
-				55D425CB2BCC4669001FA57C /* Tab.swift in Sources */,
+				55D425CB2BCC4669001FA57C /* AppTab.swift in Sources */,
 				557F55662BE4267B00EEAA2F /* SettingsView.swift in Sources */,
+				5569BC412E73319C00BC70B0 /* SettingsUtilityPreview.swift in Sources */,
 				55B2540F2BC29ACC006ACD43 /* HTTP.swift in Sources */,
 				5597E4DF2E6784730044994B /* GameUtility.swift in Sources */,
 				5524A53F2D6200A20028C7E8 /* DeepSeekModel.swift in Sources */,
@@ -812,6 +831,7 @@
 				558F1C5F2D4EA8930087DE99 /* PreviewConstants.swift in Sources */,
 				5524A5452D6203320028C7E8 /* GeminiOutput.swift in Sources */,
 				5577132A2D45361F00302F8A /* OpenAIBody.swift in Sources */,
+				5569BC442E73323D00BC70B0 /* AppTheme.swift in Sources */,
 				55C3F1912C6E3140006DE59B /* EventHandler.swift in Sources */,
 				558F1C652D4F81340087DE99 /* GameConfig.swift in Sources */,
 				557713352D47FE8F00302F8A /* MovieDBConstants.swift in Sources */,

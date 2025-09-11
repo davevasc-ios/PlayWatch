@@ -22,15 +22,7 @@ enum AppRegion: String, CaseIterable, Identifiable, Codable {
          germany
     
     var id: Self { self }
-    
-    var name: String {
-        if self == .system {
-            Locale(identifier: AppLanguage.english.languageCode).localizedString(forRegionCode: self.regionCode) ?? String(localized: AppRegion.unitedStates.localized.defaultValue)
-        } else {
-            String(localized: self.localized.defaultValue)
-        }
-    }
-    
+        
     var regionCode: String {
         switch self {
         case .system: return Locale.current.region?.identifier ?? AppRegion.unitedStates.regionCode
@@ -62,28 +54,28 @@ enum AppRegion: String, CaseIterable, Identifiable, Codable {
     
     var localized: LocalizedStringResource {
         switch self {
-        case .system: return LocalizableString.systemRegionName
-        case .unitedStates: return LocalizableString.unitedStatesRegionName
-        case .unitedKingdom: return LocalizableString.unitedKingdomRegionName
-        case .spain: return LocalizableString.spainRegionName
-        case .basqueCountry: return LocalizableString.basqueCountryRegionName
-        case .catalonia: return LocalizableString.cataloniaRegionName
-        case .mexico: return LocalizableString.mexicoRegionName
-        case .france: return LocalizableString.franceRegionName
-        case .italy: return LocalizableString.italyRegionName
-        case .portugal: return LocalizableString.portugalRegionName
-        case .brazil: return LocalizableString.brazilRegionName
-        case .germany: return LocalizableString.germanyRegionName
+        case .system: LocalizableString.systemRegionName
+        case .unitedStates: LocalizableString.unitedStatesRegionName
+        case .unitedKingdom: LocalizableString.unitedKingdomRegionName
+        case .spain: LocalizableString.spainRegionName
+        case .basqueCountry: LocalizableString.basqueCountryRegionName
+        case .catalonia: LocalizableString.cataloniaRegionName
+        case .mexico: LocalizableString.mexicoRegionName
+        case .france: LocalizableString.franceRegionName
+        case .italy: LocalizableString.italyRegionName
+        case .portugal: LocalizableString.portugalRegionName
+        case .brazil: LocalizableString.brazilRegionName
+        case .germany: LocalizableString.germanyRegionName
         }
     }
     
     var nativeName: String {
         if self == .system {
-            return String(localized: self.localized)
+            return String(localized: "\(self.localized)")
         } else {
             var region = self.localized
             region.locale = Locale(identifier: self.languageCode)
-            return String(localized: region)
+            return String(localized: "\(region)")
         }
     }
 }

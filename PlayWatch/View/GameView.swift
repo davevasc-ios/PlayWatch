@@ -21,17 +21,37 @@ struct GameView: View {
                     vm.gameModelLogic.on(.refreshGame)
                 }
             case .empty:
-                EmptyView()
+                VStack {
+                    Text("Quiz Game")
+                        .font(.title)
+                        .fontWeight(.heavy)
+                        .foregroundStyle(Color.purple.gradient)
+                    Text("Powered by \(vm.settingsModelLogic.selectedServer.rawValue)")
+                        .font(.subheadline)
+                        .fontWeight(.heavy)
+                        .foregroundStyle(Color.purple.gradient)
+                    Button {
+                        vm.gameModelLogic.on(.viewAppear)
+                    } label: {
+                        Text("Load Game")
+                            .font(.title)
+                            .fontWeight(.heavy)
+                            .foregroundColor(.white)
+                            .padding()
+                            .background(Color.purple.gradient)
+                            .cornerRadius(15)
+                    }
+                }
             case .loading:
                 VStack {
                     Text("Loading...")
                         .font(.title)
                         .fontWeight(.heavy)
-                        .foregroundStyle(Color.blue.gradient)
+                        .foregroundStyle(Color.red.gradient)
                     ProgressView()
                         .fontWeight(.heavy)
                         .scaleEffect(2.0)
-                        .tint(.blue)
+                        .tint(.red)
                         .padding()
                 }
             case .ready:
@@ -89,9 +109,6 @@ struct GameView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
             .ignoresSafeArea(.all)
             GameCountDownView()
-        }
-        .onAppear {
-            vm.gameModelLogic.on(.viewAppear)
         }
     }
 }

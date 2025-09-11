@@ -9,7 +9,6 @@ import Foundation
 
 struct PreviewConstants {
     
-    
     struct Resource {
         
         enum Name {

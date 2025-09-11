@@ -55,7 +55,7 @@ struct FavoritesView: View {
                 tester = testers.randomElement() ?? ""
                 secretMessage = secretMessages.randomElement() ?? ""
             }
-            .navigationTitle(Text(Tab.favorites.localized))
+            .navigationTitle(Text(AppTab.favorites.localized))
         }
     }
 }

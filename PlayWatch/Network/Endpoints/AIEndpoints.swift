@@ -7,19 +7,42 @@
 
 import Foundation
 
-protocol AIEndpointProtocol: BaseEndpointProtocol {
-    
-    func body(prompt: PromptType) throws -> Data?
-        
+protocol AIEndpointProviding: Sendable {
+    func endpoint(for server: AIServer) async -> AIEndpointProtocol
 }
 
+actor AIEndpointProvider: AIEndpointProviding {
+    
+    private var cache: [AIServer: AIEndpointProtocol] = [:]
+        
+    func endpoint(for server: AIServer) async -> AIEndpointProtocol {
+        if let cachedEndpoint = cache[server] {
+            print("✅ Devolviendo endpoint cacheado para \(server.rawValue)...")
+            return cachedEndpoint
+        }
+        print("⏳ Creando nuevo endpoint para \(server.rawValue)...")
+        let newEndpoint = makeEndpoint(for: server)
+        cache[server] = newEndpoint
+        return newEndpoint
+    }
+    
+    private func makeEndpoint(for server: AIServer) -> AIEndpointProtocol {
+        switch server {
+        case .openAI:   return OpenAIGameEndpoint()
+        case .gemini:   return GeminiGameEndpoint()
+        case .deepSeek: return DeepSeekGameEndpoint()
+        }
+    }
+}
+
+protocol AIEndpointProtocol: BaseEndpointProtocol {
+    func body(prompt: PromptType) throws -> Data?
+}
 
 extension AIEndpointProtocol {
-    
     var method: HTTP.Method { .post }
     
     func createRequest(prompt: PromptType) throws -> URLRequest {
-                
         HTTP.request(
             url: try HTTP.url(baseURL: self.baseURL, apiKey: self.apiKey),
             method: self.method,
@@ -56,10 +79,7 @@ struct GeminiGameEndpoint: GeminiEndpointProtocol {
     let output: GeminiOutput = .json
 }
 
-
-
 protocol OpenAICompatibleEndpointProtocol: AIEndpointProtocol {
-    
     associatedtype ModelType: OpenAIModelCompatible
     var model: ModelType { get }
     var systemMode: OpenAISystemMode { get }
@@ -83,8 +103,6 @@ extension OpenAICompatibleEndpointProtocol {
     }
 }
 
-
-
 protocol OpenAIEndpointProtocol: OpenAICompatibleEndpointProtocol { }
 
 extension OpenAIEndpointProtocol {
@@ -99,14 +117,10 @@ struct OpenAIGameEndpoint: OpenAIEndpointProtocol {
     let output: OpenAIOutput = .text
 }
 
-
-
-
-
 protocol DeepSeekEndpointProtocol: OpenAICompatibleEndpointProtocol { }
 
 extension DeepSeekEndpointProtocol {
-    var baseURL: String {  "https://api.deepseek.com/v1/chat/completions" }
+    var baseURL: String { "https://api.deepseek.com/v1/chat/completions" }
     var apiKey: API.Key { .deepSeek }
     var timeout: TimeInterval { 55 }
 }

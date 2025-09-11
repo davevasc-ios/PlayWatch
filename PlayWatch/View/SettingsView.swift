@@ -9,22 +9,9 @@ import SwiftUI
 
 struct SettingsView: View {
     
-    @Binding var currentTab: Tab
+//    @Binding var currentTab: AppTab
     @Environment(AppViewModel.self) private var vm
             
-    enum Theme: String, CaseIterable, Identifiable, Codable {
-        case light = "Ligero"
-        case dark = "Oscuro"
-        case rainbows = "Rainbows"
-        case pink = "Pink"
-        case purple = "Purple"
-        case red = "Red"
-        case green = "Green"
-        case yellow = "Yellow"
-        
-        var id: Self { self }
-    }
-    
     var body: some View {
         @Bindable var settings = vm.settingsModelLogic
         
@@ -32,18 +19,15 @@ struct SettingsView: View {
             Form {
                 Section(header: Text("Apariencia")) {
                     Picker("Theme", selection: $settings.selectedTheme) {
-                        ForEach(Theme.allCases) { theme in
+                        ForEach(AppTheme.allCases) { theme in
                             Text(theme.rawValue)
                                 .tag(theme)
                         }
                     }
-                    .onChange(of: settings.selectedTheme) { _, newTheme in
-                        
-                    }
                     Picker("Language", selection: $settings.selectedLanguage) {
                         ForEach(AppLanguage.allCases) { language in
                             if language == .system {
-                                Text(language.nativeName)
+                                Text(language.localized)
                                     .tag(language)
                             } else {
                                 Text("\(language.nativeName) (\(language.localized))")
@@ -96,7 +80,9 @@ struct SettingsView: View {
 
 #if DEBUG
 #Preview {
-    SettingsView(currentTab: .constant(.settings))
+    SettingsView()
         .environment(AppViewModel.preview)
+//    SettingsView(currentTab: .constant(.settings))
+//        .environment(AppViewModel.preview)
 }
 #endif
