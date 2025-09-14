@@ -10,7 +10,7 @@ import Foundation
 struct QuizUtilityPreview: QuizUtilityProtocol {
     var settingsUtility: any SettingsReadable
         
-    func createRequest(movies: String) throws -> URLRequest {
+    func createRequest(for movies: String) throws -> URLRequest {
         guard let url = Bundle.main.url(forResource: settingsUtility.selectedServer.testResource, withExtension: PreviewConstants.Resource.Extension.json) else {
             throw API.Error.invalidURL
         }

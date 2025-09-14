@@ -9,7 +9,7 @@ import Foundation
 
 protocol GameUtilityProtocol {
     var movieDBUtility: MediaUtilityProtocol { get }
-    var quizUtility: QuizUtilityProtocol { get }
+    var quizUtility: QuizFetching { get }
 }
 
 extension GameUtilityProtocol {
@@ -19,7 +19,7 @@ extension GameUtilityProtocol {
         guard randomMovies.count == GameConfig.numberOfQuizzes else {
             throw GameError.outOfRange
         }
-        let gameQuizzes = try await self.quizUtility.fetchQuiz(movies: randomMovies.joinedNames())
+        let gameQuizzes = try await self.quizUtility.fetchQuiz(for: randomMovies.joinedNames())
         guard gameQuizzes.count == GameConfig.numberOfQuizzes else {
             throw GameError.outOfRange
         }
@@ -29,5 +29,5 @@ extension GameUtilityProtocol {
 
 struct GameUtility: GameUtilityProtocol {
     let movieDBUtility: MediaUtilityProtocol
-    let quizUtility: QuizUtilityProtocol
+    let quizUtility: QuizFetching
 }

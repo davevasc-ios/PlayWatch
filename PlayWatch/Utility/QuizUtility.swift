@@ -7,15 +7,19 @@
 
 import Foundation
 
-protocol QuizUtilityProtocol {
+protocol QuizFetching: Sendable {
+    func fetchQuiz(for movies: String) async throws -> [Quiz]
+}
+
+protocol QuizUtilityProtocol: QuizFetching {
     var settingsUtility: SettingsReadable { get } // SettingsUtilityProtocol SettingsUtilityProtocol { get }
-    func createRequest(movies: String) async throws -> URLRequest
+    func createRequest(for movies: String) async throws -> URLRequest
 }
 
 extension QuizUtilityProtocol {
     
-    func fetchQuiz(movies: String) async throws -> [Quiz] {
-        let request = try await self.createRequest(movies: movies)
+    func fetchQuiz(for movies: String) async throws -> [Quiz] {
+        let request = try await createRequest(for: movies)
         let data = try await request.fetchData()
         let decoder = AIResponseDecoderFactory.decoder(for: settingsUtility.selectedServer)
         let quizString = try decoder.decode(from: data)
@@ -26,14 +30,10 @@ extension QuizUtilityProtocol {
 
 struct QuizUtility: QuizUtilityProtocol {
     let settingsUtility: SettingsReadable
-    let endpointProvider: AIEndpointProviding
+    let aiRequestProvider: AIRequestProviding
     
-    func createRequest(movies: String) async throws -> URLRequest {
-        let endpoint = await endpointProvider.endpoint(for: settingsUtility.selectedServer)
+    func createRequest(for movies: String) async throws -> URLRequest {
         let prompt = PromptType.quiz(movies: movies, language: settingsUtility.selectedLanguage.englishName)
-        return try endpoint.createRequest(prompt: prompt)
+        return try await aiRequestProvider.createRequest(for: settingsUtility.selectedServer, with: prompt)
     }
 }
-
-
-

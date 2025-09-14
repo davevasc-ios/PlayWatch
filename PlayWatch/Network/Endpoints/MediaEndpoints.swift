@@ -7,6 +7,19 @@
 
 import Foundation
 
+
+protocol MediaRequestProviding: Sendable {
+    func createRequest(mediaType: MediaFetchType, searchQuery: String?) throws -> URLRequest
+}
+
+struct MediaRequestProvider: MediaRequestProviding {
+    let movieDBendpoint: MovieDBEndpointProtocol
+
+    func createRequest(mediaType: MediaFetchType, searchQuery: String?) throws -> URLRequest {
+        try movieDBendpoint.createRequest(mediaType: mediaType, searchQuery: searchQuery)
+    }
+}
+
 protocol MovieDBEndpointProtocol: BaseEndpointProtocol {
     func queryItems(type: MediaFetchType, searchText: String?) -> [URLQueryItem]
 }

@@ -33,15 +33,19 @@ extension AppViewModel {
             settingsUtility: settingsUtility
         )
         
-        let endpointProvider = AIEndpointProvider()
+        let mediaRequestProvider = MediaRequestProvider(
+            movieDBendpoint: movieDBEndpoint
+        )
+        
+        let aiRequestProvider = AIRequestProvider()
 
         let quizUtility = QuizUtility(
             settingsUtility: settingsUtility,
-            endpointProvider: endpointProvider
+            aiRequestProvider: aiRequestProvider
         )
         
         let mediaUtility = MediaUtility(
-            endpoint: movieDBEndpoint
+            mediaRequestProvider: mediaRequestProvider
         )
         
         let gameUtility = GameUtility(

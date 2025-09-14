@@ -37,9 +37,9 @@ extension MediaUtilityProtocol {
 }
 
 struct MediaUtility: MediaUtilityProtocol {
-    let endpoint: MovieDBEndpointProtocol
+    let mediaRequestProvider: MediaRequestProviding
         
     func createRequest(mediaType: MediaFetchType, searchQuery: String?) throws -> URLRequest {
-        try self.endpoint.createRequest(mediaType: mediaType, searchQuery: searchQuery)
+        try self.mediaRequestProvider.createRequest(mediaType: mediaType, searchQuery: searchQuery)
     }
 }

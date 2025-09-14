@@ -8,58 +8,23 @@
 import SwiftUI
 
 struct HomeView: View {
-    @State private var showSuggestions = true
-    @State private var isSearching = false
-    @State private var searchText: String = .empty
-    
     @Environment(AppViewModel.self) private var vm
     
     var body: some View {
         NavigationStack {
             ScrollView {
                 LazyVStack (alignment: .leading) {
-                    if isSearching {
-                        SearchView(items: vm.homeModelLogic.mediaSearchList)
-                    } else {
-                        MediaSectionView(sections: vm.homeModelLogic.mediaSectionsList)
-                    }
+                    MediaSectionView(sections: vm.homeModelLogic.mediaSectionsList)
                 }
             }
             .refreshable {
                 vm.homeModelLogic.on(.refreshData)
             }
             .navigationTitle(Text(AppTab.home.localized))
-            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarTitleDisplayMode(.automatic)
         }
         .onAppear {
             vm.homeModelLogic.on(.viewAppear)
-        }
-        .searchable(text: $searchText, isPresented: $isSearching, placement: .automatic, prompt: Text(LocalizableString.homeSearchBar))
-        .searchSuggestions {
-            if showSuggestions {
-                ForEach(vm.homeModelLogic.mediaSearchList) { item in
-                    Button {
-                        searchText = item.name
-                        showSuggestions = false
-                    } label: {
-                        Label(item.name, systemImage: "bookmark")
-                            .lineLimit(1)
-                    }
-                }
-            }
-        }
-        .onChange(of: searchText) {
-            if searchText.count > 0 {
-                vm.homeModelLogic.on(.changeSearch(searchText))
-            } else {
-                vm.homeModelLogic.on(.changeTrending)
-                showSuggestions = true
-            }
-        }
-        .onChange(of: isSearching) {
-            if isSearching {
-                vm.homeModelLogic.on(.changeTrending)
-            }
         }
     }
 }
@@ -214,7 +179,7 @@ struct PersonNameView: View {
             .padding(EdgeInsets(top: 4, leading: 4, bottom: 8, trailing: 4))
     }
 }
-        
+
 struct EmptyPosterView: View {
     let text: String
     

@@ -7,15 +7,19 @@
 
 import Foundation
 
-protocol AIEndpointProviding: Sendable {
-    func endpoint(for server: AIServer) async -> AIEndpointProtocol
+protocol AIRequestProviding: Sendable {
+    func createRequest(for server: AIServer, with prompt: PromptType) async throws -> URLRequest
 }
 
-actor AIEndpointProvider: AIEndpointProviding {
-    
+actor AIRequestProvider: AIRequestProviding {
     private var cache: [AIServer: AIEndpointProtocol] = [:]
         
-    func endpoint(for server: AIServer) async -> AIEndpointProtocol {
+    func createRequest(for server: AIServer, with prompt: PromptType) async throws -> URLRequest {
+        let endpoint = await getEndpoint(for: server)
+        return try endpoint.createRequest(prompt: prompt)
+    }
+    
+    private func getEndpoint(for server: AIServer) async -> AIEndpointProtocol {
         if let cachedEndpoint = cache[server] {
             print("✅ Devolviendo endpoint cacheado para \(server.rawValue)...")
             return cachedEndpoint
@@ -28,12 +32,13 @@ actor AIEndpointProvider: AIEndpointProviding {
     
     private func makeEndpoint(for server: AIServer) -> AIEndpointProtocol {
         switch server {
-        case .openAI:   return OpenAIGameEndpoint()
-        case .gemini:   return GeminiGameEndpoint()
-        case .deepSeek: return DeepSeekGameEndpoint()
+        case .openAI: OpenAIGameEndpoint()
+        case .gemini: GeminiGameEndpoint()
+        case .deepSeek: DeepSeekGameEndpoint()
         }
     }
 }
+
 
 protocol AIEndpointProtocol: BaseEndpointProtocol {
     func body(prompt: PromptType) throws -> Data?
