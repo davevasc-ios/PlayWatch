@@ -1,5 +1,5 @@
 //
-//  AppViewModel.swift
+//  AppService.swift
 //  PlayWatch
 //
 //  Created by David on 19/12/24.
@@ -8,7 +8,7 @@
 import Observation
 
 @Observable
-final class AppViewModel {
+final class AppService {
     let homeModelLogic: HomeModelLogic
     let gameModelLogic: GameModelLogic
     var settingsModelLogic: SettingsModelLogic
@@ -24,8 +24,8 @@ final class AppViewModel {
     }
 }
 
-extension AppViewModel {
-    static var production: AppViewModel {
+extension AppService {
+    static var production: AppService {
         
         let settingsUtility = SettingsUtility()
         
@@ -65,7 +65,7 @@ extension AppViewModel {
             settingsUtility: settingsUtility
         )
                 
-        return AppViewModel(
+        return AppService(
             homeModelLogic: homeLogic,
             gameModelLogic: gameLogic,
             settingsModelLogic: settingsLogic

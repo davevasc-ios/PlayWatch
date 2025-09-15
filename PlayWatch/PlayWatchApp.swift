@@ -11,15 +11,15 @@ import SwiftData
 @main
 struct PlayWatchApp: App {
     
-    @State private var appViewModel: AppViewModel = AppViewModel.production
+    @State private var appService = AppService.production
     
     var body: some Scene {
         WindowGroup {
             GeometryReader { geometry in
                 TabBarView()
-                    .environment(\.locale, appViewModel.settingsModelLogic.appLocale)
+                    .environment(\.locale, appService.settingsModelLogic.appLocale)
                     .environment(\.screenSize, geometry.size)
-                    .environment(appViewModel)
+                    .environment(appService)
             }
         }
     }

@@ -9,11 +9,10 @@ import SwiftUI
 
 struct SettingsView: View {
     
-//    @Binding var currentTab: AppTab
-    @Environment(AppViewModel.self) private var vm
+    @Environment(AppService.self) private var appService
             
     var body: some View {
-        @Bindable var settings = vm.settingsModelLogic
+        @Bindable var settings = appService.settingsModelLogic
         
         NavigationStack {
             Form {
@@ -36,9 +35,9 @@ struct SettingsView: View {
                         }
                     }
                     .onChange(of: settings.selectedLanguage) { _, newLanguage in
-                        if vm.gameModelLogic.state != .loading && vm.gameModelLogic.state != .playing {
-                            vm.gameModelLogic.on(.cleanGame)
-                            vm.homeModelLogic.on(.reloadData)
+                        if appService.gameModelLogic.state != .loading && appService.gameModelLogic.state != .playing {
+                            appService.gameModelLogic.on(.cleanGame)
+                            appService.homeModelLogic.on(.reloadData)
                         }
                     }
                     //                    .onChange(of: currentTab) {
@@ -65,7 +64,7 @@ struct SettingsView: View {
                         }
                     }
                     .onChange(of: settings.selectedServer) { _, newServer in
-                        if vm.gameModelLogic.state != .loading && vm.gameModelLogic.state != .playing {
+                        if appService.gameModelLogic.state != .loading && appService.gameModelLogic.state != .playing {
 //                            vm.gameModelLogic.on(.cleanGame)
 //                            vm.homeModelLogic.on(.reloadData)
                         }
@@ -81,7 +80,7 @@ struct SettingsView: View {
 #if DEBUG
 #Preview {
     SettingsView()
-        .environment(AppViewModel.preview)
+        .environment(AppService.preview)
 //    SettingsView(currentTab: .constant(.settings))
 //        .environment(AppViewModel.preview)
 }

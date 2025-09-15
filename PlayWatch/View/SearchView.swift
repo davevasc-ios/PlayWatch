@@ -2,23 +2,56 @@
 //  SearchView.swift
 //  PlayWatch
 //
-//  Created by David on 22/4/24.
+//  Created by David on 12/9/25.
 //
 
 import SwiftUI
 
 struct SearchView: View {
-//    @State private var searchText: String = ""
-    let items: [Media]
+    @Environment(AppService.self) private var appService
+    @State private var search: String = .empty
+    @State private var showSuggestions = true
+    
     var body: some View {
-        ForEach (items) { item in
-            NavigationLink(destination: MediaDetailView(item: item)) {
-                SearchCellView(item: item)
+        NavigationStack {
+            ScrollView {
+                LazyVStack(alignment: .leading) {
+                    ForEach (appService.homeModelLogic.mediaSearchList) { item in
+                        NavigationLink(destination: MediaDetailView(item: item)) {
+                            SearchCellView(item: item)
+                        }
+                    }
+                }
+            }
+        }
+        .onAppear {
+            appService.homeModelLogic.on(.changeTrending)
+        }
+        .searchable(text: $search, prompt: Text(LocalizableString.homeSearchBar))
+
+        .searchSuggestions {
+            if showSuggestions {
+                ForEach(appService.homeModelLogic.mediaSearchList) { item in
+                    Button {
+                        search = item.name
+                        showSuggestions = false
+                    } label: {
+                        Label(item.name, systemImage: "bookmark")
+                            .lineLimit(1)
+                    }
+                }
+            }
+        }
+        .onChange(of: search) {
+            if search.count > 0 {
+                appService.homeModelLogic.on(.changeSearch(search))
+            } else {
+                appService.homeModelLogic.on(.changeTrending)
+                showSuggestions = true
             }
         }
     }
 }
-
 
 struct SearchCellView: View {
     let item: Media
@@ -65,5 +98,6 @@ struct SearchCellView: View {
 }
 
 #Preview {
-    HomeView()
+    SearchView()
+        .environment(AppService.preview)
 }

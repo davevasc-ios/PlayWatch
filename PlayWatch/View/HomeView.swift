@@ -8,23 +8,23 @@
 import SwiftUI
 
 struct HomeView: View {
-    @Environment(AppViewModel.self) private var vm
+    @Environment(AppService.self) private var appService
     
     var body: some View {
         NavigationStack {
             ScrollView {
                 LazyVStack (alignment: .leading) {
-                    MediaSectionView(sections: vm.homeModelLogic.mediaSectionsList)
+                    MediaSectionView(sections: appService.homeModelLogic.mediaSectionsList)
                 }
             }
             .refreshable {
-                vm.homeModelLogic.on(.refreshData)
+                appService.homeModelLogic.on(.refreshData)
             }
             .navigationTitle(Text(AppTab.home.localized))
             .navigationBarTitleDisplayMode(.automatic)
         }
         .onAppear {
-            vm.homeModelLogic.on(.viewAppear)
+            appService.homeModelLogic.on(.viewAppear)
         }
     }
 }
@@ -212,6 +212,6 @@ struct TitleNameView: View {
 #if DEBUG
 #Preview {
     HomeView()
-        .environment(AppViewModel.preview)
+        .environment(AppService.preview)
 }
 #endif

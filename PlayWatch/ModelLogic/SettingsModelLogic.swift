@@ -12,7 +12,7 @@ import Observation
 final class SettingsModelLogic {
     
     // MARK: - Private Properties
-    @ObservationIgnored private var settingsUtility: SettingsWritable // SettingsUtilityProtocol
+    @ObservationIgnored private var settingsUtility: SettingsWritable
 
     // MARK: - Initialization
     init(

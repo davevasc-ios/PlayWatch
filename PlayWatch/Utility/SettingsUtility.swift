@@ -80,7 +80,6 @@ extension SettingsManaging {
             guard let storedValue = self.defaults.string(forKey: keys.server),
                   let savedServer = AIServer(rawValue: storedValue) else { return .deepSeek }
             return savedServer
-
         }
         set { self.defaults.set(newValue.rawValue, forKey: keys.server) }
     }
@@ -96,5 +95,5 @@ extension SettingsKeys {
 }
 
 struct SettingsUtility: SettingsManaging {
-    var keys: SettingsKeys = .production
+    let keys: SettingsKeys = .production
 }

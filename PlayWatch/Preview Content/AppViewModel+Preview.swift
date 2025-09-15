@@ -7,8 +7,8 @@
 
 import Foundation
 
-extension AppViewModel {
-    static var preview: AppViewModel {
+extension AppService {
+    static var preview: AppService {
         
         let settingsUtilityPreview = SettingsUtilityPreview()
         
@@ -35,7 +35,7 @@ extension AppViewModel {
             settingsUtility: settingsUtilityPreview
         )
         
-        return AppViewModel(
+        return AppService(
             homeModelLogic: homeLogic,
             gameModelLogic: gameLogic,
             settingsModelLogic: settingsLogic

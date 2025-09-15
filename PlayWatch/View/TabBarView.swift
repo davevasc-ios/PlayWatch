@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct TabBarView: View {
-        
-    @Environment(AppViewModel.self) private var vm
     
     var body: some View {
         TabView {
@@ -26,11 +24,12 @@ struct TabBarView: View {
                 SettingsView()
             }
             Tab(role: .search) {
-                SearchViewLG()
+                SearchView()
             } label: {
                 Label("\(AppTab.search.localized)", systemImage: AppTab.search.systemImage)
             }
         }
+        //        .tabBarMinimizeBehavior(.automatic)
     }
 }
 

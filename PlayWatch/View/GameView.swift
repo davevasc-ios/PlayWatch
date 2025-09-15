@@ -8,17 +8,19 @@
 import SwiftUI
 
 struct GameView: View {
-    @Environment(AppViewModel.self) private var vm
+    @Environment(AppService.self) private var appService
 
     var body: some View {
+        @Bindable var settings = appService.settingsModelLogic
+        
         ZStack {
-            switch vm.gameModelLogic.state {
+            switch appService.gameModelLogic.state {
             case .error:
                 ScrollView {
-                    Text("Error on \(vm.settingsModelLogic.selectedServer.rawValue) server, change on Settings")
+                    Text("Error on \(appService.settingsModelLogic.selectedServer.rawValue) server, change on Settings")
                 }
                 .refreshable {
-                    vm.gameModelLogic.on(.refreshGame)
+                    appService.gameModelLogic.on(.refreshGame)
                 }
             case .empty:
                 VStack {
@@ -26,12 +28,12 @@ struct GameView: View {
                         .font(.title)
                         .fontWeight(.heavy)
                         .foregroundStyle(Color.purple.gradient)
-                    Text("Powered by \(vm.settingsModelLogic.selectedServer.rawValue)")
+                    Text("Powered by \(appService.settingsModelLogic.selectedServer.rawValue)")
                         .font(.subheadline)
                         .fontWeight(.heavy)
                         .foregroundStyle(Color.purple.gradient)
                     Button {
-                        vm.gameModelLogic.on(.viewAppear)
+                        appService.gameModelLogic.on(.viewAppear)
                     } label: {
                         Text("Load Game")
                             .font(.title)
@@ -40,6 +42,18 @@ struct GameView: View {
                             .padding()
                             .background(Color.purple.gradient)
                             .cornerRadius(15)
+                    }
+                    HStack {
+                        Text("Server:")
+                            .font(.subheadline)
+                            .fontWeight(.heavy)
+                            .foregroundStyle(Color.purple.gradient)
+                        Picker("Server", selection: $settings.selectedServer) {
+                            ForEach(AIServer.allCases) { server in
+                                Text(server.rawValue)
+                                    .tag(server)
+                            }
+                        }
                     }
                 }
             case .loading:
@@ -61,7 +75,7 @@ struct GameView: View {
                         .fontWeight(.heavy)
                         .foregroundStyle(Color.blue.gradient)
                     Button {
-                        vm.gameModelLogic.start()
+                        appService.gameModelLogic.start()
                     } label: {
                         Text("Start!")
                             .font(.title)
@@ -80,19 +94,19 @@ struct GameView: View {
                 }
                 .frame(maxHeight: .infinity, alignment: .top)
                 .onAppear {
-                    if vm.gameModelLogic.level == 0 {
-                        vm.gameModelLogic.nextQuiz()
+                    if appService.gameModelLogic.level == 0 {
+                        appService.gameModelLogic.nextQuiz()
                     }
                 }
             case .finish:
                 VStack {
-                    Text("Total: \(vm.gameModelLogic.totalPoints)/\(GameConfig.numberOfQuizzes * GameConfig.secondsPerQuiz)")
+                    Text("Total: \(appService.gameModelLogic.totalPoints)/\(GameConfig.numberOfQuizzes * GameConfig.secondsPerQuiz)")
                         .font(.title)
                         .fontWeight(.heavy)
                         .foregroundColor(.blue)
                         .padding()
                     Button {
-                        vm.gameModelLogic.on(.refreshGame)
+                        appService.gameModelLogic.on(.refreshGame)
                     } label: {
                         Text("Play Again!")
                             .font(.title)
@@ -104,8 +118,8 @@ struct GameView: View {
                     }
                 }
             }
-            GameCheckView(points: vm.gameModelLogic.newPoints,
-                          flag: .constant(vm.gameModelLogic.answerFeedback))
+            GameCheckView(points: appService.gameModelLogic.newPoints,
+                          flag: .constant(appService.gameModelLogic.answerFeedback))
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
             .ignoresSafeArea(.all)
             GameCountDownView()
@@ -114,7 +128,7 @@ struct GameView: View {
 }
 
 struct GameCountDownView: View {
-    @Environment(AppViewModel.self) private var vm
+    @Environment(AppService.self) private var vm
 
     var body: some View {
         if vm.gameModelLogic.showCountdown {
@@ -137,7 +151,7 @@ struct GamePlayingView: View {
 
 struct GameQuestionView: View {
     @Environment(\.screenSize) var screenSize
-    @Environment(AppViewModel.self) private var vm
+    @Environment(AppService.self) private var vm
 
     var body: some View {
         Text(vm.gameModelLogic.questionTyping)
@@ -152,7 +166,7 @@ struct GameQuestionView: View {
 
 struct GameCardView: View {
     @Environment(\.screenSize) var screenSize
-    @Environment(AppViewModel.self) private var vm
+    @Environment(AppService.self) private var vm
     @State private var xOffset: CGFloat = 0
     @State private var yOffset: CGFloat = 0
     @State private var degrees: Double = 0
@@ -338,7 +352,7 @@ struct SwipeActionTagView: View {
 
 struct GameStackView: View {
     @Environment(\.verticalSizeClass) var verticalSizeClass
-    @Environment(AppViewModel.self) private var vm
+    @Environment(AppService.self) private var vm
 
     var body: some View {
         if verticalSizeClass == .regular {
@@ -357,7 +371,7 @@ struct GameStackView: View {
 }
 
 struct SwipeActionButtonsView: View {
-    @Environment(AppViewModel.self) private var vm
+    @Environment(AppService.self) private var vm
 
     var body: some View {
         HStack (spacing: 15) {
@@ -379,7 +393,7 @@ struct SwipeActionButtonsView: View {
 }
 
 struct ActionButtonView: View {
-    @Environment(AppViewModel.self) private var vm
+    @Environment(AppService.self) private var vm
     var gameAnswer: GameAnswer
     var name: String
     var color: Color
@@ -473,6 +487,6 @@ struct AnimationValues {
 #if DEBUG
 #Preview("GameViewTest") {
     GameView()
-        .environment(AppViewModel.preview)
+        .environment(AppService.preview)
 }
 #endif
