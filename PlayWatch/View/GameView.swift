@@ -11,16 +11,16 @@ struct GameView: View {
     @Environment(AppService.self) private var appService
 
     var body: some View {
-        @Bindable var settings = appService.settingsModelLogic
+        @Bindable var settings = appService.preferencesService
         
         ZStack {
-            switch appService.gameModelLogic.state {
+            switch appService.gameService.state {
             case .error:
                 ScrollView {
-                    Text("Error on \(appService.settingsModelLogic.selectedServer.rawValue) server, change on Settings")
+                    Text("Error on \(appService.preferencesService.selectedServer.rawValue) server, change on Settings")
                 }
                 .refreshable {
-                    appService.gameModelLogic.on(.refreshGame)
+                    appService.gameService.on(.refreshGame)
                 }
             case .empty:
                 VStack {
@@ -28,12 +28,12 @@ struct GameView: View {
                         .font(.title)
                         .fontWeight(.heavy)
                         .foregroundStyle(Color.purple.gradient)
-                    Text("Powered by \(appService.settingsModelLogic.selectedServer.rawValue)")
+                    Text("Powered by \(appService.preferencesService.selectedServer.rawValue)")
                         .font(.subheadline)
                         .fontWeight(.heavy)
                         .foregroundStyle(Color.purple.gradient)
                     Button {
-                        appService.gameModelLogic.on(.viewAppear)
+                        appService.gameService.on(.viewAppear)
                     } label: {
                         Text("Load Game")
                             .font(.title)
@@ -75,7 +75,7 @@ struct GameView: View {
                         .fontWeight(.heavy)
                         .foregroundStyle(Color.blue.gradient)
                     Button {
-                        appService.gameModelLogic.start()
+                        appService.gameService.start()
                     } label: {
                         Text("Start!")
                             .font(.title)
@@ -94,19 +94,19 @@ struct GameView: View {
                 }
                 .frame(maxHeight: .infinity, alignment: .top)
                 .onAppear {
-                    if appService.gameModelLogic.level == 0 {
-                        appService.gameModelLogic.nextQuiz()
+                    if appService.gameService.level == 0 {
+                        appService.gameService.nextQuiz()
                     }
                 }
             case .finish:
                 VStack {
-                    Text("Total: \(appService.gameModelLogic.totalPoints)/\(GameConfig.numberOfQuizzes * GameConfig.secondsPerQuiz)")
+                    Text("Total: \(appService.gameService.totalPoints)/\(GameConfig.numberOfQuizzes * GameConfig.secondsPerQuiz)")
                         .font(.title)
                         .fontWeight(.heavy)
                         .foregroundColor(.blue)
                         .padding()
                     Button {
-                        appService.gameModelLogic.on(.refreshGame)
+                        appService.gameService.on(.refreshGame)
                     } label: {
                         Text("Play Again!")
                             .font(.title)
@@ -118,8 +118,8 @@ struct GameView: View {
                     }
                 }
             }
-            GameCheckView(points: appService.gameModelLogic.newPoints,
-                          flag: .constant(appService.gameModelLogic.answerFeedback))
+            GameCheckView(points: appService.gameService.newPoints,
+                          flag: .constant(appService.gameService.answerFeedback))
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
             .ignoresSafeArea(.all)
             GameCountDownView()
@@ -131,8 +131,8 @@ struct GameCountDownView: View {
     @Environment(AppService.self) private var vm
 
     var body: some View {
-        if vm.gameModelLogic.showCountdown {
-            Text(String(vm.gameModelLogic.timeRemaining))
+        if vm.gameService.showCountdown {
+            Text(String(vm.gameService.timeRemaining))
                 .font(.system(size: 200))
                 .fontWeight(.medium)
                 .foregroundStyle(Color.blue.gradient)
@@ -154,7 +154,7 @@ struct GameQuestionView: View {
     @Environment(AppService.self) private var vm
 
     var body: some View {
-        Text(vm.gameModelLogic.questionTyping)
+        Text(vm.gameService.questionTyping)
             .font(.title2)
             .fontWeight(.heavy)
             .foregroundStyle(Color.blue.gradient)
@@ -201,7 +201,7 @@ struct GameCardView: View {
                 SwipeActionIndicatorView(xOffset: $xOffset)
             }
         }
-        .onChange(of: vm.gameModelLogic.buttonSwipeAction) {
+        .onChange(of: vm.gameService.buttonSwipeAction) {
             onReceiveSwipeAction()
         }
         .aspectRatio(2/3, contentMode: .fit)
@@ -245,8 +245,8 @@ private extension GameCardView {
     
     @MainActor
     func onReceiveSwipeAction() {
-        guard let action = vm.gameModelLogic.buttonSwipeAction,
-              let topCardMovie = vm.gameModelLogic.currentQuizzes.first?.movie,
+        guard let action = vm.gameService.buttonSwipeAction,
+              let topCardMovie = vm.gameService.currentQuizzes.first?.movie,
               self.movie.id == topCardMovie.id else { return }
         switch action {
         case .trueAnswer:
@@ -265,7 +265,7 @@ private extension GameCardView {
                 swipeDown()
             }
         }
-        vm.gameModelLogic.on(.onSetSwipeAction(nil))
+        vm.gameService.on(.onSetSwipeAction(nil))
     }
 }
 
@@ -286,24 +286,24 @@ private extension GameCardView {
                 returnToCenter()
             }
         case let translation where translation.width >= screenSize.width * GameConfig.screenCutoffScale:
-            vm.gameModelLogic.sendAnswer(gameAnswer: .trueAnswer)
+            vm.gameService.sendAnswer(gameAnswer: .trueAnswer)
             withAnimation(.bouncy(duration: 0.7)) {
                 swipeRight()
             }
-            vm.gameModelLogic.removeCurrentQuiz(delay: 200000000)
+            vm.gameService.removeCurrentQuiz(delay: 200000000)
             
         case let translation where translation.width <= -screenSize.width * GameConfig.screenCutoffScale:
-            vm.gameModelLogic.sendAnswer(gameAnswer: .falseAnswer)
+            vm.gameService.sendAnswer(gameAnswer: .falseAnswer)
             withAnimation(.bouncy(duration: 0.7)) {
                 swipeLeft()
             }
-            vm.gameModelLogic.removeCurrentQuiz(delay: 200000000)
+            vm.gameService.removeCurrentQuiz(delay: 200000000)
         case let translation where translation.height >= screenSize.width * GameConfig.screenCutoffScale:
-            vm.gameModelLogic.sendAnswer(gameAnswer: .noAnswer)
+            vm.gameService.sendAnswer(gameAnswer: .noAnswer)
             withAnimation(.bouncy(duration: 0.7)) {
                 swipeDown()
             }
-            vm.gameModelLogic.removeCurrentQuiz(delay: 200000000)
+            vm.gameService.removeCurrentQuiz(delay: 200000000)
         default:
             withAnimation(.bouncy(duration: 1, extraBounce: 0.3)) {
                 returnToCenter()
@@ -357,14 +357,14 @@ struct GameStackView: View {
     var body: some View {
         if verticalSizeClass == .regular {
             ZStack {
-                ForEach(Array(vm.gameModelLogic.currentQuizzes.enumerated()), id: \.element.id) { index, quiz in
+                ForEach(Array(vm.gameService.currentQuizzes.enumerated()), id: \.element.id) { index, quiz in
                     GameCardView(movie: quiz.movie, answer: quiz.quiz.result)
                         .scaleEffect(1 - CGFloat(index) * 0.04)
                         .offset(x: 0, y: CGFloat(index) * -15)
-                        .zIndex(Double(vm.gameModelLogic.currentQuizzes.count - index))
-                        .disabled(index == 0 ? !vm.gameModelLogic.isQuizReady : true)
+                        .zIndex(Double(vm.gameService.currentQuizzes.count - index))
+                        .disabled(index == 0 ? !vm.gameService.isQuizReady : true)
                 }
-                .animation(.easeInOut(duration: 1.0), value: vm.gameModelLogic.currentQuizzes)
+                .animation(.easeInOut(duration: 1.0), value: vm.gameService.currentQuizzes)
             }
         }
     }
@@ -375,7 +375,7 @@ struct SwipeActionButtonsView: View {
 
     var body: some View {
         HStack (spacing: 15) {
-            Text("\(vm.gameModelLogic.level)/20")
+            Text("\(vm.gameService.level)/20")
                 .font(.title2)
                 .fontWeight(.heavy)
                 .foregroundStyle(Color.blue.gradient)
@@ -383,12 +383,13 @@ struct SwipeActionButtonsView: View {
             ActionButtonView(gameAnswer: .falseAnswer, name: "hand.thumbsdown.fill", color: .red)
             ActionButtonView(gameAnswer: .noAnswer,name: "person.fill.questionmark", color: .blue)
             ActionButtonView(gameAnswer: .trueAnswer, name: "hand.thumbsup.fill", color: .green)
-            Text("\(vm.gameModelLogic.totalPoints)")
+            Text("\(vm.gameService.totalPoints)")
                 .font(.title2)
                 .fontWeight(.heavy)
                 .foregroundStyle(Color.blue.gradient)
                 .padding()
         }
+        .sensoryFeedback(.increase, trigger: vm.gameService.totalPoints)
     }
 }
 
@@ -401,9 +402,9 @@ struct ActionButtonView: View {
     var body: some View {
         
         Button {
-            vm.gameModelLogic.on(.onSetSwipeAction(gameAnswer))
-            vm.gameModelLogic.sendAnswer(gameAnswer: gameAnswer)
-            vm.gameModelLogic.removeCurrentQuiz(delay: 500000000)
+            vm.gameService.on(.onSetSwipeAction(gameAnswer))
+            vm.gameService.sendAnswer(gameAnswer: gameAnswer)
+            vm.gameService.removeCurrentQuiz(delay: 500000000)
         } label: {
             Image(systemName: name)
                 .foregroundStyle(color)
@@ -416,7 +417,7 @@ struct ActionButtonView: View {
                 }
         }
         .frame(width: 64, height: 64)
-        .disabled(!vm.gameModelLogic.isQuizReady)
+        .disabled(!vm.gameService.isQuizReady)
     }
 }
 

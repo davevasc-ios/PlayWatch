@@ -16,7 +16,7 @@ struct SearchView: View {
         NavigationStack {
             ScrollView {
                 LazyVStack(alignment: .leading) {
-                    ForEach (appService.homeModelLogic.mediaSearchList) { item in
+                    ForEach (appService.mediaService.mediaSearchList) { item in
                         NavigationLink(destination: MediaDetailView(item: item)) {
                             SearchCellView(item: item)
                         }
@@ -25,13 +25,13 @@ struct SearchView: View {
             }
         }
         .onAppear {
-            appService.homeModelLogic.on(.changeTrending)
+            appService.mediaService.on(.changeTrending)
         }
         .searchable(text: $search, prompt: Text(LocalizableString.homeSearchBar))
 
         .searchSuggestions {
             if showSuggestions {
-                ForEach(appService.homeModelLogic.mediaSearchList) { item in
+                ForEach(appService.mediaService.mediaSearchList) { item in
                     Button {
                         search = item.name
                         showSuggestions = false
@@ -44,9 +44,9 @@ struct SearchView: View {
         }
         .onChange(of: search) {
             if search.count > 0 {
-                appService.homeModelLogic.on(.changeSearch(search))
+                appService.mediaService.on(.changeSearch(search))
             } else {
-                appService.homeModelLogic.on(.changeTrending)
+                appService.mediaService.on(.changeTrending)
                 showSuggestions = true
             }
         }
@@ -97,7 +97,9 @@ struct SearchCellView: View {
     }
 }
 
+#if DEBUG
 #Preview {
     SearchView()
         .environment(AppService.preview)
 }
+#endif

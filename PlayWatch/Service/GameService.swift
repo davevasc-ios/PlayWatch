@@ -1,5 +1,5 @@
 //
-//  GameModelLogic.swift
+//  GameService.swift
 //  PlayWatch
 //
 //  Created by David on 19/12/24.
@@ -16,7 +16,7 @@ enum GameStatus {
 }
 
 @Observable
-final class GameModelLogic: EventHandler {
+final class GameService: EventHandler {
     
     // MARK: - Public Read-Only Properties
     private(set) var currentQuizzes: [GameQuiz] = []

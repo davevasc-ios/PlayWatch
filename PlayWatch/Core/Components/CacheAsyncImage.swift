@@ -48,6 +48,7 @@ fileprivate class ImageCache {
     }
 }
 
+#if DEBUG
 #Preview {
     CacheAsyncImage(url: URL(string: "https://image.tmdb.org/t/p/w500/6tJWxRfBKWGIPFkfLTod2CgCexU.jpg")) { phase in
         switch phase {
@@ -58,3 +59,4 @@ fileprivate class ImageCache {
         }
     }
 }
+#endif

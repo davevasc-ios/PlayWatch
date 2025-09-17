@@ -9,18 +9,18 @@ import Observation
 
 @Observable
 final class AppService {
-    let homeModelLogic: HomeModelLogic
-    let gameModelLogic: GameModelLogic
-    var settingsModelLogic: SettingsModelLogic
+    let mediaService: MediaService
+    let gameService: GameService
+    var preferencesService: PreferencesService
     
     init(
-        homeModelLogic: HomeModelLogic,
-        gameModelLogic: GameModelLogic,
-        settingsModelLogic: SettingsModelLogic
+        mediaService: MediaService,
+        gameService: GameService,
+        preferencesService: PreferencesService
     ) {
-        self.homeModelLogic = homeModelLogic
-        self.gameModelLogic = gameModelLogic
-        self.settingsModelLogic = settingsModelLogic
+        self.mediaService = mediaService
+        self.gameService = gameService
+        self.preferencesService = preferencesService
     }
 }
 
@@ -53,22 +53,22 @@ extension AppService {
             quizUtility: quizUtility
         )
 
-        let homeLogic = HomeModelLogic(
+        let mediaService = MediaService(
             movieDBUtility: mediaUtility
         )
         
-        let gameLogic = GameModelLogic(
+        let gameService = GameService(
             gameUtility: gameUtility
         )
         
-        let settingsLogic = SettingsModelLogic(
+        let preferencesService = PreferencesService(
             settingsUtility: settingsUtility
         )
                 
         return AppService(
-            homeModelLogic: homeLogic,
-            gameModelLogic: gameLogic,
-            settingsModelLogic: settingsLogic
+            mediaService: mediaService,
+            gameService: gameService,
+            preferencesService: preferencesService
         )
     }
 }

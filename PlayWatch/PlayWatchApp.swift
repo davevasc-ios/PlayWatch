@@ -17,7 +17,7 @@ struct PlayWatchApp: App {
         WindowGroup {
             GeometryReader { geometry in
                 TabBarView()
-                    .environment(\.locale, appService.settingsModelLogic.appLocale)
+                    .environment(\.locale, appService.preferencesService.appLocale)
                     .environment(\.screenSize, geometry.size)
                     .environment(appService)
             }

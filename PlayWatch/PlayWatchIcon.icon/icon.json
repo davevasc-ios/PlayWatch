@@ -1,0 +1,122 @@
+{
+  "fill" : {
+    "linear-gradient" : [
+      "display-p3:0.34837,0.83408,0.64154,1.00000",
+      "display-p3:0.76943,0.61127,0.38022,1.00000"
+    ]
+  },
+  "groups" : [
+    {
+      "layers" : [
+        {
+          "blend-mode" : "overlay",
+          "fill" : {
+            "solid" : "extended-srgb:1.00000,0.21961,0.23529,1.00000"
+          },
+          "image-name" : "Triangulo.svg",
+          "name" : "Triangulo",
+          "opacity" : 0.7,
+          "position" : {
+            "scale" : 1,
+            "translation-in-points" : [
+              33.1796875,
+              -1.4375
+            ]
+          }
+        }
+      ],
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 0.5
+      },
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.5
+      }
+    },
+    {
+      "hidden" : false,
+      "layers" : [
+        {
+          "fill" : {
+            "solid" : "extended-srgb:0.00000,0.53333,1.00000,1.00000"
+          },
+          "hidden" : false,
+          "image-name" : "NE.svg",
+          "name" : "NE",
+          "opacity" : 0.5,
+          "position" : {
+            "scale" : 1,
+            "translation-in-points" : [
+              291.3125,
+              625.21875
+            ]
+          }
+        }
+      ],
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 0.5
+      },
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.5
+      }
+    },
+    {
+      "layers" : [
+        {
+          "blend-mode" : "plus-lighter",
+          "fill" : {
+            "solid" : "extended-srgb:0.79608,0.18824,0.87843,1.00000"
+          },
+          "image-name" : "CirculoCentro.svg",
+          "name" : "CirculoCentro",
+          "opacity" : 0.5
+        }
+      ],
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 0.5
+      },
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.5
+      }
+    },
+    {
+      "layers" : [
+        {
+          "fill" : {
+            "solid" : "extended-srgb:0.38039,0.33333,0.96078,1.00000"
+          },
+          "hidden" : false,
+          "image-name" : "SO.svg",
+          "name" : "SO",
+          "opacity" : 0.5,
+          "position" : {
+            "scale" : 1,
+            "translation-in-points" : [
+              -612.6640625,
+              -356.6953125
+            ]
+          }
+        }
+      ],
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 0.5
+      },
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.5
+      }
+    }
+  ],
+  "supported-platforms" : {
+    "circles" : [
+      "watchOS"
+    ],
+    "squares" : "shared"
+  }
+}

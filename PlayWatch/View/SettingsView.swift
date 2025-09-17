@@ -12,7 +12,7 @@ struct SettingsView: View {
     @Environment(AppService.self) private var appService
             
     var body: some View {
-        @Bindable var settings = appService.settingsModelLogic
+        @Bindable var settings = appService.preferencesService
         
         NavigationStack {
             Form {
@@ -35,9 +35,9 @@ struct SettingsView: View {
                         }
                     }
                     .onChange(of: settings.selectedLanguage) { _, newLanguage in
-                        if appService.gameModelLogic.state != .loading && appService.gameModelLogic.state != .playing {
-                            appService.gameModelLogic.on(.cleanGame)
-                            appService.homeModelLogic.on(.reloadData)
+                        if appService.gameService.state != .loading && appService.gameService.state != .playing {
+                            appService.gameService.on(.cleanGame)
+                            appService.mediaService.on(.reloadData)
                         }
                     }
                     //                    .onChange(of: currentTab) {
@@ -64,9 +64,9 @@ struct SettingsView: View {
                         }
                     }
                     .onChange(of: settings.selectedServer) { _, newServer in
-                        if appService.gameModelLogic.state != .loading && appService.gameModelLogic.state != .playing {
-//                            vm.gameModelLogic.on(.cleanGame)
-//                            vm.homeModelLogic.on(.reloadData)
+                        if appService.gameService.state != .loading && appService.gameService.state != .playing {
+//                            vm.gameService.on(.cleanGame)
+//                            vm.mediaService.on(.reloadData)
                         }
                     }
                 }
@@ -81,7 +81,5 @@ struct SettingsView: View {
 #Preview {
     SettingsView()
         .environment(AppService.preview)
-//    SettingsView(currentTab: .constant(.settings))
-//        .environment(AppViewModel.preview)
 }
 #endif

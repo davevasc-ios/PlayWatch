@@ -24,8 +24,8 @@
 		5524A5472D6205830028C7E8 /* OpenAISystemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5524A5462D6205830028C7E8 /* OpenAISystemModel.swift */; };
 		5524A5492D624CCA0028C7E8 /* OpenAIModelCompatible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5524A5482D624CCA0028C7E8 /* OpenAIModelCompatible.swift */; };
 		5524A54B2D625E9E0028C7E8 /* PromptType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5524A54A2D625E9E0028C7E8 /* PromptType.swift */; };
-		5524A54F2D6B46D60028C7E8 /* AppViewModel+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5524A54E2D6B46D60028C7E8 /* AppViewModel+Preview.swift */; };
-		5524A5532D6B7CED0028C7E8 /* SettingsModelLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5524A5522D6B7CED0028C7E8 /* SettingsModelLogic.swift */; };
+		5524A54F2D6B46D60028C7E8 /* AppService+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5524A54E2D6B46D60028C7E8 /* AppService+Preview.swift */; };
+		5524A5532D6B7CED0028C7E8 /* PreferencesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5524A5522D6B7CED0028C7E8 /* PreferencesService.swift */; };
 		55410B772CE0C5E600079680 /* QuizUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55410B762CE0C5E600079680 /* QuizUtility.swift */; };
 		55410B7A2CE12C5200079680 /* OpenAIResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 55410B792CE12C5200079680 /* OpenAIResponse.json */; };
 		55410B7B2CE12C5200079680 /* GeminiAIResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 55410B782CE12C5200079680 /* GeminiAIResponse.json */; };
@@ -72,8 +72,8 @@
 		55802B872D145AA300C78317 /* MediaUtilityPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55802B862D145AA300C78317 /* MediaUtilityPreview.swift */; };
 		55802B892D145BD100C78317 /* QuizUtilityPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55802B882D145BD100C78317 /* QuizUtilityPreview.swift */; };
 		55802B8B2D14601000C78317 /* AppService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55802B8A2D14601000C78317 /* AppService.swift */; };
-		55802B8E2D146A8300C78317 /* HomeModelLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55802B8D2D146A8300C78317 /* HomeModelLogic.swift */; };
-		55802B902D146A9C00C78317 /* GameModelLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55802B8F2D146A9C00C78317 /* GameModelLogic.swift */; };
+		55802B8E2D146A8300C78317 /* MediaService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55802B8D2D146A8300C78317 /* MediaService.swift */; };
+		55802B902D146A9C00C78317 /* GameService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55802B8F2D146A9C00C78317 /* GameService.swift */; };
 		5581067D2C00F75300D7A96D /* EnvironmentValues+ScreenSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5581067C2C00F75300D7A96D /* EnvironmentValues+ScreenSize.swift */; };
 		558F1C582D4E9AD70087DE99 /* AIServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558F1C572D4E9AD70087DE99 /* AIServer.swift */; };
 		558F1C5B2D4EA35B0087DE99 /* AIResponseDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558F1C5A2D4EA35B0087DE99 /* AIResponseDecoder.swift */; };
@@ -95,11 +95,11 @@
 		55B2540F2BC29ACC006ACD43 /* HTTP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B2540E2BC29ACC006ACD43 /* HTTP.swift */; };
 		55B254112BC2AD47006ACD43 /* GeminiResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B254102BC2AD47006ACD43 /* GeminiResponse.swift */; };
 		55C3F1912C6E3140006DE59B /* EventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C3F1902C6E3140006DE59B /* EventHandler.swift */; };
+		55C722C02E79D94D0081664D /* PlayWatchIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 55C722BF2E79D94D0081664D /* PlayWatchIcon.icon */; };
 		55C996792E34DBB4008789E8 /* MediaUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C996782E34DBB4008789E8 /* MediaUtility.swift */; };
 		55D425CB2BCC4669001FA57C /* AppTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D425CA2BCC4669001FA57C /* AppTab.swift */; };
 		55D425CF2BCC4AFF001FA57C /* TabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D425CE2BCC4AFF001FA57C /* TabBarView.swift */; };
 		55D425D12BCC4C3C001FA57C /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D425D02BCC4C3C001FA57C /* HomeView.swift */; };
-		55D73FE32BCDB2A600F337FC /* TabShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D73FE22BCDB2A600F337FC /* TabShape.swift */; };
 		55D73FE52BCDB5E700F337FC /* TabPosition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D73FE42BCDB5E700F337FC /* TabPosition.swift */; };
 		55E4CC802BCA9A050048EF56 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E4CC7F2BCA9A050048EF56 /* String+Extensions.swift */; };
 		55E4CC822BCADB2C0048EF56 /* Color+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E4CC812BCADB2C0048EF56 /* Color+Extensions.swift */; };
@@ -136,8 +136,8 @@
 		5524A5462D6205830028C7E8 /* OpenAISystemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAISystemModel.swift; sourceTree = "<group>"; };
 		5524A5482D624CCA0028C7E8 /* OpenAIModelCompatible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAIModelCompatible.swift; sourceTree = "<group>"; };
 		5524A54A2D625E9E0028C7E8 /* PromptType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptType.swift; sourceTree = "<group>"; };
-		5524A54E2D6B46D60028C7E8 /* AppViewModel+Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppViewModel+Preview.swift"; sourceTree = "<group>"; };
-		5524A5522D6B7CED0028C7E8 /* SettingsModelLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsModelLogic.swift; sourceTree = "<group>"; };
+		5524A54E2D6B46D60028C7E8 /* AppService+Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppService+Preview.swift"; sourceTree = "<group>"; };
+		5524A5522D6B7CED0028C7E8 /* PreferencesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesService.swift; sourceTree = "<group>"; };
 		552CA67A2D0DD8EF005FA521 /* PlayWatchTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PlayWatchTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		55410B762CE0C5E600079680 /* QuizUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizUtility.swift; sourceTree = "<group>"; };
 		55410B782CE12C5200079680 /* GeminiAIResponse.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = GeminiAIResponse.json; sourceTree = "<group>"; };
@@ -185,8 +185,8 @@
 		55802B862D145AA300C78317 /* MediaUtilityPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaUtilityPreview.swift; sourceTree = "<group>"; };
 		55802B882D145BD100C78317 /* QuizUtilityPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizUtilityPreview.swift; sourceTree = "<group>"; };
 		55802B8A2D14601000C78317 /* AppService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppService.swift; sourceTree = "<group>"; };
-		55802B8D2D146A8300C78317 /* HomeModelLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeModelLogic.swift; sourceTree = "<group>"; };
-		55802B8F2D146A9C00C78317 /* GameModelLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameModelLogic.swift; sourceTree = "<group>"; };
+		55802B8D2D146A8300C78317 /* MediaService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaService.swift; sourceTree = "<group>"; };
+		55802B8F2D146A9C00C78317 /* GameService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameService.swift; sourceTree = "<group>"; };
 		5581067C2C00F75300D7A96D /* EnvironmentValues+ScreenSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EnvironmentValues+ScreenSize.swift"; sourceTree = "<group>"; };
 		558F1C572D4E9AD70087DE99 /* AIServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIServer.swift; sourceTree = "<group>"; };
 		558F1C5A2D4EA35B0087DE99 /* AIResponseDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIResponseDecoder.swift; sourceTree = "<group>"; };
@@ -208,11 +208,11 @@
 		55B2540E2BC29ACC006ACD43 /* HTTP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTP.swift; sourceTree = "<group>"; };
 		55B254102BC2AD47006ACD43 /* GeminiResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeminiResponse.swift; sourceTree = "<group>"; };
 		55C3F1902C6E3140006DE59B /* EventHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventHandler.swift; sourceTree = "<group>"; };
+		55C722BF2E79D94D0081664D /* PlayWatchIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = PlayWatchIcon.icon; sourceTree = "<group>"; };
 		55C996782E34DBB4008789E8 /* MediaUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaUtility.swift; sourceTree = "<group>"; };
 		55D425CA2BCC4669001FA57C /* AppTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTab.swift; sourceTree = "<group>"; };
 		55D425CE2BCC4AFF001FA57C /* TabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarView.swift; sourceTree = "<group>"; };
 		55D425D02BCC4C3C001FA57C /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
-		55D73FE22BCDB2A600F337FC /* TabShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabShape.swift; sourceTree = "<group>"; };
 		55D73FE42BCDB5E700F337FC /* TabPosition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabPosition.swift; sourceTree = "<group>"; };
 		55E4CC7F2BCA9A050048EF56 /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 		55E4CC812BCADB2C0048EF56 /* Color+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extensions.swift"; sourceTree = "<group>"; };
@@ -279,6 +279,9 @@
 			isa = PBXGroup;
 			children = (
 				55802B8A2D14601000C78317 /* AppService.swift */,
+				55802B8D2D146A8300C78317 /* MediaService.swift */,
+				55802B8F2D146A9C00C78317 /* GameService.swift */,
+				5524A5522D6B7CED0028C7E8 /* PreferencesService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -309,7 +312,6 @@
 				550C5F392BBA136E005B853B /* Model */,
 				550C5F3A2BBA1374005B853B /* View */,
 				550C5F3B2BBA1378005B853B /* Service */,
-				55802B8C2D14605C00C78317 /* ModelLogic */,
 				550C5F382BBA135E005B853B /* UseCase */,
 				55B0C16D2CCAA840002C563F /* Repository */,
 				558B9A7E2E33C19C005ED6B8 /* Utility */,
@@ -317,6 +319,7 @@
 				55212BB02BA7A0C400080A71 /* PlayWatchApp.swift */,
 				55212BB42BA7A0C400080A71 /* Item.swift */,
 				55212BB62BA7A0C500080A71 /* Assets.xcassets */,
+				55C722BF2E79D94D0081664D /* PlayWatchIcon.icon */,
 				55212BB82BA7A0C500080A71 /* PlayWatch.entitlements */,
 				55212BB92BA7A0C500080A71 /* Preview Content */,
 			);
@@ -338,7 +341,7 @@
 				55802B882D145BD100C78317 /* QuizUtilityPreview.swift */,
 				558F1C5C2D4EA8680087DE99 /* AIServer+Preview.swift */,
 				558F1C602D4EA96F0087DE99 /* MediaFetchType+Preview.swift */,
-				5524A54E2D6B46D60028C7E8 /* AppViewModel+Preview.swift */,
+				5524A54E2D6B46D60028C7E8 /* AppService+Preview.swift */,
 				5569BC402E73319C00BC70B0 /* SettingsUtilityPreview.swift */,
 			);
 			path = "Preview Content";
@@ -356,7 +359,6 @@
 			isa = PBXGroup;
 			children = (
 				555C8D1D2D0CA6F400B175E5 /* MediaCardView.swift */,
-				55D73FE22BCDB2A600F337FC /* TabShape.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -603,16 +605,6 @@
 			path = PlayWatchTests;
 			sourceTree = "<group>";
 		};
-		55802B8C2D14605C00C78317 /* ModelLogic */ = {
-			isa = PBXGroup;
-			children = (
-				55802B8D2D146A8300C78317 /* HomeModelLogic.swift */,
-				55802B8F2D146A9C00C78317 /* GameModelLogic.swift */,
-				5524A5522D6B7CED0028C7E8 /* SettingsModelLogic.swift */,
-			);
-			path = ModelLogic;
-			sourceTree = "<group>";
-		};
 		558B9A7E2E33C19C005ED6B8 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
@@ -689,7 +681,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1620;
-				LastUpgradeCheck = 1640;
+				LastUpgradeCheck = 2600;
 				TargetAttributes = {
 					55212BAC2BA7A0C400080A71 = {
 						CreatedOnToolsVersion = 15.3;
@@ -735,6 +727,7 @@
 			files = (
 				55B0C1692CCA9244002C563F /* All.json in Resources */,
 				55410B7A2CE12C5200079680 /* OpenAIResponse.json in Resources */,
+				55C722C02E79D94D0081664D /* PlayWatchIcon.icon in Resources */,
 				55410B7B2CE12C5200079680 /* GeminiAIResponse.json in Resources */,
 				55B0C1652CCA923C002C563F /* TVShows.json in Resources */,
 				55034E982BE53DF300BCBD0E /* LocalizableSettings.xcstrings in Resources */,
@@ -767,7 +760,6 @@
 				557713112D2AEA6500302F8A /* API+Errors.swift in Sources */,
 				5577130A2D2ACF4B00302F8A /* AppRegion.swift in Sources */,
 				55D73FE52BCDB5E700F337FC /* TabPosition.swift in Sources */,
-				55D73FE32BCDB2A600F337FC /* TabShape.swift in Sources */,
 				557713392D480C4A00302F8A /* MovieDBUtils.swift in Sources */,
 				5549D57C2BC0738700B934CD /* OpenAIResponse.swift in Sources */,
 				55077AD92BD2CD6600E9B681 /* CacheAsyncImage.swift in Sources */,
@@ -782,7 +774,7 @@
 				5551A82C2D11980400AFC04A /* MovieDBType.swift in Sources */,
 				5569BC462E73800F00BC70B0 /* SearchView.swift in Sources */,
 				5551A8322D11AF1900AFC04A /* GameQuiz.swift in Sources */,
-				55802B8E2D146A8300C78317 /* HomeModelLogic.swift in Sources */,
+				55802B8E2D146A8300C78317 /* MediaService.swift in Sources */,
 				5577133E2D4965E000302F8A /* MovieDBSorting.swift in Sources */,
 				5577132E2D47E00C00302F8A /* BaseEndpoint.swift in Sources */,
 				55E4CC822BCADB2C0048EF56 /* Color+Extensions.swift in Sources */,
@@ -798,13 +790,13 @@
 				555B26E32C1CC49400B789A1 /* Bool+Extensions.swift in Sources */,
 				5577132C2D453BB800302F8A /* GeminiBody.swift in Sources */,
 				55651E172D0F49DF00ABD48B /* URL+Extensions.swift in Sources */,
-				5524A54F2D6B46D60028C7E8 /* AppViewModel+Preview.swift in Sources */,
+				5524A54F2D6B46D60028C7E8 /* AppService+Preview.swift in Sources */,
 				5576C3B02BB9C10D00E511DE /* API.swift in Sources */,
 				557713372D480A4700302F8A /* MediaFetchType.swift in Sources */,
 				55AFE60C2BD520E20015E411 /* GameView.swift in Sources */,
 				55E4CC802BCA9A050048EF56 /* String+Extensions.swift in Sources */,
-				5524A5532D6B7CED0028C7E8 /* SettingsModelLogic.swift in Sources */,
-				55802B902D146A9C00C78317 /* GameModelLogic.swift in Sources */,
+				5524A5532D6B7CED0028C7E8 /* PreferencesService.swift in Sources */,
+				55802B902D146A9C00C78317 /* GameService.swift in Sources */,
 				55E51A3C2BDEB1FF00A8541B /* FavoritesView.swift in Sources */,
 				55D425CB2BCC4669001FA57C /* AppTab.swift in Sources */,
 				557F55662BE4267B00EEAA2F /* SettingsView.swift in Sources */,
@@ -927,6 +919,7 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_STRICT_CONCURRENCY = complete;
@@ -986,6 +979,7 @@
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 6.0;
@@ -995,15 +989,17 @@
 		55212BD52BA7A0C600080A71 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = PlayWatchIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = PlayWatch/PlayWatch.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"PlayWatch/Preview Content\"";
+				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
@@ -1015,10 +1011,10 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.aralarapps.PlayWatch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1033,15 +1029,17 @@
 		55212BD62BA7A0C600080A71 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = PlayWatchIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = PlayWatch/PlayWatch.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"PlayWatch/Preview Content\"";
+				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
@@ -1053,10 +1051,10 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.aralarapps.PlayWatch;
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TabBarView: View {
-    
+        
     var body: some View {
         TabView {
             Tab("\(AppTab.home.localized)", systemImage: AppTab.home.systemImage) {
@@ -25,14 +25,14 @@ struct TabBarView: View {
             }
             Tab(role: .search) {
                 SearchView()
-            } label: {
-                Label("\(AppTab.search.localized)", systemImage: AppTab.search.systemImage)
             }
         }
-        //        .tabBarMinimizeBehavior(.automatic)
+        .tabBarMinimizeBehavior(.onScrollDown)
     }
 }
 
+#if DEBUG
 #Preview {
     TabBarView()
 }
+#endif

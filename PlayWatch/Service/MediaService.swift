@@ -1,5 +1,5 @@
 //
-//  HomeModelLogic.swift
+//  MediaService.swift
 //  PlayWatch
 //
 //  Created by David on 19/12/24.
@@ -8,7 +8,7 @@
 import Observation
 
 @Observable
-final class HomeModelLogic: EventHandler {
+final class MediaService: EventHandler {
     
     // MARK: - Public Read-Only Properties
     private(set) var mediaSectionsList: [MediaSection] = []

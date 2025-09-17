@@ -1,5 +1,5 @@
 //
-//  AppViewModel+Preview.swift
+//  AppService+Preview.swift
 //  PlayWatch
 //
 //  Created by David on 23/2/25.
@@ -23,22 +23,22 @@ extension AppService {
             quizUtility: quizUtilityPreview
         )
         
-        let homeLogic = HomeModelLogic(
+        let mediaService = MediaService(
             movieDBUtility: mediaUtilityPreview
         )
         
-        let gameLogic = GameModelLogic(
+        let gameService = GameService(
             gameUtility: gameUtility
         )
         
-        let settingsLogic = SettingsModelLogic(
+        let preferencesService = PreferencesService(
             settingsUtility: settingsUtilityPreview
         )
         
         return AppService(
-            homeModelLogic: homeLogic,
-            gameModelLogic: gameLogic,
-            settingsModelLogic: settingsLogic
+            mediaService: mediaService,
+            gameService: gameService,
+            preferencesService: preferencesService
         )
     }
 }

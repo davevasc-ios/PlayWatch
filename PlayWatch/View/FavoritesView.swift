@@ -60,7 +60,8 @@ struct FavoritesView: View {
     }
 }
 
-
+#if DEBUG
 #Preview {
     FavoritesView()
 }
+#endif

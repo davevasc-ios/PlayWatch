@@ -14,17 +14,16 @@ struct HomeView: View {
         NavigationStack {
             ScrollView {
                 LazyVStack (alignment: .leading) {
-                    MediaSectionView(sections: appService.homeModelLogic.mediaSectionsList)
+                    MediaSectionView(sections: appService.mediaService.mediaSectionsList)
                 }
             }
             .refreshable {
-                appService.homeModelLogic.on(.refreshData)
+                appService.mediaService.on(.refreshData)
             }
             .navigationTitle(Text(AppTab.home.localized))
-            .navigationBarTitleDisplayMode(.automatic)
         }
         .onAppear {
-            appService.homeModelLogic.on(.viewAppear)
+            appService.mediaService.on(.viewAppear)
         }
     }
 }
