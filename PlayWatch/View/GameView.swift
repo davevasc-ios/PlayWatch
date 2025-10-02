@@ -43,6 +43,7 @@ struct GameView: View {
                             .background(Color.purple.gradient)
                             .cornerRadius(15)
                     }
+                    .buttonStyle(.glass)
                     HStack {
                         Text("Server:")
                             .font(.subheadline)
@@ -85,6 +86,7 @@ struct GameView: View {
                             .background(Color.blue.gradient)
                             .cornerRadius(15)
                     }
+                    .buttonStyle(.glass)
                 }
             case .playing:
                 VStack (spacing: 10) {

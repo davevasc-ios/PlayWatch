@@ -7,31 +7,40 @@
 
 import Observation
 
+enum HomeState {
+    case empty
+    case loading
+    case loaded([MediaSection], AppLanguage)
+    case failure(Error)
+}
+
 @Observable
 final class MediaService: EventHandler {
     
     // MARK: - Public Read-Only Properties
-    private(set) var mediaSectionsList: [MediaSection] = []
+    private(set) var homeState: HomeState = .empty
 //    private(set) var mediaTrendingList: [Media] = []
     private(set) var mediaSearchList: [Media] = []
-    private(set) var state: API.Status = .empty
     
     // MARK: - Private Properties
     @ObservationIgnored private let movieDBUtility: MediaUtilityProtocol
+    @ObservationIgnored private let preferencesService: PreferencesService // 2. El servicio ahora conoce las preferencias.
 
     
     // MARK: - Initialization
     init(
-        movieDBUtility: MediaUtilityProtocol
+        movieDBUtility: MediaUtilityProtocol,
+        preferencesService: PreferencesService
     ) {
         self.movieDBUtility = movieDBUtility
+        self.preferencesService = preferencesService
+        
     }
     
     // MARK: - Event Handling
     enum Event {
         case viewAppear,
              refreshData,
-             reloadData,
              changeSearch(String),
              changeTrending
     }
@@ -43,8 +52,6 @@ final class MediaService: EventHandler {
             self.start()
         case .refreshData:
             self.refresh()
-        case .reloadData:
-            self.reload()
         case .changeSearch(let text):
             self.search(searchText: text)
         case .changeTrending:
@@ -53,77 +60,49 @@ final class MediaService: EventHandler {
     }
     
     // MARK: - Private Methods
+    
     @MainActor
     private func start() {
-        if state == .empty || state == .error {
-            self.state = .loading
+        switch homeState {
+        case .loading:
+            print("Ya está en proceso de carga. No se inicia una nueva petición.")
+            return
+        case .loaded(_, let loadedLanguage) where loadedLanguage == preferencesService.selectedLanguage:
+            print("Datos ya cargados para el idioma actual. No se necesita recargar.")
+            return
+        default:
+            print("Iniciando carga de datos...")
+            self.homeState = .loading
             Task {
                 do {
                     let sections = try await self.movieDBUtility.fetchMediaSections(sections: Constants.homeSections)
-                    self.mediaSectionsList = sections
-                    self.state = .success
+                    self.homeState = sections.isEmpty ? .empty : .loaded(sections, preferencesService.selectedLanguage)
                 } catch {
                     print(error.localizedDescription)
-                    self.state = .error
+                    self.homeState = .failure(error)
                 }
             }
         }
     }
     
-//    @MainActor
-//    nonisolated func fetchMediaSections() async throws -> [MediaSection] {
-//        let mediaLocale = try await self.storageUtility.loadMediaLocale()
-//        return try await withThrowingTaskGroup(of: (Int, MediaSection).self) { group in
-//            for (index, section) in Constants.homeSections.enumerated() {
-//                group.addTask {
-//                    let config = MediaRequestConfig(mediaType: section, locale: mediaLocale)
-//                    let mediaItems = try await self.movieDBUtility.fetchMedia(config: config)
-//                    return (index, MediaSection(title: section.localized, items: mediaItems))
-//                }
-//            }
-//            return try await group.reduce(into: []) { $0.append($1) }
-//        }.sorted(by: { $0.0 < $1.0 }).map { $0.1 }
-//    }
-    
-//    // MARK: - Private Methods
-//    @MainActor
-//    private func start() {
-//        if state == .empty || state == .error {
-//            self.state = .loading
-//            Task {
-//                do {
-//                    self.mediaSectionsList = try await self.mediaUseCase.fetchMediaSections()
-//                    self.state = .success
-//                } catch {
-//                    print(error.localizedDescription)
-//                    self.state = .error
-//                }
-//            }
-//        }
-//    }
+
     
     private func clean() {
-        self.mediaSectionsList.removeAll()
-//        self.mediaTrendingList.removeAll()
+        self.homeState = .empty
         self.mediaSearchList.removeAll()
-        self.state = .empty
     }
     
     @MainActor
     private func refresh() {
-        if state != .loading {
+        switch homeState {
+        case .loading:
+            break
+        default:
             self.clean()
             self.start()
         }
     }
     
-    @MainActor
-    private func reload() {
-        if state != .loading {
-            self.clean()
-            self.start()
-        }
-    }
     
     @MainActor
     private func trending() {
@@ -152,3 +131,4 @@ final class MediaService: EventHandler {
         }
     }
 }
+

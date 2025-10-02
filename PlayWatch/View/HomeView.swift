@@ -14,7 +14,16 @@ struct HomeView: View {
         NavigationStack {
             ScrollView {
                 LazyVStack (alignment: .leading) {
-                    MediaSectionView(sections: appService.mediaService.mediaSectionsList)
+                    switch appService.mediaService.homeState {
+                    case .empty:
+                        Text("No data")
+                    case .loading:
+                        ProgressView()
+                    case .loaded(let mediaSectionList, _):
+                        MediaSectionView(sections: mediaSectionList)
+                    case .failure(let error):
+                        Text(error.localizedDescription)
+                    }
                 }
             }
             .refreshable {
@@ -25,6 +34,7 @@ struct HomeView: View {
         .onAppear {
             appService.mediaService.on(.viewAppear)
         }
+        .id(appService.preferencesService.selectedLanguage)
     }
 }
 

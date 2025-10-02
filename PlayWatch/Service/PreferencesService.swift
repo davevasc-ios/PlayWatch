@@ -73,13 +73,4 @@ final class PreferencesService {
     var appLocale: Locale {
         Locale(identifier: "\(self.selectedLanguage.languageCode)-\(self.selectedRegion.regionCode)")
     }
-
-    // MARK: - Provisional
-    var sectionTitle: String = ""
-            
-    private func updateSectionTitle() {
-        var lang = AppTab.settings.localized
-        lang.locale = self.appLocale
-        self.sectionTitle = String(localized: "\(lang)")
-    }
 }

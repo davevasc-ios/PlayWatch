@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum AppTab: String, CaseIterable {
+enum AppTab: CaseIterable {
     case home,
          game,
          favorites,
@@ -37,6 +37,4 @@ enum AppTab: String, CaseIterable {
         case .search: LocalizableString.search
         }
     }
-    
 }
-
