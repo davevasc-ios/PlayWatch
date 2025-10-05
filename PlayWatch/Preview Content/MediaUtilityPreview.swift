@@ -7,10 +7,10 @@
 
 import Foundation
 
-struct MediaUtilityPreview: MediaUtilityProtocol {
+struct MediaUtilityPreview: MediaRopositoryProtocol {
     
-    func createRequest(mediaType: MediaFetchType, searchQuery: String?) throws -> URLRequest {
-        guard let url = Bundle.main.url(forResource: mediaType.testResource, withExtension: PreviewConstants.Resource.Extension.json) else {
+    func createRequest(for type: MediaFetchType, with locale: MediaLocale, searchQuery: String?) throws -> URLRequest {
+        guard let url = Bundle.main.url(forResource: type.testResource, withExtension: PreviewConstants.Resource.Extension.json) else {
             throw API.Error.invalidURL
         }
         return URLRequest(url: url)

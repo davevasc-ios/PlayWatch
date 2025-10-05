@@ -14,23 +14,7 @@ struct SettingsKeys {
     let server: String
 }
 
-protocol SettingsReadable: Sendable {
-    var selectedLanguage: AppLanguage { get }
-    var selectedRegion: AppRegion { get }
-    var selectedServer: AIServer { get }
-    var mediaLocale: MediaLocale { get }
-}
-
-extension SettingsReadable {
-    var mediaLocale: MediaLocale {
-        MediaLocale(
-            code: selectedLanguage.languageCode,
-            region: selectedRegion.regionCode
-        )
-    }
-}
-
-protocol SettingsWritable: SettingsReadable {
+protocol SettingsWritable: Sendable {
     var selectedTheme: AppTheme { get set }
     var selectedLanguage: AppLanguage { get set }
     var selectedRegion: AppRegion { get set }

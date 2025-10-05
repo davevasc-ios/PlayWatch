@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct TabBarView: View {
+    @Environment(AppService.self) private var appService
     @State var selectedTab: AppTab = .home
         
     var body: some View {
@@ -30,6 +31,7 @@ struct TabBarView: View {
         }
         .tabBarMinimizeBehavior(.onScrollDown)
         .sensoryFeedback(.selection, trigger: selectedTab)
+        .id(appService.preferencesService.selectedLanguage)
     }
 }
 

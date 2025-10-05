@@ -10,7 +10,7 @@ import Observation
 enum HomeState {
     case empty
     case loading
-    case loaded([MediaSection], AppLanguage)
+    case loaded([MediaSection], MediaLocale)
     case failure(Error)
 }
 
@@ -19,28 +19,25 @@ final class MediaService: EventHandler {
     
     // MARK: - Public Read-Only Properties
     private(set) var homeState: HomeState = .empty
-//    private(set) var mediaTrendingList: [Media] = []
     private(set) var mediaSearchList: [Media] = []
     
     // MARK: - Private Properties
-    @ObservationIgnored private let movieDBUtility: MediaUtilityProtocol
-    @ObservationIgnored private let preferencesService: PreferencesService // 2. El servicio ahora conoce las preferencias.
-
+    @ObservationIgnored private let movieDBUtility: MediaRopositoryProtocol
+    @ObservationIgnored private let mediaLocaleProvider: MediaLocaleProvider
     
     // MARK: - Initialization
     init(
-        movieDBUtility: MediaUtilityProtocol,
-        preferencesService: PreferencesService
+        movieDBUtility: MediaRopositoryProtocol,
+        mediaLocaleProvider: MediaLocaleProvider
     ) {
         self.movieDBUtility = movieDBUtility
-        self.preferencesService = preferencesService
-        
+        self.mediaLocaleProvider = mediaLocaleProvider
     }
     
     // MARK: - Event Handling
     enum Event {
         case viewAppear,
-             refreshData,
+             slideToRefresh,
              changeSearch(String),
              changeTrending
     }
@@ -50,7 +47,7 @@ final class MediaService: EventHandler {
         switch event {
         case .viewAppear:
             self.start()
-        case .refreshData:
+        case .slideToRefresh:
             self.refresh()
         case .changeSearch(let text):
             self.search(searchText: text)
@@ -67,16 +64,17 @@ final class MediaService: EventHandler {
         case .loading:
             print("Ya está en proceso de carga. No se inicia una nueva petición.")
             return
-        case .loaded(_, let loadedLanguage) where loadedLanguage == preferencesService.selectedLanguage:
-            print("Datos ya cargados para el idioma actual. No se necesita recargar.")
+        case .loaded(_, let loadedLanguage) where loadedLanguage.code == mediaLocaleProvider.mediaLocale.code:
+            print("Datos ya cargados para el idioma actual (\(mediaLocaleProvider.mediaLocale.language)). No se necesita recargar.")
             return
         default:
-            print("Iniciando carga de datos...")
+            print("Iniciando carga de datos para nuevo idioma (\(mediaLocaleProvider.mediaLocale.language))")
             self.homeState = .loading
             Task {
                 do {
-                    let sections = try await self.movieDBUtility.fetchMediaSections(sections: Constants.homeSections)
-                    self.homeState = sections.isEmpty ? .empty : .loaded(sections, preferencesService.selectedLanguage)
+                    // TODO: - habría que devolver el lenguaje, eso si.
+                    let sections = try await self.movieDBUtility.fetchMediaSections(for: Constants.homeSections, with: mediaLocaleProvider.mediaLocale)
+                    self.homeState = sections.isEmpty ? .empty : .loaded(sections, mediaLocaleProvider.mediaLocale)
                 } catch {
                     print(error.localizedDescription)
                     self.homeState = .failure(error)
@@ -86,19 +84,13 @@ final class MediaService: EventHandler {
     }
     
 
-    
-    private func clean() {
-        self.homeState = .empty
-        self.mediaSearchList.removeAll()
-    }
-    
     @MainActor
     private func refresh() {
         switch homeState {
         case .loading:
             break
         default:
-            self.clean()
+            self.homeState = .empty
             self.start()
         }
     }
@@ -110,7 +102,7 @@ final class MediaService: EventHandler {
             defer {
             }
             do {
-                self.mediaSearchList = try await movieDBUtility.fetchMedia(mediaType: .trendingAll)
+                self.mediaSearchList = try await movieDBUtility.fetchMedia(for: .trendingAll, with: mediaLocaleProvider.mediaLocale)
             } catch {
                 print(error.localizedDescription)
             }
@@ -124,7 +116,7 @@ final class MediaService: EventHandler {
             defer {
             }
             do {
-                self.mediaSearchList = try await movieDBUtility.fetchMedia(mediaType: .searchAll, searchQuery: searchText)
+                self.mediaSearchList = try await movieDBUtility.fetchMedia(for: .searchAll, with: mediaLocaleProvider.mediaLocale, searchQuery: searchText)
             } catch {
                 print(error.localizedDescription)
             }

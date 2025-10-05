@@ -8,18 +8,18 @@
 import Foundation
 
 protocol GameUtilityProtocol {
-    var movieDBUtility: MediaUtilityProtocol { get }
+    var movieDBUtility: MediaRopositoryProtocol { get }
     var quizUtility: QuizFetching { get }
 }
 
 extension GameUtilityProtocol {
     
-    func fetchGameQuiz() async throws -> [GameQuiz] {
-        let randomMovies = try await movieDBUtility.fetchMedia(mediaType: .randomMovies).filterWithImage
+    func fetchGameQuiz(for data: GameData) async throws -> [GameQuiz] {
+        let randomMovies = try await movieDBUtility.fetchMedia(for: .randomMovies, with: data.mediaLocale).filterWithImage
         guard randomMovies.count == GameConfig.numberOfQuizzes else {
             throw GameError.outOfRange
         }
-        let gameQuizzes = try await self.quizUtility.fetchQuiz(for: randomMovies.joinedNames())
+        let gameQuizzes = try await self.quizUtility.fetchQuiz(for: randomMovies.joinedNames(), using: data.server, in: data.language)
         guard gameQuizzes.count == GameConfig.numberOfQuizzes else {
             throw GameError.outOfRange
         }
@@ -28,6 +28,6 @@ extension GameUtilityProtocol {
 }
 
 struct GameUtility: GameUtilityProtocol {
-    let movieDBUtility: MediaUtilityProtocol
+    let movieDBUtility: MediaRopositoryProtocol
     let quizUtility: QuizFetching
 }

@@ -8,8 +8,16 @@
 import Foundation
 import Observation
 
+protocol MediaLocaleProvider {
+    var mediaLocale: MediaLocale { get }
+}
+
+protocol GameDataProvider {
+    var gameData: GameData { get }
+}
+
 @Observable
-final class PreferencesService {
+final class PreferencesService: MediaLocaleProvider, GameDataProvider {
     
     // MARK: - Private Properties
     @ObservationIgnored private var settingsUtility: SettingsWritable
@@ -72,5 +80,20 @@ final class PreferencesService {
     
     var appLocale: Locale {
         Locale(identifier: "\(self.selectedLanguage.languageCode)-\(self.selectedRegion.regionCode)")
+    }
+    
+    var mediaLocale: MediaLocale {
+        MediaLocale(
+            code: selectedLanguage.languageCode,
+            region: selectedRegion.regionCode
+        )
+    }
+    
+    var gameData: GameData {
+        GameData(
+            server: selectedServer,
+            mediaLocale: mediaLocale,
+            language: selectedLanguage.englishName
+        )
     }
 }

@@ -55,7 +55,7 @@ struct SettingsView: View {
             }
             .navigationTitle(Text(AppTab.settings.localized))
         }
-        .id(settings.selectedLanguage)
+//        .id(settings.selectedLanguage)
     }
 }
 

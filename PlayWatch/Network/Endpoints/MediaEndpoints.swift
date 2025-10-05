@@ -9,19 +9,19 @@ import Foundation
 
 
 protocol MediaRequestProviding: Sendable {
-    func createRequest(mediaType: MediaFetchType, searchQuery: String?) throws -> URLRequest
+    func createRequest(for type: MediaFetchType, with locale: MediaLocale, searchQuery: String?) throws -> URLRequest
 }
 
 struct MediaRequestProvider: MediaRequestProviding {
     let movieDBendpoint: MovieDBEndpointProtocol
 
-    func createRequest(mediaType: MediaFetchType, searchQuery: String?) throws -> URLRequest {
-        try movieDBendpoint.createRequest(mediaType: mediaType, searchQuery: searchQuery)
+    func createRequest(for type: MediaFetchType, with locale: MediaLocale, searchQuery: String?) throws -> URLRequest {
+        try movieDBendpoint.createRequest(for: type, with: locale, searchQuery: searchQuery)
     }
 }
 
 protocol MovieDBEndpointProtocol: BaseEndpointProtocol {
-    func queryItems(type: MediaFetchType, searchText: String?) -> [URLQueryItem]
+    func queryItems(for type: MediaFetchType, with locale: MediaLocale, searchText: String?) -> [URLQueryItem]
 }
 
 extension MovieDBEndpointProtocol {
@@ -34,11 +34,11 @@ extension MovieDBEndpointProtocol {
     }
     var timeout: TimeInterval { 15 }
     
-    func createRequest(mediaType: MediaFetchType, searchQuery: String?) throws -> URLRequest {
+    func createRequest(for type: MediaFetchType, with locale: MediaLocale, searchQuery: String?) throws -> URLRequest {
         let url = try HTTP.url(
             baseURL: self.baseURL,
-            path: MovieDBConstants.paths[mediaType],
-            queryItems: self.queryItems(type: mediaType, searchText: searchQuery)
+            path: MovieDBConstants.paths[type],
+            queryItems: self.queryItems(for: type, with: locale, searchText: searchQuery)
         )
         
         return HTTP.request(
@@ -51,26 +51,24 @@ extension MovieDBEndpointProtocol {
 }
 
 
-struct MovieDBEndpoint: MovieDBEndpointProtocol {
-    let settingsUtility: SettingsReadable
-    
-    func queryItems(type: MediaFetchType, searchText: String?) -> [URLQueryItem] {
-        self.resolveQueryItems(type: type, searchText: searchText)
+struct MovieDBEndpoint: MovieDBEndpointProtocol {    
+    func queryItems(for type: MediaFetchType, with locale: MediaLocale, searchText: String?) -> [URLQueryItem] {
+        self.resolveQueryItems(for: type, with: locale, searchText: searchText)
     }
 }
 
 // MARK: - MovieDB QueryItems
 extension MovieDBEndpoint {
         
-    private func resolveQueryItems(type: MediaFetchType, searchText: String?) -> [URLQueryItem] {
+    private func resolveQueryItems(for type: MediaFetchType, with locale: MediaLocale, searchText: String?) -> [URLQueryItem] {
         [
-            .init(.language, settingsUtility.mediaLocale.language)
+            .init(.language, locale.language)
         ] + {
             switch type {
             case .cinemaPlaying, .cinemaUpcomimg:
-                [.init(.region, settingsUtility.mediaLocale.region)]
+                [.init(.region, locale.region)]
             case .movieNew, .tvNew:
-                self.newQueryItems(type: type)
+                self.newQueryItems(for: type, with: locale.region)
             case .searchAll:
                 [.init(.query, searchText.orEmpty)]
             case .randomMovies:
@@ -81,12 +79,12 @@ extension MovieDBEndpoint {
         }()
     }
     
-    private func newQueryItems(type: MediaFetchType) -> [URLQueryItem] {
+    private func newQueryItems(for type: MediaFetchType, with region: String) -> [URLQueryItem] {
         [
             .init(type == .movieNew ? .releaseDate : .firstAirDate, .gte, Date().toString(daysOffset: -MovieDBConstants.daysOffset)),
             .init(type == .movieNew ? .releaseDate : .firstAirDate, .lte, Date().toString(daysOffset: MovieDBConstants.daysOffset*2)),
             .init(.sortBy, type == .movieNew ? .releaseDate : .firstAirDate, .asc),
-            .init(.watchRegion, settingsUtility.mediaLocale.region),
+            .init(.watchRegion, region),
             .init(.withWatchMonetizationTypes, .flatrate),
             .init(.voteCount, .gte, "\(MovieDBConstants.voteCountNewGte)")
         ]

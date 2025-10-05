@@ -33,9 +33,7 @@ extension AppService {
             settingsUtility: settingsUtility
         )
         
-        let movieDBEndpoint = MovieDBEndpoint(
-            settingsUtility: settingsUtility
-        )
+        let movieDBEndpoint = MovieDBEndpoint()
         
         let mediaRequestProvider = MediaRequestProvider(
             movieDBendpoint: movieDBEndpoint
@@ -43,12 +41,11 @@ extension AppService {
         
         let aiRequestProvider = AIRequestProvider()
 
-        let quizUtility = QuizUtility(
-            settingsUtility: settingsUtility,
+        let quizUtility = QuizRepository(
             aiRequestProvider: aiRequestProvider
         )
         
-        let mediaUtility = MediaUtility(
+        let mediaUtility = MediaRepository(
             mediaRequestProvider: mediaRequestProvider
         )
         
@@ -59,11 +56,12 @@ extension AppService {
         
         let mediaService = MediaService(
             movieDBUtility: mediaUtility,
-            preferencesService: preferencesService
+            mediaLocaleProvider: preferencesService
         )
         
         let gameService = GameService(
-            gameUtility: gameUtility
+            gameUtility: gameUtility,
+            gameDataProvider: preferencesService
         )
                 
         return AppService(

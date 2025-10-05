@@ -16,9 +16,7 @@ extension AppService {
             settingsUtility: settingsUtilityPreview
         )
         
-        let quizUtilityPreview = QuizUtilityPreview(
-            settingsUtility: settingsUtilityPreview
-        )
+        let quizUtilityPreview = QuizUtilityPreview()
         
         let mediaUtilityPreview = MediaUtilityPreview()
         
@@ -29,11 +27,12 @@ extension AppService {
         
         let mediaService = MediaService(
             movieDBUtility: mediaUtilityPreview,
-            preferencesService: preferencesService
+            mediaLocaleProvider: preferencesService
         )
         
         let gameService = GameService(
-            gameUtility: gameUtility
+            gameUtility: gameUtility,
+            gameDataProvider: preferencesService
         )
         
         

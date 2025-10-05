@@ -39,10 +39,15 @@ final class GameService: EventHandler {
     @ObservationIgnored private var locale = MediaLocale()
     @ObservationIgnored private var server: AIServer = .openAI
     @ObservationIgnored private let gameUtility: GameUtilityProtocol
+    @ObservationIgnored private let gameDataProvider: GameDataProvider
     
     // MARK: - Initialization
-    init(gameUtility: GameUtilityProtocol) {
+    init(
+        gameUtility: GameUtilityProtocol,
+        gameDataProvider: GameDataProvider
+    ) {
         self.gameUtility = gameUtility
+        self.gameDataProvider = gameDataProvider
     }
     
     // MARK: - Event Handling
@@ -95,7 +100,7 @@ final class GameService: EventHandler {
             self.state = .loading
             Task {
                 do {
-                    self.allQuizzes = try await gameUtility.fetchGameQuiz()
+                    self.allQuizzes = try await gameUtility.fetchGameQuiz(for: gameDataProvider.gameData)
                     self.updateCurrentQuizzes()
                     self.nextQuestion = self.currentQuizzes.first?.quiz.question ?? .empty
                     self.state = .ready

@@ -14,3 +14,9 @@ struct MediaLocale {
         "\(code)-\(region)"
     }
 }
+
+struct GameData {
+    var server: AIServer = .deepSeek
+    var mediaLocale: MediaLocale = MediaLocale()
+    var language: String = .empty
+}

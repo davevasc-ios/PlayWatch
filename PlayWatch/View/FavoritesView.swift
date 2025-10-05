@@ -72,7 +72,6 @@ struct FavoritesView: View {
                 }
                 .navigationTitle(Text(AppTab.favorites.localized))
             }
-            .id(appService.preferencesService.selectedLanguage)
     }
     
     private func update() {
