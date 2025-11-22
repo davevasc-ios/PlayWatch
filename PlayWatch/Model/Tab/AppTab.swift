@@ -30,11 +30,11 @@ enum AppTab: CaseIterable {
     
     var localized: LocalizedStringResource {
         switch self {
-        case .home: LocalizableString.home
-        case .game: LocalizableString.game
-        case .favorites: LocalizableString.favorites
-        case .settings: LocalizableString.settings
-        case .search: LocalizableString.search
+        case .home: Localizable.Home.title
+        case .game: Localizable.Game.title
+        case .favorites: Localizable.Favorites.title
+        case .settings: Localizable.Settings.title
+        case .search: Localizable.Search.title
         }
     }
 }

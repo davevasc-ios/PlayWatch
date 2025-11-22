@@ -30,10 +30,128 @@ struct HomeView: View {
                 appService.mediaService.on(.slideToRefresh)
             }
             .navigationTitle(Text(AppTab.home.localized))
+            .toolbarTitleDisplayMode(.inlineLarge)
+            .accountToolbar()
+            .languageToolbar()
         }
         .onAppear {
             appService.mediaService.on(.viewAppear)
         }
+//        .id(appService.preferencesService.selectedLanguage)
+    }
+}
+
+
+struct AccountToolbarModifier: ViewModifier {
+    @State private var showingAccount = false
+    
+    func body(content: Content) -> some View {
+        content
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        showingAccount.toggle()
+                    } label: {
+                        Image(systemName: "person.fill")
+                    }
+                    .popover(isPresented: $showingAccount) {
+                        AccountView()
+                            .presentationDetents([.medium, .large])
+                            .presentationCompactAdaptation(.sheet)
+                    }
+                }
+                ToolbarSpacer(.fixed, placement: .topBarTrailing)
+            }
+    }
+}
+
+extension View {
+    func accountToolbar() -> some View {
+        modifier(AccountToolbarModifier())
+    }
+}
+
+
+struct LanguageToolbarModifier: ViewModifier {
+    @Environment(AppService.self) private var appService
+    @State private var showingLanguage = false
+    
+    func body(content: Content) -> some View {
+        @Bindable var preferences = appService.preferencesService
+
+        content
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        showingLanguage.toggle()
+                    } label: {
+                        if let loadedLanguageCode = appService.mediaService.homeState.loadedLanguageCode {
+                            Text(loadedLanguageCode)
+                        } else {
+                            ProgressView()
+                        }
+                    }
+                    .popover(isPresented: $showingLanguage) {
+                        LanguageGridPicker(
+                            selectedLanguage: $preferences.selectedLanguage,
+                            showingLanguage: $showingLanguage,
+                            languages: AppLanguage.allCases
+                        )
+                        .presentationCompactAdaptation(.popover)
+                    }
+                }
+                ToolbarSpacer(.fixed, placement: .topBarTrailing)
+            }
+    }
+}
+
+extension View {
+    func languageToolbar() -> some View {
+        modifier(LanguageToolbarModifier())
+    }
+}
+
+struct LanguageGridPicker: View {
+    @Environment(AppService.self) private var appService
+
+    @Binding var selectedLanguage: AppLanguage
+    @Binding var showingLanguage: Bool
+    let languages: [AppLanguage]
+
+    private let columns = Array(
+        repeating: GridItem(.flexible(), spacing: 12),
+        count: 3
+    )
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            Text("Selecciona idioma")
+                .font(.headline)
+            
+            ForEach(languages) { language in
+                Button {
+                    if selectedLanguage != language {
+                        selectedLanguage = language
+                        appService.mediaService.on(.viewAppear)
+                    }
+                    showingLanguage.toggle()
+                } label: {
+                    Text(language.localized)
+                        .font(.subheadline)
+                        .fontWeight(selectedLanguage == language ? .bold : .regular)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(
+                            selectedLanguage == language
+                            ? Color.accentColor.opacity(0.4)
+                            : Color.secondary.opacity(0.2),
+                            in: ContainerRelativeShape()
+                        )
+                }
+                .buttonStyle(.plain)
+            }
+        }
+        .padding()
     }
 }
 
@@ -188,3 +306,4 @@ struct TitleNameView: View {
         .environment(AppService.preview)
 }
 #endif
+

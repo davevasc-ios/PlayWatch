@@ -12,6 +12,13 @@ enum HomeState {
     case loading
     case loaded([MediaSection], MediaLocale)
     case failure(Error)
+    
+    var loadedLanguageCode: String? {
+        guard case .loaded(_, let language) = self else {
+            return nil
+        }
+        return language.code.uppercased()
+    }
 }
 
 @Observable
@@ -24,6 +31,13 @@ final class MediaService: EventHandler {
     // MARK: - Private Properties
     @ObservationIgnored private let movieDBUtility: MediaRopositoryProtocol
     @ObservationIgnored private let mediaLocaleProvider: MediaLocaleProvider
+    
+    var loadedLanguage: String {
+        if case .loaded(_, let language) = homeState {
+            return language.code.uppercased()
+        }
+        return .empty
+    }
     
     // MARK: - Initialization
     init(

@@ -13,16 +13,16 @@ struct TabBarView: View {
         
     var body: some View {
         TabView(selection: $selectedTab) {
-            Tab("\(AppTab.home.localized)", systemImage: AppTab.home.systemImage, value: AppTab.home) {
+            Tab(AppTab.home.localized, systemImage: AppTab.home.systemImage, value: AppTab.home) {
                 HomeView()
             }
-            Tab("\(AppTab.game.localized)", systemImage: AppTab.game.systemImage, value: AppTab.game) {
+            Tab(AppTab.game.localized, systemImage: AppTab.game.systemImage, value: AppTab.game) {
                 GameView()
             }
-            Tab("\(AppTab.favorites.localized)", systemImage: AppTab.favorites.systemImage, value: AppTab.favorites) {
+            Tab(AppTab.favorites.localized, systemImage: AppTab.favorites.systemImage, value: AppTab.favorites) {
                 FavoritesView()
             }
-            Tab("\(AppTab.settings.localized)", systemImage: AppTab.settings.systemImage, value: AppTab.settings) {
+            Tab(AppTab.settings.localized, systemImage: AppTab.settings.systemImage, value: AppTab.settings) {
                 SettingsView()
             }
             Tab(value: AppTab.search, role: .search)  {
@@ -31,7 +31,6 @@ struct TabBarView: View {
         }
         .tabBarMinimizeBehavior(.onScrollDown)
         .sensoryFeedback(.selection, trigger: selectedTab)
-        .id(appService.preferencesService.selectedLanguage)
     }
 }
 

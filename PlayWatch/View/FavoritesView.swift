@@ -71,7 +71,11 @@ struct FavoritesView: View {
                     update()
                 }
                 .navigationTitle(Text(AppTab.favorites.localized))
+                .toolbarTitleDisplayMode(.inlineLarge)
+                .accountToolbar()
+                .languageToolbar()
             }
+//            .id(appService.preferencesService.selectedLanguage)
     }
     
     private func update() {
@@ -85,5 +89,6 @@ struct FavoritesView: View {
 #if DEBUG
 #Preview {
     FavoritesView()
+        .environment(AppService.preview)
 }
 #endif

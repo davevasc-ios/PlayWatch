@@ -54,8 +54,10 @@ struct SettingsView: View {
                 }
             }
             .navigationTitle(Text(AppTab.settings.localized))
+            .toolbarTitleDisplayMode(.inlineLarge)
+            .accountToolbar()
         }
-//        .id(settings.selectedLanguage)
+//        .id(appService.preferencesService.selectedLanguage)
     }
 }
 

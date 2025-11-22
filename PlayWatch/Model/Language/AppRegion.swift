@@ -54,18 +54,18 @@ enum AppRegion: String, CaseIterable, Identifiable, Codable {
     
     var localized: LocalizedStringResource {
         switch self {
-        case .system: LocalizableString.systemRegionName
-        case .unitedStates: LocalizableString.unitedStatesRegionName
-        case .unitedKingdom: LocalizableString.unitedKingdomRegionName
-        case .spain: LocalizableString.spainRegionName
-        case .basqueCountry: LocalizableString.basqueCountryRegionName
-        case .catalonia: LocalizableString.cataloniaRegionName
-        case .mexico: LocalizableString.mexicoRegionName
-        case .france: LocalizableString.franceRegionName
-        case .italy: LocalizableString.italyRegionName
-        case .portugal: LocalizableString.portugalRegionName
-        case .brazil: LocalizableString.brazilRegionName
-        case .germany: LocalizableString.germanyRegionName
+        case .system: Localizable.Settings.systemRegionName
+        case .unitedStates: Localizable.Settings.unitedStatesRegionName
+        case .unitedKingdom: Localizable.Settings.unitedKingdomRegionName
+        case .spain: Localizable.Settings.spainRegionName
+        case .basqueCountry: Localizable.Settings.basqueCountryRegionName
+        case .catalonia: Localizable.Settings.cataloniaRegionName
+        case .mexico: Localizable.Settings.mexicoRegionName
+        case .france: Localizable.Settings.franceRegionName
+        case .italy: Localizable.Settings.italyRegionName
+        case .portugal: Localizable.Settings.portugalRegionName
+        case .brazil: Localizable.Settings.brazilRegionName
+        case .germany: Localizable.Settings.germanyRegionName
         }
     }
     

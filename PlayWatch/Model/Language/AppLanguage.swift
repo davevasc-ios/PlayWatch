@@ -40,15 +40,15 @@ enum AppLanguage: String, CaseIterable, Identifiable, Codable {
     
     var localized: LocalizedStringResource {
         switch self {
-        case .system: LocalizableString.systemLanguageName
-        case .english: LocalizableString.englishLanguageName
-        case .spanish: LocalizableString.spanishLanguageName
-        case .basque: LocalizableString.basqueLanguageName
-        case .catalan: LocalizableString.catalanLanguageName
-        case .french: LocalizableString.frenchLanguageName
-        case .italian: LocalizableString.italianLanguageName
-        case .portuguese: LocalizableString.portugueseLanguageName
-        case .german: LocalizableString.germanLanguageName
+        case .system: Localizable.Settings.systemLanguageName
+        case .english: Localizable.Settings.englishLanguageName
+        case .spanish: Localizable.Settings.spanishLanguageName
+        case .basque: Localizable.Settings.basqueLanguageName
+        case .catalan: Localizable.Settings.catalanLanguageName
+        case .french: Localizable.Settings.frenchLanguageName
+        case .italian: Localizable.Settings.italianLanguageName
+        case .portuguese: Localizable.Settings.portugueseLanguageName
+        case .german: Localizable.Settings.germanLanguageName
         }
     }
     

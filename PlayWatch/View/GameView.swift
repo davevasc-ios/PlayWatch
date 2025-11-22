@@ -126,6 +126,7 @@ struct GameView: View {
             .ignoresSafeArea(.all)
             GameCountDownView()
         }
+//        .id(appService.preferencesService.selectedLanguage)
     }
 }
 

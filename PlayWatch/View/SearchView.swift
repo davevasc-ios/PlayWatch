@@ -23,11 +23,14 @@ struct SearchView: View {
                     }
                 }
             }
+            .navigationTitle(Text(AppTab.search.localized))
+            .toolbarTitleDisplayMode(.inlineLarge)
+            .accountToolbar()
         }
         .onAppear {
             appService.mediaService.on(.changeTrending)
         }
-        .searchable(text: $search, prompt: Text(LocalizableString.homeSearchBar))
+        .searchable(text: $search, prompt: Text(Localizable.Search.searchBar))
 
         .searchSuggestions {
             if showSuggestions {
