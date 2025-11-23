@@ -9,6 +9,7 @@ import SwiftUI
 
 struct HomeView: View {
     @Environment(AppService.self) private var appService
+    @Namespace private var heroTransition
     
     var body: some View {
         NavigationStack {
@@ -20,7 +21,7 @@ struct HomeView: View {
                     case .loading:
                         ProgressView()
                     case .loaded(let mediaSectionList, _):
-                        MediaSectionView(sections: mediaSectionList)
+                        MediaSectionView(sections: mediaSectionList, namespace: heroTransition)
                     case .failure(let error):
                         Text(error.localizedDescription)
                     }
@@ -33,6 +34,9 @@ struct HomeView: View {
             .toolbarTitleDisplayMode(.inlineLarge)
             .accountToolbar()
             .languageToolbar()
+            .navigationDestination(for: Media.self) { media in
+                MediaDetailView(item: media, namespace: heroTransition)
+            }
         }
         .onAppear {
             appService.mediaService.on(.viewAppear)
@@ -157,12 +161,13 @@ struct LanguageGridPicker: View {
 
 struct MediaSectionView: View {
     let sections: [MediaSection]
+    let namespace: Namespace.ID
     
     var body: some View {
         ForEach (sections) { section in
             LazyVStack (spacing: 0) {
                 MediaTitleView(title: section.title)
-                MediaFlowView(items: section.items)
+                MediaFlowView(items: section.items, namespace: namespace)
             }
         }
     }
@@ -182,13 +187,15 @@ struct MediaTitleView: View {
 
 struct MediaFlowView: View {
     @Environment(\.verticalSizeClass) var verticalSizeClass
+    
     let items: [Media]
+    let namespace: Namespace.ID
     
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             LazyHStack(spacing: 4) {
                 ForEach(items) { item in
-                    NavigationLink(destination: MediaDetailView(item: item)) {
+                    NavigationLink(value: item) {
                         MediaPosterView(item: item)
                             .containerRelativeFrame(.horizontal,
                                                     count: verticalSizeClass == .regular ? 3 : 8,
@@ -205,8 +212,8 @@ struct MediaFlowView: View {
                                     .rotation3DEffect(.degrees(abs(phase.value - 0.1) * 40),
                                                       axis: (x: 0.2, y: 1, z: 0), anchor: .leading)
                             }
+                                              .matchedTransitionSource(id: item.id, in: namespace)
                     }
-                    
                 }
             }
             .scrollTargetLayout()

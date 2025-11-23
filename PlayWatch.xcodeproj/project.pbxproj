@@ -47,6 +47,7 @@
 		5551A8302D11985D00AFC04A /* MediaResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5551A82F2D11985D00AFC04A /* MediaResponse.swift */; };
 		5551A8322D11AF1900AFC04A /* GameQuiz.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5551A8312D11AF1900AFC04A /* GameQuiz.swift */; };
 		5551A8362D11B59700AFC04A /* MediaSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5551A8352D11B59700AFC04A /* MediaSection.swift */; };
+		555662CD2ED3916500EBF3F9 /* StretchyHeaderExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555662CC2ED3916500EBF3F9 /* StretchyHeaderExtension.swift */; };
 		555B26E32C1CC49400B789A1 /* Bool+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555B26E22C1CC49400B789A1 /* Bool+Extensions.swift */; };
 		555C8D1E2D0CA6F400B175E5 /* MediaCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555C8D1D2D0CA6F400B175E5 /* MediaCardView.swift */; };
 		555F69D82BF68931000DF9B9 /* Quiz.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555F69D72BF68931000DF9B9 /* Quiz.swift */; };
@@ -170,6 +171,7 @@
 		5551A82F2D11985D00AFC04A /* MediaResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaResponse.swift; sourceTree = "<group>"; };
 		5551A8312D11AF1900AFC04A /* GameQuiz.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameQuiz.swift; sourceTree = "<group>"; };
 		5551A8352D11B59700AFC04A /* MediaSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaSection.swift; sourceTree = "<group>"; };
+		555662CC2ED3916500EBF3F9 /* StretchyHeaderExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StretchyHeaderExtension.swift; sourceTree = "<group>"; };
 		555B26E22C1CC49400B789A1 /* Bool+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bool+Extensions.swift"; sourceTree = "<group>"; };
 		555C8D1D2D0CA6F400B175E5 /* MediaCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaCardView.swift; sourceTree = "<group>"; };
 		555F69D72BF68931000DF9B9 /* Quiz.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Quiz.swift; sourceTree = "<group>"; };
@@ -571,6 +573,7 @@
 		557713142D2AF20B00302F8A /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				555662CC2ED3916500EBF3F9 /* StretchyHeaderExtension.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -861,6 +864,7 @@
 				553C96AA2ED1CCB700033712 /* LocalizableFavorites.swift in Sources */,
 				55C3F1912C6E3140006DE59B /* EventHandler.swift in Sources */,
 				553C96B22ED1D0E500033712 /* Localizable.swift in Sources */,
+				555662CD2ED3916500EBF3F9 /* StretchyHeaderExtension.swift in Sources */,
 				558F1C652D4F81340087DE99 /* GameConfig.swift in Sources */,
 				553C96B02ED1CCD900033712 /* LocalizableAccount.swift in Sources */,
 				557713352D47FE8F00302F8A /* MovieDBConstants.swift in Sources */,
