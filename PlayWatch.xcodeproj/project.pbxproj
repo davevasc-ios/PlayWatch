@@ -287,11 +287,11 @@
 				557713142D2AF20B00302F8A /* Utilities */,
 				55D425CE2BCC4AFF001FA57C /* TabBarView.swift */,
 				55D425D02BCC4C3C001FA57C /* HomeView.swift */,
+				55E9FD102E908F660040CC78 /* MediaDetailView.swift */,
 				55AFE60B2BD520E20015E411 /* GameView.swift */,
 				55E51A3B2BDEB1FF00A8541B /* FavoritesView.swift */,
 				557F55652BE4267B00EEAA2F /* SettingsView.swift */,
 				5569BC452E73800F00BC70B0 /* SearchView.swift */,
-				55E9FD102E908F660040CC78 /* MediaDetailView.swift */,
 				553C96A32ECC7A9700033712 /* AccountView.swift */,
 			);
 			path = View;

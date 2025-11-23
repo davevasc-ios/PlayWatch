@@ -136,7 +136,7 @@ struct LanguageGridPicker: View {
                     }
                     showingLanguage.toggle()
                 } label: {
-                    Text(language.localized)
+                    Text(language.nativeName)
                         .font(.subheadline)
                         .fontWeight(selectedLanguage == language ? .bold : .regular)
                         .frame(maxWidth: .infinity)
