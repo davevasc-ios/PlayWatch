@@ -9,8 +9,8 @@ import Foundation
 
 extension API {
     enum Error: LocalizedError {
-        case invalidFileName
-        case invalidKeyName(apiKeyName: String)
+        case invalidFileName(fileName: String, fileType: String)
+        case invalidKeyName(apiKeyName: String, fileName: String, fileType: String)
         case invalidApiKey(apiKeyWeb: String)
         case invalidURL
         case invalidResponse(detail: String)
@@ -18,10 +18,10 @@ extension API {
         
         var errorDescription: String? {
             switch self {
-            case .invalidFileName:
-                return "Couldn't find file '\(Info.infoFile.name).\(Info.infoFile.type)'"
-            case let .invalidKeyName(apiKeyName):
-                return "Couldn't find key '\(apiKeyName)' in '\(Info.infoFile.name).\(Info.infoFile.type)'"
+            case let .invalidFileName(fileName, fileType):
+                return "Couldn't find file '\(fileName).\(fileType)'"
+            case let .invalidKeyName(apiKeyName, fileName, fileType):
+                return "Couldn't find key '\(apiKeyName)' in '\(fileName).\(fileType)'"
             case let .invalidApiKey(apiKeyWeb):
                 return "Follow the instructions at \(apiKeyWeb) to get an API key"
             case .invalidURL:

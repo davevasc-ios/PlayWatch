@@ -16,19 +16,24 @@ struct HomeView: View {
             ScrollView {
                 LazyVStack (alignment: .leading) {
                     switch appService.mediaService.homeState {
-                    case .empty:
-                        Text("No data")
-                    case .loading:
+                    case .idle, .loading:
                         ProgressView()
-                    case .loaded(let mediaSectionList, _):
-                        MediaSectionView(sections: mediaSectionList, namespace: heroTransition)
+                    case .success(let homeContent):
+                        if homeContent.isEmpty {
+                            EmptyView()
+                        } else {
+                            MediaSectionView(sections: homeContent.sections, namespace: heroTransition)
+                        }
                     case .failure(let error):
                         Text(error.localizedDescription)
                     }
                 }
             }
             .refreshable {
-                appService.mediaService.on(.slideToRefresh)
+                await appService.mediaService.on(.slideToRefresh)
+            }
+            .task(id: appService.preferencesService.selectedLanguage) {
+                await appService.mediaService.on(.viewAppear)
             }
             .navigationTitle(Text(AppTab.home.localized))
             .toolbarTitleDisplayMode(.inlineLarge)
@@ -38,10 +43,6 @@ struct HomeView: View {
                 MediaDetailView(item: media, namespace: heroTransition)
             }
         }
-        .onAppear {
-            appService.mediaService.on(.viewAppear)
-        }
-//        .id(appService.preferencesService.selectedLanguage)
     }
 }
 
@@ -89,8 +90,8 @@ struct LanguageToolbarModifier: ViewModifier {
                     Button {
                         showingLanguage.toggle()
                     } label: {
-                        if let loadedLanguageCode = appService.mediaService.homeState.loadedLanguageCode {
-                            Text(loadedLanguageCode)
+                        if let value = appService.mediaService.homeState.value {
+                            Text(value.locale.code.uppercased())
                         } else {
                             ProgressView()
                         }
@@ -121,22 +122,13 @@ struct LanguageGridPicker: View {
     @Binding var selectedLanguage: AppLanguage
     @Binding var showingLanguage: Bool
     let languages: [AppLanguage]
-
-    private let columns = Array(
-        repeating: GridItem(.flexible(), spacing: 12),
-        count: 3
-    )
     
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text("Selecciona idioma")
-                .font(.headline)
-            
             ForEach(languages) { language in
                 Button {
                     if selectedLanguage != language {
                         selectedLanguage = language
-                        appService.mediaService.on(.viewAppear)
                     }
                     showingLanguage.toggle()
                 } label: {

@@ -7,17 +7,26 @@
 
 import Observation
 
-enum HomeState {
-    case empty
+enum Loadable<Value: Sendable>: Sendable {
+    case idle
     case loading
-    case loaded([MediaSection], MediaLocale)
+    case success(Value)
     case failure(Error)
     
-    var loadedLanguageCode: String? {
-        guard case .loaded(_, let language) = self else {
-            return nil
+    var value: Value? {
+        switch self {
+        case .success(let value): value
+        default: nil
         }
-        return language.code.uppercased()
+    }
+}
+
+struct HomeContent: Sendable {
+    let sections: [MediaSection]
+    let locale: MediaLocale
+    
+    var isEmpty: Bool {
+        sections.isEmpty
     }
 }
 
@@ -25,19 +34,12 @@ enum HomeState {
 final class MediaService: EventHandler {
     
     // MARK: - Public Read-Only Properties
-    private(set) var homeState: HomeState = .empty
+    private(set) var homeState: Loadable<HomeContent> = .idle
     private(set) var mediaSearchList: [Media] = []
     
     // MARK: - Private Properties
     @ObservationIgnored private let movieDBUtility: MediaRopositoryProtocol
     @ObservationIgnored private let mediaLocaleProvider: MediaLocaleProvider
-    
-    var loadedLanguage: String {
-        if case .loaded(_, let language) = homeState {
-            return language.code.uppercased()
-        }
-        return .empty
-    }
     
     // MARK: - Initialization
     init(
@@ -57,83 +59,70 @@ final class MediaService: EventHandler {
     }
     
     // MARK: - Public Methods
-    func on(_ event: Event) {
+    func on(_ event: Event) async {
         switch event {
         case .viewAppear:
-            self.start()
+            await self.start()
         case .slideToRefresh:
-            self.refresh()
+            await self.refresh()
         case .changeSearch(let text):
-            self.search(searchText: text)
+            await self.search(searchText: text)
         case .changeTrending:
-            self.trending()
+            await self.trending()
         }
     }
     
     // MARK: - Private Methods
     
-    @MainActor
-    private func start() {
+    private func start() async {
         switch homeState {
         case .loading:
-            print("Ya está en proceso de carga. No se inicia una nueva petición.")
+            print("ℹ️ Ya está en proceso de carga. No se inicia una nueva petición.")
             return
-        case .loaded(_, let loadedLanguage) where loadedLanguage.code == mediaLocaleProvider.mediaLocale.code:
-            print("Datos ya cargados para el idioma actual (\(mediaLocaleProvider.mediaLocale.language)). No se necesita recargar.")
+        case .success(let homeContent) where homeContent.locale == mediaLocaleProvider.mediaLocale:
+            print("ℹ️ Datos ya cargados para el idioma actual (\(mediaLocaleProvider.mediaLocale.language)). No se necesita recargar.")
             return
         default:
-            print("Iniciando carga de datos para nuevo idioma (\(mediaLocaleProvider.mediaLocale.language))")
+            print("⏳ Iniciando carga de datos para nuevo idioma (\(mediaLocaleProvider.mediaLocale.language))")
             self.homeState = .loading
-            Task {
-                do {
-                    // TODO: - habría que devolver el lenguaje, eso si.
-                    let sections = try await self.movieDBUtility.fetchMediaSections(for: Constants.homeSections, with: mediaLocaleProvider.mediaLocale)
-                    self.homeState = sections.isEmpty ? .empty : .loaded(sections, mediaLocaleProvider.mediaLocale)
-                } catch {
-                    print(error.localizedDescription)
-                    self.homeState = .failure(error)
-                }
+            do {
+                let sections = try await self.movieDBUtility.fetchMediaSections(for: Constants.homeSections, with: mediaLocaleProvider.mediaLocale)
+                let homeContent = HomeContent(sections: sections, locale: mediaLocaleProvider.mediaLocale)
+                self.homeState = sections.isEmpty ? .idle : .success(homeContent)
+                print("✅ Finalizada la carga de datos para nuevo idioma (\(mediaLocaleProvider.mediaLocale.language))")
+            } catch {
+                print("💥 Fallo durante la carga de datos para nuevo idioma (\(mediaLocaleProvider.mediaLocale.language)). Error: \(error.localizedDescription)")
+                print(error.localizedDescription)
+                self.homeState = .failure(error)
             }
         }
     }
     
-
-    @MainActor
-    private func refresh() {
+    private func refresh() async {
         switch homeState {
         case .loading:
             break
         default:
-            self.homeState = .empty
-            self.start()
+            self.homeState = .idle
+            await self.start()
         }
     }
     
     
-    @MainActor
-    private func trending() {
-        Task {
-            defer {
-            }
-            do {
-                self.mediaSearchList = try await movieDBUtility.fetchMedia(for: .trendingAll, with: mediaLocaleProvider.mediaLocale)
-            } catch {
-                print(error.localizedDescription)
-            }
+    private func trending() async {
+        do {
+            self.mediaSearchList = try await movieDBUtility.fetchMedia(for: .trendingAll, with: mediaLocaleProvider.mediaLocale)
+        } catch {
+            print(error.localizedDescription)
         }
     }
     
-    @MainActor
-    private func search(searchText: String) {
+    private func search(searchText: String) async {
         self.mediaSearchList.removeAll()
-        Task {
-            defer {
-            }
-            do {
-                self.mediaSearchList = try await movieDBUtility.fetchMedia(for: .searchAll, with: mediaLocaleProvider.mediaLocale, searchQuery: searchText)
-            } catch {
-                print(error.localizedDescription)
-            }
+        do {
+            self.mediaSearchList = try await movieDBUtility.fetchMedia(for: .searchAll, with: mediaLocaleProvider.mediaLocale, searchQuery: searchText)
+        } catch {
+            print(error.localizedDescription)
         }
     }
 }

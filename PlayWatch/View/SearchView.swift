@@ -31,8 +31,8 @@ struct SearchView: View {
                 MediaDetailView(item: media, namespace: heroTransition)
             }
         }
-        .onAppear {
-            appService.mediaService.on(.changeTrending)
+        .task {
+            await appService.mediaService.on(.changeTrending)
         }
         .searchable(text: $search, prompt: Text(Localizable.Search.searchBar))
 
@@ -49,14 +49,22 @@ struct SearchView: View {
                 }
             }
         }
-        .onChange(of: search) {
+        .task(id: search) {
             if search.count > 0 {
-                appService.mediaService.on(.changeSearch(search))
+                await appService.mediaService.on(.changeSearch(search))
             } else {
-                appService.mediaService.on(.changeTrending)
+                await appService.mediaService.on(.changeTrending)
                 showSuggestions = true
             }
         }
+//        .onChange(of: search) {
+//            if search.count > 0 {
+//                appService.mediaService.on(.changeSearch(search))
+//            } else {
+//                appService.mediaService.on(.changeTrending)
+//                showSuggestions = true
+//            }
+//        }
     }
 }
 

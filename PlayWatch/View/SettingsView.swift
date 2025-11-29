@@ -25,13 +25,8 @@ struct SettingsView: View {
                     }
                     Picker("Language", selection: $settings.selectedLanguage) {
                         ForEach(AppLanguage.allCases) { language in
-                            if language == .system {
                                 Text(language.nativeName)
                                     .tag(language)
-                            } else {
-                                Text("\(language.nativeName) (\(language.localized))")
-                                    .tag(language)
-                            }
                         }
                     }
                     Picker("Region", selection: $settings.selectedRegion) {

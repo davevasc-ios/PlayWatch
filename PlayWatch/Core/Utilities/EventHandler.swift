@@ -8,5 +8,5 @@
 protocol EventHandler {
     associatedtype Event
     @MainActor
-    func on(_ event: Event)
+    func on(_ event: Event) async
 }

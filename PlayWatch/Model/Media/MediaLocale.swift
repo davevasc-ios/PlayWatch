@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct MediaLocale {
+struct MediaLocale: Hashable {
     var code: String = .empty
     var region: String = .empty
     var language: String {

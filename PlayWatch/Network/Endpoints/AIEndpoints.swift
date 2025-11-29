@@ -16,7 +16,7 @@ actor AIRequestProvider: AIRequestProviding {
         
     func createRequest(for server: AIServer, with prompt: PromptType) async throws -> URLRequest {
         let endpoint = await getEndpoint(for: server)
-        return try endpoint.createRequest(prompt: prompt)
+        return try await endpoint.createRequest(prompt: prompt)
     }
     
     private func getEndpoint(for server: AIServer) async -> AIEndpointProtocol {

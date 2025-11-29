@@ -18,7 +18,7 @@ extension MediaRopositoryProtocol {
             for (index, section) in sections.enumerated() {
                 group.addTask {
                     let mediaItems = try await self.fetchMedia(for: section, with: locale)
-                    return (index, MediaSection(title: section.localized, items: mediaItems))
+                    return await (index, MediaSection(title: section.localized, items: mediaItems))
                 }
             }
             var collected = [(Int, MediaSection)]()

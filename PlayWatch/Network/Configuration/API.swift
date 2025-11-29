@@ -31,11 +31,11 @@ struct API {
         
         var description: String {
             guard let filePath = Bundle.main.path(forResource: Info.infoFile.name, ofType: Info.infoFile.type) else {
-                fatalError(Error.invalidFileName.localizedDescription)
+                fatalError(Error.invalidFileName(fileName: Info.infoFile.name, fileType: Info.infoFile.type).localizedDescription)
             }
             let plist = NSDictionary(contentsOfFile: filePath)
             guard let value = plist?.object(forKey: self.api.key) as? String else {
-                fatalError(Error.invalidKeyName(apiKeyName: self.api.key).localizedDescription)
+                fatalError(Error.invalidKeyName(apiKeyName: self.api.key, fileName: Info.infoFile.name, fileType: Info.infoFile.type).localizedDescription)
             }
             if value.isTrimmedEmpty {
                 fatalError(Error.invalidApiKey(apiKeyWeb: self.api.web).localizedDescription)
