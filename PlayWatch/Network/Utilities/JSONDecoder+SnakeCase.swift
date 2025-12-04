@@ -7,14 +7,14 @@
 
 import Foundation
 
-protocol DataDecoder {
+protocol DataDecoder: Sendable {
     func decode<T: Decodable>(_ type: T.Type, from data: Data) throws -> T
 }
 
 extension JSONDecoder: DataDecoder {
-    static var withSnakeCaseStrategy: JSONDecoder {
+    static let withSnakeCaseStrategy: JSONDecoder = {
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
         return decoder
-    }
+    }()
 }

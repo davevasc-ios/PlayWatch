@@ -33,7 +33,7 @@ struct HomeView: View {
                 await appService.mediaService.on(.slideToRefresh)
             }
             .task(id: appService.preferencesService.selectedLanguage) {
-                await appService.mediaService.on(.viewAppear)
+                await appService.mediaService.on(.loadData)
             }
             .navigationTitle(Text(AppTab.home.localized))
             .toolbarTitleDisplayMode(.inlineLarge)

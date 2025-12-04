@@ -32,7 +32,7 @@ extension MediaRopositoryProtocol {
     func fetchMedia(for type: MediaFetchType, with locale: MediaLocale, searchQuery: String? = nil) async throws -> [Media] {
         let request = try self.createRequest(for: type, with: locale, searchQuery: searchQuery)
         let data = try await request.fetchData()
-        return try MediaResponse.decode(from: data).mediaDTOs.mapToMedia
+        return try MediaResponse.decode(from: data)
     }
 }
 

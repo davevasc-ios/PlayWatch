@@ -5,6 +5,7 @@
 //  Created by David on 19/12/24.
 //
 
+import Foundation
 import Observation
 
 enum Loadable<Value: Sendable>: Sendable {
@@ -12,6 +13,13 @@ enum Loadable<Value: Sendable>: Sendable {
     case loading
     case success(Value)
     case failure(Error)
+    
+    var isLoading: Bool {
+         switch self {
+         case .loading: true
+         default: false
+         }
+     }
     
     var value: Value? {
         switch self {
@@ -52,7 +60,7 @@ final class MediaService: EventHandler {
     
     // MARK: - Event Handling
     enum Event {
-        case viewAppear,
+        case loadData,
              slideToRefresh,
              changeSearch(String),
              changeTrending
@@ -61,7 +69,7 @@ final class MediaService: EventHandler {
     // MARK: - Public Methods
     func on(_ event: Event) async {
         switch event {
-        case .viewAppear:
+        case .loadData:
             await self.start()
         case .slideToRefresh:
             await self.refresh()
@@ -73,7 +81,6 @@ final class MediaService: EventHandler {
     }
     
     // MARK: - Private Methods
-    
     private func start() async {
         switch homeState {
         case .loading:
@@ -86,26 +93,28 @@ final class MediaService: EventHandler {
             print("⏳ Iniciando carga de datos para nuevo idioma (\(mediaLocaleProvider.mediaLocale.language))")
             self.homeState = .loading
             do {
+                try await Task.sleep(nanoseconds: 3_000_000_000)
                 let sections = try await self.movieDBUtility.fetchMediaSections(for: Constants.homeSections, with: mediaLocaleProvider.mediaLocale)
                 let homeContent = HomeContent(sections: sections, locale: mediaLocaleProvider.mediaLocale)
-                self.homeState = sections.isEmpty ? .idle : .success(homeContent)
+                self.homeState = .success(homeContent)
                 print("✅ Finalizada la carga de datos para nuevo idioma (\(mediaLocaleProvider.mediaLocale.language))")
+            } catch let error as CancellationError {
+                print("⛔️ Tarea cancelada. Error: \(error.localizedDescription)")
+                self.homeState = .failure(error)
+            } catch let error as URLError where error.code == .cancelled {
+                print("❌ Petición de red cancelada. Error: \(error.localizedDescription)")
+                self.homeState = .failure(error)
             } catch {
                 print("💥 Fallo durante la carga de datos para nuevo idioma (\(mediaLocaleProvider.mediaLocale.language)). Error: \(error.localizedDescription)")
-                print(error.localizedDescription)
                 self.homeState = .failure(error)
             }
         }
     }
     
     private func refresh() async {
-        switch homeState {
-        case .loading:
-            break
-        default:
-            self.homeState = .idle
-            await self.start()
-        }
+        guard !homeState.isLoading else { return }
+        self.homeState = .idle
+        await self.start()
     }
     
     
