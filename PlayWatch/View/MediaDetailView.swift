@@ -60,7 +60,7 @@ struct MediaDetailView: View {
             }
         }
         .ignoresSafeArea(edges: .top)
-        .interactiveDismissDisabled()
+//        .interactiveDismissDisabled()
     }
 }
 
@@ -124,7 +124,7 @@ struct RatingBadgeView: View {
 #Preview {
     @Previewable @Namespace var previewNamespace
     NavigationStack {
-        MediaDetailView(item: Media.test, namespace: previewNamespace)
+        MediaDetailView(item: .preview, namespace: previewNamespace)
     }
 }
 #endif

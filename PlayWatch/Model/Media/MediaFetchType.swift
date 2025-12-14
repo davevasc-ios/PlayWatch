@@ -20,19 +20,19 @@ enum MediaFetchType {
          searchAll,
          randomMovies
     
-    var localized: LocalizedStringResource {
+    var type: SectionType {
         switch self {
-        case .cinemaPlaying: Localizable.Home.sectionCinemaPlaying
-        case .cinemaUpcomimg: Localizable.Home.sectionCinemaUpcomimg
-        case .movieTrending: Localizable.Home.sectionMovieTrending
-        case .movieNew: Localizable.Home.sectionMovieNew
-        case .tvTrending: Localizable.Home.sectionTvTrending
-        case .tvNew: Localizable.Home.sectionTvNew
-        case .personTrending: Localizable.Home.sectionPersonTrending
-        case .personPopular: Localizable.Home.sectionPersonPopular
-        case .trendingAll: .empty
-        case .searchAll: .empty
-        case .randomMovies: Localizable.Home.sectionRandomMovies
+        case .cinemaPlaying: SectionType.cinemaPlaying
+        case .cinemaUpcomimg: SectionType.cinemaUpcomimg
+        case .movieTrending: SectionType.movieTrending
+        case .movieNew: SectionType.movieNew
+        case .tvTrending: SectionType.tvTrending
+        case .tvNew: SectionType.tvNew
+        case .personTrending: SectionType.personTrending
+        case .personPopular: SectionType.personPopular
+        case .trendingAll: SectionType.randomMovies // TODO: -
+        case .searchAll: SectionType.randomMovies // TODO: -
+        case .randomMovies: SectionType.randomMovies
         }
     }
 }

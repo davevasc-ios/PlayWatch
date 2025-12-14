@@ -13,8 +13,10 @@ struct MediaResponse: Codable {
 
 // MARK: - Decoding
 extension MediaResponse {
-    static func decode(from data: Data,
-                       using decoder: DataDecoder = JSONDecoder.withSnakeCaseStrategy) throws -> [Media] {
+    static func decode(
+        from data: Data,
+        using decoder: DataDecoder = JSONDecoder.withSnakeCaseStrategy
+    ) throws -> [Media] {
         do {
             let decodedResponse = try decoder.decode(Self.self, from: data)
             return decodedResponse.mediaDTOs.mapToMedia

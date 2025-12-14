@@ -14,11 +14,11 @@ protocol MediaRopositoryProtocol: Sendable {
 extension MediaRopositoryProtocol {
     
     func fetchMediaSections(for sections: [MediaFetchType], with locale: MediaLocale) async throws -> [MediaSection] {
-        try await withThrowingTaskGroup(of: (Int, MediaSection).self) { group in
+        let mediaSections = try await withThrowingTaskGroup(of: (Int, MediaSection).self) { group in
             for (index, section) in sections.enumerated() {
                 group.addTask {
                     let mediaItems = try await self.fetchMedia(for: section, with: locale)
-                    return await (index, MediaSection(title: section.localized, items: mediaItems))
+                    return await (index, MediaSection(type: section.type, items: mediaItems))
                 }
             }
             var collected = [(Int, MediaSection)]()
@@ -27,6 +27,8 @@ extension MediaRopositoryProtocol {
             }
             return collected.sorted(by: { $0.0 < $1.0 }).map { $0.1 }
         }
+        let newMediaSection = MediaSection(type: .hero, items: mediaSections.first?.items ?? [])
+        return [newMediaSection] + mediaSections
     }
     
     func fetchMedia(for type: MediaFetchType, with locale: MediaLocale, searchQuery: String? = nil) async throws -> [Media] {

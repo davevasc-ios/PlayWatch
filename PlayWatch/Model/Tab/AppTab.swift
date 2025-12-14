@@ -16,16 +16,12 @@ enum AppTab: CaseIterable {
     
     var systemImage: String {
         switch self {
-        case .home: "house"
+        case .home: "play.house.fill"
         case .game: "gamecontroller"
         case .favorites: "heart"
         case .settings: "gearshape"
         case .search: "magnifyingglass"
         }
-    }
-    
-    var index: Int {
-        return AppTab.allCases.firstIndex(of: self) ?? 0
     }
     
     var localized: LocalizedStringResource {

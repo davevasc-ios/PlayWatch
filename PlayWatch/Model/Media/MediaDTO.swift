@@ -10,6 +10,7 @@ import Foundation
 struct MediaDTO: Codable {
     let id: Int
     let mediaType: String?
+    let backdropPath: String?
     let posterPath: String?
     let profilePath: String?
     let title: String?
@@ -26,6 +27,7 @@ extension MediaDTO {
         Media(
             id: self.id,
             type: self.resolvedMediaType,
+            backdropUrl: self.resolvedBackdropUrl,
             imageUrl: self.resolvedImageUrl,
             name: self.resolvedName,
             date: self.resolvedDate,
@@ -42,6 +44,11 @@ extension MediaDTO {
             return .person
         }
         return .movie
+    }
+    
+    private var resolvedBackdropUrl: URL? {
+        let path = self.backdropPath?.ifNotEmpty
+        return MovieDBUtils.getImageURL(file: path, size: .original)
     }
     
     private var resolvedImageUrl: URL? {

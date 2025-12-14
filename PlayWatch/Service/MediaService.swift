@@ -93,7 +93,7 @@ final class MediaService: EventHandler {
             print("⏳ Iniciando carga de datos para nuevo idioma (\(mediaLocaleProvider.mediaLocale.language))")
             self.homeState = .loading
             do {
-                try await Task.sleep(nanoseconds: 3_000_000_000)
+//                try await Task.sleep(nanoseconds: 3_000_000_000)
                 let sections = try await self.movieDBUtility.fetchMediaSections(for: Constants.homeSections, with: mediaLocaleProvider.mediaLocale)
                 let homeContent = HomeContent(sections: sections, locale: mediaLocaleProvider.mediaLocale)
                 self.homeState = .success(homeContent)

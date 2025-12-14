@@ -42,12 +42,12 @@ struct MediaCardView: View {
         .aspectRatio(2/3, contentMode: .fit)
         .cornerRadius(10)
         .shadow(radius: 4, y: 4)
-        .padding(EdgeInsets(top: 0, leading: 0, bottom: 6, trailing: 0))
+        .padding(.bottom)
     }
 }
 
 #if DEBUG
 #Preview {
-    MediaCardView(card: .test)
+    MediaCardView(card: .preview)
 }
 #endif

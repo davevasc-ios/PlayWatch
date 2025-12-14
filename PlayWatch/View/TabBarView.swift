@@ -10,25 +10,54 @@ import SwiftUI
 struct TabBarView: View {
     @Environment(AppService.self) private var appService
     @State var selectedTab: AppTab = .home
-        
+    
     var body: some View {
         TabView(selection: $selectedTab) {
-            Tab(AppTab.home.localized, systemImage: AppTab.home.systemImage, value: AppTab.home) {
-                HomeView()
+            Tab(
+                AppTab.home.localized,
+                systemImage: AppTab.home.systemImage,
+                value: AppTab.home
+            ) {
+                NavigationStack {
+                    HomeView()
+                }
             }
-            Tab(AppTab.game.localized, systemImage: AppTab.game.systemImage, value: AppTab.game) {
+            
+            Tab(
+                AppTab.game.localized,
+                systemImage: AppTab.game.systemImage,
+                value: AppTab.game
+            ) {
                 GameView()
             }
-            Tab(AppTab.favorites.localized, systemImage: AppTab.favorites.systemImage, value: AppTab.favorites) {
+            
+            Tab(
+                AppTab.favorites.localized,
+                systemImage: AppTab.favorites.systemImage,
+                value: AppTab.favorites
+            ) {
                 FavoritesView()
             }
-            Tab(AppTab.settings.localized, systemImage: AppTab.settings.systemImage, value: AppTab.settings) {
+            
+            Tab(
+                AppTab.settings.localized,
+                systemImage: AppTab.settings.systemImage,
+                value: AppTab.settings
+            ) {
                 SettingsView()
             }
-            Tab(value: AppTab.search, role: .search)  {
+            
+            Tab(value: AppTab.search, role: .search) {
                 SearchView()
             }
         }
+//        .tint(
+//            LinearGradient(
+//                colors: [.red, .orange, .yellow, .green, .blue, .purple],
+//                startPoint: .topLeading,
+//                endPoint: .bottomTrailing
+//            )
+//        )
         .tabBarMinimizeBehavior(.onScrollDown)
         .sensoryFeedback(.selection, trigger: selectedTab)
     }
@@ -37,5 +66,6 @@ struct TabBarView: View {
 #if DEBUG
 #Preview {
     TabBarView()
+        .environment(AppService.preview)
 }
 #endif

@@ -10,6 +10,7 @@
 		55034E942BE5356000BCBD0E /* LocalizableHome.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 55034E932BE5356000BCBD0E /* LocalizableHome.xcstrings */; };
 		55034E982BE53DF300BCBD0E /* LocalizableSettings.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 55034E972BE53DF300BCBD0E /* LocalizableSettings.xcstrings */; };
 		55077AD92BD2CD6600E9B681 /* CacheAsyncImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55077AD82BD2CD6600E9B681 /* CacheAsyncImage.swift */; };
+		550F9C1F2EEDDA520099ED32 /* SectionDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 550F9C1E2EEDDA520099ED32 /* SectionDetailView.swift */; };
 		55212BB12BA7A0C400080A71 /* PlayWatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55212BB02BA7A0C400080A71 /* PlayWatchApp.swift */; };
 		55212BB52BA7A0C400080A71 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55212BB42BA7A0C400080A71 /* Item.swift */; };
 		55212BB72BA7A0C500080A71 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55212BB62BA7A0C500080A71 /* Assets.xcassets */; };
@@ -36,6 +37,7 @@
 		553C96AE2ED1CCCE00033712 /* LocalizableSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553C96AD2ED1CCCE00033712 /* LocalizableSearch.swift */; };
 		553C96B02ED1CCD900033712 /* LocalizableAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553C96AF2ED1CCD900033712 /* LocalizableAccount.swift */; };
 		553C96B22ED1D0E500033712 /* Localizable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553C96B12ED1D0E500033712 /* Localizable.swift */; };
+		553F8C692EE5C0FF009AA83B /* BackdropCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553F8C682EE5C0FF009AA83B /* BackdropCardView.swift */; };
 		55410B772CE0C5E600079680 /* QuizRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55410B762CE0C5E600079680 /* QuizRepository.swift */; };
 		55410B7A2CE12C5200079680 /* OpenAIResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 55410B792CE12C5200079680 /* OpenAIResponse.json */; };
 		55410B7B2CE12C5200079680 /* GeminiAIResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 55410B782CE12C5200079680 /* GeminiAIResponse.json */; };
@@ -131,6 +133,7 @@
 		55034E932BE5356000BCBD0E /* LocalizableHome.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = LocalizableHome.xcstrings; sourceTree = "<group>"; };
 		55034E972BE53DF300BCBD0E /* LocalizableSettings.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = LocalizableSettings.xcstrings; sourceTree = "<group>"; };
 		55077AD82BD2CD6600E9B681 /* CacheAsyncImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheAsyncImage.swift; sourceTree = "<group>"; };
+		550F9C1E2EEDDA520099ED32 /* SectionDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionDetailView.swift; sourceTree = "<group>"; };
 		55212BAD2BA7A0C400080A71 /* PlayWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlayWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55212BB02BA7A0C400080A71 /* PlayWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayWatchApp.swift; sourceTree = "<group>"; };
 		55212BB42BA7A0C400080A71 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
@@ -160,6 +163,7 @@
 		553C96AD2ED1CCCE00033712 /* LocalizableSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableSearch.swift; sourceTree = "<group>"; };
 		553C96AF2ED1CCD900033712 /* LocalizableAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableAccount.swift; sourceTree = "<group>"; };
 		553C96B12ED1D0E500033712 /* Localizable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Localizable.swift; sourceTree = "<group>"; };
+		553F8C682EE5C0FF009AA83B /* BackdropCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackdropCardView.swift; sourceTree = "<group>"; };
 		55410B762CE0C5E600079680 /* QuizRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizRepository.swift; sourceTree = "<group>"; };
 		55410B782CE12C5200079680 /* GeminiAIResponse.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = GeminiAIResponse.json; sourceTree = "<group>"; };
 		55410B792CE12C5200079680 /* OpenAIResponse.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = OpenAIResponse.json; sourceTree = "<group>"; };
@@ -295,6 +299,7 @@
 				557F55652BE4267B00EEAA2F /* SettingsView.swift */,
 				5569BC452E73800F00BC70B0 /* SearchView.swift */,
 				553C96A32ECC7A9700033712 /* AccountView.swift */,
+				550F9C1E2EEDDA520099ED32 /* SectionDetailView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -383,6 +388,7 @@
 			isa = PBXGroup;
 			children = (
 				555C8D1D2D0CA6F400B175E5 /* MediaCardView.swift */,
+				553F8C682EE5C0FF009AA83B /* BackdropCardView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -831,6 +837,7 @@
 				55651E172D0F49DF00ABD48B /* URL+Extensions.swift in Sources */,
 				5524A54F2D6B46D60028C7E8 /* AppService+Preview.swift in Sources */,
 				5576C3B02BB9C10D00E511DE /* API.swift in Sources */,
+				553F8C692EE5C0FF009AA83B /* BackdropCardView.swift in Sources */,
 				557713372D480A4700302F8A /* MediaFetchType.swift in Sources */,
 				55AFE60C2BD520E20015E411 /* GameView.swift in Sources */,
 				55E4CC802BCA9A050048EF56 /* String+Extensions.swift in Sources */,
@@ -860,6 +867,7 @@
 				558F1C5F2D4EA8930087DE99 /* PreviewConstants.swift in Sources */,
 				5524A5452D6203320028C7E8 /* GeminiOutput.swift in Sources */,
 				5577132A2D45361F00302F8A /* OpenAIBody.swift in Sources */,
+				550F9C1F2EEDDA520099ED32 /* SectionDetailView.swift in Sources */,
 				5569BC442E73323D00BC70B0 /* AppTheme.swift in Sources */,
 				553C96AA2ED1CCB700033712 /* LocalizableFavorites.swift in Sources */,
 				55C3F1912C6E3140006DE59B /* EventHandler.swift in Sources */,

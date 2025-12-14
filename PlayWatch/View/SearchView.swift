@@ -57,14 +57,6 @@ struct SearchView: View {
                 showSuggestions = true
             }
         }
-//        .onChange(of: search) {
-//            if search.count > 0 {
-//                appService.mediaService.on(.changeSearch(search))
-//            } else {
-//                appService.mediaService.on(.changeTrending)
-//                showSuggestions = true
-//            }
-//        }
     }
 }
 
@@ -93,7 +85,7 @@ struct SearchCellView: View {
                     case .failure (let error):
                         switch error {
                         case let urlError as URLError where urlError.code == .cancelled:
-                            MediaPosterView(item: item)
+                            MediaCardView(card: item)
                         default:
                             EmptyPosterView(text: item.name)
                         }

@@ -7,12 +7,30 @@
 
 import SwiftUI
 
+// Extensión para limpiar la vista principal
+extension View {
+    func withAppDestinations(namespace: Namespace.ID) -> some View {
+        self
+            .navigationDestination(for: Media.self) { media in
+                MediaDetailView(item: media, namespace: namespace)
+            }
+            .navigationDestination(for: MediaSection.self) { section in
+                SectionDetailView(section: section, namespace: namespace)
+            }
+            .navigationDestination(for: AppTab.self) { tab in
+                // Navegación programática a tabs, etc.
+            }
+    }
+}
+
+
 struct HomeView: View {
     @Environment(AppService.self) private var appService
     @Namespace private var heroTransition
     
     var body: some View {
-        NavigationStack {
+        // TODO: - Resolver lo del onScrollDown
+//        NavigationStack {
             ScrollView {
                 LazyVStack (alignment: .leading) {
                     switch appService.mediaService.homeState {
@@ -39,10 +57,8 @@ struct HomeView: View {
             .toolbarTitleDisplayMode(.inlineLarge)
             .accountToolbar()
             .languageToolbar()
-            .navigationDestination(for: Media.self) { media in
-                MediaDetailView(item: media, namespace: heroTransition)
-            }
-        }
+            .withAppDestinations(namespace: heroTransition)
+//        }
     }
 }
 
@@ -158,8 +174,10 @@ struct MediaSectionView: View {
     var body: some View {
         ForEach (sections) { section in
             LazyVStack (spacing: 0) {
-                MediaTitleView(title: section.title)
-                MediaFlowView(items: section.items, namespace: namespace)
+                NavigationLink(value: section) {
+                    MediaTitleView(title: section.type.title)
+                }
+                MediaFlowView(section: section, namespace: namespace)
             }
         }
     }
@@ -169,88 +187,78 @@ struct MediaTitleView: View {
     let title: LocalizedStringResource
     
     var body: some View {
-        Text(title)
-            .font(.title3)
-            .fontWeight(.bold)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(EdgeInsets(top: 0, leading: 4, bottom: 0, trailing: 4))
+        HStack(alignment: .firstTextBaseline, spacing: 4) {
+            Text(title)
+                .font(.title3)
+                .fontWeight(.bold)
+                .foregroundStyle(.primary)
+            
+            Image(systemName: "chevron.right")
+                .font(.callout)
+                .fontWeight(.semibold)
+                .foregroundStyle(.secondary)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.horizontal)
+        .padding(.bottom)
+        .contentShape(Rectangle())
     }
 }
 
 struct MediaFlowView: View {
     @Environment(\.verticalSizeClass) var verticalSizeClass
     
-    let items: [Media]
+    let section: MediaSection
     let namespace: Namespace.ID
     
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
-            LazyHStack(spacing: 4) {
-                ForEach(items) { item in
+            LazyHStack {
+                ForEach(section.items) { item in
                     NavigationLink(value: item) {
-                        MediaPosterView(item: item)
-                            .containerRelativeFrame(.horizontal,
-                                                    count: verticalSizeClass == .regular ? 3 : 8,
-                                                    spacing: 4)
-                        
-                            .scrollTransition(topLeading: .interactive,
-                                              bottomTrailing: .interactive,
-                                              axis: .horizontal) { effect, phase in
-                                effect
-                                    .opacity(phase.isIdentity ? 1.0 : 0.2)
-                                    .scaleEffect(x: phase.isIdentity ? 1.0 : 0.6,
-                                                 y: phase.isIdentity ? 1.0 : 0.6)
-                                    .offset(y: phase.isIdentity ? 0 : 50)
-                                    .rotation3DEffect(.degrees(abs(phase.value - 0.1) * 40),
-                                                      axis: (x: 0.2, y: 1, z: 0), anchor: .leading)
-                            }
-                                              .matchedTransitionSource(id: item.id, in: namespace)
+                        sectionContentView(for: item)
+                            .matchedTransitionSource(id: item.id, in: namespace)
                     }
                 }
             }
             .scrollTargetLayout()
         }
-        .contentMargins(4, for: .scrollContent)
+        .contentMargins(.horizontal, 16, for: .scrollContent)
         .scrollTargetBehavior(.viewAligned)
     }
-}
-
-struct MediaPosterView: View {
-    let item: Media
     
-    var body: some View {
-        CacheAsyncImage(url: item.imageUrl) { phase in
-            switch phase {
-            case .empty:
-                ZStack {
-                    Color.clear
-                    ProgressView()
-                        .progressViewStyle(CircularProgressViewStyle(tint: .purple))
-                        .frame(width: 50, height: 50)
+    
+    @ViewBuilder
+    private func sectionContentView(for item: Media) -> some View {
+        switch section.type {
+        case .hero:
+            BackdropCardView(card: item)
+                .containerRelativeFrame(
+                    .horizontal,
+                    count: verticalSizeClass == .regular ? 1 : 3,
+                    spacing: 10
+                )
+                .scrollTransition(axis: .horizontal) { content, phase in
+                    content
+                        .scaleEffect(x: phase.isIdentity ? 1 : 0.8, y: phase.isIdentity ? 1 : 0.6)
+                        .blur(radius: phase.isIdentity ? 0 : 2)
+                        .opacity(phase.isIdentity ? 1 : 0.5)
                 }
-            case .success (let image):
-                ZStack (alignment: .bottom) {
-                    image
-                        .resizable()
-                    if item.type == .person {
-                        PersonNameView(text: item.name)
-                    }
+            
+        default:
+            MediaCardView(card: item)
+                .containerRelativeFrame(
+                    .horizontal,
+                    count: verticalSizeClass == .regular ? 3 : 8,
+                    spacing: 10
+                )
+                .scrollTransition(topLeading: .interactive, bottomTrailing: .interactive, axis: .horizontal) { content, phase in
+                    content
+                        .scaleEffect(x: phase.isIdentity ? 1 : 0.6, y: phase.isIdentity ? 1 : 0.4)
+                        .blur(radius: phase.isIdentity ? 0 : 5)
+                        .opacity(phase.isIdentity ? 1 : 0.2)
                 }
-            case .failure (let error):
-                switch error {
-                case let urlError as URLError where urlError.code == .cancelled:
-                    MediaPosterView(item: item)
-                default:
-                    EmptyPosterView(text: item.name)
-                }
-            @unknown default:
-                EmptyView()
-            }
         }
-        .aspectRatio(2/3, contentMode: .fit)
-        .cornerRadius(10)
-        .shadow(radius: 4, y: 4)
-        .padding(EdgeInsets(top: 0, leading: 0, bottom: 6, trailing: 0))
     }
 }
 

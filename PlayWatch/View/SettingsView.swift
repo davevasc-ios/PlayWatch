@@ -31,13 +31,8 @@ struct SettingsView: View {
                     }
                     Picker("Region", selection: $settings.selectedRegion) {
                         ForEach(AppRegion.allCases) { region in
-                            if region == .system {
-                                Text(region.nativeName)
-                                    .tag(region)
-                            } else {
-                                Text("\(region.nativeName) (\(region.localized))")
-                                    .tag(region)
-                            }
+                            Text(region.localized)
+                                .tag(region)
                         }
                     }
                     Picker("Server", selection: $settings.selectedServer) {
@@ -48,6 +43,7 @@ struct SettingsView: View {
                     }
                 }
             }
+            .tint(.green)
             .navigationTitle(Text(AppTab.settings.localized))
             .toolbarTitleDisplayMode(.inlineLarge)
             .accountToolbar()
