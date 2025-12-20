@@ -46,16 +46,16 @@ final class MediaService: EventHandler {
     private(set) var mediaSearchList: [Media] = []
     
     // MARK: - Private Properties
-    @ObservationIgnored private let movieDBUtility: MediaRopositoryProtocol
-    @ObservationIgnored private let mediaLocaleProvider: MediaLocaleProvider
+    @ObservationIgnored private let mediaRepository: MediaRopositoryProtocol
+    @ObservationIgnored private let localeProvider: MediaLocaleProvider
     
     // MARK: - Initialization
     init(
         movieDBUtility: MediaRopositoryProtocol,
         mediaLocaleProvider: MediaLocaleProvider
     ) {
-        self.movieDBUtility = movieDBUtility
-        self.mediaLocaleProvider = mediaLocaleProvider
+        self.mediaRepository = movieDBUtility
+        self.localeProvider = mediaLocaleProvider
     }
     
     // MARK: - Event Handling
@@ -86,18 +86,18 @@ final class MediaService: EventHandler {
         case .loading:
             print("ℹ️ Ya está en proceso de carga. No se inicia una nueva petición.")
             return
-        case .success(let homeContent) where homeContent.locale == mediaLocaleProvider.mediaLocale:
-            print("ℹ️ Datos ya cargados para el idioma actual (\(mediaLocaleProvider.mediaLocale.language)). No se necesita recargar.")
+        case .success(let homeContent) where homeContent.locale == localeProvider.mediaLocale:
+            print("ℹ️ Datos ya cargados para el idioma actual (\(localeProvider.mediaLocale.language)). No se necesita recargar.")
             return
         default:
-            print("⏳ Iniciando carga de datos para nuevo idioma (\(mediaLocaleProvider.mediaLocale.language))")
+            print("⏳ Iniciando carga de datos para nuevo idioma (\(localeProvider.mediaLocale.language))")
             self.homeState = .loading
             do {
 //                try await Task.sleep(nanoseconds: 3_000_000_000)
-                let sections = try await self.movieDBUtility.fetchMediaSections(for: Constants.homeSections, with: mediaLocaleProvider.mediaLocale)
-                let homeContent = HomeContent(sections: sections, locale: mediaLocaleProvider.mediaLocale)
+                let sections = try await self.mediaRepository.fetchMediaSections(for: Constants.homeSections, with: localeProvider.mediaLocale)
+                let homeContent = HomeContent(sections: sections, locale: localeProvider.mediaLocale)
                 self.homeState = .success(homeContent)
-                print("✅ Finalizada la carga de datos para nuevo idioma (\(mediaLocaleProvider.mediaLocale.language))")
+                print("✅ Finalizada la carga de datos para nuevo idioma (\(localeProvider.mediaLocale.language))")
             } catch let error as CancellationError {
                 print("⛔️ Tarea cancelada. Error: \(error.localizedDescription)")
                 self.homeState = .failure(error)
@@ -105,7 +105,7 @@ final class MediaService: EventHandler {
                 print("❌ Petición de red cancelada. Error: \(error.localizedDescription)")
                 self.homeState = .failure(error)
             } catch {
-                print("💥 Fallo durante la carga de datos para nuevo idioma (\(mediaLocaleProvider.mediaLocale.language)). Error: \(error.localizedDescription)")
+                print("💥 Fallo durante la carga de datos para nuevo idioma (\(localeProvider.mediaLocale.language)). Error: \(error.localizedDescription)")
                 self.homeState = .failure(error)
             }
         }
@@ -120,7 +120,7 @@ final class MediaService: EventHandler {
     
     private func trending() async {
         do {
-            self.mediaSearchList = try await movieDBUtility.fetchMedia(for: .trendingAll, with: mediaLocaleProvider.mediaLocale)
+            self.mediaSearchList = try await mediaRepository.fetchMedia(for: .trendingAll, with: localeProvider.mediaLocale, searchQuery: nil)
         } catch {
             print(error.localizedDescription)
         }
@@ -129,7 +129,7 @@ final class MediaService: EventHandler {
     private func search(searchText: String) async {
         self.mediaSearchList.removeAll()
         do {
-            self.mediaSearchList = try await movieDBUtility.fetchMedia(for: .searchAll, with: mediaLocaleProvider.mediaLocale, searchQuery: searchText)
+            self.mediaSearchList = try await mediaRepository.fetchMedia(for: .searchAll, with: localeProvider.mediaLocale, searchQuery: searchText)
         } catch {
             print(error.localizedDescription)
         }

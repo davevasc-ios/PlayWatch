@@ -48,6 +48,6 @@ struct MediaCardView: View {
 
 #if DEBUG
 #Preview {
-    MediaCardView(card: .preview)
+    MediaCardView(card: .previewMovie)
 }
 #endif

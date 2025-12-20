@@ -8,6 +8,7 @@
 import Foundation
 
 extension AppService {
+    
     static var preview: AppService {
         
         let settingsUtilityPreview = SettingsUtilityPreview()
@@ -18,15 +19,15 @@ extension AppService {
         
         let quizUtilityPreview = QuizUtilityPreview()
         
-        let mediaUtilityPreview = MediaUtilityPreview()
+        let mediaRepositoryPreview = MediaRepositoryPreview()
         
         let gameUtility = GameUtility(
-            movieDBUtility: mediaUtilityPreview,
+            movieDBUtility: mediaRepositoryPreview,
             quizUtility: quizUtilityPreview
         )
         
         let mediaService = MediaService(
-            movieDBUtility: mediaUtilityPreview,
+            movieDBUtility: mediaRepositoryPreview,
             mediaLocaleProvider: preferencesService
         )
         
@@ -34,9 +35,7 @@ extension AppService {
             gameUtility: gameUtility,
             gameDataProvider: preferencesService
         )
-        
-        
-        
+                
         return AppService(
             mediaService: mediaService,
             gameService: gameService,

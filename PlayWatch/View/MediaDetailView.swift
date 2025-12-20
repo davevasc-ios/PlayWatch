@@ -124,7 +124,7 @@ struct RatingBadgeView: View {
 #Preview {
     @Previewable @Namespace var previewNamespace
     NavigationStack {
-        MediaDetailView(item: .preview, namespace: previewNamespace)
+        MediaDetailView(item: .previewMovie, namespace: previewNamespace)
     }
 }
 #endif

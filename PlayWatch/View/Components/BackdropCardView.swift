@@ -154,9 +154,9 @@ struct TypeBadge: View {
 
 #if DEBUG
 #Preview ("Success") {
-    BackdropCardView(card: .preview)
+    BackdropCardView(card: .previewMovie)
 }
 #Preview ("Image Error") {
-    BackdropCardView(card: .previewImageError)
+    BackdropCardView(card: .previewMovieImageError)
 }
 #endif

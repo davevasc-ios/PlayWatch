@@ -13,7 +13,6 @@ struct MediaSection: Identifiable, Hashable {
     let items: [Media]
 }
 
-
 #if DEBUG
 extension MediaSection {
     
@@ -21,7 +20,7 @@ extension MediaSection {
     static let preview = MediaSection(
         id: UUID(),
         type: .randomMovies,
-        items: [Media].preview
+        items: Media.previewMovieList
     )
     
 }

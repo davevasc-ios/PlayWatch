@@ -8,16 +8,16 @@
 import Foundation
 
 protocol MediaRopositoryProtocol: Sendable {
-    func createRequest(for type: MediaFetchType, with locale: MediaLocale, searchQuery: String?) throws -> URLRequest
+    func fetchMedia(for type: MediaFetchType, with locale: MediaLocale, searchQuery: String?) async throws -> [Media]
 }
 
 extension MediaRopositoryProtocol {
-    
+
     func fetchMediaSections(for sections: [MediaFetchType], with locale: MediaLocale) async throws -> [MediaSection] {
         let mediaSections = try await withThrowingTaskGroup(of: (Int, MediaSection).self) { group in
             for (index, section) in sections.enumerated() {
                 group.addTask {
-                    let mediaItems = try await self.fetchMedia(for: section, with: locale)
+                    let mediaItems = try await self.fetchMedia(for: section, with: locale, searchQuery: nil)
                     return await (index, MediaSection(type: section.type, items: mediaItems))
                 }
             }
@@ -30,18 +30,18 @@ extension MediaRopositoryProtocol {
         let newMediaSection = MediaSection(type: .hero, items: mediaSections.first?.items ?? [])
         return [newMediaSection] + mediaSections
     }
-    
-    func fetchMedia(for type: MediaFetchType, with locale: MediaLocale, searchQuery: String? = nil) async throws -> [Media] {
-        let request = try self.createRequest(for: type, with: locale, searchQuery: searchQuery)
-        let data = try await request.fetchData()
-        return try MediaResponse.decode(from: data)
-    }
 }
 
 struct MediaRepository: MediaRopositoryProtocol {
     let mediaRequestProvider: MediaRequestProviding
-        
-    func createRequest(for type: MediaFetchType, with locale: MediaLocale, searchQuery: String?) throws -> URLRequest {
+       
+    func fetchMedia(for type: MediaFetchType, with locale: MediaLocale, searchQuery: String?) async throws -> [Media] {
+        let request = try self.createRequest(for: type, with: locale, searchQuery: searchQuery)
+        let data = try await request.fetchData()
+        return try MediaResponse.decode(from: data)
+    }
+    
+    private func createRequest(for type: MediaFetchType, with locale: MediaLocale, searchQuery: String?) throws -> URLRequest {
         try self.mediaRequestProvider.createRequest(for: type, with: locale, searchQuery: searchQuery)
     }
 }

@@ -15,7 +15,7 @@ protocol GameUtilityProtocol {
 extension GameUtilityProtocol {
     
     func fetchGameQuiz(for data: GameData) async throws -> [GameQuiz] {
-        let randomMovies = try await movieDBUtility.fetchMedia(for: .randomMovies, with: data.mediaLocale).filterWithImage
+        let randomMovies = try await movieDBUtility.fetchMedia(for: .randomMovies, with: data.mediaLocale, searchQuery: nil).filterWithImage
         guard randomMovies.count == GameConfig.numberOfQuizzes else {
             throw GameError.outOfRange
         }

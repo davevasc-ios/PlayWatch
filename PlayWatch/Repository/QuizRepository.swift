@@ -27,7 +27,6 @@ extension QuizRepositoryProtocol {
     }
 }
 
-// TODO: - rehacer los previews en mock en vez de json, y así mejorar los quiz y los media utility
 
 struct QuizRepository: QuizRepositoryProtocol {
     let aiRequestProvider: AIRequestProviding
