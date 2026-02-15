@@ -17,17 +17,17 @@ extension AppService {
             settingsUtility: settingsUtilityPreview
         )
         
-        let quizUtilityPreview = QuizUtilityPreview()
+        let quizRepositoryPreview = QuizRepositoryPreview()
         
         let mediaRepositoryPreview = MediaRepositoryPreview()
         
         let gameUtility = GameUtility(
-            movieDBUtility: mediaRepositoryPreview,
-            quizUtility: quizUtilityPreview
+            mediaRepository: mediaRepositoryPreview,
+            quizRepository: quizRepositoryPreview
         )
         
         let mediaService = MediaService(
-            movieDBUtility: mediaRepositoryPreview,
+            mediaRepository: mediaRepositoryPreview,
             mediaLocaleProvider: preferencesService
         )
         

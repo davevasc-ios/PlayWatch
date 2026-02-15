@@ -46,15 +46,15 @@ final class MediaService: EventHandler {
     private(set) var mediaSearchList: [Media] = []
     
     // MARK: - Private Properties
-    @ObservationIgnored private let mediaRepository: MediaRopositoryProtocol
+    @ObservationIgnored private let mediaRepository: MediaRepositoryProtocol
     @ObservationIgnored private let localeProvider: MediaLocaleProvider
     
     // MARK: - Initialization
     init(
-        movieDBUtility: MediaRopositoryProtocol,
+        mediaRepository: MediaRepositoryProtocol,
         mediaLocaleProvider: MediaLocaleProvider
     ) {
-        self.mediaRepository = movieDBUtility
+        self.mediaRepository = mediaRepository
         self.localeProvider = mediaLocaleProvider
     }
     

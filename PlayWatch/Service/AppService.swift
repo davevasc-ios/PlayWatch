@@ -41,21 +41,21 @@ extension AppService {
         
         let aiRequestProvider = AIRequestProvider()
 
-        let quizUtility = QuizRepository(
+        let quizRepository = QuizRepository(
             aiRequestProvider: aiRequestProvider
         )
         
-        let mediaUtility = MediaRepository(
+        let mediaRepository = MediaRepository(
             mediaRequestProvider: mediaRequestProvider
         )
         
         let gameUtility = GameUtility(
-            movieDBUtility: mediaUtility,
-            quizUtility: quizUtility
+            mediaRepository: mediaRepository,
+            quizRepository: quizRepository
         )
         
         let mediaService = MediaService(
-            movieDBUtility: mediaUtility,
+            mediaRepository: mediaRepository,
             mediaLocaleProvider: preferencesService
         )
         

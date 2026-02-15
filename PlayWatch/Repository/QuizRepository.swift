@@ -7,15 +7,18 @@
 
 import Foundation
 
-protocol QuizFetching: Sendable {
+protocol QuizRepositoryProtocol: Sendable {
     func fetchQuiz(for movies: String, using server: AIServer, in language: String) async throws -> [Quiz]
 }
 
-protocol QuizRepositoryProtocol: QuizFetching {
-    func createRequest(for movies: String, using server: AIServer, in language: String) async throws -> URLRequest
+extension QuizRepositoryProtocol {
+//    func fetchQuiz(for movies: String, using server: AIServer, in language: String) async throws -> [Quiz] {
+//        try await self.fetchQuiz(for: movies, using: server, in: language)
+//    }
 }
 
-extension QuizRepositoryProtocol {
+struct QuizRepository: QuizRepositoryProtocol {
+    let aiRequestProvider: AIRequestProviding
     
     func fetchQuiz(for movies: String, using server: AIServer, in language: String) async throws -> [Quiz] {
         let request = try await createRequest(for: movies, using: server, in: language)
@@ -25,13 +28,8 @@ extension QuizRepositoryProtocol {
         let quizData = try quizString.toUTF8Data()
         return try Quiz.decode(from: quizData)
     }
-}
-
-
-struct QuizRepository: QuizRepositoryProtocol {
-    let aiRequestProvider: AIRequestProviding
     
-    func createRequest(for movies: String, using server: AIServer, in language: String) async throws -> URLRequest {
+    private func createRequest(for movies: String, using server: AIServer, in language: String) async throws -> URLRequest {
         let prompt = PromptType.quiz(movies: movies, language: language)
         return try await aiRequestProvider.createRequest(for: server, with: prompt)
     }

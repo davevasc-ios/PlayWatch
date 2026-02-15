@@ -83,7 +83,7 @@
 		557F55662BE4267B00EEAA2F /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 557F55652BE4267B00EEAA2F /* SettingsView.swift */; };
 		55802B852D134B0500C78317 /* PlayWatchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55802B832D134B0500C78317 /* PlayWatchTests.swift */; };
 		55802B872D145AA300C78317 /* MediaRepositoryPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55802B862D145AA300C78317 /* MediaRepositoryPreview.swift */; };
-		55802B892D145BD100C78317 /* QuizUtilityPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55802B882D145BD100C78317 /* QuizUtilityPreview.swift */; };
+		55802B892D145BD100C78317 /* QuizRepositoryPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55802B882D145BD100C78317 /* QuizRepositoryPreview.swift */; };
 		55802B8B2D14601000C78317 /* AppService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55802B8A2D14601000C78317 /* AppService.swift */; };
 		55802B8E2D146A8300C78317 /* MediaService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55802B8D2D146A8300C78317 /* MediaService.swift */; };
 		55802B902D146A9C00C78317 /* GameService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55802B8F2D146A9C00C78317 /* GameService.swift */; };
@@ -110,6 +110,7 @@
 		55C3F1912C6E3140006DE59B /* EventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C3F1902C6E3140006DE59B /* EventHandler.swift */; };
 		55C722C02E79D94D0081664D /* PlayWatchIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 55C722BF2E79D94D0081664D /* PlayWatchIcon.icon */; };
 		55C996792E34DBB4008789E8 /* MediaRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C996782E34DBB4008789E8 /* MediaRepository.swift */; };
+		55CA9FB52F425D0B006D01E1 /* MediaContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55CA9FB42F425D0B006D01E1 /* MediaContent.swift */; };
 		55D425CB2BCC4669001FA57C /* AppTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D425CA2BCC4669001FA57C /* AppTab.swift */; };
 		55D425CF2BCC4AFF001FA57C /* TabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D425CE2BCC4AFF001FA57C /* TabBarView.swift */; };
 		55D425D12BCC4C3C001FA57C /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D425D02BCC4C3C001FA57C /* HomeView.swift */; };
@@ -209,7 +210,7 @@
 		557F55652BE4267B00EEAA2F /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		55802B832D134B0500C78317 /* PlayWatchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayWatchTests.swift; sourceTree = "<group>"; };
 		55802B862D145AA300C78317 /* MediaRepositoryPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaRepositoryPreview.swift; sourceTree = "<group>"; };
-		55802B882D145BD100C78317 /* QuizUtilityPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizUtilityPreview.swift; sourceTree = "<group>"; };
+		55802B882D145BD100C78317 /* QuizRepositoryPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizRepositoryPreview.swift; sourceTree = "<group>"; };
 		55802B8A2D14601000C78317 /* AppService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppService.swift; sourceTree = "<group>"; };
 		55802B8D2D146A8300C78317 /* MediaService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaService.swift; sourceTree = "<group>"; };
 		55802B8F2D146A9C00C78317 /* GameService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameService.swift; sourceTree = "<group>"; };
@@ -236,6 +237,7 @@
 		55C3F1902C6E3140006DE59B /* EventHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventHandler.swift; sourceTree = "<group>"; };
 		55C722BF2E79D94D0081664D /* PlayWatchIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = PlayWatchIcon.icon; sourceTree = "<group>"; };
 		55C996782E34DBB4008789E8 /* MediaRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaRepository.swift; sourceTree = "<group>"; };
+		55CA9FB42F425D0B006D01E1 /* MediaContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaContent.swift; sourceTree = "<group>"; };
 		55D425CA2BCC4669001FA57C /* AppTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTab.swift; sourceTree = "<group>"; };
 		55D425CE2BCC4AFF001FA57C /* TabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarView.swift; sourceTree = "<group>"; };
 		55D425D02BCC4C3C001FA57C /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -361,7 +363,7 @@
 				55212BBA2BA7A0C500080A71 /* Preview Assets.xcassets */,
 				558F1C5E2D4EA8930087DE99 /* PreviewConstants.swift */,
 				55802B862D145AA300C78317 /* MediaRepositoryPreview.swift */,
-				55802B882D145BD100C78317 /* QuizUtilityPreview.swift */,
+				55802B882D145BD100C78317 /* QuizRepositoryPreview.swift */,
 				558F1C5C2D4EA8680087DE99 /* AIServer+Preview.swift */,
 				558F1C602D4EA96F0087DE99 /* MediaFetchType+Preview.swift */,
 				5524A54E2D6B46D60028C7E8 /* AppService+Preview.swift */,
@@ -396,6 +398,7 @@
 				557713362D480A4700302F8A /* MediaFetchType.swift */,
 				5551A8352D11B59700AFC04A /* MediaSection.swift */,
 				5577133A2D480E3400302F8A /* MediaLocale.swift */,
+				55CA9FB42F425D0B006D01E1 /* MediaContent.swift */,
 			);
 			path = Media;
 			sourceTree = "<group>";
@@ -811,6 +814,7 @@
 				553C96A82ED1CCA800033712 /* LocalizableGame.swift in Sources */,
 				5577130A2D2ACF4B00302F8A /* AppRegion.swift in Sources */,
 				553C96A62ED1CC9500033712 /* LocalizableHome.swift in Sources */,
+				55CA9FB52F425D0B006D01E1 /* MediaContent.swift in Sources */,
 				557713392D480C4A00302F8A /* MovieDBUtils.swift in Sources */,
 				5549D57C2BC0738700B934CD /* OpenAIResponse.swift in Sources */,
 				55077AD92BD2CD6600E9B681 /* CacheAsyncImage.swift in Sources */,
@@ -889,7 +893,7 @@
 				5524A53C2D61FE1C0028C7E8 /* OpenAIModel.swift in Sources */,
 				558F1C582D4E9AD70087DE99 /* AIServer.swift in Sources */,
 				5551A8302D11985D00AFC04A /* MediaResponse.swift in Sources */,
-				55802B892D145BD100C78317 /* QuizUtilityPreview.swift in Sources */,
+				55802B892D145BD100C78317 /* QuizRepositoryPreview.swift in Sources */,
 				557713302D47E09A00302F8A /* MediaEndpoints.swift in Sources */,
 				55651E152D0F463E00ABD48B /* Data+Extensions.swift in Sources */,
 				5524A5412D6200FE0028C7E8 /* GeminiModel.swift in Sources */,

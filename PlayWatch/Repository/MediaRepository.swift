@@ -7,11 +7,11 @@
 
 import Foundation
 
-protocol MediaRopositoryProtocol: Sendable {
+protocol MediaRepositoryProtocol: Sendable {
     func fetchMedia(for type: MediaFetchType, with locale: MediaLocale, searchQuery: String?) async throws -> [Media]
 }
 
-extension MediaRopositoryProtocol {
+extension MediaRepositoryProtocol {
 
     func fetchMediaSections(for sections: [MediaFetchType], with locale: MediaLocale) async throws -> [MediaSection] {
         let mediaSections = try await withThrowingTaskGroup(of: (Int, MediaSection).self) { group in
@@ -32,7 +32,7 @@ extension MediaRopositoryProtocol {
     }
 }
 
-struct MediaRepository: MediaRopositoryProtocol {
+struct MediaRepository: MediaRepositoryProtocol {
     let mediaRequestProvider: MediaRequestProviding
        
     func fetchMedia(for type: MediaFetchType, with locale: MediaLocale, searchQuery: String?) async throws -> [Media] {

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct MediaRepositoryPreview: MediaRopositoryProtocol {
+struct MediaRepositoryPreview: MediaRepositoryProtocol {
         
     var simulatedDelay: Duration = .seconds(0.5)
     
@@ -22,5 +22,4 @@ struct MediaRepositoryPreview: MediaRopositoryProtocol {
         }
         
     }
-    
 }
