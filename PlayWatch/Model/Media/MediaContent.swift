@@ -7,6 +7,7 @@
 
 import Foundation
 
+// TODO: - CONTINUAR CON LA NUEVA ARQUITECTURA SEPARADA DE MEDIA
 
 // MARK: - Protocolo base (evitamos conflicto con Content del sistema)
 nonisolated protocol MediaContent: Identifiable, Codable, Hashable, Sendable {
@@ -15,6 +16,55 @@ nonisolated protocol MediaContent: Identifiable, Codable, Hashable, Sendable {
     var posterURL: URL? { get }
     var backdropURL: URL? { get }
 }
+
+
+protocol MovieDBMovieContent: MediaContent {
+    
+}
+
+
+
+
+nonisolated protocol MediaContentProtocol: Identifiable, Codable, Hashable, Sendable {
+    var id: String { get }
+    var posterURL: URL? { get }
+}
+
+
+protocol MovieContentProtocol: MediaContentProtocol {
+    var title: String { get }
+    var originalTitle: String { get }
+    var originalLanguage: String { get }
+    var releaseDate: String? { get }
+    
+    var backdropURL: URL? { get }
+    
+    
+    
+    
+    var overview: String { get }
+    
+    var runtime: Int? { get }
+    var rating: Double? { get }
+}
+
+protocol TVShowContentProtocol: MediaContentProtocol {
+    var name: String { get }
+    var originalName: String { get }
+    var originalLanguage: String { get }
+    var firstAirDate: String? { get }
+    
+    var genreIds: [String] { get }
+    var backdropURL: URL? { get }
+    
+    
+    
+    var overview: String { get }
+    
+    var runtime: Int? { get }
+    var rating: Double? { get }
+}
+
 
 // MARK: - Modelos específicos
 struct Movie: MediaContent {
