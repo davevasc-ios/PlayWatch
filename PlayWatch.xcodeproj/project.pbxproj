@@ -12,7 +12,6 @@
 		55077AD92BD2CD6600E9B681 /* CacheAsyncImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55077AD82BD2CD6600E9B681 /* CacheAsyncImage.swift */; };
 		550F9C1F2EEDDA520099ED32 /* SectionDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 550F9C1E2EEDDA520099ED32 /* SectionDetailView.swift */; };
 		55212BB12BA7A0C400080A71 /* PlayWatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55212BB02BA7A0C400080A71 /* PlayWatchApp.swift */; };
-		55212BB52BA7A0C400080A71 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55212BB42BA7A0C400080A71 /* Item.swift */; };
 		55212BB72BA7A0C500080A71 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55212BB62BA7A0C500080A71 /* Assets.xcassets */; };
 		55212BBB2BA7A0C500080A71 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55212BBA2BA7A0C500080A71 /* Preview Assets.xcassets */; };
 		5524A53C2D61FE1C0028C7E8 /* OpenAIModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5524A53B2D61FE1C0028C7E8 /* OpenAIModel.swift */; };
@@ -39,8 +38,6 @@
 		553C96B22ED1D0E500033712 /* Localizable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553C96B12ED1D0E500033712 /* Localizable.swift */; };
 		553F8C692EE5C0FF009AA83B /* BackdropCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553F8C682EE5C0FF009AA83B /* BackdropCardView.swift */; };
 		55410B772CE0C5E600079680 /* QuizRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55410B762CE0C5E600079680 /* QuizRepository.swift */; };
-		55410B7A2CE12C5200079680 /* OpenAIResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 55410B792CE12C5200079680 /* OpenAIResponse.json */; };
-		55410B7B2CE12C5200079680 /* GeminiAIResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 55410B782CE12C5200079680 /* GeminiAIResponse.json */; };
 		5549D57C2BC0738700B934CD /* OpenAIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5549D57B2BC0738700B934CD /* OpenAIResponse.swift */; };
 		5551A8262D10D05400AFC04A /* String+Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5551A8252D10D05400AFC04A /* String+Errors.swift */; };
 		5551A82A2D11977700AFC04A /* Media.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5551A8292D11977700AFC04A /* Media.swift */; };
@@ -100,10 +97,6 @@
 		5597E4DF2E6784730044994B /* GameUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5597E4DE2E6784730044994B /* GameUtility.swift */; };
 		55AFE6082BD5160E0015E411 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55AFE6072BD5160E0015E411 /* Date+Extensions.swift */; };
 		55AFE60C2BD520E20015E411 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55AFE60B2BD520E20015E411 /* GameView.swift */; };
-		55B0C1632CCA9236002C563F /* Movies.json in Resources */ = {isa = PBXBuildFile; fileRef = 55B0C1622CCA9236002C563F /* Movies.json */; };
-		55B0C1652CCA923C002C563F /* TVShows.json in Resources */ = {isa = PBXBuildFile; fileRef = 55B0C1642CCA923C002C563F /* TVShows.json */; };
-		55B0C1672CCA9241002C563F /* People.json in Resources */ = {isa = PBXBuildFile; fileRef = 55B0C1662CCA9241002C563F /* People.json */; };
-		55B0C1692CCA9244002C563F /* All.json in Resources */ = {isa = PBXBuildFile; fileRef = 55B0C1682CCA9244002C563F /* All.json */; };
 		55B0C1712CCBE7C9002C563F /* JSONDecoder+SnakeCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B0C1702CCBE7C9002C563F /* JSONDecoder+SnakeCase.swift */; };
 		55B2540F2BC29ACC006ACD43 /* HTTP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B2540E2BC29ACC006ACD43 /* HTTP.swift */; };
 		55B254112BC2AD47006ACD43 /* GeminiResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B254102BC2AD47006ACD43 /* GeminiResponse.swift */; };
@@ -137,7 +130,6 @@
 		550F9C1E2EEDDA520099ED32 /* SectionDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionDetailView.swift; sourceTree = "<group>"; };
 		55212BAD2BA7A0C400080A71 /* PlayWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlayWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55212BB02BA7A0C400080A71 /* PlayWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayWatchApp.swift; sourceTree = "<group>"; };
-		55212BB42BA7A0C400080A71 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		55212BB62BA7A0C500080A71 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		55212BB82BA7A0C500080A71 /* PlayWatch.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PlayWatch.entitlements; sourceTree = "<group>"; };
 		55212BBA2BA7A0C500080A71 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -166,8 +158,6 @@
 		553C96B12ED1D0E500033712 /* Localizable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Localizable.swift; sourceTree = "<group>"; };
 		553F8C682EE5C0FF009AA83B /* BackdropCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackdropCardView.swift; sourceTree = "<group>"; };
 		55410B762CE0C5E600079680 /* QuizRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizRepository.swift; sourceTree = "<group>"; };
-		55410B782CE12C5200079680 /* GeminiAIResponse.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = GeminiAIResponse.json; sourceTree = "<group>"; };
-		55410B792CE12C5200079680 /* OpenAIResponse.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = OpenAIResponse.json; sourceTree = "<group>"; };
 		5549D57B2BC0738700B934CD /* OpenAIResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAIResponse.swift; sourceTree = "<group>"; };
 		5551A8252D10D05400AFC04A /* String+Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Errors.swift"; sourceTree = "<group>"; };
 		5551A8292D11977700AFC04A /* Media.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Media.swift; sourceTree = "<group>"; };
@@ -227,10 +217,6 @@
 		5597E4DE2E6784730044994B /* GameUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameUtility.swift; sourceTree = "<group>"; };
 		55AFE6072BD5160E0015E411 /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		55AFE60B2BD520E20015E411 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
-		55B0C1622CCA9236002C563F /* Movies.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Movies.json; sourceTree = "<group>"; };
-		55B0C1642CCA923C002C563F /* TVShows.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = TVShows.json; sourceTree = "<group>"; };
-		55B0C1662CCA9241002C563F /* People.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = People.json; sourceTree = "<group>"; };
-		55B0C1682CCA9244002C563F /* All.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = All.json; sourceTree = "<group>"; };
 		55B0C1702CCBE7C9002C563F /* JSONDecoder+SnakeCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JSONDecoder+SnakeCase.swift"; sourceTree = "<group>"; };
 		55B2540E2BC29ACC006ACD43 /* HTTP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTP.swift; sourceTree = "<group>"; };
 		55B254102BC2AD47006ACD43 /* GeminiResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeminiResponse.swift; sourceTree = "<group>"; };
@@ -348,7 +334,6 @@
 				558B9A7E2E33C19C005ED6B8 /* Utility */,
 				557713042D2AB87700302F8A /* Localization */,
 				55212BB02BA7A0C400080A71 /* PlayWatchApp.swift */,
-				55212BB42BA7A0C400080A71 /* Item.swift */,
 				55212BB62BA7A0C500080A71 /* Assets.xcassets */,
 				55C722BF2E79D94D0081664D /* PlayWatchIcon.icon */,
 				55212BB82BA7A0C500080A71 /* PlayWatch.entitlements */,
@@ -645,12 +630,6 @@
 		558033202EF716840073D593 /* Fixtures */ = {
 			isa = PBXGroup;
 			children = (
-				55B0C1682CCA9244002C563F /* All.json */,
-				55B0C1622CCA9236002C563F /* Movies.json */,
-				55B0C1662CCA9241002C563F /* People.json */,
-				55B0C1642CCA923C002C563F /* TVShows.json */,
-				55410B792CE12C5200079680 /* OpenAIResponse.json */,
-				55410B782CE12C5200079680 /* GeminiAIResponse.json */,
 			);
 			path = Fixtures;
 			sourceTree = "<group>";
@@ -775,22 +754,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				55B0C1692CCA9244002C563F /* All.json in Resources */,
-				55410B7A2CE12C5200079680 /* OpenAIResponse.json in Resources */,
 				55C722C02E79D94D0081664D /* PlayWatchIcon.icon in Resources */,
-				55410B7B2CE12C5200079680 /* GeminiAIResponse.json in Resources */,
-				55B0C1652CCA923C002C563F /* TVShows.json in Resources */,
 				55034E982BE53DF300BCBD0E /* LocalizableSettings.xcstrings in Resources */,
 				552963342ED1D9CF0091B7B2 /* LocalizableAccount.xcstrings in Resources */,
 				552963302ED1D9A30091B7B2 /* LocalizableFavorites.xcstrings in Resources */,
-				55B0C1672CCA9241002C563F /* People.json in Resources */,
 				5576C3B22BB9C7C300E511DE /* APIKey-Info.plist in Resources */,
 				5529632E2ED1D98C0091B7B2 /* LocalizableGame.xcstrings in Resources */,
 				552963322ED1D9BE0091B7B2 /* LocalizableSearch.xcstrings in Resources */,
 				55212BBB2BA7A0C500080A71 /* Preview Assets.xcassets in Resources */,
 				55034E942BE5356000BCBD0E /* LocalizableHome.xcstrings in Resources */,
 				557F55642BE425DE00EEAA2F /* Localizable.xcstrings in Resources */,
-				55B0C1632CCA9236002C563F /* Movies.json in Resources */,
 				55212BB72BA7A0C500080A71 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -867,7 +840,6 @@
 				557713322D47E14100302F8A /* AIEndpoints.swift in Sources */,
 				5524A54B2D625E9E0028C7E8 /* PromptType.swift in Sources */,
 				55410B772CE0C5E600079680 /* QuizRepository.swift in Sources */,
-				55212BB52BA7A0C400080A71 /* Item.swift in Sources */,
 				55D425D12BCC4C3C001FA57C /* HomeView.swift in Sources */,
 				5576C3AE2BB9B13F00E511DE /* Constants.swift in Sources */,
 				555C8D1E2D0CA6F400B175E5 /* MediaCardView.swift in Sources */,
