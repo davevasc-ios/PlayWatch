@@ -30,5 +30,12 @@ playground.xcworkspace
 .build/
 .swiftpm/xcode/package.xcworkspace/xcuserdata/
 
+# fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/test_output/
+fastlane/*.env
+vendor/bundle/
+
 # Secrets — see APIKey-Info.plist.template for the expected structure
 **/APIKey-Info.plist

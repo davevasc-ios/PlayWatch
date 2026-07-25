@@ -1,0 +1,12 @@
+git_url(ENV["MATCH_GIT_URL"] || "https://github.com/davevasc-ios/ios-certificates.git")
+storage_mode("git")
+
+type("appstore")
+app_identifier(["com.aralarapps.PlayWatch"])
+team_id("32C3Z2T4RE")
+
+# CI must never create certificates: Apple caps an account at 3 Apple
+# Distribution certificates, and a runner that generates one per build burns
+# through them in three runs. Only the `certificates` lane, run locally,
+# passes readonly: false.
+readonly(true)
