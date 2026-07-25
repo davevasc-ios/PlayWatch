@@ -34,8 +34,14 @@ playground.xcworkspace
 fastlane/report.xml
 fastlane/Preview.html
 fastlane/test_output/
-fastlane/*.env
 vendor/bundle/
+.bundle/
+
+# Local credentials for fastlane. Never commit: holds the App Store Connect
+# key and the API keys. See fastlane/.env.template for the expected shape.
+fastlane/.env
+fastlane/.env.*
+!fastlane/.env.template
 
 # Secrets — see APIKey-Info.plist.template for the expected structure
 **/APIKey-Info.plist
