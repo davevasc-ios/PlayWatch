@@ -7,6 +7,8 @@
 
 import Foundation
 
+#if DEBUG
+
 extension SettingsKeys {
     static let preview = SettingsKeys(
         theme: "preview.settings.theme",
@@ -19,3 +21,5 @@ extension SettingsKeys {
 struct SettingsUtilityPreview: SettingsManaging {
     var keys: SettingsKeys = .preview
 }
+
+#endif

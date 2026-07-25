@@ -7,6 +7,8 @@
 
 import Foundation
 
+#if DEBUG
+
 struct QuizRepositoryPreview: QuizRepositoryProtocol {
     
     var simulatedDelay: Duration = .seconds(0.5)
@@ -17,3 +19,5 @@ struct QuizRepositoryPreview: QuizRepositoryProtocol {
         return Quiz.previewQuizList
     }
 }
+
+#endif

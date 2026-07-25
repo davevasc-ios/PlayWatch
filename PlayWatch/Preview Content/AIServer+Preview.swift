@@ -7,6 +7,8 @@
 
 import Foundation
 
+#if DEBUG
+
 extension AIServer {
     var testResource: String {
         switch self {
@@ -15,3 +17,5 @@ extension AIServer {
         }
     }
 }
+
+#endif

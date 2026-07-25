@@ -7,6 +7,8 @@
 
 import Foundation
 
+#if DEBUG
+
 extension MediaFetchType {
     var testResource: String {
         switch self {
@@ -21,3 +23,5 @@ extension MediaFetchType {
         }
     }
 }
+
+#endif

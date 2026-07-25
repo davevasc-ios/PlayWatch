@@ -7,6 +7,8 @@
 
 import Foundation
 
+#if DEBUG
+
 extension AppService {
     
     static var preview: AppService {
@@ -43,3 +45,5 @@ extension AppService {
         )
     }
 }
+
+#endif
