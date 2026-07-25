@@ -10,52 +10,82 @@ import Testing
 
 extension Tag {
     @Tag static var repository: Self
-    @Tag static var movieDB: Self
-    @Tag static var openAI: Self
-    @Tag static var gemini: Self
+    @Tag static var media: Self
+    @Tag static var quiz: Self
 }
 
 @Suite("PlayWatch Tests")
 struct PlayWatchTests {
-    
-    @Suite("MovieDBRepository Tests", .tags(.repository, .movieDB))
-    struct MovieDBTests {
-        let repository = MovieDBRepositoryPreview()
-        
-        @Test("Test data loading from MovieDBRepository")
-        func testMovieDBDataLoad() async throws {
-            do {
-                let config = MediaRequestConfig(mediaType: .randomMovies, locale: .init())
-                let data = try await repository.fetchMedia(config: config)
-                #expect(data.count == 20, "Expected 20 items, but received \(data.count).")
-            } catch {
-                #expect(Bool(false), "Error loading items: \(error).")
-            }
+
+    /// Preview repositories back every case here, so the suite never touches the
+    /// network: it stays deterministic, free to run and safe for CI, where no API
+    /// keys are available.
+    @Suite("MediaRepository Tests", .tags(.repository, .media))
+    struct MediaTests {
+        let repository = MediaRepositoryPreview(simulatedDelay: .zero)
+        let locale = MediaLocale(code: "en", region: "US")
+
+        @Test("Movie fetch types return the movie preview list", arguments: [
+            MediaFetchType.cinemaPlaying,
+            .cinemaUpcomimg,
+            .movieNew,
+            .movieTrending,
+            .randomMovies,
+        ])
+        func moviesLoad(for type: MediaFetchType) async throws {
+            let media = try await repository.fetchMedia(for: type, with: locale, searchQuery: nil)
+            #expect(media == Media.previewMovieList)
+        }
+
+        @Test("TV fetch types return the TV preview list", arguments: [
+            MediaFetchType.tvNew,
+            .tvTrending,
+        ])
+        func tvShowsLoad(for type: MediaFetchType) async throws {
+            let media = try await repository.fetchMedia(for: type, with: locale, searchQuery: nil)
+            #expect(media == Media.previewTVList)
+        }
+
+        @Test("Person fetch types return the person preview list", arguments: [
+            MediaFetchType.personPopular,
+            .personTrending,
+        ])
+        func peopleLoad(for type: MediaFetchType) async throws {
+            let media = try await repository.fetchMedia(for: type, with: locale, searchQuery: nil)
+            #expect(media == Media.previewPersonList)
+        }
+
+        @Test("Mixed fetch types return the combined preview list", arguments: [
+            MediaFetchType.searchAll,
+            .trendingAll,
+        ])
+        func mixedContentLoads(for type: MediaFetchType) async throws {
+            let media = try await repository.fetchMedia(for: type, with: locale, searchQuery: "test")
+            #expect(media == Media.previewAllList)
+        }
+
+        /// `fetchMediaSections` is a default implementation on the protocol, so this
+        /// exercises the composition every concrete repository inherits — including
+        /// the synthetic `.hero` section prepended to the result.
+        @Test("Sections are composed with a leading hero section")
+        func sectionsCompose() async throws {
+            let sections = try await repository.fetchMediaSections(
+                for: Constants.homeSections, with: locale
+            )
+            let first = try #require(sections.first)
+            #expect(first.type == .hero)
+            #expect(sections.count == Constants.homeSections.count + 1)
         }
     }
-    
-    @Suite("MultiAIRepository Tests", .tags(.repository))
-    struct MultiAITests {
-        let repository = MultiAIRepositoryPreview()
-        
-        private func testAIServerDataLoad(_ server: AIServer) async throws {
-            do {
-                let config = GameRequestConfig(movies: .empty, language: .empty, aiServer: server)
-                let quiz = try await repository.fetchQuiz(config: config)
-                #expect(quiz.count == 20, "Server \(server): Expected 20 items, but received \(quiz.count).")
-            } catch {
-                #expect(Bool(false), "Error testing server \(server): \(error).")
-            }
-        }
-        
-        @Test("OpenAI Server", .tags(.openAI))
-        func testOpenAIDataLoad() async throws {
-            try await testAIServerDataLoad(.openAI)
-        }
-        
-        @Test("Gemini Server", .tags(.gemini))
-        func testGeminiDataLoad() async throws {
-            try await testAIServerDataLoad(.gemini)
+
+    @Suite("QuizRepository Tests", .tags(.repository, .quiz))
+    struct QuizTests {
+        let repository = QuizRepositoryPreview(simulatedDelay: .zero)
+
+        @Test("Every AI server returns the quiz preview list", arguments: AIServer.allCases)
+        func quizLoads(from server: AIServer) async throws {
+            let quiz = try await repository.fetchQuiz(for: "Inception", using: server, in: "en")
+            #expect(quiz == Quiz.previewQuizList)
         }
     }
 }
