@@ -124,6 +124,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C0FF1600000000000000AA04 /* APIKey-Info.plist.template */ = {isa = PBXFileReference; lastKnownFileType = text; path = "APIKey-Info.plist.template"; sourceTree = "<group>"; };
 		C0FF1600000000000000AA01 /* Shared.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Shared.xcconfig; sourceTree = "<group>"; };
 		C0FF1600000000000000AA02 /* Version.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Version.xcconfig; sourceTree = "<group>"; };
 		55034E932BE5356000BCBD0E /* LocalizableHome.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = LocalizableHome.xcstrings; sourceTree = "<group>"; };
@@ -262,13 +263,6 @@
 			path = Config;
 			sourceTree = "<group>";
 		};
-		550C5F382BBA135E005B853B /* UseCase */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = UseCase;
-			sourceTree = "<group>";
-		};
 		550C5F392BBA136E005B853B /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -341,7 +335,6 @@
 				550C5F392BBA136E005B853B /* Model */,
 				550C5F3A2BBA1374005B853B /* View */,
 				550C5F3B2BBA1378005B853B /* Service */,
-				550C5F382BBA135E005B853B /* UseCase */,
 				55B0C16D2CCAA840002C563F /* Repository */,
 				558B9A7E2E33C19C005ED6B8 /* Utility */,
 				557713042D2AB87700302F8A /* Localization */,
@@ -546,6 +539,7 @@
 		5577130E2D2AE0BF00302F8A /* Configuration */ = {
 			isa = PBXGroup;
 			children = (
+				C0FF1600000000000000AA04 /* APIKey-Info.plist.template */,
 				5576C3AF2BB9C10D00E511DE /* API.swift */,
 				55B2540E2BC29ACC006ACD43 /* HTTP.swift */,
 				5576C3B12BB9C7C300E511DE /* APIKey-Info.plist */,
