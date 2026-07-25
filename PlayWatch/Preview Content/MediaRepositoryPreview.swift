@@ -7,6 +7,8 @@
 
 import Foundation
 
+#if DEBUG
+
 struct MediaRepositoryPreview: MediaRepositoryProtocol {
         
     var simulatedDelay: Duration = .seconds(0.5)
@@ -23,3 +25,5 @@ struct MediaRepositoryPreview: MediaRepositoryProtocol {
         
     }
 }
+
+#endif

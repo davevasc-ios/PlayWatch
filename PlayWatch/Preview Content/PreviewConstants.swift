@@ -7,6 +7,8 @@
 
 import Foundation
 
+#if DEBUG
+
 struct PreviewConstants {
     
     struct Resource {
@@ -27,3 +29,5 @@ struct PreviewConstants {
         }
     }
 }
+
+#endif

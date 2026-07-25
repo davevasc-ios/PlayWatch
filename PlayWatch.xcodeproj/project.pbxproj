@@ -6,10 +6,6 @@
 	objectVersion = 70;
 	objects = {
 
-/* Begin PBXBuildFile section */
-		55802B852D134B0500C78317 /* PlayWatchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55802B832D134B0500C78317 /* PlayWatchTests.swift */; };
-/* End PBXBuildFile section */
-
 /* Begin PBXContainerItemProxy section */
 		552CA67E2D0DD8EF005FA521 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -21,20 +17,20 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		C0FF1600000000000000AB01 /* All.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = All.json; sourceTree = "<group>"; };
-		C0FF1600000000000000AB02 /* GeminiAIResponse.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = GeminiAIResponse.json; sourceTree = "<group>"; };
-		C0FF1600000000000000AB03 /* Movies.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Movies.json; sourceTree = "<group>"; };
-		C0FF1600000000000000AB04 /* OpenAIResponse.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = OpenAIResponse.json; sourceTree = "<group>"; };
-		C0FF1600000000000000AB05 /* People.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = People.json; sourceTree = "<group>"; };
-		C0FF1600000000000000AB06 /* TVShows.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = TVShows.json; sourceTree = "<group>"; };
 		55212BAD2BA7A0C400080A71 /* PlayWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlayWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		552CA67A2D0DD8EF005FA521 /* PlayWatchTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PlayWatchTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		55802B832D134B0500C78317 /* PlayWatchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayWatchTests.swift; sourceTree = "<group>"; };
 		C0FF1600000000000000AA01 /* Shared.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Shared.xcconfig; sourceTree = "<group>"; };
 		C0FF1600000000000000AA02 /* Version.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Version.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		551411B030150B4C00FB971E /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				PlayWatchTests.swift,
+			);
+			target = 552CA6792D0DD8EF005FA521 /* PlayWatchTests */;
+		};
 		55E192213015085D00D46ED2 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -45,6 +41,7 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		551411AE30150B4B00FB971E /* PlayWatchTests */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (551411B030150B4C00FB971E /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = PlayWatchTests; sourceTree = "<group>"; };
 		55E191B83015085C00D46ED2 /* PlayWatch */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (55E192213015085D00D46ED2 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = PlayWatch; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
@@ -71,7 +68,7 @@
 			children = (
 				C0FF1600000000000000AA03 /* Config */,
 				55E191B83015085C00D46ED2 /* PlayWatch */,
-				55802B842D134B0500C78317 /* PlayWatchTests */,
+				551411AE30150B4B00FB971E /* PlayWatchTests */,
 				55212BAE2BA7A0C400080A71 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -83,28 +80,6 @@
 				552CA67A2D0DD8EF005FA521 /* PlayWatchTests.xctest */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		55802B842D134B0500C78317 /* PlayWatchTests */ = {
-			isa = PBXGroup;
-			children = (
-				558033202EF716840073D593 /* Fixtures */,
-				55802B832D134B0500C78317 /* PlayWatchTests.swift */,
-			);
-			path = PlayWatchTests;
-			sourceTree = "<group>";
-		};
-		558033202EF716840073D593 /* Fixtures */ = {
-			isa = PBXGroup;
-			children = (
-				C0FF1600000000000000AB01 /* All.json */,
-				C0FF1600000000000000AB02 /* GeminiAIResponse.json */,
-				C0FF1600000000000000AB03 /* Movies.json */,
-				C0FF1600000000000000AB04 /* OpenAIResponse.json */,
-				C0FF1600000000000000AB05 /* People.json */,
-				C0FF1600000000000000AB06 /* TVShows.json */,
-			);
-			path = Fixtures;
 			sourceTree = "<group>";
 		};
 		C0FF1600000000000000AA03 /* Config */ = {
@@ -237,7 +212,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				55802B852D134B0500C78317 /* PlayWatchTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
