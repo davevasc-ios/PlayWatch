@@ -1,0 +1,16 @@
+// Version.xcconfig
+// Single source of truth for the app version.
+//
+// MARKETING_VERSION is the user-facing version (CFBundleShortVersionString).
+// It is bumped deliberately with `fastlane bump`, never automatically: whether
+// a release is a patch, a minor or a major is a human decision.
+//
+// CURRENT_PROJECT_VERSION is the build number (CFBundleVersion). The value here
+// only ever applies to local builds. CI overrides it at build time with the
+// next number after the highest already on App Store Connect, so it can never
+// collide with a build TestFlight has already seen.
+//
+// Neither value is written back to the repository by any automation.
+
+MARKETING_VERSION = 1.0.0
+CURRENT_PROJECT_VERSION = 1

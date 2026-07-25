@@ -1,0 +1,10 @@
+// Shared.xcconfig
+// Base configuration for the project. Applies to every target and both
+// configurations unless a target overrides a setting explicitly.
+
+#include "Version.xcconfig"
+
+// Declares that the app uses no encryption beyond what Apple exempts (HTTPS).
+// Without this key App Store Connect asks the export-compliance question on
+// every single TestFlight upload, which blocks unattended delivery.
+INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO
