@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  SETUP INSTRUCTIONS
+  ==================
+  1. Copy this file and rename it to "APIKey-Info.plist" (same directory)
+  2. Replace each placeholder value with your real API key
+  3. Never commit the real APIKey-Info.plist file — it is listed in .gitignore
+
+  Where to get each key:
+    MOVIEDB_API_KEY  → https://developer.themoviedb.org/reference/intro/getting-started
+    OPENAI_API_KEY   → https://platform.openai.com/api-keys
+    GEMINI_API_KEY   → https://ai.google.dev/tutorials/setup
+    DEEP_SEEK_API_KEY→ https://api-docs.deepseek.com/api/deepseek-api
+-->
+<plist version="1.0">
+<dict>
+	<key>MOVIEDB_API_KEY</key>
+	<string>YOUR_MOVIEDB_API_KEY_HERE</string>
+	<key>OPENAI_API_KEY</key>
+	<string>YOUR_OPENAI_API_KEY_HERE</string>
+	<key>GEMINI_API_KEY</key>
+	<string>YOUR_GEMINI_API_KEY_HERE</string>
+	<key>DEEP_SEEK_API_KEY</key>
+	<string>YOUR_DEEP_SEEK_API_KEY_HERE</string>
+</dict>
+</plist>
