@@ -132,10 +132,33 @@ Branch names are lowercase, hyphen-separated: `feature/user-authentication`,
 because macOS filesystems ignore it and Linux ones do not, so `feature/GameUI`
 and `feature/gameui` are one branch locally and two on a runner.
 
-Every merge into develop uploads a build to TestFlight; a `vX.Y.Z` tag on main
-submits to App Store Connect. Neither version number is ever committed by
-automation — the build number comes from the highest one App Store Connect
-has seen, and `MARKETING_VERSION` is bumped deliberately with `fastlane bump`.
+## Delivery
+
+`fastlane ship` from a feature branch is the whole workflow: it pushes, opens a
+pull request and arms auto-merge. From there nothing is manual — CI runs the
+suite, the pull request merges itself when `build-test` is green, and the push
+to develop uploads a build to TestFlight. A `vX.Y.Z` tag on main submits to
+App Store Connect.
+
+```bash
+bundle exec fastlane doctor   # check everything beta needs, without building
+bundle exec fastlane tests    # what CI runs
+bundle exec fastlane ship     # push, open the PR, arm auto-merge
+bundle exec fastlane bump type:minor
+```
+
+Nothing triggers on a commit or on pushing a branch; the chain starts when the
+pull request opens.
+
+The repository squash-merges with the pull request body as the commit message,
+so that description is permanent history rather than review paperwork. `ship`
+fills it from the first commit — write it by hand when a branch carries more
+than one meaningful change.
+
+**`docs/delivery.md` explains why each piece is built the way it is.** Read it
+before changing anything in `fastlane/`, `.github/` or `Config/`: several
+choices there look arbitrary and are not, and the alternatives were tried
+first.
 
 ## Known debt
 
@@ -148,3 +171,7 @@ has seen, and `MARKETING_VERSION` is bumped deliberately with `fastlane bump`.
   `SectionType.randomMovies` as a placeholder.
 - `Constants.homeSections` repeats `.cinemaUpcomimg`. This is intentional
   scaffolding while the home screen is still being built.
+- The four API keys ship inside the ipa: `APIKey-Info.plist` is a bundled app
+  resource, so anyone with the build can read them. Inherent to reading them
+  through `Bundle.main.path`; the fix is a backend proxy, planned with the
+  Supabase work. See `docs/delivery.md`.
