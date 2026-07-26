@@ -348,7 +348,16 @@ platform :ios do
   lane :ship do
     ensure_git_status_clean
     branch = git_branch
-    UI.user_error!("Not on a feature branch (got '#{branch}')") unless branch =~ %r{^(feature|fix|chore)/}
+    unless branch =~ %r{^(feature|fix|chore)/[a-z0-9][a-z0-9-]*$}
+      UI.user_error!(
+        "Branch '#{branch}' does not match the naming convention.\n" \
+        "Expected feature/, fix/ or chore/ followed by lowercase words " \
+        "separated by hyphens, e.g. feature/user-authentication.\n" \
+        "Lowercase matters: macOS filesystems ignore case and Linux ones do " \
+        "not, so Feature/GameUI and feature/gameui are one branch here and " \
+        "two on a runner."
+      )
+    end
 
     push_to_git_remote(set_upstream: true)
     sh("gh", "pr", "create", "--base", "develop", "--fill", "--head", branch)
