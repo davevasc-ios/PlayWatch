@@ -1,15 +1,22 @@
 name: Dependabot auto-merge
 
-# Arms auto-merge on Dependabot's pull requests so dependency updates land
-# without a weekly click. The branch ruleset still applies: nothing merges
-# until the build-test check is green, so a version that breaks the build stays
-# out on its own.
+# Lands low-risk dependency updates without a weekly click, and holds the ones
+# whose authors have declared they break things.
 #
-# The trade-off is accepted deliberately. CI runs `fastlane tests`, not
-# `fastlane beta`, so an update that broke signing or uploading would pass here
-# and only surface on the next merge into develop. That failure is visible (a
-# red run) and reverting one commit undoes it, which is cheaper than a standing
-# manual task that would be rubber-stamped anyway.
+# The split follows semantic versioning, which is a promise made by the library
+# author rather than a guess made here:
+#   patch  2.237.0 -> 2.237.1   bug fixes, no behaviour change
+#   minor  2.237   -> 2.238     new features, backwards compatible
+#   major  2.x     -> 3.x       breaking changes, announced as such
+#
+# Patch and minor merge themselves once build-test is green. Major updates stay
+# open with a comment, because the author is explicitly saying something changed
+# that callers must adapt to.
+#
+# CI runs `fastlane tests`, not `fastlane beta`, so a green check does not prove
+# signing and uploading still work. That residual risk is accepted for patch and
+# minor: the failure is visible on the next merge into develop, and reverting
+# one commit undoes it.
 
 on:
   pull_request_target:
@@ -21,15 +28,37 @@ permissions:
 
 jobs:
   auto-merge:
-    # pull_request_target runs in the context of the base branch with write
-    # access, so it must never check out or execute the pull request's code.
-    # This job only calls the API, and the actor check keeps it to Dependabot.
+    # pull_request_target runs against the base branch with write access, so
+    # this job must never check out or execute the pull request's code. It only
+    # calls the API, and the actor check keeps it to Dependabot.
     if: github.actor == 'dependabot[bot]'
     runs-on: ubuntu-latest
 
     steps:
-      - name: Arm auto-merge
+      - name: Read the update metadata
+        id: metadata
+        uses: dependabot/fetch-metadata@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Arm auto-merge for patch and minor updates
+        if: steps.metadata.outputs.update-type != 'version-update:semver-major'
         run: gh pr merge --auto --squash "$PR_URL"
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Hold major updates for review
+        if: steps.metadata.outputs.update-type == 'version-update:semver-major'
+        run: |
+          gh pr comment "$PR_URL" --body 'Held for review: this is a **major** version update, which under semantic versioning means the author has changed something callers must adapt to.
+
+          Worth checking before merging:
+
+          - the release notes for what actually breaks
+          - whether any of it touches signing, archiving or uploading, since CI runs `fastlane tests` and never exercises `fastlane beta`
+
+          Merge normally once you are satisfied.'
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
