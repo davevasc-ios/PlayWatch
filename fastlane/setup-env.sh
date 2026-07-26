@@ -54,11 +54,19 @@ set_value ASC_KEY_P8_BASE64 "$(base64 -i "$P8" | tr -d '\n')"
 
 # The four app keys already live in the gitignored plist.
 if [ -f "$PLIST" ]; then
+  copied=0
   for key in MOVIEDB_API_KEY OPENAI_API_KEY GEMINI_API_KEY DEEP_SEEK_API_KEY; do
     value="$(/usr/libexec/PlistBuddy -c "Print :$key" "$PLIST" 2>/dev/null || true)"
-    [ -n "$value" ] && set_value "$key" "$value"
+    # Refuse placeholders. The plist is rendered from the template during CI
+    # runs, so a local copy can end up holding YOUR_..._HERE values; copying
+    # those into .env would produce a build that authenticates against nothing.
+    if [[ "$value" == YOUR_*_HERE ]]; then
+      echo "! $key still holds the template placeholder — not copied"
+      continue
+    fi
+    if [ -n "$value" ]; then set_value "$key" "$value"; copied=$((copied + 1)); fi
   done
-  echo "✓ four app API keys copied from APIKey-Info.plist"
+  echo "✓ $copied app API keys copied from APIKey-Info.plist"
 else
   echo "! APIKey-Info.plist not found; fill the four app keys by hand"
 fi
@@ -67,6 +75,15 @@ echo "✓ ASC_KEY_ID set to $KEY_ID"
 echo "✓ App Store Connect key encoded"
 echo
 echo "Still to fill in by hand:"
-grep -n "^ASC_ISSUER_ID=$\|^MATCH_PASSWORD=$" "$ENV_FILE" | sed 's/^/   /' || echo "   (none)"
+missing=0
+while IFS= read -r line; do
+  case "$line" in
+    \#*|"") continue ;;
+    *=*)
+      k="${line%%=*}"; v="${line#*=}"
+      if [ -z "$v" ]; then echo "   $k"; missing=$((missing + 1)); fi ;;
+  esac
+done < "$ENV_FILE"
+[ "$missing" -eq 0 ] && echo "   (nothing — .env is complete)"
 echo
 echo "Open it with:  open -e fastlane/.env"

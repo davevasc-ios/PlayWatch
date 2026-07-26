@@ -46,12 +46,22 @@ platform :ios do
     plist    = File.join(dir, "APIKey-Info.plist")
 
     UI.user_error!("Missing #{template}") unless File.exist?(template)
-    FileUtils.cp(template, plist)
 
     if options[:dummy]
-      UI.message("APIKey-Info.plist written with placeholders (no secrets needed)")
+      # Never clobber an existing plist. A CI checkout has none, so the
+      # placeholders always get written there; a developer machine has the real
+      # keys, and overwriting them would silently break the app until someone
+      # noticed every request coming back 401.
+      if File.exist?(plist)
+        UI.message("Keeping the existing APIKey-Info.plist")
+      else
+        FileUtils.cp(template, plist)
+        UI.message("APIKey-Info.plist written with placeholders (no secrets needed)")
+      end
       next
     end
+
+    FileUtils.cp(template, plist)
 
     %w[MOVIEDB_API_KEY OPENAI_API_KEY GEMINI_API_KEY DEEP_SEEK_API_KEY].each do |key|
       value = ENV[key]
