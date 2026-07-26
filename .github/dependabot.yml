@@ -1,0 +1,45 @@
+version: 2
+
+# Keeps the workflows' third-party pieces current. Without this, an action
+# version eventually stops being served and CI fails on a day nothing changed
+# in this repository — which is a miserable failure to diagnose.
+#
+# Pull requests target develop, not the default branch: main is production
+# here and only ever receives merges from develop.
+#
+# Updates are grouped so a week with four new versions produces one pull
+# request rather than four. They are not auto-merged: CI proves the build
+# still works, but a dependency bump deserves a human look before it lands.
+
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    target-branch: develop
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 3
+    groups:
+      actions:
+        patterns: ['*']
+    commit-message:
+      prefix: chore
+    labels:
+      - dependencies
+
+  # fastlane ships releases often, and it is the piece that signs and uploads
+  # builds — the one most worth keeping current.
+  - package-ecosystem: bundler
+    directory: /
+    target-branch: develop
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 3
+    groups:
+      ruby:
+        patterns: ['*']
+    commit-message:
+      prefix: chore
+    labels:
+      - dependencies
