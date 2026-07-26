@@ -1,0 +1,51 @@
+name: Set up the build environment
+description: Pins Xcode 26 and installs the gems from Gemfile.lock.
+
+runs:
+  using: composite
+  steps:
+    - name: Select Xcode
+      shell: bash
+      run: |
+        set -euo pipefail
+        # The project needs Xcode 26 (iOS 26 deployment target, Swift 6 with
+        # strict concurrency). Prefer the exact version used locally so a CI
+        # failure can never be blamed on a different compiler; fall back to the
+        # newest 26.x if the runner image has moved on.
+        #
+        # `|| true` matters: with an empty glob `ls` exits non-zero, and under
+        # `pipefail` that aborts the step before the friendly error below can
+        # print, leaving only "Process completed with exit code 1".
+        echo "Xcode versions on this runner:"
+        ls -d /Applications/Xcode*.app 2>/dev/null | sed 's/^/  /' || true
+
+        preferred=/Applications/Xcode_26.6.app
+        if [ -d "$preferred" ]; then
+          selected="$preferred"
+        else
+          selected="$(ls -d /Applications/Xcode_26*.app 2>/dev/null | sort -V | tail -1 || true)"
+          [ -n "$selected" ] && echo "::warning::Xcode 26.6 is gone from this image; using $selected"
+        fi
+
+        if [ -z "$selected" ]; then
+          echo "::error::No Xcode 26.x on this runner. The project requires it."
+          exit 1
+        fi
+        sudo xcode-select -s "$selected/Contents/Developer"
+        xcodebuild -version
+
+    # ruby-version comes from the repository's .ruby-version file, which must
+    # exist: given no version input, the action looks for .ruby-version,
+    # .tool-versions and mise.toml, and hard-fails if none is present. It never
+    # falls back to a system Ruby, and it does not read the Gemfile's `ruby`
+    # directive. That file also keeps the interpreter in step with the
+    # RUBY VERSION recorded in Gemfile.lock.
+    - uses: ruby/setup-ruby@v1
+      with:
+        bundler-cache: true
+
+    # Fail loudly if installing the gems rewrote the lockfile: that means the
+    # runner resolved a different dependency graph than the one tested locally.
+    - name: Check the lockfile is unchanged
+      shell: bash
+      run: git diff --exit-code Gemfile.lock

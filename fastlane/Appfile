@@ -1,0 +1,6 @@
+app_identifier("com.aralarapps.PlayWatch")
+team_id("32C3Z2T4RE")
+
+# No apple_id / itc_team_id here: authentication goes through the App Store
+# Connect API key, which needs neither. Keeping them out avoids fastlane
+# falling back to an interactive Apple ID login on CI.

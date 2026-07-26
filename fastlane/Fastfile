@@ -1,0 +1,390 @@
+require "time"
+
+default_platform(:ios)
+
+# fastlane runs with the `fastlane/` directory as its working directory, so
+# every path here is absolute. Relative ones silently resolve one level too
+# deep and fail with a confusing "file not found".
+ROOT = File.expand_path("..", __dir__)
+
+PROJECT      = File.join(ROOT, "PlayWatch.xcodeproj")
+SCHEME       = "PlayWatch"
+BUNDLE_ID    = "com.aralarapps.PlayWatch"
+TEAM_ID      = "32C3Z2T4RE"
+VERSION_FILE = File.join(ROOT, "Config/Version.xcconfig")
+PROFILE      = "match AppStore #{BUNDLE_ID}"
+
+# Test simulator: the base iPhone model on the newest installed iOS.
+# Never hardcode a UDID — they differ per machine and change with Xcode.
+TEST_DEVICE = "iPhone 17"
+
+platform :ios do
+
+  # ───────────────────────── helpers ─────────────────────────
+
+  # App Store Connect API key. Replaces Apple ID login entirely, which is what
+  # makes unattended runs possible: no 2FA prompt, no session to refresh.
+  private_lane :asc_api_key do
+    app_store_connect_api_key(
+      key_id: ENV.fetch("ASC_KEY_ID"),
+      issuer_id: ENV.fetch("ASC_ISSUER_ID"),
+      key_content: ENV.fetch("ASC_KEY_P8_BASE64"),
+      is_key_content_base64: true,
+      in_house: false
+    )
+  end
+
+  # APIKey-Info.plist is a required resource of the app target and is
+  # gitignored, so every checkout has to produce one or the build fails with
+  # "Build input file cannot be found".
+  #
+  # dummy: true renders the template untouched. Its placeholders are non-empty,
+  # which is what matters: API.Key.description calls fatalError() when the file
+  # is missing, the key is missing, or the value is empty. Requests then fail
+  # with 401, which the app handles — and the test suite never makes any.
+  private_lane :prepare_secrets do |options|
+    dir      = File.join(ROOT, "PlayWatch/Network/Configuration")
+    template = File.join(dir, "APIKey-Info.plist.template")
+    plist    = File.join(dir, "APIKey-Info.plist")
+
+    UI.user_error!("Missing #{template}") unless File.exist?(template)
+
+    if options[:dummy]
+      # Never clobber an existing plist. A CI checkout has none, so the
+      # placeholders always get written there; a developer machine has the real
+      # keys, and overwriting them would silently break the app until someone
+      # noticed every request coming back 401.
+      if File.exist?(plist)
+        UI.message("Keeping the existing APIKey-Info.plist")
+      else
+        FileUtils.cp(template, plist)
+        UI.message("APIKey-Info.plist written with placeholders (no secrets needed)")
+      end
+      next
+    end
+
+    FileUtils.cp(template, plist)
+
+    %w[MOVIEDB_API_KEY OPENAI_API_KEY GEMINI_API_KEY DEEP_SEEK_API_KEY].each do |key|
+      value = ENV[key]
+      UI.user_error!("Missing environment variable #{key}") if value.to_s.empty?
+      # plutil validates the plist structure; sed would happily corrupt it.
+      sh("plutil", "-replace", key, "-string", value, plist, log: false)
+    end
+    UI.success("APIKey-Info.plist written with real keys")
+  end
+
+  # Build numbers come from App Store Connect rather than a CI counter.
+  #
+  # GITHUB_RUN_NUMBER is per-workflow, so the TestFlight and release workflows
+  # would keep separate counters and the first tagged release would submit a
+  # number lower than develop had already used — App Store Connect rejects
+  # that. Asking Apple what it has seen is self-healing and shared by
+  # construction. Both workflows serialise on the same concurrency group, so
+  # two runs cannot read the same value.
+  #
+  # The maximum is taken across *every* build, not just the current version's.
+  # Apple normalises version strings — 1.0.0 and 1.0 are the same version to
+  # it — so a per-version query can report zero builds for a train that
+  # actually holds thirty, and the upload then fails with "Redundant Binary
+  # Upload". A globally monotonic number cannot collide however Apple decides
+  # to spell the version.
+  private_lane :resolve_build_number do |options|
+    begin
+      require "spaceship"
+
+      if Spaceship::ConnectAPI.token.nil?
+        key = options[:api_key]
+        Spaceship::ConnectAPI.token = Spaceship::ConnectAPI::Token.create(
+          key_id: key[:key_id], issuer_id: key[:issuer_id], key: key[:key]
+        )
+      end
+
+      app = Spaceship::ConnectAPI::App.find(BUNDLE_ID)
+      UI.user_error!("No app with bundle id #{BUNDLE_ID}") if app.nil?
+
+      builds = Spaceship::ConnectAPI::Build.all(app_id: app.id, sort: "-version", limit: 200)
+      highest = builds.map { |b| b.version.to_i }.max || 0
+      UI.message("Highest build number on App Store Connect: #{highest} (across #{builds.size} builds)")
+      highest + 1
+    rescue => e
+      fallback = ENV["GITHUB_RUN_NUMBER"].to_i + ENV.fetch("BUILD_NUMBER_OFFSET", "1000").to_i
+      UI.important("App Store Connect lookup failed (#{e.message}); using fallback #{fallback}")
+      fallback
+    end
+  end
+
+  # Read and write MARKETING_VERSION directly. fastlane has no built-in action
+  # for xcconfig files, and the format is a plain `KEY = value` line.
+  def marketing_version
+    value = File.read(VERSION_FILE)[/^\s*MARKETING_VERSION\s*=\s*(\S+)\s*$/, 1]
+    UI.user_error!("No MARKETING_VERSION in #{VERSION_FILE}") if value.nil?
+    value
+  end
+
+  def set_marketing_version(new_version)
+    content = File.read(VERSION_FILE)
+    updated = content.sub(/^(\s*MARKETING_VERSION\s*=\s*).*$/) { "#{Regexp.last_match(1)}#{new_version}" }
+    UI.user_error!("No MARKETING_VERSION in #{VERSION_FILE}") if updated == content
+    File.write(VERSION_FILE, updated)
+  end
+
+  # Resolves the newest simulator runtime for TEST_DEVICE. Fails loudly rather
+  # than letting xcodebuild silently pick something else — the project needs
+  # iOS 26+, and an older runtime produces a confusing deployment-target error.
+  def test_destination
+    return ENV["TEST_DESTINATION"] unless ENV["TEST_DESTINATION"].to_s.empty?
+
+    require "json"
+    devices = JSON.parse(sh("xcrun", "simctl", "list", "devices", "available", "-j", log: false))["devices"]
+    best = devices
+      .select { |runtime, _| runtime =~ /SimRuntime\.iOS-(\d+)/ && $1.to_i >= 26 }
+      .flat_map { |runtime, list|
+        version = runtime[/iOS-(\d+)-(\d+)/, 0].to_s.scan(/\d+/).map(&:to_i)
+        list.select { |d| d["name"] == TEST_DEVICE }.map { |d| [version, d["udid"]] }
+      }
+      .max_by(&:first)
+
+    UI.user_error!("No #{TEST_DEVICE} simulator with iOS 26+ is installed") if best.nil?
+    "id=#{best.last}"
+  end
+
+  # ───────────────────────── CI lanes ─────────────────────────
+
+  desc "Build and test. Runs on every pull request and needs no secrets."
+  lane :tests do
+    prepare_secrets(dummy: true)
+    run_tests(
+      project: PROJECT,
+      scheme: SCHEME,
+      # ENABLE_TESTABILITY is only set in Debug, and @testable import needs it.
+      configuration: "Debug",
+      destination: test_destination,
+      result_bundle: true,
+      output_directory: "fastlane/test_output",
+      # Nothing is signed to run tests in a simulator, and asking for signing
+      # on a runner without certificates is a guaranteed failure.
+      xcargs: "CODE_SIGNING_ALLOWED=NO"
+    )
+  end
+
+  desc "Build and upload to TestFlight. Runs on every merge to develop."
+  lane :beta do
+    setup_ci
+    key = asc_api_key
+    prepare_secrets(dummy: false)
+    match(type: "appstore", readonly: true, api_key: key)
+    warn_if_certificate_expires_soon
+
+    version = marketing_version
+    build   = resolve_build_number(version: version, api_key: key)
+    UI.message("Building #{version} (#{build})")
+
+    build_release(version: version, build: build)
+
+    upload_to_testflight(
+      api_key: key,
+      app_identifier: BUNDLE_ID,
+      # Waiting for Apple to finish processing costs 10-20 minutes of runner
+      # time for no benefit: internal testers get the build automatically once
+      # processing ends.
+      skip_waiting_for_build_processing: true,
+      distribute_external: false,
+      # Subjects only. The default format is the full commit body, which for
+      # this project runs to thousands of characters and would blow past
+      # TestFlight's 4000-character limit on release notes.
+      changelog: changelog_from_git_commits(
+        commits_count: 10,
+        pretty: "- %s",
+        merge_commit_filtering: "exclude_merges"
+      )
+    )
+    UI.success("#{version} (#{build}) uploaded to TestFlight")
+  end
+
+  desc "Build and submit to App Store Connect. Runs on a vX.Y.Z tag."
+  lane :release do |options|
+    setup_ci
+    key = asc_api_key
+    prepare_secrets(dummy: false)
+    match(type: "appstore", readonly: true, api_key: key)
+
+    version = marketing_version
+    build   = resolve_build_number(version: version, api_key: key)
+
+    build_release(version: version, build: build)
+
+    upload_to_app_store(
+      api_key: key,
+      app_identifier: BUNDLE_ID,
+      submit_for_review: options[:submit] || false,
+      automatic_release: false,
+      force: true,
+      skip_screenshots: true,
+      skip_metadata: true,
+      precheck_include_in_app_purchases: false
+    )
+    UI.success("#{version} (#{build}) submitted")
+  end
+
+  # Signing is overridden only here. The project stays on CODE_SIGN_STYLE =
+  # Automatic so Xcode keeps working locally with no configuration; gym
+  # generates ExportOptions.plist at runtime, so none is checked in.
+  private_lane :build_release do |options|
+    gym(
+      project: PROJECT,
+      scheme: SCHEME,
+      configuration: "Release",
+      export_method: "app-store",
+      # SUPPORTED_PLATFORMS includes macosx and SDKROOT is auto, so without an
+      # explicit destination xcodebuild can resolve to macOS.
+      destination: "generic/platform=iOS",
+      export_options: { provisioningProfiles: { BUNDLE_ID => PROFILE } },
+      xcargs: [
+        "CODE_SIGN_STYLE=Manual",
+        "CODE_SIGN_IDENTITY='Apple Distribution'",
+        "PROVISIONING_PROFILE_SPECIFIER='#{PROFILE}'",
+        "DEVELOPMENT_TEAM=#{TEAM_ID}",
+        "MARKETING_VERSION=#{options[:version]}",
+        "CURRENT_PROJECT_VERSION=#{options[:build]}"
+      ].join(" "),
+      output_directory: "build",
+      clean: true
+    )
+  end
+
+  # The distribution certificate expires after a year and takes the release
+  # pipeline down on the day it does. This is the only warning there will be.
+  #
+  # The expiry is read from App Store Connect rather than from a local file.
+  # An earlier version used the mtime of a provisioning profile, which on a
+  # runner is always seconds old because match had just written it — so the
+  # warning could never fire precisely where it was needed.
+  private_lane :warn_if_certificate_expires_soon do
+    begin
+      require "spaceship"
+      next if Spaceship::ConnectAPI.token.nil?
+
+      certs = Spaceship::ConnectAPI::Certificate.all.select do |c|
+        c.certificate_type.to_s.include?("DISTRIBUTION")
+      end
+      next if certs.empty?
+
+      soonest = certs.map { |c| Time.parse(c.expiration_date.to_s) }.min
+      days = ((soonest - Time.now) / 86_400).to_i
+
+      if days < 0
+        UI.error("Distribution certificate EXPIRED #{-days} days ago. Run `fastlane certificates` locally.")
+      elsif days < 30
+        UI.important("Distribution certificate expires in #{days} days. Renew with `fastlane certificates` locally.")
+      else
+        UI.message("Distribution certificate valid for #{days} more days")
+      end
+    rescue => e
+      UI.important("Could not check certificate expiry: #{e.message}")
+    end
+  end
+
+  # ─────────────────────── local-only lanes ───────────────────────
+
+  desc "Check everything beta needs, without building or uploading anything."
+  lane :doctor do
+    ok = true
+    check = lambda do |label, &block|
+      begin
+        UI.success("✓ #{label}: #{block.call}")
+      rescue => e
+        UI.error("✗ #{label}: #{e.message}")
+        ok = false
+      end
+    end
+
+    check.call("marketing version") { marketing_version }
+    check.call("template present") do
+      path = File.join(ROOT, "PlayWatch/Network/Configuration/APIKey-Info.plist.template")
+      File.exist?(path) ? "found" : raise("missing #{path}")
+    end
+    check.call("environment") do
+      required = %w[ASC_KEY_ID ASC_ISSUER_ID ASC_KEY_P8_BASE64 MATCH_PASSWORD MATCH_GIT_URL
+                    MOVIEDB_API_KEY OPENAI_API_KEY GEMINI_API_KEY DEEP_SEEK_API_KEY]
+      missing = required.reject { |k| ENV[k].to_s.strip.length.positive? }
+      missing.empty? ? "#{required.size} variables set" : raise("missing #{missing.join(', ')}")
+    end
+    check.call("test simulator") { test_destination }
+
+    key = nil
+    check.call("App Store Connect auth") do
+      key = asc_api_key
+      "token created"
+    end
+    check.call("next build number") do
+      version = marketing_version
+      "#{version} (#{resolve_build_number(version: version, api_key: key)})"
+    end
+    check.call("signing assets") do
+      match(type: "appstore", readonly: true, api_key: key)
+      lane_context[SharedValues::MATCH_PROVISIONING_PROFILE_MAPPING][BUNDLE_ID] || "installed"
+    end
+    check.call("certificate expiry") do
+      require "spaceship"
+      certs = Spaceship::ConnectAPI::Certificate.all.select do |c|
+        c.certificate_type.to_s.include?("DISTRIBUTION")
+      end
+      raise "no distribution certificate found" if certs.empty?
+      soonest = certs.map { |c| Time.parse(c.expiration_date.to_s) }.min
+      "#{((soonest - Time.now) / 86_400).to_i} days remaining"
+    end
+
+    UI.user_error!("doctor found problems — fix them before running beta") unless ok
+    UI.success("Everything beta needs is in place.")
+  end
+
+  desc "Create the distribution certificate and profile. Run once, locally."
+  lane :certificates do
+    match(type: "appstore", readonly: false, api_key: asc_api_key)
+  end
+
+  desc "Push the current branch, open a PR against develop and arm auto-merge."
+  lane :ship do
+    ensure_git_status_clean
+    branch = git_branch
+    UI.user_error!("Not on a feature branch (got '#{branch}')") unless branch =~ %r{^(feature|fix|chore)/}
+
+    push_to_git_remote(set_upstream: true)
+    sh("gh", "pr", "create", "--base", "develop", "--fill", "--head", branch)
+    # Merging from here, with your own token, is deliberate: a merge performed
+    # by a workflow using GITHUB_TOKEN does not trigger further workflows, so
+    # the push to develop would never start the TestFlight build.
+    sh("gh", "pr", "merge", "--auto", "--squash", "--delete-branch")
+    UI.success("PR opened. It merges itself once CI is green, and TestFlight follows.")
+  end
+
+  desc "Bump the marketing version. bump type:minor"
+  lane :bump do |options|
+    type = options[:type] || "patch"
+    current = marketing_version
+    major, minor, patch = current.split(".").map(&:to_i)
+
+    case type
+    when "major" then major, minor, patch = major + 1, 0, 0
+    when "minor" then minor, patch = minor + 1, 0
+    when "patch" then patch += 1
+    else UI.user_error!("type must be major, minor or patch")
+    end
+
+    new_version = "#{major}.#{minor}.#{patch}"
+    set_marketing_version(new_version)
+    UI.success("#{current} -> #{new_version}. Commit it to develop.")
+  end
+
+  desc "Tag the current main commit with the version in the xcconfig."
+  lane :tag_release do
+    ensure_git_branch(branch: "main")
+    ensure_git_status_clean
+    version = marketing_version
+    tag = "v#{version}"
+    add_git_tag(tag: tag)
+    push_git_tags
+    UI.success("#{tag} pushed. release.yml takes it from here.")
+  end
+end
