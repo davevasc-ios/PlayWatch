@@ -1,10 +1,15 @@
 default_platform(:ios)
 
-PROJECT      = "PlayWatch.xcodeproj"
+# fastlane runs with the `fastlane/` directory as its working directory, so
+# every path here is absolute. Relative ones silently resolve one level too
+# deep and fail with a confusing "file not found".
+ROOT = File.expand_path("..", __dir__)
+
+PROJECT      = File.join(ROOT, "PlayWatch.xcodeproj")
 SCHEME       = "PlayWatch"
 BUNDLE_ID    = "com.aralarapps.PlayWatch"
 TEAM_ID      = "32C3Z2T4RE"
-VERSION_FILE = "Config/Version.xcconfig"
+VERSION_FILE = File.join(ROOT, "Config/Version.xcconfig")
 PROFILE      = "match AppStore #{BUNDLE_ID}"
 
 # Test simulator: the base iPhone model on the newest installed iOS.
@@ -36,20 +41,23 @@ platform :ios do
   # is missing, the key is missing, or the value is empty. Requests then fail
   # with 401, which the app handles — and the test suite never makes any.
   private_lane :prepare_secrets do |options|
-    dir      = "PlayWatch/Network/Configuration"
-    template = "#{dir}/APIKey-Info.plist.template"
-    plist    = "#{dir}/APIKey-Info.plist"
+    dir      = File.join(ROOT, "PlayWatch/Network/Configuration")
+    template = File.join(dir, "APIKey-Info.plist.template")
+    plist    = File.join(dir, "APIKey-Info.plist")
 
     UI.user_error!("Missing #{template}") unless File.exist?(template)
     FileUtils.cp(template, plist)
 
-    next if options[:dummy]
+    if options[:dummy]
+      UI.message("APIKey-Info.plist written with placeholders (no secrets needed)")
+      next
+    end
 
     %w[MOVIEDB_API_KEY OPENAI_API_KEY GEMINI_API_KEY DEEP_SEEK_API_KEY].each do |key|
       value = ENV[key]
       UI.user_error!("Missing environment variable #{key}") if value.to_s.empty?
       # plutil validates the plist structure; sed would happily corrupt it.
-      sh("plutil", "-replace", key, "-string", value, "../#{plist}", log: false)
+      sh("plutil", "-replace", key, "-string", value, plist, log: false)
     end
     UI.success("APIKey-Info.plist written with real keys")
   end
