@@ -1,0 +1,101 @@
+name: Release
+
+# A vX.Y.Z tag on main builds that commit and submits it to App Store Connect.
+on:
+  push:
+    tags: ['v[0-9]+.[0-9]+.[0-9]+']
+  workflow_dispatch:
+    inputs:
+      submit_for_review:
+        description: Submit to App Review rather than only uploading
+        type: boolean
+        default: false
+
+# Shared with testflight.yml so the two never resolve a build number at the
+# same moment. See the note there.
+concurrency:
+  group: appstore-upload
+  cancel-in-progress: false
+
+permissions:
+  contents: write   # needed to create the GitHub release
+
+jobs:
+  release:
+    runs-on: macos-26
+    timeout-minutes: 75
+    environment: production
+
+    env:
+      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+      ASC_KEY_P8_BASE64: ${{ secrets.ASC_KEY_P8_BASE64 }}
+      MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+      MATCH_GIT_URL: ${{ secrets.MATCH_GIT_URL }}
+      MOVIEDB_API_KEY: ${{ secrets.MOVIEDB_API_KEY }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      DEEP_SEEK_API_KEY: ${{ secrets.DEEP_SEEK_API_KEY }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # tag ancestry check needs the full history
+
+      # Runs before anything is installed: a mismatch fails in seconds rather
+      # than twenty minutes into an archive.
+      - name: Validate the tag
+        if: github.event_name == 'push'
+        run: |
+          set -euo pipefail
+          tag="${GITHUB_REF_NAME}"
+          tagged_version="${tag#v}"
+          xcconfig_version="$(sed -n 's/^[[:space:]]*MARKETING_VERSION[[:space:]]*=[[:space:]]*\([^[:space:]]*\).*/\1/p' Config/Version.xcconfig)"
+
+          if [ "$tagged_version" != "$xcconfig_version" ]; then
+            echo "::error::Tag $tag does not match MARKETING_VERSION $xcconfig_version in Config/Version.xcconfig."
+            echo "Run 'fastlane bump' and commit before tagging."
+            exit 1
+          fi
+
+          git fetch --quiet origin main
+          if ! git merge-base --is-ancestor "$GITHUB_SHA" origin/main; then
+            echo "::error::$GITHUB_SHA is not on main. Releases are cut from main only."
+            exit 1
+          fi
+          echo "Tag $tag matches version $xcconfig_version and is on main."
+
+      - uses: ./.github/actions/setup-build
+
+      - name: Authorise the certificates repository
+        run: |
+          set -euo pipefail
+          mkdir -p ~/.ssh
+          printf '%s\n' "${{ secrets.MATCH_DEPLOY_KEY }}" > ~/.ssh/match_key
+          chmod 600 ~/.ssh/match_key
+          ssh-keyscan -t ed25519,rsa github.com >> ~/.ssh/known_hosts 2>/dev/null
+          echo "GIT_SSH_COMMAND=ssh -i ~/.ssh/match_key -o IdentitiesOnly=yes" >> "$GITHUB_ENV"
+
+      - name: Build and submit
+        run: bundle exec fastlane release submit:${{ inputs.submit_for_review || false }}
+
+      - name: Publish the GitHub release
+        if: github.event_name == 'push'
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          draft: false
+          prerelease: false
+
+      - name: Upload dSYMs
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dsyms-${{ github.ref_name }}
+          path: build/*.dSYM.zip
+          retention-days: 90
+          if-no-files-found: warn
+
+      - name: Remove signing material
+        if: always()
+        run: rm -f ~/.ssh/match_key
