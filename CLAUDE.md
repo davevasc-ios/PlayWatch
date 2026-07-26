@@ -127,6 +127,16 @@ build time by CI as `CURRENT_PROJECT_VERSION=<n>`, never committed.
 `fix/*`, `chore/*` off develop. Squash merges only, linear history. Releases
 are git tags `vX.Y.Z` on `main`.
 
+Branch names are lowercase, hyphen-separated: `feature/user-authentication`,
+`fix/crash-on-empty-search`. `fastlane ship` enforces this. Case matters
+because macOS filesystems ignore it and Linux ones do not, so `feature/GameUI`
+and `feature/gameui` are one branch locally and two on a runner.
+
+Every merge into develop uploads a build to TestFlight; a `vX.Y.Z` tag on main
+submits to App Store Connect. Neither version number is ever committed by
+automation — the build number comes from the highest one App Store Connect
+has seen, and `MARKETING_VERSION` is bumped deliberately with `fastlane bump`.
+
 ## Known debt
 
 - `Model/Media/MediaContent.swift` is a half-finished refactor toward
