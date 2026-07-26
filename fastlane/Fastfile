@@ -188,8 +188,12 @@ platform :ios do
       # processing ends.
       skip_waiting_for_build_processing: true,
       distribute_external: false,
+      # Subjects only. The default format is the full commit body, which for
+      # this project runs to thousands of characters and would blow past
+      # TestFlight's 4000-character limit on release notes.
       changelog: changelog_from_git_commits(
         commits_count: 10,
+        pretty: "- %s",
         merge_commit_filtering: "exclude_merges"
       )
     )
