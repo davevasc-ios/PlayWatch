@@ -39,6 +39,14 @@ Build and upload to TestFlight. Runs on every merge to develop.
 
 Build and submit to App Store Connect. Runs on a vX.Y.Z tag.
 
+### ios doctor
+
+```sh
+[bundle exec] fastlane ios doctor
+```
+
+Check everything beta needs, without building or uploading anything.
+
 ### ios certificates
 
 ```sh
