@@ -360,7 +360,13 @@ platform :ios do
     end
 
     push_to_git_remote(set_upstream: true)
-    sh("gh", "pr", "create", "--base", "develop", "--fill", "--head", branch)
+    # --fill-first, not --fill: with several commits, --fill titles the pull
+    # request after the branch and reduces the body to a list of subjects,
+    # losing every explanation. --fill-first keeps the first commit's subject
+    # and body, which is the change the branch is named for. Anything the other
+    # commits contribute belongs in a description written by hand — and that
+    # description becomes the squash commit, so it is worth the minute.
+    sh("gh", "pr", "create", "--base", "develop", "--fill-first", "--head", branch)
     # Merging from here, with your own token, is deliberate: a merge performed
     # by a workflow using GITHUB_TOKEN does not trigger further workflows, so
     # the push to develop would never start the TestFlight build.
