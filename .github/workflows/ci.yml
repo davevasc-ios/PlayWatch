@@ -1,0 +1,72 @@
+name: CI
+
+# Runs on every pull request. Deliberately has no access to secrets: the test
+# suite uses preview repositories that make no network calls, and the API key
+# plist is rendered from its template with placeholder values. That keeps pull
+# requests from forks working, and means a malicious pull request has nothing
+# to exfiltrate.
+on:
+  pull_request:
+    branches: [develop, main]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  # Branch protection requires this job by name. Renaming it without updating
+  # the ruleset leaves pull requests waiting forever on a check that no longer
+  # reports, and with auto-merge armed they hang silently.
+  build-test:
+    runs-on: macos-26
+    timeout-minutes: 40
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./.github/actions/setup-build
+
+      - name: Resolve test simulator
+        run: |
+          set -euo pipefail
+          # The deployment target is iOS 26.0; an older runtime fails with a
+          # deployment-target error rather than anything actionable.
+          result="$(xcrun simctl list devices available -j | python3 -c "
+          import json, re, sys
+          devices = json.load(sys.stdin)['devices']
+          best = None
+          for runtime, entries in devices.items():
+              m = re.search(r'SimRuntime\.iOS-(\d+)-(\d+)', runtime)
+              if not m:
+                  continue
+              version = (int(m.group(1)), int(m.group(2)))
+              if version[0] < 26:
+                  continue
+              for d in entries:
+                  if d['name'].startswith('iPhone') and (best is None or version > best[0]):
+                      best = (version, d['udid'], d['name'])
+          print(f\"{best[1]}|{best[2]}\" if best else '')
+          ")"
+          if [ -z "$result" ]; then
+            echo '::error::No iPhone simulator with iOS 26+ on this runner.'
+            xcrun simctl list runtimes
+            exit 1
+          fi
+          echo "Using ${result#*|}"
+          echo "TEST_DESTINATION=id=${result%|*}" >> "$GITHUB_ENV"
+
+      - name: Run tests
+        run: bundle exec fastlane tests
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: fastlane/test_output
+          retention-days: 7
+          if-no-files-found: ignore

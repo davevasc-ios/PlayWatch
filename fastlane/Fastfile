@@ -1,3 +1,5 @@
+require "time"
+
 default_platform(:ios)
 
 # fastlane runs with the `fastlane/` directory as its working directory, so
@@ -253,11 +255,34 @@ platform :ios do
 
   # The distribution certificate expires after a year and takes the release
   # pipeline down on the day it does. This is the only warning there will be.
+  #
+  # The expiry is read from App Store Connect rather than from a local file.
+  # An earlier version used the mtime of a provisioning profile, which on a
+  # runner is always seconds old because match had just written it — so the
+  # warning could never fire precisely where it was needed.
   private_lane :warn_if_certificate_expires_soon do
-    cert = Dir.glob(File.expand_path("~/Library/MobileDevice/Provisioning Profiles/*.mobileprovision")).first
-    next if cert.nil?
-    days = ((File.mtime(cert) + (365 * 24 * 60 * 60)) - Time.now) / 86_400
-    UI.important("Distribution certificate expires in about #{days.to_i} days") if days < 30
+    begin
+      require "spaceship"
+      next if Spaceship::ConnectAPI.token.nil?
+
+      certs = Spaceship::ConnectAPI::Certificate.all.select do |c|
+        c.certificate_type.to_s.include?("DISTRIBUTION")
+      end
+      next if certs.empty?
+
+      soonest = certs.map { |c| Time.parse(c.expiration_date.to_s) }.min
+      days = ((soonest - Time.now) / 86_400).to_i
+
+      if days < 0
+        UI.error("Distribution certificate EXPIRED #{-days} days ago. Run `fastlane certificates` locally.")
+      elsif days < 30
+        UI.important("Distribution certificate expires in #{days} days. Renew with `fastlane certificates` locally.")
+      else
+        UI.message("Distribution certificate valid for #{days} more days")
+      end
+    rescue => e
+      UI.important("Could not check certificate expiry: #{e.message}")
+    end
   end
 
   # ─────────────────────── local-only lanes ───────────────────────
@@ -299,6 +324,15 @@ platform :ios do
     check.call("signing assets") do
       match(type: "appstore", readonly: true, api_key: key)
       lane_context[SharedValues::MATCH_PROVISIONING_PROFILE_MAPPING][BUNDLE_ID] || "installed"
+    end
+    check.call("certificate expiry") do
+      require "spaceship"
+      certs = Spaceship::ConnectAPI::Certificate.all.select do |c|
+        c.certificate_type.to_s.include?("DISTRIBUTION")
+      end
+      raise "no distribution certificate found" if certs.empty?
+      soonest = certs.map { |c| Time.parse(c.expiration_date.to_s) }.min
+      "#{((soonest - Time.now) / 86_400).to_i} days remaining"
     end
 
     UI.user_error!("doctor found problems — fix them before running beta") unless ok

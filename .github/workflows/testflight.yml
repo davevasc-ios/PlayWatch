@@ -1,0 +1,86 @@
+name: TestFlight
+
+# Every merge into develop ships a build to TestFlight's internal group.
+on:
+  push:
+    branches: [develop]
+    # A README typo should not cost fifteen minutes of macOS runner time.
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - '.github/ISSUE_TEMPLATE/**'
+  workflow_dispatch:
+
+# Shared with release.yml on purpose. Build numbers are derived from the
+# highest one App Store Connect has seen, so two uploads in flight at once
+# would read the same value and collide. cancel-in-progress stays false so an
+# upload already under way is never killed midpoint, which can leave a
+# half-ingested build in App Store Connect.
+#
+# Known trade-off: this is not a FIFO queue. GitHub keeps one running slot and
+# one pending slot, and a newer arrival evicts whoever is waiting. If three
+# merges land inside one build cycle (~6 minutes), the middle one is cancelled
+# before any step runs. Nothing is lost — TestFlight builds are cumulative, so
+# the next build contains the evicted commits too — but that commit gets no
+# build of its own. Serialising is worth more than a build per merge here,
+# because a collided build number fails the upload outright.
+concurrency:
+  group: appstore-upload
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  beta:
+    runs-on: macos-26
+    timeout-minutes: 60
+    environment: production
+
+    env:
+      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+      ASC_KEY_P8_BASE64: ${{ secrets.ASC_KEY_P8_BASE64 }}
+      MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+      MATCH_GIT_URL: ${{ secrets.MATCH_GIT_URL }}
+      MOVIEDB_API_KEY: ${{ secrets.MOVIEDB_API_KEY }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      DEEP_SEEK_API_KEY: ${{ secrets.DEEP_SEEK_API_KEY }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # changelog_from_git_commits reads the last ten commits; a shallow
+          # clone would leave it with one.
+          fetch-depth: 50
+
+      - uses: ./.github/actions/setup-build
+
+      - name: Authorise the certificates repository
+        run: |
+          set -euo pipefail
+          # match clones ios-certificates over SSH. A deploy key is used rather
+          # than a personal access token because deploy keys do not expire and
+          # are scoped to that single repository.
+          mkdir -p ~/.ssh
+          printf '%s\n' "${{ secrets.MATCH_DEPLOY_KEY }}" > ~/.ssh/match_key
+          chmod 600 ~/.ssh/match_key
+          ssh-keyscan -t ed25519,rsa github.com >> ~/.ssh/known_hosts 2>/dev/null
+          echo "GIT_SSH_COMMAND=ssh -i ~/.ssh/match_key -o IdentitiesOnly=yes" >> "$GITHUB_ENV"
+
+      - name: Upload to TestFlight
+        run: bundle exec fastlane beta
+
+      - name: Upload dSYMs
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dsyms-${{ github.run_number }}
+          path: build/*.dSYM.zip
+          retention-days: 90
+          if-no-files-found: warn
+
+      - name: Remove signing material
+        if: always()
+        run: rm -f ~/.ssh/match_key
