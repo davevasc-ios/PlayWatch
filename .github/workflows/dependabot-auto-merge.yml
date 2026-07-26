@@ -1,0 +1,35 @@
+name: Dependabot auto-merge
+
+# Arms auto-merge on Dependabot's pull requests so dependency updates land
+# without a weekly click. The branch ruleset still applies: nothing merges
+# until the build-test check is green, so a version that breaks the build stays
+# out on its own.
+#
+# The trade-off is accepted deliberately. CI runs `fastlane tests`, not
+# `fastlane beta`, so an update that broke signing or uploading would pass here
+# and only surface on the next merge into develop. That failure is visible (a
+# red run) and reverting one commit undoes it, which is cheaper than a standing
+# manual task that would be rubber-stamped anyway.
+
+on:
+  pull_request_target:
+    branches: [develop]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  auto-merge:
+    # pull_request_target runs in the context of the base branch with write
+    # access, so it must never check out or execute the pull request's code.
+    # This job only calls the API, and the actor check keeps it to Dependabot.
+    if: github.actor == 'dependabot[bot]'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Arm auto-merge
+        run: gh pr merge --auto --squash "$PR_URL"
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
