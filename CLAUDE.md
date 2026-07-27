@@ -129,8 +129,18 @@ build time by CI as `CURRENT_PROJECT_VERSION=<n>`, never committed.
 ## Branching
 
 `main` (production) · `develop` (integration) · short-lived `feature/*`,
-`fix/*`, `chore/*` off develop. Squash merges only, linear history. Releases
-are git tags `vX.Y.Z` on `main`.
+`fix/*`, `chore/*` off develop. Releases are git tags `vX.Y.Z` on `main`.
+
+Two merge methods, one per direction:
+
+| Direction | Method | Why |
+|---|---|---|
+| `feature/*` → `develop` | **squash** | One commit per change, and the pull request body becomes its message |
+| `develop` → `main` | **rebase** | main is always an ancestor of develop, so this is a fast-forward and the commits keep their SHAs |
+
+Squashing a promotion would mint a new commit and leave the two branches
+permanently divergent, so every later promotion would carry conflicts. The
+rulesets enforce this: develop allows squash only, main allows both.
 
 Branch names are lowercase, hyphen-separated: `feature/user-authentication`,
 `fix/crash-on-empty-search`. `fastlane ship` enforces this. Case matters

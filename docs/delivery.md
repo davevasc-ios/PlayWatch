@@ -174,6 +174,24 @@ Neither flag handles a multi-commit branch well — `--fill-first` omits the
 later commits entirely. Write the description by hand when a branch carries
 more than one meaningful change.
 
+## Promoting develop to main
+
+Feature branches squash into develop; develop **rebases** into main. main is
+always a strict ancestor of develop, so a rebase is a fast-forward and the
+commits keep the SHAs they already had. Squashing would create a new commit and
+leave the branches permanently divergent, and every later promotion would carry
+conflicts for no benefit.
+
+This was found the hard way: main sat 16 commits behind for a day carrying none
+of `.github/`, `fastlane/` or `Config/`. Two things were inert as a result and
+neither announced itself. A tag would have produced no run at all, because for a
+`push` tag event GitHub resolves workflow files at the tagged commit. And
+Dependabot never ran, because it reads its configuration from the default
+branch.
+
+Promote before tagging, and remember the tag ruleset makes `v*` immutable — a
+mistaken tag cannot be moved or deleted, only superseded.
+
 ## Known gaps
 
 **API keys ship inside the ipa.** `APIKey-Info.plist` is bundled as an app
