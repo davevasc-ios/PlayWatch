@@ -32,11 +32,15 @@ older simulators fail with a deployment-target error rather than a useful one.
 
 ## Setup
 
-`PlayWatch/Network/Configuration/APIKey-Info.plist` is a required resource of
-the app target and is gitignored. Without it the build fails outright. Copy
-`APIKey-Info.plist.template` next to it and fill in the four keys. Placeholder
-values are enough to compile and to run the test suite, which never hits the
-network.
+`PlayWatch/Network/Configuration/APIKey-Info.plist` is gitignored, so a fresh
+clone has none. Copy `APIKey-Info.plist.template` next to it and fill in the
+four keys.
+
+The build succeeds without it — the synchronized folder simply omits a file
+that is not there. The app then calls `fatalError()` the first time it reads a
+key, so the failure is at launch rather than at compile time. Placeholder
+values are enough to build and to run the test suite, which uses preview
+repositories and never hits the network.
 
 ## Architecture — MVSU
 
@@ -68,7 +72,7 @@ place.
 | `Network/` | Endpoints, HTTP builders, decoders, API errors. |
 | `Utility/` | Reusable business logic in protocol extensions. |
 | `Core/` | Domain-agnostic: constants, extensions, errors, shared components. |
-| `Preview Content/` | Static mocks. Excluded from release builds. |
+| `Preview Content/` | Static mocks, each file wrapped in `#if DEBUG`. `DEVELOPMENT_ASSET_PATHS` keeps its *resources* out of release; the Swift files compile in both configurations and are emptied by the guard. |
 
 ## Conventions
 
@@ -113,8 +117,9 @@ table (`Localizable.Home`, `Localizable.Settings`, …). Keys follow
 
 ## Versioning
 
-`Config/Version.xcconfig` is the single source of truth, wired in as the
-project's base configuration. Never add `MARKETING_VERSION` or
+`Config/Version.xcconfig` is the single source of truth for both numbers. It is
+included by `Config/Shared.xcconfig`, which is what the project sets as its
+base configuration. Never add `MARKETING_VERSION` or
 `CURRENT_PROJECT_VERSION` to a target's build settings — a target-level setting
 overrides the xcconfig and silently makes it decorative.
 

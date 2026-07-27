@@ -45,3 +45,7 @@ fastlane/.env.*
 
 # Secrets — see APIKey-Info.plist.template for the expected structure
 **/APIKey-Info.plist
+
+# App Store Connect API keys. Apple serves the .p8 once and never again, so a
+# copy tends to sit in the project folder while it is being set up.
+*.p8
