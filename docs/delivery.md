@@ -176,11 +176,22 @@ more than one meaningful change.
 
 ## Promoting develop to main
 
-Feature branches squash into develop; develop **rebases** into main. main is
-always a strict ancestor of develop, so a rebase is a fast-forward and the
-commits keep the SHAs they already had. Squashing would create a new commit and
-leave the branches permanently divergent, and every later promotion would carry
-conflicts for no benefit.
+Feature branches squash into develop; develop **rebases** into main.
+
+Do not expect a fast-forward. GitHub's rebase merge always rewrites commits,
+even when the base is a strict ancestor and a fast-forward would be possible —
+there is no fast-forward option. So after a promotion the two branches hold the
+same work under different SHAs, and `git rev-list --left-right --count` reports
+them as divergent.
+
+That divergence is cosmetic and does not accumulate. The trees are byte
+identical, and `git cherry origin/main origin/develop` returns nothing, because
+git matches commits by patch-id rather than by SHA. Later promotions skip what
+is already on main.
+
+Rebase is preferred over squash for promotions so main keeps the individual
+changes rather than one lump per release. Both work; neither avoids the SHA
+rewrite.
 
 This was found the hard way: main sat 16 commits behind for a day carrying none
 of `.github/`, `fastlane/` or `Config/`. Two things were inert as a result and
