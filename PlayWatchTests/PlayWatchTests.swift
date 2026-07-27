@@ -75,6 +75,8 @@ struct PlayWatchTests {
             let first = try #require(sections.first)
             #expect(first.type == .hero)
             #expect(sections.count == Constants.homeSections.count + 1)
+            #expect(sections.dropFirst().map(\.type) == Constants.homeSections.map(\.type))
+            #expect(first.items == sections.dropFirst().first?.items)
         }
     }
 

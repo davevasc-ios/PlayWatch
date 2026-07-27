@@ -8,8 +8,9 @@ version: 2
 # here and only ever receives merges from develop.
 #
 # Updates are grouped so a week with four new versions produces one pull
-# request rather than four. They are not auto-merged: CI proves the build
-# still works, but a dependency bump deserves a human look before it lands.
+# request rather than four. Patch and minor updates merge themselves once
+# build-test is green; major ones are held for review. That split lives in
+# .github/workflows/dependabot-auto-merge.yml.
 
 updates:
   - package-ecosystem: github-actions
