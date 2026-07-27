@@ -183,6 +183,19 @@ affects every build since April 2024. The fix is a backend proxy, planned
 alongside the Supabase work. Interim control is a spending cap rather than
 secrecy.
 
+**Rewriting history did not remove the old objects from GitHub.** The keys that
+predate the rotation were purged from every reachable commit and the branches
+were force-pushed, but GitHub keeps unreachable objects and still serves them
+by SHA to anonymous callers. The pre-rewrite SHAs are themselves public through
+the repository's `/activity` endpoint, so no guessing is needed. Verified: the
+old plist blob returns HTTP 200 unauthenticated.
+
+Those keys were rotated and revoked before the repository was made public, so
+what is exposed is dead credentials. The lesson generalises though: **a force
+push is not a delete.** Removing leaked material from GitHub needs Support to
+garbage-collect the repository, and the only reliable remedy is rotating the
+credential.
+
 **No hotfix path.** `ship` hardcodes `--base develop`. Patching a released
 version means branching from `main`, which needs a `base:` parameter. Not built
 because nothing is released yet.
