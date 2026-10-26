@@ -49,7 +49,7 @@ jobs:
       DEEP_SEEK_API_KEY: ${{ secrets.DEEP_SEEK_API_KEY }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           # changelog_from_git_commits reads the last ten commits; a shallow
           # clone would leave it with one.
@@ -74,7 +74,7 @@ jobs:
 
       - name: Upload dSYMs
         if: success()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: dsyms-${{ github.run_number }}
           path: build/*.dSYM.zip
